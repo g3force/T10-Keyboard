@@ -1,13 +1,13 @@
-/*
+/* 
  * *********************************************************
  * Copyright (c) 2011 - 2011, DHBW Mannheim
  * Project: T10 On-Screen Keyboard
  * Date: Oct 15, 2011
  * Author(s): NicolaiO
- * 
+ *
  * *********************************************************
  */
-package edu.dhbw.t10;
+package edu.dhbw.t10.manager;
 
 /**
  * TODO NicolaiO, add comment!
@@ -17,7 +17,7 @@ package edu.dhbw.t10;
  * @author NicolaiO
  * 
  */
-public class SuperFelix
+public class ProfileManager
 {
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
@@ -32,15 +32,7 @@ public class SuperFelix
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
-
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args)
-	{
-		// TODO Auto-generated method stub
-		// FIXME Daniel Test
-	}
+	
 	
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
