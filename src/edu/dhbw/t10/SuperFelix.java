@@ -9,6 +9,9 @@
  */
 package edu.dhbw.t10;
 
+import edu.dhbw.t10.view.Presenter;
+
+
 /**
  * TODO NicolaiO, add comment!
  * - What should this type do (in one sentence)?
@@ -38,10 +41,7 @@ public class SuperFelix
 	 */
 	public static void main(String[] args)
 	{
-		// TODO Auto-generated method stub
-		// FIXME Daniel Test
-		// FIXME hat Daniel gesagt
-		// FIXME Dirk Test
+		new Presenter();
 	}
 	
 	// --------------------------------------------------------------------------

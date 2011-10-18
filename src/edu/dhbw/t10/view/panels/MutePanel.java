@@ -9,6 +9,9 @@
  */
 package edu.dhbw.t10.view.panels;
 
+import javax.swing.JPanel;
+
+
 /**
  * TODO NicolaiO, add comment!
  * - What should this type do (in one sentence)?
@@ -17,12 +20,12 @@ package edu.dhbw.t10.view.panels;
  * @author NicolaiO
  * 
  */
-public class MutePanel
+public class MutePanel extends JPanel
 {
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
-	
+	private static final long	serialVersionUID	= 4534874484619775498L;
 	
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
