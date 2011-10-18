@@ -9,6 +9,11 @@
  */
 package edu.dhbw.t10.view.panels;
 
+import java.awt.BorderLayout;
+
+import javax.swing.JPanel;
+
+
 /**
  * TODO NicolaiO, add comment!
  * - What should this type do (in one sentence)?
@@ -17,17 +22,34 @@ package edu.dhbw.t10.view.panels;
  * @author NicolaiO
  * 
  */
-public class MainPanel
+public class MainPanel extends JPanel
 {
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
 	
-	
+	private static final long	serialVersionUID	= -52892520461804389L;
+	private KeyboardPanel		keyboardPanel;
+	private MutePanel				mutePanel;
+	private ProfilePanel			profilePanel;
+
+
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
 	
+	public MainPanel()
+	{
+		this.setLayout(new BorderLayout());
+		this.setSize(300, 150);
+		keyboardPanel = new KeyboardPanel();
+		mutePanel = new MutePanel();
+		profilePanel = new ProfilePanel();
+		this.add(keyboardPanel, BorderLayout.SOUTH);
+		// TODO new Layout
+		this.add(mutePanel, BorderLayout.NORTH);
+		this.add(profilePanel, BorderLayout.NORTH);
+	}
 	
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
