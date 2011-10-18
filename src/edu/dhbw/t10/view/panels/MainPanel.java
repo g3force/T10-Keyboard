@@ -2,12 +2,12 @@
  * *********************************************************
  * Copyright (c) 2011 - 2011, DHBW Mannheim
  * Project: T10 On-Screen Keyboard
- * Date: Oct 15, 2011
+ * Date: Oct 18, 2011
  * Author(s): NicolaiO
  *
  * *********************************************************
  */
-package edu.dhbw.t10.view.listener;
+package edu.dhbw.t10.view.panels;
 
 /**
  * TODO NicolaiO, add comment!
@@ -17,7 +17,7 @@ package edu.dhbw.t10.view.listener;
  * @author NicolaiO
  * 
  */
-public class KeyboardListener
+public class MainPanel
 {
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
