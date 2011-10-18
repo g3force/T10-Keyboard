@@ -9,6 +9,9 @@
  */
 package edu.dhbw.t10;
 
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Logger;
+
 import edu.dhbw.t10.view.Presenter;
 
 
@@ -25,8 +28,9 @@ public class SuperFelix
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
+	private static final Logger	logger	= Logger.getLogger(SuperFelix.class);
 	
-	
+
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
@@ -41,7 +45,13 @@ public class SuperFelix
 	 */
 	public static void main(String[] args)
 	{
+		/*
+		 * initialize log4j, a logger from apache.
+		 * See http://logging.apache.org/log4j/1.2/manual.html for more details
+		 */
+		BasicConfigurator.configure();
 		new Presenter();
+		logger.info("Keyboard started.");
 	}
 	
 	// --------------------------------------------------------------------------
