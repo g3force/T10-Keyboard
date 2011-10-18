@@ -7,7 +7,7 @@
  *
  * *********************************************************
  */
-package edu.dhbw.t10.view.listener;
+package edu.dhbw.t10.view;
 
 /**
  * TODO NicolaiO, add comment!
@@ -17,7 +17,7 @@ package edu.dhbw.t10.view.listener;
  * @author NicolaiO
  * 
  */
-public class MenuListener
+public class Presenter
 {
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
