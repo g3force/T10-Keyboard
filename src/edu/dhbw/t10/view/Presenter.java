@@ -9,6 +9,8 @@
  */
 package edu.dhbw.t10.view;
 
+import java.awt.Toolkit;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -45,8 +47,10 @@ public class Presenter extends JFrame
 	{
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setLocationByPlatform(true);
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage("icons/useacc_logo.png"));
 		this.setTitle("T10 On-Screen Keyboard");
 		this.setVisible(true);
+
 		
 		// get a reference to the content pane
 		contentPane = (JPanel) getContentPane();
