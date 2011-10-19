@@ -1,0 +1,6 @@
+<layout>
+	<key name="Esc" size_x="5" size_y="5" pos_x="5" pos_y="5" id="0"></key>
+	<key name="F1" size_x="5" size_y="5" pos_x="11" pos_y="5" id="1"></key>
+	<key name="F2" size_x="5" size_y="5" pos_x="17" pos_y="5" id="2"></key>
+	<key name="F3" size_x="5" size_y="5" pos_x="23" pos_y="5" id="3"></key>
+</layout>
