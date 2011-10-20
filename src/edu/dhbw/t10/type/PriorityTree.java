@@ -37,41 +37,34 @@ public class PriorityTree {
 	// --------------------------------------------------------------------------
 	
 	public void insert(String in) {
-		PriorityElement node = root.clone();
+		PriorityElement node = root;
 		char[] inChar = in.toCharArray(); // put every letter of the word alone in an char array
 		for (int i = 0; i < inChar.length; i++) {
 			if (node.hasFollower(inChar[i])) {
 				if (i < inChar.length - 1) {
 					node = node.getFollower(inChar[i]);
 				} else {
+					node = node.getFollower(inChar[i]);
 					node.increase();
-					ReplaceSuggestsInFathers(node);
 				}
 			} else {
 				node = node.addFollower(inChar[i]);
+				if (i == inChar.length - 1) {
+					node.increase();
+				}
 			}
-		}
-	}
-	
-
-	private void ReplaceSuggestsInFathers(PriorityElement node) {
-		int freq = node.getFrequency();
-		while (node.getFather().getSuggest().getFrequency() < freq) {
-			node.getFather().setSuggest(node);
-			node = node.getFather();
 		}
 	}
 
 
 	public String getSuggest(String wordPart) {
-		PriorityElement node = root.clone();
+		PriorityElement node = root;
 		char[] wordPartChar = wordPart.toCharArray(); // put every letter of the word alone in a char array
 		for (int i = 0; i < wordPartChar.length; i++) {
 			if (node.hasFollower(wordPartChar[i])) {
-				if (i < wordPartChar.length - 1) {
-					node = node.getFollower(wordPartChar[i]);
-				} else {
-					return node.buildWord();
+				node = node.getFollower(wordPartChar[i]);
+				if (i == wordPartChar.length - 1) {
+					return node.getSuggest().buildWord();
 				}
 			} else {
 				return wordPart;
@@ -82,7 +75,14 @@ public class PriorityTree {
 	
 
 	public void printTree() {
-		// TODO a print method to test insert and getWord
+		for (PriorityElement pe : root.getListOfFollowers()) {
+			for (int i = 0; i < pe.buildWord().length(); i++) {
+				System.out.print("-");
+			}
+			System.out
+.print(pe.getWord() + ", " + pe.getFrequency() + ", Suggest: " + pe.getSuggest().buildWord()
+					+ " (Father: " + pe.getFather().buildWord() + ")\n");
+		}
 	}
 	
 
