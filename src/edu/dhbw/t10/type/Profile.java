@@ -21,12 +21,20 @@ public class Profile {
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
-	
+	private int		profileID;
+	private String	name;
+	private String			pathToFile;
+	private PriorityTree	tree;
 
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
-	
+	public Profile() {
+		profileID = -1;
+		name = "";
+		pathToFile = "";
+		// tree = new PriorityTree();
+	}
 
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
@@ -36,4 +44,48 @@ public class Profile {
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
+	/**
+	 * 
+	 * Gets the profile-ID
+	 * 
+	 * @return profileID
+	 */
+	public int getID() {
+		return profileID;
+	}
+	
+	
+	/**
+	 * 
+	 * Sets the profile-ID
+	 * 
+	 * @param id - int
+	 */
+	
+	public void setID(int id) {
+		profileID = id;
+	}
+	
+	
+	/**
+	 * 
+	 * Gets a profile's name
+	 * 
+	 * @return name
+	 */
+	public String getName() {
+		return name;
+	}
+	
+	
+	/**
+	 * 
+	 * Sets a profile's name
+	 * 
+	 * @param newName - String
+	 */
+	
+	public void setName(String newName) {
+		name = newName;
+	}
 }
