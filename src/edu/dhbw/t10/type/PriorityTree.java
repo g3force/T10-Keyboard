@@ -9,6 +9,9 @@
  */
 package edu.dhbw.t10.type;
 
+import java.util.HashMap;
+import java.util.Map.Entry;
+
 import org.apache.log4j.Logger;
 
 
@@ -47,6 +50,17 @@ public class PriorityTree {
 	 * @param word the word that should be inserted
 	 */
 	public void insert(String word) {
+		insert(word, 0);
+	}
+	
+	
+	/**
+	 * inserts a word to the tree
+	 * if the word already exist, frequency is increased by one and suggests are adujsted
+	 * @param word the word that should be inserted
+	 * @param frequency the start frequency of the inserting word
+	 */
+	private void insert(String word, int frequency) {
 		logger.debug("Insertig Word...");
 		PriorityElement node = root;
 		char[] inChar = word.toCharArray(); // put every letter of the word alone in an char array
@@ -158,6 +172,13 @@ public class PriorityTree {
 		logger.debug("Output printed");
 	}
 	
+	
+	public void importFromHashMap(HashMap<String, Integer> input) {
+		for (Entry<String,Integer> entry:input.entrySet()) {
+			insert(entry.getKey(),entry.getValue());
+		}
+	}
+
 
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
