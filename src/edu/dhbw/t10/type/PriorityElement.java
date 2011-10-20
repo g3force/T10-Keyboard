@@ -13,6 +13,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 
 /**
  * TODO dirk, add comment!
@@ -26,40 +28,45 @@ public class PriorityElement {
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
-	char										word;
+	char										letter;
 	PriorityElement						father;
 	PriorityElement						suggest;
 	int										frequency;
 	Map<Character, PriorityElement>	followers;
 	
+	private static final Logger		logger	= Logger.getLogger(PriorityElement.class);
+
 	
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
 	public PriorityElement(char wo, PriorityElement fa, int fr) {
-		word = wo;
+		letter = wo;
 		father = fa;
 		suggest = this;
 		frequency = fr;
 		followers = new HashMap<Character, PriorityElement>();
+		logger.debug("PriorityElement created (1)");
 	}
 	
 
 	public PriorityElement(char wo, PriorityElement fa, PriorityElement su, int fr) {
-		word = wo;
+		letter = wo;
 		father = fa;
 		suggest = su;
 		frequency = fr;
 		followers = new HashMap<Character, PriorityElement>();
+		logger.debug("PriorityElement created (2)");
 	}
 	
 
 	public PriorityElement(char wo, PriorityElement fa, PriorityElement su, int fr, Map<Character, PriorityElement> fo) {
-		word = wo;
+		letter = wo;
 		father = fa;
 		suggest = su;
 		frequency = fr;
 		followers = fo;
+		logger.debug("PriorityElement created (3)");
 	}
 	
 
@@ -76,15 +83,17 @@ public class PriorityElement {
 	 * @return the new Follower Element
 	 */
 	public PriorityElement addFollower(char c) {
+		logger.debug("Adding follower...");
 		PriorityElement newFollower = new PriorityElement(c, this, 0);
 		followers.put(c, newFollower);
+		logger.debug("Follower added");
 		return newFollower;
 	}
 	
 	
 	/**
 	 * returns of this node has a follower with the word c
-	 * @param c the word of the follower
+	 * @param c the letter of the follower
 	 * @return true, if the follower exists
 	 */
 	public boolean hasFollower(char c) {
@@ -95,7 +104,7 @@ public class PriorityElement {
 	/**
 	 * gets the following node with the word c
 	 * be careful, exists the follower?
-	 * @param c the word of the follower which shall be returned
+	 * @param c the letter of the follower which shall be returned
 	 * @return the follower with the word c
 	 */
 	public PriorityElement getFollower(char c) {
@@ -119,6 +128,7 @@ public class PriorityElement {
 	 * local method to replace the suggests in the fathers of this node
 	 */
 	private void ReplaceSuggestsInFathers() {
+		logger.debug("Replacing suggests (in Fathers)...");
 		PriorityElement node = this.getFather();
 		PriorityElement increasedNode = this;
 		// if the father is null, the node is the root element
@@ -127,6 +137,7 @@ public class PriorityElement {
 			node.setSuggest(increasedNode);
 			node = node.getFather();
 		}
+		logger.debug("Suggests (in Fathers) replaced");
 	}
 
 
@@ -137,12 +148,14 @@ public class PriorityElement {
 	 * @return the according word to the node
 	 */
 	public String buildWord() {
+		logger.debug("Building Word...");
 		String word = "";
 		PriorityElement node = this;
 		while (node.getFather() != null) {
-			word = node.getWord() + word;
+			word = node.getLetter() + word;
 			node = node.getFather();
 		}
+		logger.debug("Word built");
 		return word;
 	}
 	
@@ -153,11 +166,13 @@ public class PriorityElement {
 	 * @return list of all followers
 	 */
 	public LinkedList<PriorityElement> getListOfFollowers() {
+		logger.debug("Fetching followers...");
 		LinkedList<PriorityElement> ll = new LinkedList<PriorityElement>();
 		for (PriorityElement pe : followers.values()) {
 			ll.add(pe);
 			ll.addAll(pe.getListOfFollowers());
 		}
+		logger.debug("Followers fetched");
 		return ll;
 	}
 	
@@ -179,11 +194,13 @@ public class PriorityElement {
 	 * resets the suggest of this item and searches again for the right one
 	 */
 	public void resetSuggest() {
+		logger.debug("Replacing suggests (in Node)...");
 		suggest = this;
 		for (PriorityElement pe : followers.values()) {
 			if (pe.getSuggest().getFrequency() > suggest.getFrequency())
 				suggest = pe.getSuggest();
 		}
+		logger.debug("Suggests (in Node) replaced");
 	}
 
 
@@ -201,13 +218,13 @@ public class PriorityElement {
 	}
 	
 
-	public char getWord() {
-		return word;
+	public char getLetter() {
+		return letter;
 	}
 	
 
-	public void setWord(char word) {
-		this.word = word;
+	public void setLetter(char word) {
+		this.letter = word;
 	}
 	
 
