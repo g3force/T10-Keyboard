@@ -9,6 +9,8 @@
  */
 package edu.dhbw.t10.type;
 
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 
 
@@ -37,9 +39,9 @@ public class PriorityElement {
 	public PriorityElement(char wo, PriorityElement fa, int fr) {
 		word = wo;
 		father = fa;
-		suggest = null;
+		suggest = this;
 		frequency = fr;
-		followers = null;
+		followers = new HashMap<Character, PriorityElement>();
 	}
 	
 
@@ -48,7 +50,7 @@ public class PriorityElement {
 		father = fa;
 		suggest = su;
 		frequency = fr;
-		followers = null;
+		followers = new HashMap<Character, PriorityElement>();
 	}
 	
 
@@ -74,32 +76,59 @@ public class PriorityElement {
 	 * @return the new Follower Element
 	 */
 	public PriorityElement addFollower(char c) {
-		PriorityElement newFollower = new PriorityElement(c, this, 1);
-		newFollower.setSuggest(newFollower);
+		PriorityElement newFollower = new PriorityElement(c, this, 0);
 		followers.put(c, newFollower);
 		return newFollower;
 	}
 	
-
+	
+	/**
+	 * returns of this node has a follower with the word c
+	 * @param c the word of the follower
+	 * @return true, if the follower exists
+	 */
 	public boolean hasFollower(char c) {
 		return followers.containsKey(c);
 	}
 	
-
+	
+	/**
+	 * gets the following node with the word c
+	 * be careful, exists the follower?
+	 * @param c the word of the follower which shall be returned
+	 * @return the follower with the word c
+	 */
 	public PriorityElement getFollower(char c) {
-		return followers.get(c);
+		if (hasFollower(c))
+			return followers.get(c);
+		else
+			return null;
 	}
 	
-
-	public PriorityElement clone() {
-		return new PriorityElement(word, father, suggest, frequency, followers);
-	}
 	
-
+	/**
+	 * increases the frequency of a node, adjusts the suggests in the fathers
+	 */
 	public void increase() {
 		frequency++;
+		ReplaceSuggestsInFathers();
 	}
 	
+	
+	/**
+	 * local method to replace the suggests in the fathers of this node
+	 */
+	private void ReplaceSuggestsInFathers() {
+		PriorityElement node = this.getFather();
+		PriorityElement increasedNode = this;
+		// if the father is null, the node is the root element
+		while (node.getFather() != null
+				&& (node.getSuggest() == increasedNode || node.getSuggest().getFrequency() < frequency)) {
+			node.setSuggest(increasedNode);
+			node = node.getFather();
+		}
+	}
+
 
 	/**
 	 * builds the according word to a node, goes up the tree and puts the char to each other
@@ -117,6 +146,46 @@ public class PriorityElement {
 		return word;
 	}
 	
+	
+	/**
+	 * puts alle Followers of this node into a list, beginning with itself
+	 * 
+	 * @return list of all followers
+	 */
+	public LinkedList<PriorityElement> getListOfFollowers() {
+		LinkedList<PriorityElement> ll = new LinkedList<PriorityElement>();
+		for (PriorityElement pe : followers.values()) {
+			ll.add(pe);
+			ll.addAll(pe.getListOfFollowers());
+		}
+		return ll;
+	}
+	
+	
+	/**
+	 * deletes the Follower of this node according to the word given
+	 * takes the needed char of word by its own
+	 * 
+	 * @param word the word of the node which shall be deleted
+	 */
+	public void deleteFollower(String word) {
+		int indexOfCharToDelete = buildWord().length();
+		char charToDelete = word.charAt(indexOfCharToDelete);
+		followers.remove(charToDelete);
+	}
+	
+	
+	/**
+	 * resets the suggest of this item and searches again for the right one
+	 */
+	public void resetSuggest() {
+		suggest = this;
+		for (PriorityElement pe : followers.values()) {
+			if (pe.getSuggest().getFrequency() > suggest.getFrequency())
+				suggest = pe.getSuggest();
+		}
+	}
+
 
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
