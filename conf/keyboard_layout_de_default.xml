@@ -1,6 +1,11 @@
 <layout>
-	<key name="Esc" size_x="5" size_y="5" pos_x="5" pos_y="5" id="0" keycode="esc"></key>
-	<key name="F1" size_x="5" size_y="5" pos_x="11" pos_y="5" id="1" keycode="esc"></key>
-	<key name="F2" size_x="5" size_y="5" pos_x="17" pos_y="5" id="2" keycode="esc"></key>
-	<key name="F3" size_x="5" size_y="5" pos_x="23" pos_y="5" id="3" keycode="esc"></key>
+	<key name="Esc" size_x="5" size_y="5" pos_x="5" pos_y="5" id="0" keycode="VK_ESCAPE"></key>
+	<key name="F1" size_x="5" size_y="5" pos_x="11" pos_y="5" id="1" keycode="VK_F1"></key>
+	<key name="F2" size_x="5" size_y="5" pos_x="17" pos_y="5" id="2" keycode="VK_F2"></key>
+	<key name="F3" size_x="5" size_y="5" pos_x="23" pos_y="5" id="3" keycode="VK_F3"></key>
+	
+	<key name="q" size_x="5" size_y="5" pos_x="5" pos_y="5" id="0" keycode="VK_a">
+		<shift>Q</shift>
+		<altgr>@</altgr>
+	</key>
 </layout>
