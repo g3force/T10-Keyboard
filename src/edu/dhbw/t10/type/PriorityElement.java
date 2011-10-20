@@ -96,21 +96,13 @@ public class PriorityElement {
 	 * gets the following node with the word c
 	 * be careful, exists the follower?
 	 * @param c the word of the follower which shall be returned
-	 * @return
+	 * @return the follower with the word c
 	 */
 	public PriorityElement getFollower(char c) {
 		if (hasFollower(c))
 			return followers.get(c);
 		else
 			return null;
-	}
-
-	
-	/**
-	 * @return
-	 */
-	public PriorityElement clone() {
-		return new PriorityElement(word, father, suggest, frequency, followers);
 	}
 	
 	
@@ -156,8 +148,7 @@ public class PriorityElement {
 	
 	
 	/**
-	 * 
-	 * TODO dirk, add comment!
+	 * puts alle Followers of this node into a list, beginning with itself
 	 * 
 	 * @return list of all followers
 	 */
@@ -168,6 +159,31 @@ public class PriorityElement {
 			ll.addAll(pe.getListOfFollowers());
 		}
 		return ll;
+	}
+	
+	
+	/**
+	 * deletes the Follower of this node according to the word given
+	 * takes the needed char of word by its own
+	 * 
+	 * @param word the word of the node which shall be deleted
+	 */
+	public void deleteFollower(String word) {
+		int indexOfCharToDelete = buildWord().length();
+		char charToDelete = word.charAt(indexOfCharToDelete);
+		followers.remove(charToDelete);
+	}
+	
+	
+	/**
+	 * resets the suggest of this item and searches again for the right one
+	 */
+	public void resetSuggest() {
+		suggest = this;
+		for (PriorityElement pe : followers.values()) {
+			if (pe.getSuggest().getFrequency() > suggest.getFrequency())
+				suggest = pe.getSuggest();
+		}
 	}
 
 
