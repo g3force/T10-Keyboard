@@ -7,7 +7,7 @@
  *
  * *********************************************************
  */
-package edu.dhbw.t10.manager;
+package edu.dhbw.t10.manager.profile;
 
 /**
  * TODO NicolaiO, add comment!
