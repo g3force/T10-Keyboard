@@ -9,8 +9,10 @@
  */
 package edu.dhbw.t10.view.panels;
 
-import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 
+import javax.swing.JButton;
 import javax.swing.JPanel;
 
 
@@ -40,17 +42,51 @@ public class MainPanel extends JPanel
 	
 	public MainPanel()
 	{
-		this.setLayout(new BorderLayout());
-		this.setSize(300, 150);
-		keyboardPanel = new KeyboardPanel();
-		mutePanel = new MutePanel();
-		profilePanel = new ProfilePanel();
-		this.add(keyboardPanel, BorderLayout.SOUTH);
-		// TODO new Layout
-		this.add(mutePanel, BorderLayout.NORTH);
-		this.add(profilePanel, BorderLayout.NORTH);
+		this.setLayout(new FlowLayout());
+		JButton btns[] = new JButton[10];
+		for (int i = 0; i < 10; i++)
+		{
+			btns[i] = new JButton();
+			btns[i].setLayout(null);
+			btns[i].setPreferredSize(new Dimension(100, 50));
+			this.add(btns[i]);
+		}
+		
+//			System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
+//			//NodeList nList = doc.getElementsByTagName("key");
+//			System.out.println("-----------------------");
+//			
+//			for (int temp = 0; temp < nList.getLength(); temp++)
+//			{
+//				
+//				Node nNode = nList.item(temp);
+//				if (nNode.getNodeType() == Node.ELEMENT_NODE)
+//				{
+//					
+//					Element eElement = (Element) nNode;
+//					System.out.println(nNode);
+//					
+//					System.out.println("First Name : " + getTagValue("name", eElement));
+//					System.out.println("Last Name : " + getTagValue("id", eElement));
+//					System.out.println("Nick Name : " + getTagValue("keycode", eElement));
+//					System.out.println("Salary : " + getTagValue("size_x", eElement));
+//					
+//				}
+//			}
+
+		
+		// this.setLayout(new BorderLayout());
+		// this.setSize(300, 150);
+		// keyboardPanel = new KeyboardPanel();
+		// mutePanel = new MutePanel();
+		// profilePanel = new ProfilePanel();
+		// this.add(keyboardPanel, BorderLayout.SOUTH);
+		// // TODO new Layout
+		// this.add(mutePanel, BorderLayout.NORTH);
+		// this.add(profilePanel, BorderLayout.NORTH);
 	}
 	
+
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
