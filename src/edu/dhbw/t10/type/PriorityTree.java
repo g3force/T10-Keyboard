@@ -75,7 +75,7 @@ public class PriorityTree
 	{
 		PriorityElement node = root.clone();
 		char[] wordPartChar = wordPart.toCharArray(); // put every letter of the word alone in a char array
-		for(int i=0; i<wordPartChar.length; i++)
+		for (int i = 0; i < wordPartChar.length; i++)
 		{
 			if (node.hasFollower(wordPartChar[i]))
 			{
