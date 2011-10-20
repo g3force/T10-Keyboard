@@ -23,8 +23,7 @@ import edu.dhbw.t10.view.Presenter;
  * @author NicolaiO
  * 
  */
-public class SuperFelix
-{
+public class SuperFelix {
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
@@ -35,7 +34,7 @@ public class SuperFelix
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
 	
-	
+
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
@@ -43,8 +42,7 @@ public class SuperFelix
 	/**
 	 * @param args
 	 */
-	public static void main(String[] args)
-	{
+	public static void main(String[] args) {
 		/*
 		 * initialize log4j, a logger from apache.
 		 * See http://logging.apache.org/log4j/1.2/manual.html for more details
