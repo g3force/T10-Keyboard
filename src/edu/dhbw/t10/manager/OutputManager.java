@@ -7,7 +7,7 @@
  * 
  * *********************************************************
  */
-package edu.dhbw.t10.type;
+package edu.dhbw.t10.manager;
 
 /**
  * TODO NicolaiO, add comment!
@@ -17,7 +17,7 @@ package edu.dhbw.t10.type;
  * @author NicolaiO
  * 
  */
-public class Profile {
+public class OutputManager {
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
