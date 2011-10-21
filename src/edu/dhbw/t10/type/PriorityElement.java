@@ -133,7 +133,7 @@ public class PriorityElement {
 		PriorityElement increasedNode = this;
 		// if the father is null, the node is the root element
 		while (node.getFather() != null
-				&& (node.getSuggest() == increasedNode || node.getSuggest().getFrequency() < frequency)) {
+				&& (node.getSuggest().buildWord().equals(increasedNode.buildWord()) || node.getSuggest().getFrequency() < frequency)) {
 			node.setSuggest(increasedNode);
 			node = node.getFather();
 		}
