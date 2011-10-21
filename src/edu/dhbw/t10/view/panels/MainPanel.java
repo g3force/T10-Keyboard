@@ -16,8 +16,9 @@ import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
 
-import edu.dhbw.t10.manager.profile.LayoutFileManager;
+import edu.dhbw.t10.manager.KeyboardLayoutGenerator;
 import edu.dhbw.t10.type.Key;
+import edu.dhbw.t10.type.KeyboardLayout;
 
 
 /**
@@ -48,11 +49,13 @@ public class MainPanel extends JPanel {
 	
 	public MainPanel() {
 		this.setLayout(null);
-		this.setPreferredSize(new Dimension(800, 200));
 		LinkedList<Key> keys = new LinkedList<Key>();
-		LayoutFileManager lfm = new LayoutFileManager();
+		KeyboardLayoutGenerator lfm = new KeyboardLayoutGenerator();
+		KeyboardLayout kbd = lfm.getKbdLayout();
+		
+		this.setPreferredSize(new Dimension(kbd.getSize_x(), kbd.getSize_y()));
 		String mode = "default";
-		for (Key key : lfm.getKeys()) {
+		for (Key key : kbd.getKeys()) {
 			key.setText(key.getName(mode));
 			this.add(key);
 			keys.add(key);

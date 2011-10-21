@@ -7,7 +7,7 @@
  * 
  * *********************************************************
  */
-package edu.dhbw.t10.manager.profile;
+package edu.dhbw.t10.manager;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,6 +26,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import edu.dhbw.t10.type.Key;
+import edu.dhbw.t10.type.KeyboardLayout;
 
 
 /**
@@ -36,30 +37,30 @@ import edu.dhbw.t10.type.Key;
  * @author NicolaiO
  * 
  */
-public class LayoutFileManager {
+public class KeyboardLayoutGenerator {
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
-	private static final Logger		logger	= Logger.getLogger(LayoutFileManager.class);
-	public static final String			KEY		= "key";
+	private static final Logger		logger		= Logger.getLogger(KeyboardLayoutGenerator.class);
+	public static final String			KEY			= "key";
 	private File							layoutFile;
 	private DocumentBuilderFactory	dbFactory;
 	private DocumentBuilder				dBuilder;
 	private Document						doc;
 	private ArrayList<Key>				keys;
-	// TODO path in config file
-	private String							filePath	= "conf/keyboard_layout_de_default.xml";
+	private String							filePath		= "conf/keyboard_layout_de_default.xml";
+	private KeyboardLayout				kbdLayout	= new KeyboardLayout(0, 0, 1);
 
 
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
-	public LayoutFileManager() {
+	public KeyboardLayoutGenerator() {
 		init();
 	}
 	
 
-	public LayoutFileManager(String filePath) {
+	public KeyboardLayoutGenerator(String filePath) {
 		this.filePath = filePath;
 		init();
 	}
@@ -78,11 +79,11 @@ public class LayoutFileManager {
 		try {
 			dBuilder = dbFactory.newDocumentBuilder();
 			reload();
+			logger.debug("LayoutFileManager initialized");
 		} catch (ParserConfigurationException err) {
 			logger.error("Could not initialize dBuilder");
 			err.printStackTrace();
 		}
-		logger.debug("LayoutFileManager initialized");
 	}
 	
 
@@ -91,41 +92,53 @@ public class LayoutFileManager {
 	 * 
 	 * @return number of loaded key, -1 if error occurred
 	 */
-	private int reload() {
-		if (dBuilder == null)
-			return -1;
-		try {
-			doc = dBuilder.parse(layoutFile);
-			doc.getDocumentElement().normalize();
-			NodeList nList = doc.getElementsByTagName(KEY);
-			keys = new ArrayList<Key>();
-
-			for (int temp = 0; temp < nList.getLength(); temp++) {
-				Node nNode = nList.item(temp);
-				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-					Element eElement = (Element) nNode;
-					Key newKey = getKey(eElement);
-					if (newKey != null) {
-						keys.add(newKey);
+	private void reload() {
+		if (dBuilder != null) {
+			try {
+				doc = dBuilder.parse(layoutFile);
+				doc.getDocumentElement().normalize();
+				NodeList nList = doc.getElementsByTagName(KEY);
+				keys = new ArrayList<Key>();
+				
+				for (int temp = 0; temp < nList.getLength(); temp++) {
+					Node nNode = nList.item(temp);
+					if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+						Element eElement = (Element) nNode;
+						Key newKey = getKey(eElement);
+						if (newKey != null) {
+							keys.add(newKey);
+						}
+					} else {
+						logger.warn("key-node is not an element-node");
 					}
-				} else {
-					logger.warn("key-node is not an element-node");
 				}
+				logger.debug("Loaded " + keys.size() + " keys.");
+				
+				int sizex = 0, sizey = 0;
+				float scale = 1.0f;
+				nList = doc.getElementsByTagName("sizex");
+				if (nList.getLength() > 0)
+					sizex = Integer.parseInt(nList.item(0).getTextContent());
+				nList = doc.getElementsByTagName("sizey");
+				if (nList.getLength() > 0)
+					sizey = Integer.parseInt(nList.item(0).getTextContent());
+				nList = doc.getElementsByTagName("scale");
+				if (nList.getLength() > 0)
+					scale = Float.parseFloat(nList.item(0).getTextContent());
+				kbdLayout = new KeyboardLayout(sizex, sizey, scale);
+				
+				kbdLayout.setKeys(keys);
+				kbdLayout.rescale();
+
+			} catch (SAXException err) {
+				err.printStackTrace();
+			} catch (IOException err) {
+				err.printStackTrace();
+			} catch (NullPointerException err) {
+				System.out.println("In reload():");
+				err.printStackTrace();
 			}
-			logger.debug("Loaded " + keys.size() + " keys.");
-			return keys.size();
-		} catch (SAXException err) {
-			// TODO Auto-generated catch block
-			err.printStackTrace();
-		} catch (IOException err) {
-			// TODO Auto-generated catch block
-			err.printStackTrace();
-		} catch (NullPointerException err) {
-			// TODO Auto-generated catch block
-			System.out.println("In reload():");
-			err.printStackTrace();
 		}
-		return -1;
 	}
 	
 	
@@ -200,14 +213,9 @@ public class LayoutFileManager {
 		this.filePath = filePath;
 		reload();
 	}
-	
 
-	/**
-	 * ArrayList with all keys, that were loaded in the layout file
-	 * 
-	 * @return key array
-	 */
-	public ArrayList<Key> getKeys() {
-		return keys;
+	
+	public KeyboardLayout getKbdLayout() {
+		return kbdLayout;
 	}
 }
