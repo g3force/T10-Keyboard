@@ -70,12 +70,14 @@ public class PriorityTree {
 					node = node.getFollower(inChar[i]);
 				} else {
 					node = node.getFollower(inChar[i]);
+					node.setFrequency(frequency - 1);
 					node.increase();
 				}
 				logger.debug("Inserting Node... (Node Increased)");
 			} else {
 				node = node.addFollower(inChar[i]);
 				if (i == inChar.length - 1) {
+					node.setFrequency(frequency - 1);
 					node.increase();
 				}
 				logger.debug("Inserting Node... (New Node Added)");
@@ -100,6 +102,7 @@ public class PriorityTree {
 		} else {
 			logger.info("Suggest created (suggest from dicctionary)");
 			return suggest.getSuggest().buildWord();
+
 		}
 		
 	}
@@ -141,7 +144,7 @@ public class PriorityTree {
 	 * @param word according word
 	 * @return the according PriorityElement
 	 */
-	private PriorityElement getElement(String word) {
+	public PriorityElement getElement(String word) {
 		PriorityElement node = root;
 		char[] elChar = word.toCharArray(); // put every letter of the word alone in a char array
 		for (int i = 0; i < elChar.length; i++) {

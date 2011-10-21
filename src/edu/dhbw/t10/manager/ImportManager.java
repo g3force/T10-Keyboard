@@ -48,11 +48,12 @@ public class ImportManager {
 			int offset = 0;
 			while (offset <= fh.length()) {
 				String res = x.readLine();
-				System.out.println("Tmpbuf: " + res);
+				// System.out.println("Tmpbuf: " + res);
 
-				if (res.indexOf(",") >= 0) {
-					int divider = res.indexOf(",");
-					fileContent.put(res.substring(0, divider), Integer.parseInt(res.substring(divider + 1, res.length())));
+				if (res.indexOf(" ") >= 0) {
+					int divider = res.indexOf(" ");
+					fileContent.put(res.substring(0, divider),
+							17 - Integer.parseInt(res.substring(divider + 1, res.length())));
 				} else {
 					fileContent.put(res, 0);
 				}
