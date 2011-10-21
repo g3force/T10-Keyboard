@@ -1,14 +1,15 @@
-/* 
+/*
  * *********************************************************
  * Copyright (c) 2011 - 2011, DHBW Mannheim
  * Project: T10 On-Screen Keyboard
  * Date: Oct 21, 2011
  * Author(s): NicolaiO
- *
+ * 
  * *********************************************************
  */
 package edu.dhbw.t10.type;
 
+import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 
@@ -28,17 +29,22 @@ public class KeyboardLayout {
 	private ArrayList<Key>	keys		= new ArrayList<Key>();
 	private int					size_x	= 0;
 	private int					size_y	= 0;
-	private float				scale		= 1;
+	private float				scale_x	= 1;
+	private float				scale_y	= 1;
+	private String				mode		= "default";
 	
+
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
 	public KeyboardLayout(int size_x, int size_y, float scale) {
 		this.size_x = size_x;
 		this.size_y = size_y;
-		this.scale = scale;
+		this.scale_x = scale;
+		this.scale_y = scale;
 	}
 	
+
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
@@ -50,12 +56,21 @@ public class KeyboardLayout {
 	public void rescale() {
 		for (Key k : keys) {
 			Rectangle rect = k.getBounds();
-			rect.setBounds((int) (k.getPos_x() * scale), (int) (k.getPos_y() * scale), (int) (k.getSize().width * scale),
-					(int) (k.getSize().height * scale));
+			rect.setBounds((int) (k.getPos_x() * scale_x), (int) (k.getPos_y() * scale_y),
+					(int) (k.getSize().width * scale_x), (int) (k.getSize().height * scale_y));
 			k.setBounds(rect);
 		}
 	}
 	
+	
+	private void changeMode(String nMode) {
+		mode = nMode;
+		for (Key key : keys) {
+			key.setText(key.getName(mode));
+		}
+	}
+
+
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
@@ -71,7 +86,7 @@ public class KeyboardLayout {
 	
 	
 	public int getSize_x() {
-		return (int) (size_x * scale);
+		return (int) (size_x * scale_x);
 	}
 	
 	
@@ -81,22 +96,64 @@ public class KeyboardLayout {
 	
 	
 	public int getSize_y() {
-		return (int) (size_y * scale);
+		return (int) (size_y * scale_y);
 	}
 	
 	
+	public int getOrigSize_y() {
+		return size_y;
+	}
+	
+	
+	public int getOrigSize_x() {
+		return size_x;
+	}
+	
+
 	public void setSize_y(int size_y) {
 		this.size_y = size_y;
 	}
 	
 	
-	public float getScale() {
-		return scale;
+	public String getMode() {
+		return mode;
 	}
 	
 	
-	public void setScale(int scale) {
-		this.scale = scale;
+	public void setMode(String mode) {
+		changeMode(mode);
+	}
+	
+	
+	public void setScale(float scale) {
+		this.scale_x = scale;
+		this.scale_y = scale;
+	}
+	
+	
+	public void setSize(Dimension size) {
+		size_x = size.width;
+		size_y = size.height;
+	}
+	
+
+	public float getScale_x() {
+		return scale_x;
+	}
+	
+	
+	public void setScale_x(float scale_x) {
+		this.scale_x = scale_x;
+	}
+	
+	
+	public float getScale_y() {
+		return scale_y;
+	}
+	
+	
+	public void setScale_y(float scale_y) {
+		this.scale_y = scale_y;
 	}
 
 

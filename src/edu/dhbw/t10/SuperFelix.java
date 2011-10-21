@@ -48,7 +48,8 @@ public class SuperFelix {
 		 * See http://logging.apache.org/log4j/1.2/manual.html for more details
 		 */
 		BasicConfigurator.configure();
-		new Presenter();
+
+		Presenter.getInstance();
 		logger.info("Keyboard started.");
 	}
 	

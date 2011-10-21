@@ -128,6 +128,7 @@ public class KeyboardLayoutGenerator {
 				kbdLayout = new KeyboardLayout(sizex, sizey, scale);
 				
 				kbdLayout.setKeys(keys);
+				kbdLayout.setMode("default");
 				kbdLayout.rescale();
 
 			} catch (SAXException err) {
@@ -213,8 +214,8 @@ public class KeyboardLayoutGenerator {
 		this.filePath = filePath;
 		reload();
 	}
-
 	
+
 	public KeyboardLayout getKbdLayout() {
 		return kbdLayout;
 	}
