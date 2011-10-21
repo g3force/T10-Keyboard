@@ -1,4 +1,7 @@
 <layout>
+	<sizex>720</sizex>
+	<sizey>170</sizey>
+	<scale>0.7</scale>
 	<key size_x="50" size_y="50" pos_x="5" pos_y="5">
 		<mode name="default" keycode="\ESCAPE\">Esc</mode>
 	</key>
@@ -38,9 +41,118 @@
 	<key size_x="50" size_y="50" pos_x="665" pos_y="5">
 		<mode name="default" keycode="\F12\">F12</mode>
 	</key>
-	
-	
-	<key size_x="50" size_y="50" pos_x="5" pos_y="55">
+
+
+
+	<key size_x="50" size_y="50" pos_x="5" pos_y="60">
+		<mode name="default" keycode="\??\">^</mode>
+		<mode name="shift" keycode="\??\">°</mode>
+	</key>
+	<key size_x="50" size_y="50" pos_x="60" pos_y="60">
+		<mode name="default" keycode="1">1</mode>
+		<mode name="shift" keycode="1">!</mode>
+		<mode name="altgr" keycode="1">¹</mode>
+	</key>
+	<key size_x="50" size_y="50" pos_x="115" pos_y="60">
+		<mode name="default" keycode="2">2</mode>
+		<mode name="shift" keycode="2">"</mode>
+		<mode name="altgr" keycode="2">²</mode>
+	</key>
+	<key size_x="50" size_y="50" pos_x="170" pos_y="60">
+		<mode name="default" keycode="3">3</mode>
+		<mode name="shift" keycode="3">§</mode>
+		<mode name="altgr" keycode="3">³</mode>
+	</key>
+	<key size_x="50" size_y="50" pos_x="225" pos_y="60">
+		<mode name="default" keycode="4">4</mode>
+		<mode name="shift" keycode="4">$</mode>
+		<mode name="altgr" keycode="4">¼</mode>
+	</key>
+	<key size_x="50" size_y="50" pos_x="280" pos_y="60">
+		<mode name="default" keycode="5">5</mode>
+		<mode name="shift" keycode="5">%</mode>
+		<mode name="altgr" keycode="5">½</mode>
+	</key>
+	<key size_x="50" size_y="50" pos_x="335" pos_y="60">
+		<mode name="default" keycode="6">6</mode>
+		<mode name="shift" keycode="6">&amp;</mode>
+		<mode name="altgr" keycode="6">¬</mode>
+	</key>
+	<key size_x="50" size_y="50" pos_x="390" pos_y="60">
+		<mode name="default" keycode="7">7</mode>
+		<mode name="shift" keycode="7">/</mode>
+		<mode name="altgr" keycode="7">{</mode>
+	</key>
+	<key size_x="50" size_y="50" pos_x="445" pos_y="60">
+		<mode name="default" keycode="8">8</mode>
+		<mode name="shift" keycode="8">(</mode>
+		<mode name="altgr" keycode="8">[</mode>
+	</key>
+	<key size_x="50" size_y="50" pos_x="500" pos_y="60">
+		<mode name="default" keycode="9">9</mode>
+		<mode name="shift" keycode="9">)</mode>
+		<mode name="altgr" keycode="9">]</mode>
+	</key>
+	<key size_x="50" size_y="50" pos_x="555" pos_y="60">
+		<mode name="default" keycode="0">0</mode>
+		<mode name="shift" keycode="0">=</mode>
+		<mode name="altgr" keycode="0">}</mode>
+	</key>
+
+
+	<key size_x="75" size_y="50" pos_x="5" pos_y="115">
+		<mode name="default" keycode="\TAB\">TAB</mode>
+	</key>
+	<key size_x="50" size_y="50" pos_x="85" pos_y="115">
+		<mode name="default" keycode="q">q</mode>
+		<mode name="shift" keycode="Q">Q</mode>
+		<mode name="altgr" keycode="\AT\">@</mode>
+	</key>
+	<key size_x="50" size_y="50" pos_x="140" pos_y="115">
+		<mode name="default" keycode="w">w</mode>
+		<mode name="shift" keycode="W">W</mode>
+	</key>
+	<key size_x="50" size_y="50" pos_x="195" pos_y="115">
+		<mode name="default" keycode="e">e</mode>
+		<mode name="shift" keycode="E">E</mode>
+		<mode name="altgr" keycode="\EURO_SIGN\">€</mode>
+	</key>
+	<key size_x="50" size_y="50" pos_x="250" pos_y="115">
+		<mode name="default" keycode="r">r</mode>
+		<mode name="shift" keycode="R">R</mode>
+	</key>
+	<key size_x="50" size_y="50" pos_x="305" pos_y="115">
+		<mode name="default" keycode="t">t</mode>
+		<mode name="shift" keycode="T">T</mode>
+	</key>
+	<key size_x="50" size_y="50" pos_x="360" pos_y="115">
+		<mode name="default" keycode="z">z</mode>
+		<mode name="shift" keycode="Z">Z</mode>
+	</key>
+	<key size_x="50" size_y="50" pos_x="415" pos_y="115">
+		<mode name="default" keycode="u">u</mode>
+		<mode name="shift" keycode="U">U</mode>
+	</key>
+	<key size_x="50" size_y="50" pos_x="470" pos_y="115">
+		<mode name="default" keycode="i">i</mode>
+		<mode name="shift" keycode="I">I</mode>
+	</key>
+	<key size_x="50" size_y="50" pos_x="525" pos_y="115">
+		<mode name="default" keycode="o">o</mode>
+		<mode name="shift" keycode="O">O</mode>
+	</key>
+	<key size_x="50" size_y="50" pos_x="580" pos_y="115">
+		<mode name="default" keycode="p">p</mode>
+		<mode name="shift" keycode="P">P</mode>
+	</key>
+	<key size_x="50" size_y="50" pos_x="635" pos_y="115">
+		<mode name="default" keycode="ü">ü</mode>
+		<mode name="shift" keycode="Ü">Ü</mode>
+	</key>
+
+
+
+	<key size_x="50" size_y="50" pos_x="5" pos_y="115">
 		<mode name="default" keycode="q">q</mode>
 		<mode name="shift" keycode="Q">Q</mode>
 		<mode name="altgr" keycode="\AT\">@</mode>
