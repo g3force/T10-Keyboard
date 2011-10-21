@@ -10,10 +10,14 @@
 package edu.dhbw.t10.view.panels;
 
 import java.awt.Dimension;
-import java.awt.FlowLayout;
+import java.util.LinkedList;
 
-import javax.swing.JButton;
 import javax.swing.JPanel;
+
+import org.apache.log4j.Logger;
+
+import edu.dhbw.t10.manager.profile.LayoutFileManager;
+import edu.dhbw.t10.type.Key;
 
 
 /**
@@ -30,59 +34,29 @@ public class MainPanel extends JPanel {
 	// --------------------------------------------------------------------------
 	
 	private static final long	serialVersionUID	= -52892520461804389L;
-	private KeyboardPanel		keyboardPanel;
-	private MutePanel				mutePanel;
-	private ProfilePanel			profilePanel;
+	@SuppressWarnings("unused")
+	private static final Logger	logger				= Logger.getLogger(MainPanel.class);
+	
+	// private KeyboardPanel keyboardPanel;
+	// private MutePanel mutePanel;
+	// private ProfilePanel profilePanel;
 
 
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
 	
-	public MainPanel()
-	{
-		this.setLayout(new FlowLayout());
-		JButton btns[] = new JButton[10];
-		for (int i = 0; i < 10; i++)
-		{
-			btns[i] = new JButton();
-			btns[i].setLayout(null);
-			btns[i].setPreferredSize(new Dimension(100, 50));
-			this.add(btns[i]);
+	public MainPanel() {
+		this.setLayout(null);
+		this.setPreferredSize(new Dimension(800, 200));
+		LinkedList<Key> keys = new LinkedList<Key>();
+		LayoutFileManager lfm = new LayoutFileManager();
+		String mode = "default";
+		for (Key key : lfm.getKeys()) {
+			key.setText(key.getName(mode));
+			this.add(key);
+			keys.add(key);
 		}
-		
-//			System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
-//			//NodeList nList = doc.getElementsByTagName("key");
-//			System.out.println("-----------------------");
-//			
-//			for (int temp = 0; temp < nList.getLength(); temp++)
-//			{
-//				
-//				Node nNode = nList.item(temp);
-//				if (nNode.getNodeType() == Node.ELEMENT_NODE)
-//				{
-//					
-//					Element eElement = (Element) nNode;
-//					System.out.println(nNode);
-//					
-//					System.out.println("First Name : " + getTagValue("name", eElement));
-//					System.out.println("Last Name : " + getTagValue("id", eElement));
-//					System.out.println("Nick Name : " + getTagValue("keycode", eElement));
-//					System.out.println("Salary : " + getTagValue("size_x", eElement));
-//					
-//				}
-//			}
-
-		
-		// this.setLayout(new BorderLayout());
-		// this.setSize(300, 150);
-		// keyboardPanel = new KeyboardPanel();
-		// mutePanel = new MutePanel();
-		// profilePanel = new ProfilePanel();
-		// this.add(keyboardPanel, BorderLayout.SOUTH);
-		// // TODO new Layout
-		// this.add(mutePanel, BorderLayout.NORTH);
-		// this.add(profilePanel, BorderLayout.NORTH);
 	}
 	
 
