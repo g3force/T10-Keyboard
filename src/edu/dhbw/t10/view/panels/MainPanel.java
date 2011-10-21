@@ -10,10 +10,11 @@
 package edu.dhbw.t10.view.panels;
 
 import java.awt.Dimension;
-import java.awt.FlowLayout;
+import java.util.LinkedList;
 
-import javax.swing.JButton;
 import javax.swing.JPanel;
+
+import org.apache.log4j.Logger;
 
 import edu.dhbw.t10.manager.profile.LayoutFileManager;
 import edu.dhbw.t10.type.Key;
@@ -33,7 +34,8 @@ public class MainPanel extends JPanel {
 	// --------------------------------------------------------------------------
 	
 	private static final long	serialVersionUID	= -52892520461804389L;
-	
+	@SuppressWarnings("unused")
+	private static final Logger	logger				= Logger.getLogger(MainPanel.class);
 	
 	// private KeyboardPanel keyboardPanel;
 	// private MutePanel mutePanel;
@@ -45,27 +47,16 @@ public class MainPanel extends JPanel {
 	// --------------------------------------------------------------------------
 	
 	public MainPanel() {
-		this.setLayout(new FlowLayout());
-		JButton btn = new JButton();
+		this.setLayout(null);
+		this.setPreferredSize(new Dimension(800, 200));
+		LinkedList<Key> keys = new LinkedList<Key>();
 		LayoutFileManager lfm = new LayoutFileManager();
+		String mode = "default";
 		for (Key key : lfm.getKeys()) {
-			btn = new JButton();
-			btn.setLayout(null);
-			btn.setPreferredSize(new Dimension(100, 50));
-			btn.setText(key.getName());
-			this.add(btn);
+			key.setText(key.getName(mode));
+			this.add(key);
+			keys.add(key);
 		}
-		
-
-		// this.setLayout(new BorderLayout());
-		// this.setSize(300, 150);
-		// keyboardPanel = new KeyboardPanel();
-		// mutePanel = new MutePanel();
-		// profilePanel = new ProfilePanel();
-		// this.add(keyboardPanel, BorderLayout.SOUTH);
-		// // TODO new Layout
-		// this.add(mutePanel, BorderLayout.NORTH);
-		// this.add(profilePanel, BorderLayout.NORTH);
 	}
 	
 
