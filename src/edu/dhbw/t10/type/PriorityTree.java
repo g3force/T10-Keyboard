@@ -9,7 +9,10 @@
  */
 package edu.dhbw.t10.type;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
@@ -50,7 +53,7 @@ public class PriorityTree {
 	 * @param word the word that should be inserted
 	 */
 	public void insert(String word) {
-		insert(word, 0);
+		insert(word, 1, false);
 	}
 	
 	
@@ -60,7 +63,7 @@ public class PriorityTree {
 	 * @param word the word that should be inserted
 	 * @param frequency the start frequency of the inserting word
 	 */
-	private void insert(String word, int frequency) {
+	private void insert(String word, int frequency, boolean setFreq) {
 		logger.debug("Insertig Word...");
 		PriorityElement node = root;
 		char[] inChar = word.toCharArray(); // put every letter of the word alone in an char array
@@ -70,14 +73,16 @@ public class PriorityTree {
 					node = node.getFollower(inChar[i]);
 				} else {
 					node = node.getFollower(inChar[i]);
-					node.setFrequency(frequency - 1);
+					if (setFreq)
+						node.setFrequency(frequency - 1);
 					node.increase();
 				}
 				logger.debug("Inserting Node... (Node Increased)");
 			} else {
 				node = node.addFollower(inChar[i]);
 				if (i == inChar.length - 1) {
-					node.setFrequency(frequency - 1);
+					if (setFreq)
+						node.setFrequency(frequency - 1);
 					node.increase();
 				}
 				logger.debug("Inserting Node... (New Node Added)");
@@ -102,9 +107,7 @@ public class PriorityTree {
 		} else {
 			logger.info("Suggest created (suggest from dicctionary)");
 			return suggest.getSuggest().buildWord();
-
 		}
-		
 	}
 	
 	
@@ -144,7 +147,7 @@ public class PriorityTree {
 	 * @param word according word
 	 * @return the according PriorityElement
 	 */
-	public PriorityElement getElement(String word) {
+	private PriorityElement getElement(String word) {
 		PriorityElement node = root;
 		char[] elChar = word.toCharArray(); // put every letter of the word alone in a char array
 		for (int i = 0; i < elChar.length; i++) {
@@ -165,21 +168,134 @@ public class PriorityTree {
 	 * prints the tree
 	 */
 	public void printTree() {
-		logger.debug("Printing output...");
-		System.out.print(", " + root.getFrequency() + ", Suggest: " + root.getSuggest() + " (Father: "
-				+ root.getFather() + ")\n");
-		for (PriorityElement pe : root.getListOfFollowers()) {
-			System.out.print(pe.buildWord() + ", " + pe.getFrequency() + ", Suggest: " + pe.getSuggest().buildWord()
-					+ " (Father: " + pe.getFather().buildWord() + ")\n");
+		printTree(true, "");
+	}
+	
+	
+	/**
+	 * print subtree starting at a PrirorityElement specified through the according word
+	 * @param rootElement
+	 */
+	public void printTree(String rootElement) {
+		printTree(false, rootElement);
+	}
+	
+	
+	/**
+	 * helper method for printTree, does the work
+	 * and yes, i know that takeRoot is useless, but I do not know the word of root
+	 * @param takeRoot decides whether the root element should be took or the given attribute
+	 * @param rootElement the element which shall be took, if takeRoot is false
+	 */
+	private void printTree(boolean takeRoot, String rootElement) {
+		PriorityElement start = root;
+		if (!takeRoot) {
+			start = getElement(rootElement);
+			if (start == null)
+				start = root;
 		}
+		logger.debug("Printing output...");
+		sysoNode(start);
+		for (PriorityElement pe : start.getListOfFollowers()) {
+			sysoNode(pe);
+		}
+		System.out.println("Complete amount of Elements: " + start.getListOfFollowers().size());
 		logger.debug("Output printed");
 	}
 	
 	
+	/**
+	 * prints out a PriorityElement
+	 * structure (non-root): [word], [frequency], [lastUse], Suggest: [word_suggest] ([freq_suggest]) (Father:
+	 * [word_father])
+	 * @param pe node you want to print
+	 */
+	private void sysoNode(PriorityElement pe) {
+		if (pe == root) {
+			System.out.print("[root], " + pe.getFrequency() + ", " + pe.getLastUse() + ", Suggest: "
+					+ pe.getSuggest() + " (Father: " + pe.getFather() + ")\n");
+		} else {
+			System.out.print(pe.buildWord() + ", " + pe.getFrequency() + ", " + pe.getLastUse() // this item
+					+ ", Suggest: " + pe.getSuggest().buildWord() + "(" + pe.getSuggest().getFrequency() + ")" // according
+																																				// suggest
+					+ " (Father: " + pe.getFather().buildWord() + ")\n"); // according father
+		}
+	}
+
+	
+	/**
+	 * inserts a list of words to a tree
+	 * @param input HashMap referencing a word (String) to its frequency (int)
+	 */
 	public void importFromHashMap(HashMap<String, Integer> input) {
 		for (Entry<String,Integer> entry:input.entrySet()) {
-			insert(entry.getKey(),entry.getValue());
+			insert(entry.getKey(), entry.getValue(), true);
 		}
+	}
+	
+	
+	/**
+	 * takes an arbitrary text files and inserts all contained words in the tree
+	 * Tree cleaning recommended after this
+	 * @param fileName path to the input file
+	 */
+	public void importFromText(String fileName) {
+		try {
+			FileReader fr = new FileReader(fileName);
+			BufferedReader x = new BufferedReader(fr);
+			
+			String res = x.readLine();
+			while (res != null) {
+				// System.out.println("Tmpbuf: " + res);
+				res.replace("\"", "");
+				res.replace("'", "");
+				res.replaceAll(".", "");
+				res.replaceAll(",", "");
+				res.replace(";", "");
+				res.replace(":", "");
+				res.replace("(", "");
+				res.replace(")", "");
+				res.replace("[", "");
+				res.replace("]", "");
+				res.replace("/", "");
+				res.replace("\\", "");
+				res.replace("?", "");
+				res.replace("!", "");
+				String[] words = res.split(" ");
+				for (String word : words)
+					if (words.length > 1)
+						insert(word);
+				res = x.readLine();
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+	
+	
+	/**
+	 * any PriorityElement with has got a bottomBorder or less frequency is deleted
+	 * @param bottomBorder border to decide if a PriorityElement has to be deleted
+	 * @param olderThan not implemented yet
+	 * @return the amount of deleted items
+	 */
+	public int autoCleaning(int bottomBorder, long olderThan) {
+		LinkedList<PriorityElement> toDelete = new LinkedList<PriorityElement>();
+		for (PriorityElement pe : root.getListOfFollowers()) {
+			if (pe.getFrequency() <= bottomBorder) { // && pe.getLastUse() <= olderThan) {
+				if (pe.getFollowers().size() == 0) {
+					toDelete.add(pe);
+				} else {
+					pe.setFrequency(0);
+				}
+			}
+		}
+		int length = toDelete.size();
+		while (!toDelete.isEmpty()) {
+			PriorityElement pe = toDelete.pop();
+			delete(pe.buildWord());
+		}
+		return length;
 	}
 
 
