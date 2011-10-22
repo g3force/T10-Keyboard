@@ -51,7 +51,7 @@ public class Key extends JButton {
 		this.pos_x = pos_x;
 		this.pos_y = pos_y;
 		setLayout(null);
-		setMargin(new Insets(1, 1, 1, 1));
+		setMargin(new Insets(0, 0, 0, 0));
 		setBounds(getPos_x(), getPos_y(), getSize().width, getSize().height);
 	}
 	
