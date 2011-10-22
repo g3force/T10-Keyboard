@@ -9,9 +9,15 @@
  */
 package edu.dhbw.t10.manager.profile;
 
+import java.awt.Dimension;
 import java.util.ArrayList;
 
+import edu.dhbw.t10.manager.KeyboardLayoutGenerator;
+import edu.dhbw.t10.type.KeyboardLayout;
 import edu.dhbw.t10.type.Profile;
+import edu.dhbw.t10.view.Presenter;
+import edu.dhbw.t10.view.panels.MainPanel;
+
 
 /**
  * TODO NicolaiO, add comment!
@@ -28,6 +34,9 @@ public class ProfileManager {
 	private static ProfileManager	instance;
 	private ArrayList<Profile>		profiles;
 	private int							activeProfile;
+	private KeyboardLayout			kbdLayout;
+
+
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
@@ -40,6 +49,8 @@ public class ProfileManager {
 		profiles = new ArrayList<Profile>();
 		activeProfile = -1; // No profile.
 		instance = this;
+		KeyboardLayoutGenerator lfm = new KeyboardLayoutGenerator();
+		kbdLayout = lfm.getKbdLayout();
 		// profiles = loadProfiles();
 	}
 
@@ -51,9 +62,29 @@ public class ProfileManager {
 	 * @return Return of an instance of the Singleton "ProfileManager", thus preventing
 	 *         multiple ProfileManager.
 	 */
-	public static ProfileManager instance() {
+	public static ProfileManager getInstance() {
+		if (instance == null) {
+			instance = new ProfileManager();
+		}
 		return instance;
 	}
+	
+	
+	public void resizeWindow(Dimension size) {
+		if (kbdLayout != null) {
+			float xscale = (float) size.width / (float) kbdLayout.getOrigSize_x();
+			float yscale = (float) size.height / (float) kbdLayout.getOrigSize_y();
+			float fontScale = xscale + yscale / 2;
+			kbdLayout.setScale_x(xscale);
+			kbdLayout.setScale_y(yscale);
+			kbdLayout.setScale_font(fontScale);
+			kbdLayout.rescale();
+			MainPanel.getInstance().setPreferredSize(new Dimension(kbdLayout.getSize_x(), kbdLayout.getSize_y()));
+			Presenter.getInstance().pack();
+		}
+	}
+
+
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
@@ -132,5 +163,20 @@ public class ProfileManager {
 				break;
 			}
 		}
+	}
+	
+	
+	public ArrayList<Profile> getProfiles() {
+		return profiles;
+	}
+	
+	
+	public int getActiveProfile() {
+		return activeProfile;
+	}
+	
+	
+	public KeyboardLayout getKbdLayout() {
+		return kbdLayout;
 	}
 }

@@ -10,14 +10,16 @@
 package edu.dhbw.t10.view.panels;
 
 import java.awt.Dimension;
-import java.util.LinkedList;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 
 import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
 
-import edu.dhbw.t10.manager.profile.LayoutFileManager;
+import edu.dhbw.t10.manager.profile.ProfileManager;
 import edu.dhbw.t10.type.Key;
+import edu.dhbw.t10.type.KeyboardLayout;
 
 
 /**
@@ -28,42 +30,66 @@ import edu.dhbw.t10.type.Key;
  * @author NicolaiO
  * 
  */
-public class MainPanel extends JPanel {
+public class MainPanel extends JPanel implements ComponentListener {
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
 	
-	private static final long	serialVersionUID	= -52892520461804389L;
+	private static final long		serialVersionUID	= -52892520461804389L;
+	private static MainPanel		instance;
 	@SuppressWarnings("unused")
 	private static final Logger	logger				= Logger.getLogger(MainPanel.class);
 	
-	// private KeyboardPanel keyboardPanel;
-	// private MutePanel mutePanel;
-	// private ProfilePanel profilePanel;
-
 
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
 	
-	public MainPanel() {
+	private MainPanel() {
 		this.setLayout(null);
-		this.setPreferredSize(new Dimension(800, 200));
-		LinkedList<Key> keys = new LinkedList<Key>();
-		LayoutFileManager lfm = new LayoutFileManager();
-		String mode = "default";
-		for (Key key : lfm.getKeys()) {
-			key.setText(key.getName(mode));
+		this.addComponentListener(this);
+		KeyboardLayout kbd = ProfileManager.getInstance().getKbdLayout();
+		this.setPreferredSize(new Dimension(kbd.getSize_x(), kbd.getSize_y()));
+		for (Key key : kbd.getKeys()) {
 			this.add(key);
-			keys.add(key);
 		}
 	}
 	
-
+	
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
 	
+	public static MainPanel getInstance() {
+		if (instance == null) {
+			instance = new MainPanel();
+		}
+		return instance;
+	}
+
+
+	@Override
+	public void componentHidden(ComponentEvent e) {
+		
+	}
+	
+	
+	@Override
+	public void componentMoved(ComponentEvent e) {
+		
+	}
+	
+	
+	@Override
+	public void componentResized(ComponentEvent e) {
+		ProfileManager.getInstance().resizeWindow(e.getComponent().getSize());
+	}
+	
+	
+	@Override
+	public void componentShown(ComponentEvent e) {
+		
+	}
 
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
