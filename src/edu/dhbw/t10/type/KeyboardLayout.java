@@ -10,6 +10,7 @@
 package edu.dhbw.t10.type;
 
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 
@@ -26,14 +27,16 @@ public class KeyboardLayout {
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
-	private ArrayList<Key>	keys		= new ArrayList<Key>();
-	private int					size_x	= 0;
-	private int					size_y	= 0;
-	private float				scale_x	= 1;
-	private float				scale_y	= 1;
-	private String				mode		= "default";
-	
+	private ArrayList<Key>	keys			= new ArrayList<Key>();
+	private int					size_x		= 0;
+	private int					size_y		= 0;
+	private float				scale_x		= 1;
+	private float				scale_y		= 1;
+	private float				scale_font	= 1;
+	private String				mode			= "default";
+	private Font				font			= new Font("Dialog", Font.PLAIN, 12);
 
+	
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
@@ -42,6 +45,7 @@ public class KeyboardLayout {
 		this.size_y = size_y;
 		this.scale_x = scale;
 		this.scale_y = scale;
+		this.scale_font = scale;
 	}
 	
 
@@ -59,6 +63,7 @@ public class KeyboardLayout {
 			rect.setBounds((int) (k.getPos_x() * scale_x), (int) (k.getPos_y() * scale_y),
 					(int) (k.getSize().width * scale_x), (int) (k.getSize().height * scale_y));
 			k.setBounds(rect);
+			k.setFont(new Font(font.getName(), font.getStyle(), (int) (font.getSize() * scale_font)));
 		}
 	}
 	
@@ -128,6 +133,7 @@ public class KeyboardLayout {
 	public void setScale(float scale) {
 		this.scale_x = scale;
 		this.scale_y = scale;
+		this.scale_font = scale;
 	}
 	
 	
@@ -154,6 +160,36 @@ public class KeyboardLayout {
 	
 	public void setScale_y(float scale_y) {
 		this.scale_y = scale_y;
+	}
+	
+	
+	public void setFont(Font font) {
+		this.font = font;
+	}
+	
+	
+	public void setFontSize(int size) {
+		font = new Font(font.getName(), font.getStyle(), size);
+	}
+	
+	
+	public int getFontSize() {
+		return font.getSize();
+	}
+
+
+	public Font getFont() {
+		return font;
+	}
+
+
+	public float getScale_font() {
+		return scale_font;
+	}
+	
+	
+	public void setScale_font(float scale_font) {
+		this.scale_font = scale_font;
 	}
 
 
