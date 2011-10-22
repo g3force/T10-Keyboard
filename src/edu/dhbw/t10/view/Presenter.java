@@ -14,6 +14,7 @@ import java.awt.Toolkit;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import edu.dhbw.t10.view.menus.MenuBar;
 import edu.dhbw.t10.view.panels.MainPanel;
 
 
@@ -53,6 +54,7 @@ public class Presenter extends JFrame {
 		// get a reference to the content pane
 		contentPane = (JPanel) getContentPane();
 		contentPane.add(MainPanel.getInstance());
+		this.setJMenuBar(MenuBar.getInstance());
 		
 		// build GUI
 		pack();
