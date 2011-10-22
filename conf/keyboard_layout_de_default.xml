@@ -1,7 +1,13 @@
 <layout>
 	<sizex>720</sizex>
-	<sizey>170</sizey>
+	<sizey>280</sizey>
 	<scale>0.7</scale>
+	<font>
+		<!-- For describtion, see javadoc of Font-class -->
+		<name></name>
+		<style></style>
+		<size>10</size>
+	</font>
 	<key size_x="50" size_y="50" pos_x="5" pos_y="5">
 		<mode name="default" keycode="\ESCAPE\">Esc</mode>
 	</key>
@@ -152,9 +158,7 @@
 
 
 
-	<key size_x="50" size_y="50" pos_x="5" pos_y="115">
-		<mode name="default" keycode="q">q</mode>
-		<mode name="shift" keycode="Q">Q</mode>
-		<mode name="altgr" keycode="\AT\">@</mode>
+	<key size_x="70" size_y="50" pos_x="5" pos_y="225">
+		<mode name="default" keycode="\SHIFT\">Shift</mode>
 	</key>
 </layout>

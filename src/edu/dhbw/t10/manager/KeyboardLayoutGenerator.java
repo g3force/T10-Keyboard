@@ -9,6 +9,7 @@
  */
 package edu.dhbw.t10.manager;
 
+import java.awt.Font;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -127,6 +128,30 @@ public class KeyboardLayoutGenerator {
 					scale = Float.parseFloat(nList.item(0).getTextContent());
 				kbdLayout = new KeyboardLayout(sizex, sizey, scale);
 				
+				nList = doc.getElementsByTagName("font");
+				String fname = "";
+				int fstyle = 0, fsize = 0;
+				if (nList.getLength() > 0) {
+					NodeList font = nList.item(0).getChildNodes();
+					for (int i = 0; i < font.getLength(); i++) {
+						Node n = font.item(i);
+						if (n.getNodeName() == "name") {
+							fname = n.getTextContent();
+						} else if (n.getNodeName() == "style") {
+							try {
+								fstyle = Integer.parseInt(n.getTextContent());
+							} catch (NumberFormatException e) {
+							}
+						} else if (n.getNodeName() == "size") {
+							try {
+								fsize = Integer.parseInt(n.getTextContent());
+							} catch (NumberFormatException e) {
+							}
+						}
+					}
+				}
+
+				kbdLayout.setFont(new Font(fname, fstyle, fsize));
 				kbdLayout.setKeys(keys);
 				kbdLayout.setMode("default");
 				kbdLayout.rescale();

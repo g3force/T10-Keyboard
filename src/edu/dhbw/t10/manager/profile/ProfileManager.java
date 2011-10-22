@@ -74,10 +74,10 @@ public class ProfileManager {
 		if (kbdLayout != null) {
 			float xscale = (float) size.width / (float) kbdLayout.getOrigSize_x();
 			float yscale = (float) size.height / (float) kbdLayout.getOrigSize_y();
-			System.out.println(size.width + " " + xscale + " " + kbdLayout.getOrigSize_x());
-			System.out.println(size.height + " " + yscale + " " + kbdLayout.getOrigSize_y());
+			float fontScale = xscale + yscale / 2;
 			kbdLayout.setScale_x(xscale);
 			kbdLayout.setScale_y(yscale);
+			kbdLayout.setScale_font(fontScale);
 			kbdLayout.rescale();
 			MainPanel.getInstance().setPreferredSize(new Dimension(kbdLayout.getSize_x(), kbdLayout.getSize_y()));
 			Presenter.getInstance().pack();
