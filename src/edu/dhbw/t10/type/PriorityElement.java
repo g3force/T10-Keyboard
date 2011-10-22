@@ -9,6 +9,8 @@
  */
 package edu.dhbw.t10.type;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -28,11 +30,12 @@ public class PriorityElement {
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
-	char										letter;
-	PriorityElement						father;
-	PriorityElement						suggest;
-	int										frequency;
-	Map<Character, PriorityElement>	followers;
+	private char										letter;
+	private PriorityElement							father;
+	private PriorityElement							suggest;
+	private int											frequency;
+	private long										lastUse;
+	private Map<Character, PriorityElement>	followers;
 	
 	private static final Logger		logger	= Logger.getLogger(PriorityElement.class);
 
@@ -41,31 +44,19 @@ public class PriorityElement {
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
 	public PriorityElement(char wo, PriorityElement fa, int fr) {
-		letter = wo;
-		father = fa;
-		suggest = this;
-		frequency = fr;
-		followers = new HashMap<Character, PriorityElement>();
+		initializer(wo, fa, this, fr, new HashMap<Character, PriorityElement>());
 		logger.debug("PriorityElement created (1)");
 	}
 	
 
 	public PriorityElement(char wo, PriorityElement fa, PriorityElement su, int fr) {
-		letter = wo;
-		father = fa;
-		suggest = su;
-		frequency = fr;
-		followers = new HashMap<Character, PriorityElement>();
+		initializer(wo, fa, su, fr, new HashMap<Character, PriorityElement>());
 		logger.debug("PriorityElement created (2)");
 	}
 	
 
 	public PriorityElement(char wo, PriorityElement fa, PriorityElement su, int fr, Map<Character, PriorityElement> fo) {
-		letter = wo;
-		father = fa;
-		suggest = su;
-		frequency = fr;
-		followers = fo;
+		initializer(wo, fa, su, fr, fo);
 		logger.debug("PriorityElement created (3)");
 	}
 	
@@ -73,7 +64,21 @@ public class PriorityElement {
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
+	private void initializer(char wo, PriorityElement fa, PriorityElement su, int fr, Map<Character, PriorityElement> fo) {
+		letter = wo;
+		father = fa;
+		suggest = su;
+		frequency = fr;
+		followers = fo;
+		Calendar timestamp = new GregorianCalendar();
+		lastUse = timestamp.getTimeInMillis();
+	}
 	
+	
+	private void updateLastUse() {
+		Calendar timestamp = new GregorianCalendar();
+		lastUse = timestamp.getTimeInMillis();
+	}
 	/**
 	 * 
 	 * Adds a new Follower to a PriorityElement
@@ -117,8 +122,10 @@ public class PriorityElement {
 	
 	/**
 	 * increases the frequency of a node, adjusts the suggests in the fathers
+	 * function is called, whenever an Priority element is created or frequency higherd
 	 */
 	public void increase() {
+		updateLastUse();
 		frequency++;
 		ReplaceSuggestsInFathers();
 	}
@@ -256,4 +263,16 @@ public class PriorityElement {
 	public void setFrequency(int frequency) {
 		this.frequency = frequency;
 	}
+	
+	
+	public long getLastUse() {
+		return lastUse;
+	}
+	
+	
+	public void setLastUse(long lastUse) {
+		this.lastUse = lastUse;
+	}
+
+
 }
