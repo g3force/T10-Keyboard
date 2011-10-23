@@ -9,6 +9,15 @@
  */
 package edu.dhbw.t10.type;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
+import org.apache.log4j.Logger;
+
+
 /**
  * TODO NicolaiO, add comment!
  * - What should this type do (in one sentence)?
@@ -25,6 +34,8 @@ public class Profile {
 	private String	name;
 	private String			pathToFile;
 	private PriorityTree	tree;
+	
+	private static final Logger	logger	= Logger.getLogger(Profile.class);
 
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
@@ -33,6 +44,16 @@ public class Profile {
 		profileID = -1;
 		name = "";
 		pathToFile = "";
+		tree = null;
+		// tree = new PriorityTree();
+	}
+	
+	
+	public Profile(int pID, String pName, String pPath, PriorityTree ptree) {
+		profileID = pID;
+		name = pName;
+		pathToFile = pPath;
+		tree = ptree;
 		// tree = new PriorityTree();
 	}
 
@@ -40,6 +61,31 @@ public class Profile {
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
 	
+	public void loadTree() {
+		try {
+			FileInputStream file = new FileInputStream(pathToFile);
+			ObjectInputStream o = new ObjectInputStream(file);
+			tree = (PriorityTree) o.readObject();
+			o.close();
+		} catch (IOException e) {
+			logger.error("Failure during Deserializing");
+		} catch (ClassNotFoundException e) {
+			logger.error("Class not found, not possible");
+		}
+	}
+	
+	
+	public void saveTree() {
+		try {
+			FileOutputStream file = new FileOutputStream(pathToFile);
+			ObjectOutputStream o = new ObjectOutputStream(file);
+			o.writeObject(tree);
+			o.close();
+		} catch (IOException e) {
+			tree = new PriorityTree();
+			logger.error(e + ", empty tree created");
+		}
+	}
 
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
@@ -88,4 +134,36 @@ public class Profile {
 	public void setName(String newName) {
 		name = newName;
 	}
+	
+	
+	public int getProfileID() {
+		return profileID;
+	}
+	
+	
+	public void setProfileID(int profileID) {
+		this.profileID = profileID;
+	}
+	
+	
+	public String getPathToFile() {
+		return pathToFile;
+	}
+	
+	
+	public void setPathToFile(String pathToFile) {
+		this.pathToFile = pathToFile;
+	}
+	
+	
+	public PriorityTree getTree() {
+		return tree;
+	}
+	
+	
+	public void setTree(PriorityTree tree) {
+		this.tree = tree;
+	}
+
+
 }
