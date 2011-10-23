@@ -71,7 +71,7 @@ public class KeyboardLayout {
 	private void changeMode(String nMode) {
 		mode = nMode;
 		for (Key key : keys) {
-			key.setText(key.getName(mode));
+			key.setCurrentMode(mode);
 		}
 	}
 
