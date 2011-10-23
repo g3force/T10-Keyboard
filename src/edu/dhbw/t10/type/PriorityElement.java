@@ -9,6 +9,7 @@
  */
 package edu.dhbw.t10.type;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
@@ -26,7 +27,7 @@ import org.apache.log4j.Logger;
  * @author dirk
  * 
  */
-public class PriorityElement {
+public class PriorityElement implements Serializable {
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------

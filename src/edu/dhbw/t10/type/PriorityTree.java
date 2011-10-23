@@ -11,6 +11,7 @@ package edu.dhbw.t10.type;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map.Entry;
@@ -26,11 +27,14 @@ import org.apache.log4j.Logger;
  * @author dirk
  * 
  */
-public class PriorityTree {
+public class PriorityTree implements Serializable {
+	/**  */
+	private static final long		serialVersionUID	= 662040913098286336L;
+
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
-	private PriorityElement	root;
+	private PriorityElement			root;
 	
 	private static final Logger	logger	= Logger.getLogger(PriorityTree.class);
 
