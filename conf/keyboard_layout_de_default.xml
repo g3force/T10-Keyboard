@@ -184,13 +184,23 @@
 	</key>
 
 
+
 	<key size_x="90" size_y="50" pos_x="5" pos_y="170">
 		<mode name="default" keycode="\CAPS_LOCK\">CAPS_L</mode>
 	</key>
 	
+	
+	
 	<key size_x="70" size_y="50" pos_x="5" pos_y="225">
 		<mode name="default" keycode="\SHIFT\">Shift</mode>
 	</key>
+	<key size_x="50" size_y="50" pos_x="80" pos_y="225">
+		<mode name="default" keycode="\LESS\">&lt;</mode>
+		<mode name="shift" keycode="\GREATER\">&gt;</mode>
+		<mode name="altgr" keycode="???">|</mode>
+	</key>
+	
+	
 	
 	<key size_x="80" size_y="50" pos_x="5" pos_y="280">
 		<mode name="default" keycode="\CONTROL\">Strg</mode>

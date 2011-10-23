@@ -88,7 +88,7 @@ public class Key extends JButton {
 			return modes.get(mode).getName();
 		} else if (modes.containsKey("default")) {
 			return modes.get("default").getName();
-		}else {
+		} else {
 			return "";
 		}
 	}
@@ -154,6 +154,8 @@ public class Key extends JButton {
 		Mode m = modes.get(currentMode);
 		if (m != null) {
 			return modes.get(currentMode).getKeycode();
+		} else if (modes.containsKey("default")) {
+			return modes.get("default").getKeycode();
 		}
 		return "";
 	}
