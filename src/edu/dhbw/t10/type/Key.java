@@ -34,6 +34,7 @@ public class Key extends JButton {
 	private Dimension					size					= new Dimension(10, 10);
 	private int							pos_x					= 0;
 	private int							pos_y					= 0;
+	private String						currentMode			= "default";
 	
 
 	// --------------------------------------------------------------------------
@@ -85,6 +86,8 @@ public class Key extends JButton {
 	public String getName(String mode) {
 		if (modes.containsKey(mode)) {
 			return modes.get(mode).getName();
+		} else if (modes.containsKey("default")) {
+			return modes.get("default").getName();
 		} else {
 			return "";
 		}
@@ -135,6 +138,28 @@ public class Key extends JButton {
 		this.modes = modes;
 	}
 	
+	
+	public String getCurrentMode() {
+		return currentMode;
+	}
+	
+	
+	public void setCurrentMode(String currentMode) {
+		this.currentMode = currentMode;
+		setText(getName(currentMode));
+	}
+	
+	
+	public String getKeycode() {
+		Mode m = modes.get(currentMode);
+		if (m != null) {
+			return modes.get(currentMode).getKeycode();
+		} else if (modes.containsKey("default")) {
+			return modes.get("default").getKeycode();
+		}
+		return "";
+	}
+
 	private class Mode {
 		private String	name		= "";
 		private String	keycode	= "";

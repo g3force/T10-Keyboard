@@ -10,6 +10,8 @@
 package edu.dhbw.t10.manager;
 
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -26,6 +28,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import edu.dhbw.t10.manager.profile.ProfileManager;
 import edu.dhbw.t10.type.Key;
 import edu.dhbw.t10.type.KeyboardLayout;
 
@@ -51,7 +54,17 @@ public class KeyboardLayoutGenerator {
 	private ArrayList<Key>				keys;
 	private String							filePath		= "conf/keyboard_layout_de_default.xml";
 	private KeyboardLayout				kbdLayout	= new KeyboardLayout(0, 0, 1);
-
+	private ActionListener				keyListener	= new ActionListener() {
+																	
+																	@Override
+																	public void actionPerformed(ActionEvent e) {
+																		Key key = (Key) (e.getSource());
+																		System.out.println(key.getKeycode());
+																		if (key.getKeycode().equals("\\SHIFT\\")) {
+																			ProfileManager.getInstance().getKbdLayout().setMode("shift");
+																		}
+																	}
+																};
 
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
@@ -108,6 +121,7 @@ public class KeyboardLayoutGenerator {
 						Key newKey = getKey(eElement);
 						if (newKey != null) {
 							keys.add(newKey);
+							newKey.addActionListener(keyListener);
 						}
 					} else {
 						logger.warn("key-node is not an element-node");
@@ -180,6 +194,7 @@ public class KeyboardLayoutGenerator {
 			Key key = new Key(getIntAttribute(attr, "size_x"), getIntAttribute(attr, "size_y"), getIntAttribute(attr,
 					"pos_x"), getIntAttribute(attr, "pos_y"));
 			
+			// Modes
 			NodeList modes = eElement.getElementsByTagName("mode");
 			for (int i = 0; i < modes.getLength(); i++) {
 				Node item = modes.item(i);
