@@ -9,8 +9,6 @@
  */
 package edu.dhbw.t10.type;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -199,32 +197,16 @@ public class PriorityTree implements Serializable {
 				start = root;
 		}
 		logger.debug("Printing output...");
-		sysoNode(start);
+		start.print();
 		for (PriorityElement pe : start.getListOfFollowers()) {
-			sysoNode(pe);
+			pe.print();
 		}
 		System.out.println("Complete amount of Elements: " + start.getListOfFollowers().size());
 		logger.debug("Output printed");
 	}
 	
 	
-	/**
-	 * prints out a PriorityElement
-	 * structure (non-root): [word], [frequency], [lastUse], Suggest: [word_suggest] ([freq_suggest]) (Father:
-	 * [word_father])
-	 * @param pe node you want to print
-	 */
-	private void sysoNode(PriorityElement pe) {
-		if (pe == root) {
-			System.out.print("[root], " + pe.getFrequency() + ", " + pe.getLastUse() + ", Suggest: "
-					+ pe.getSuggest() + " (Father: " + pe.getFather() + ")\n");
-		} else {
-			System.out.print(pe.buildWord() + ", " + pe.getFrequency() + ", " + pe.getLastUse() // this item
-					+ ", Suggest: " + pe.getSuggest().buildWord() + "(" + pe.getSuggest().getFrequency() + ")" // according
-																																				// suggest
-					+ " (Father: " + pe.getFather().buildWord() + ")\n"); // according father
-		}
-	}
+
 
 	
 	/**
@@ -239,54 +221,36 @@ public class PriorityTree implements Serializable {
 	
 	
 	/**
-	 * takes an arbitrary text files and inserts all contained words in the tree
-	 * Tree cleaning recommended after this
-	 * @param fileName path to the input file
+	 * exports the dictionary tree as a HashMap
+	 * @return the dictionary tree as a HashMap
 	 */
-	public void importFromText(String fileName) {
-		try {
-			FileReader fr = new FileReader(fileName);
-			BufferedReader x = new BufferedReader(fr);
-			
-			String res = x.readLine();
-			while (res != null) {
-				// System.out.println("Tmpbuf: " + res);
-				res.replace("\"", "");
-				res.replace("'", "");
-				res.replaceAll(".", "");
-				res.replaceAll(",", "");
-				res.replace(";", "");
-				res.replace(":", "");
-				res.replace("(", "");
-				res.replace(")", "");
-				res.replace("[", "");
-				res.replace("]", "");
-				res.replace("/", "");
-				res.replace("\\", "");
-				res.replace("?", "");
-				res.replace("!", "");
-				String[] words = res.split(" ");
-				for (String word : words)
-					if (words.length > 1)
-						insert(word);
-				res = x.readLine();
-			}
-		} catch (Exception ex) {
-			ex.printStackTrace();
+	public HashMap<String, Integer> exportToHashMap() {
+		HashMap<String, Integer> exportMap = new HashMap<String, Integer>();
+		for (PriorityElement pe : root.getListOfFollowers()) {
+			if (pe.getFrequency() != 0)
+				exportMap.put(pe.buildWord(), pe.getFrequency());
 		}
+		
+		return exportMap;
 	}
-	
-	
+
+
 	/**
 	 * any PriorityElement with has got a bottomBorder or less frequency is deleted
 	 * @param bottomBorder border to decide if a PriorityElement has to be deleted
 	 * @param olderThan not implemented yet
+	 * @param flag 0 -> only bottomBorder
+	 *           1 -> only olderThan
+	 *           2 -> bottomBorder OR olderThan
+	 *           3 -> bottomBorder AND olderThan
 	 * @return the amount of deleted items
 	 */
-	public int autoCleaning(int bottomBorder, long olderThan) {
+	public int autoCleaning(int bottomBorder, long olderThan, int flag) {
 		LinkedList<PriorityElement> toDelete = new LinkedList<PriorityElement>();
 		for (PriorityElement pe : root.getListOfFollowers()) {
-			if (pe.getFrequency() <= bottomBorder) { // && pe.getLastUse() <= olderThan) {
+			if ((flag == 0 && (pe.getFrequency() <= bottomBorder)) || (flag == 1 && (pe.getLastUse() <= olderThan))
+					|| (flag == 2 && (pe.getFrequency() <= bottomBorder || pe.getLastUse() <= olderThan))
+					|| (flag == 3 && (pe.getFrequency() <= bottomBorder && pe.getLastUse() <= olderThan))) {
 				if (pe.getFollowers().size() == 0) {
 					toDelete.add(pe);
 				} else {
@@ -300,6 +264,27 @@ public class PriorityTree implements Serializable {
 			delete(pe.buildWord());
 		}
 		return length;
+	}
+	
+	
+	/**
+	 * prints out the dictionary, beginning with the word with the highest frequency
+	 * bad in performance
+	 */
+	public LinkedList<PriorityElement> printFromHighest() {
+		LinkedList<PriorityElement> ll = new LinkedList<PriorityElement>();
+		for (PriorityElement pe : root.getListOfFollowers()) {
+			boolean sorted = false;
+			if (ll.isEmpty())
+				ll.add(pe);
+			for (int i = 0; i < ll.size() && !sorted; i++) {
+				if (ll.get(i).getFrequency() < pe.getFrequency()) {
+					ll.add(i, pe);
+					sorted = true;
+				}
+			}
+		}
+		return ll;
 	}
 
 
