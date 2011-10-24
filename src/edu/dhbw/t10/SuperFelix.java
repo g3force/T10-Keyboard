@@ -10,6 +10,7 @@
 package edu.dhbw.t10;
 
 import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import edu.dhbw.t10.view.Presenter;
@@ -46,7 +47,10 @@ public class SuperFelix {
 		/*
 		 * initialize log4j, a logger from apache.
 		 * See http://logging.apache.org/log4j/1.2/manual.html for more details
+		 * Log Levels: TRACE, DEBUG, INFO, WARN, ERROR and FATAL
 		 */
+		logger.setLevel(Level.ALL);
+
 		BasicConfigurator.configure();
 
 		Presenter.getInstance();
