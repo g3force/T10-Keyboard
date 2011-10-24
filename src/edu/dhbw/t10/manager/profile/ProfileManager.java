@@ -88,8 +88,8 @@ public class ProfileManager {
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
-	public int getActive() {
-		return activeProfile;
+	public Profile getActive() {
+		return profiles.get(activeProfile);
 	}
 	
 	

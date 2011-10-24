@@ -28,6 +28,8 @@ import org.apache.log4j.Logger;
  * 
  */
 public class PriorityElement implements Serializable {
+	/**  */
+	private static final long						serialVersionUID	= -6948672774660317104L;
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
@@ -210,6 +212,28 @@ public class PriorityElement implements Serializable {
 		}
 		logger.debug("Suggests (in Node) replaced");
 	}
+	
+	
+	/**
+	 * prints the PriorityElement
+	 * structure (non-root): [word], [frequency], [lastUse], Suggest: [word_suggest] ([freq_suggest]) (Father:
+	 * [word_father])
+	 * @param pe node you want to print
+	 */
+	public void print() {
+		if (father == null) {
+			System.out.print("[root], " + frequency + ", " + lastUse + ", Suggest: " + suggest
+ + " (Father: " + father
+					+ ")\n");
+		} else {
+			System.out.print(buildWord() + ", " + frequency + ", " + lastUse // this item
+					+ ", Suggest: " + suggest.buildWord() + "(" + suggest.getFrequency() + ")" // according
+																																				// suggest
+					+ " (Father: " + father.buildWord() + ")\n"); // according father
+		}
+	}
+	
+	
 
 
 	// --------------------------------------------------------------------------
