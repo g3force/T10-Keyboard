@@ -66,31 +66,36 @@ public class PriorityTree implements Serializable {
 	 * @param frequency the start frequency of the inserting word
 	 */
 	private void insert(String word, int frequency, boolean setFreq) {
-		logger.debug("Insertig Word...");
-		PriorityElement node = root;
-		char[] inChar = word.toCharArray(); // put every letter of the word alone in an char array
-		for (int i = 0; i < inChar.length; i++) {
-			if (node.hasFollower(inChar[i])) {
-				if (i < inChar.length - 1) {
-					node = node.getFollower(inChar[i]);
+		if (inputValid(word)) {
+			logger.debug("Insertig Word...");
+			PriorityElement node = root;
+			char[] inChar = word.toCharArray(); // put every letter of the word alone in an char array
+			for (int i = 0; i < inChar.length; i++) {
+				if (node.hasFollower(inChar[i])) {
+					if (i < inChar.length - 1) {
+						node = node.getFollower(inChar[i]);
+					} else {
+						node = node.getFollower(inChar[i]);
+						if (setFreq)
+							node.setFrequency(frequency - 1);
+						node.increase();
+					}
+					logger.debug("Inserting Node... (Node Increased)");
 				} else {
-					node = node.getFollower(inChar[i]);
-					if (setFreq)
-						node.setFrequency(frequency - 1);
-					node.increase();
+					node = node.addFollower(inChar[i]);
+					if (i == inChar.length - 1) {
+						if (setFreq)
+							node.setFrequency(frequency - 1);
+						node.increase();
+					}
+					logger.debug("Inserting Node... (New Node Added)");
 				}
-				logger.debug("Inserting Node... (Node Increased)");
-			} else {
-				node = node.addFollower(inChar[i]);
-				if (i == inChar.length - 1) {
-					if (setFreq)
-						node.setFrequency(frequency - 1);
-					node.increase();
-				}
-				logger.debug("Inserting Node... (New Node Added)");
 			}
+			logger.info("Word Inserted");
+		} else {
+			logger.info("Word Ignored - not valid");
+			System.out.println("not valid");
 		}
-		logger.info("Word Inserted");
 	}
 	
 
@@ -285,6 +290,16 @@ public class PriorityTree implements Serializable {
 			}
 		}
 		return ll;
+	}
+	
+	
+	private boolean inputValid(String in) {
+		for(char letter: in.toCharArray()) {
+			if ((int) letter < 65 || ((int) letter > 90 && (int) letter < 97) || (int) letter > 122) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 
