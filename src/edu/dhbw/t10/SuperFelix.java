@@ -17,6 +17,13 @@ import edu.dhbw.t10.view.Presenter;
 
 
 /**
+ * TODOs
+ * 
+ * TODO graphical buttons (keys) e.g. pause- and arrow keys
+ * TODO
+ * 
+ */
+/**
  * TODO NicolaiO, add comment!
  * - What should this type do (in one sentence)?
  * - If not intuitive: A simple example how to use this class

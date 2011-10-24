@@ -29,6 +29,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import edu.dhbw.t10.manager.profile.ProfileManager;
+import edu.dhbw.t10.type.DropDownList;
 import edu.dhbw.t10.type.Key;
 import edu.dhbw.t10.type.KeyboardLayout;
 
@@ -65,6 +66,7 @@ public class KeyboardLayoutGenerator {
 																		}
 																	}
 																};
+
 
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
@@ -164,6 +166,26 @@ public class KeyboardLayoutGenerator {
 						}
 					}
 				}
+				
+				nList = doc.getElementsByTagName("dropdown");
+				for (int temp = 0; temp < nList.getLength(); temp++) {
+					Node nNode = nList.item(temp);
+					try {
+						if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+							Element eElement = (Element) nNode;
+							NamedNodeMap attr = eElement.getAttributes();
+							DropDownList cb = new DropDownList(getAttribute(attr, "type"), getIntAttribute(attr, "size_x"),
+									getIntAttribute(attr, "size_y"), getIntAttribute(attr, "pos_x"), getIntAttribute(attr,
+											"pos_y"));
+							kbdLayout.addDdl(cb);
+							// TODO listener
+						}
+					} catch (NullPointerException e) {
+						logger.warn("Dropdown-element found, but can not be read correctly! node nr " + temp + ": "
+								+ nNode.toString());
+					}
+				}
+
 
 				kbdLayout.setFont(new Font(fname, fstyle, fsize));
 				kbdLayout.setKeys(keys);
@@ -199,13 +221,22 @@ public class KeyboardLayoutGenerator {
 			for (int i = 0; i < modes.getLength(); i++) {
 				Node item = modes.item(i);
 				if (item != null) {
+					String sKeycode = "";
+					String sModeName = "";
+					String sColor = "";
 					Node keycode = item.getAttributes().getNamedItem("keycode");
 					Node modeName = item.getAttributes().getNamedItem("name");
-					if (keycode != null && modeName != null) {
-						key.addMode(modeName.getTextContent(), item.getTextContent(), keycode.getTextContent());
-					} else {
-						logger.warn("key-node could not be read. Item: " + item.getTextContent());
+					Node color = item.getAttributes().getNamedItem("color");
+					if (keycode != null) {
+						sKeycode = keycode.getTextContent();
 					}
+					if (modeName != null) {
+						sModeName = modeName.getTextContent();
+					}
+					if (color != null) {
+						sColor = color.getTextContent();
+					}
+					key.addMode(sModeName, item.getTextContent(), sKeycode, sColor);
 				}
 			}
 			

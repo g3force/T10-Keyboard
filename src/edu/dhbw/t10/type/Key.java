@@ -9,8 +9,10 @@
  */
 package edu.dhbw.t10.type;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Insets;
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -31,7 +33,7 @@ public class Key extends JButton {
 	// --------------------------------------------------------------------------
 	private static final long		serialVersionUID	= 6949715976373962684L;
 	private HashMap<String, Mode>	modes					= new HashMap<String, Mode>();
-	private Dimension					size					= new Dimension(10, 10);
+	private Dimension					origSize				= new Dimension(10, 10);
 	private int							pos_x					= 0;
 	private int							pos_y					= 0;
 	private String						currentMode			= "default";
@@ -48,7 +50,7 @@ public class Key extends JButton {
 	 * @param pos_y Position of the key button
 	 */
 	public Key(int size_x, int size_y, int pos_x, int pos_y) {
-		this.size = new Dimension(size_x, size_y);
+		this.origSize = new Dimension(size_x, size_y);
 		this.pos_x = pos_x;
 		this.pos_y = pos_y;
 		setLayout(null);
@@ -69,43 +71,74 @@ public class Key extends JButton {
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
 	
-	public void addMode(String mode, String name, String keycode) {
-		modes.put(mode, new Mode(name, keycode));
+	public void addMode(String mode, String name, String keycode, String color) {
+		modes.put(mode, new Mode(name, keycode, color));
 	}
 	
 	
 	public String toString() {
-		return "Size: " + size + " Pos: " + pos_x + "," + pos_y + " Modes: " + modes;
+		return "Size: " + origSize + " Pos: " + pos_x + "," + pos_y + " Modes: " + modes;
 	}
 	
+
+	public void setCurrentMode(String currentMode) {
+		this.currentMode = currentMode;
+		setText(getName());
+		setBackground(getColorFromString(getColor()));
+	}
+
+	
+	public Color getColorFromString(String bgColor) {
+		Color color;
+		try {
+			Field field = Class.forName("java.awt.Color").getField(bgColor);
+			color = (Color) field.get(null);
+		} catch (Exception e) {
+			color = null;
+		}
+		return color;
+	}
+
 
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
 	
-	public String getName(String mode) {
-		if (modes.containsKey(mode)) {
-			return modes.get(mode).getName();
+	public String getName() {
+		if (modes.containsKey(currentMode)) {
+			return modes.get(currentMode).getName();
 		} else if (modes.containsKey("default")) {
 			return modes.get("default").getName();
 		} else {
 			return "";
 		}
 	}
+	
+	
+	public String getKeycode() {
+		Mode m = modes.get(currentMode);
+		if (m != null) {
+			return modes.get(currentMode).getKeycode();
+		} else if (modes.containsKey("default")) {
+			return modes.get("default").getKeycode();
+		}
+		return "";
+	}
+	
+	
+	public String getColor() {
+		Mode m = modes.get(currentMode);
+		if (m != null) {
+			return modes.get(currentMode).getColor();
+		} else if (modes.containsKey("default")) {
+			return modes.get("default").getColor();
+		}
+		return "";
+	}
 
 
 	public Set<String> getAllModes() {
 		return modes.keySet();
-	}
-	
-
-	public Dimension getSize() {
-		return size;
-	}
-	
-	
-	public void setSize(Dimension size) {
-		this.size = size;
 	}
 	
 	
@@ -144,30 +177,25 @@ public class Key extends JButton {
 	}
 	
 	
-	public void setCurrentMode(String currentMode) {
-		this.currentMode = currentMode;
-		setText(getName(currentMode));
+	public Dimension getOrigSize() {
+		return origSize;
 	}
 	
 	
-	public String getKeycode() {
-		Mode m = modes.get(currentMode);
-		if (m != null) {
-			return modes.get(currentMode).getKeycode();
-		} else if (modes.containsKey("default")) {
-			return modes.get("default").getKeycode();
-		}
-		return "";
+	public void setOrigSize(Dimension origSize) {
+		this.origSize = origSize;
 	}
 
 	private class Mode {
 		private String	name		= "";
 		private String	keycode	= "";
+		private String	color		= "";
 		
 		
-		public Mode(String _name, String _keycode) {
+		public Mode(String _name, String _keycode, String _color) {
 			name = _name;
 			keycode = _keycode;
+			color = _color;
 		}
 		
 		
@@ -197,6 +225,18 @@ public class Key extends JButton {
 		@SuppressWarnings("unused")
 		public void setKeycode(String keycode) {
 			this.keycode = keycode;
+		}
+		
+		
+		@SuppressWarnings("unused")
+		public String getColor() {
+			return color;
+		}
+		
+		
+		@SuppressWarnings("unused")
+		public void setColor(String color) {
+			this.color = color;
 		}
 	}
 }
