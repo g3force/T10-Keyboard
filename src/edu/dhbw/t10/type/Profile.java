@@ -9,13 +9,9 @@
  */
 package edu.dhbw.t10.type;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-
 import org.apache.log4j.Logger;
+
+import edu.dhbw.t10.manager.Serializer;
 
 
 /**
@@ -62,29 +58,12 @@ public class Profile {
 	// --------------------------------------------------------------------------
 	
 	public void loadTree() {
-		try {
-			FileInputStream file = new FileInputStream(pathToFile);
-			ObjectInputStream o = new ObjectInputStream(file);
-			tree = (PriorityTree) o.readObject();
-			o.close();
-		} catch (IOException e) {
-			logger.error("Failure during Deserializing");
-		} catch (ClassNotFoundException e) {
-			logger.error("Class not found, not possible");
-		}
+		tree = (PriorityTree) Serializer.deserialize(pathToFile);
 	}
 	
 	
 	public void saveTree() {
-		try {
-			FileOutputStream file = new FileOutputStream(pathToFile);
-			ObjectOutputStream o = new ObjectOutputStream(file);
-			o.writeObject(tree);
-			o.close();
-		} catch (IOException e) {
-			tree = new PriorityTree();
-			logger.error(e + ", empty tree created");
-		}
+		Serializer.serialize(tree, pathToFile);
 	}
 
 	// --------------------------------------------------------------------------

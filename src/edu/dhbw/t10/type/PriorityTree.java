@@ -271,7 +271,7 @@ public class PriorityTree implements Serializable {
 	 * prints out the dictionary, beginning with the word with the highest frequency
 	 * bad in performance
 	 */
-	public LinkedList<PriorityElement> printFromHighest() {
+	public LinkedList<PriorityElement> getFreqSortedList() {
 		LinkedList<PriorityElement> ll = new LinkedList<PriorityElement>();
 		for (PriorityElement pe : root.getListOfFollowers()) {
 			boolean sorted = false;
