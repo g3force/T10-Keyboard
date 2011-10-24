@@ -18,6 +18,7 @@ import javax.swing.JPanel;
 import org.apache.log4j.Logger;
 
 import edu.dhbw.t10.manager.profile.ProfileManager;
+import edu.dhbw.t10.type.DropDownList;
 import edu.dhbw.t10.type.Key;
 import edu.dhbw.t10.type.KeyboardLayout;
 
@@ -52,6 +53,9 @@ public class MainPanel extends JPanel implements ComponentListener {
 		this.setPreferredSize(new Dimension(kbd.getSize_x(), kbd.getSize_y()));
 		for (Key key : kbd.getKeys()) {
 			this.add(key);
+		}
+		for (DropDownList ddl : kbd.getDdls()) {
+			this.add(ddl);
 		}
 	}
 	

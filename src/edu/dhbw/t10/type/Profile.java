@@ -31,6 +31,7 @@ public class Profile {
 	private String			pathToFile;
 	private PriorityTree	tree;
 	
+	@SuppressWarnings("unused")
 	private static final Logger	logger	= Logger.getLogger(Profile.class);
 
 	// --------------------------------------------------------------------------

@@ -27,14 +27,15 @@ public class KeyboardLayout {
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
-	private ArrayList<Key>	keys			= new ArrayList<Key>();
-	private int					size_x		= 0;
-	private int					size_y		= 0;
-	private float				scale_x		= 1;
-	private float				scale_y		= 1;
-	private float				scale_font	= 1;
-	private String				mode			= "default";
-	private Font				font			= new Font("Dialog", Font.PLAIN, 12);
+	private ArrayList<Key>				keys			= new ArrayList<Key>();
+	private ArrayList<DropDownList>	ddls			= new ArrayList<DropDownList>();
+	private int								size_x		= 0;
+	private int								size_y		= 0;
+	private float							scale_x		= 1;
+	private float							scale_y		= 1;
+	private float							scale_font	= 1;
+	private String							mode			= "default";
+	private Font							font			= new Font("Dialog", Font.PLAIN, 12);
 
 	
 	// --------------------------------------------------------------------------
@@ -52,18 +53,28 @@ public class KeyboardLayout {
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
-	public void add(Key key) {
+	public void addKey(Key key) {
 		keys.add(key);
 	}
 	
+	
+	public void addDdl(DropDownList ddl) {
+		ddls.add(ddl);
+	}
 	
 	public void rescale() {
 		for (Key k : keys) {
 			Rectangle rect = k.getBounds();
 			rect.setBounds((int) (k.getPos_x() * scale_x), (int) (k.getPos_y() * scale_y),
-					(int) (k.getSize().width * scale_x), (int) (k.getSize().height * scale_y));
+					(int) (k.getOrigSize().width * scale_x), (int) (k.getOrigSize().height * scale_y));
 			k.setBounds(rect);
 			k.setFont(new Font(font.getName(), font.getStyle(), (int) (font.getSize() * scale_font)));
+		}
+		for (DropDownList ddl : ddls) {
+			Rectangle rect = ddl.getBounds();
+			rect.setBounds((int) (ddl.getPos_x() * scale_x), (int) (ddl.getPos_y() * scale_y),
+					(int) (ddl.getOrigSize().width * scale_x), (int) (ddl.getOrigSize().height * scale_y));
+			ddl.setBounds(rect);
 		}
 	}
 	
@@ -190,6 +201,11 @@ public class KeyboardLayout {
 	
 	public void setScale_font(float scale_font) {
 		this.scale_font = scale_font;
+	}
+
+
+	public ArrayList<DropDownList> getDdls() {
+		return ddls;
 	}
 
 

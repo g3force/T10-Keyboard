@@ -5,6 +5,8 @@ public class Ringbuffer<T> {
 	private boolean full;
 	private int start, end, maxLength;
 	
+	
+	@SuppressWarnings("unchecked")
 	public Ringbuffer(int length) {
 		maxLength = length;
 		buffer = (T[]) new Object[maxLength];
