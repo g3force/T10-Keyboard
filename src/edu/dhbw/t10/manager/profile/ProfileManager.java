@@ -51,6 +51,10 @@ public class ProfileManager {
 		instance = this;
 		KeyboardLayoutGenerator lfm = new KeyboardLayoutGenerator();
 		kbdLayout = lfm.getKbdLayout();
+<<<<<<< HEAD
+=======
+		// profiles = loadProfiles();
+>>>>>>> branch 'master' of https://code.google.com/p/t10-onscreen-keyboard/
 	}
 
 
@@ -61,11 +65,14 @@ public class ProfileManager {
 	 * @return Return of an instance of the Singleton "ProfileManager", thus preventing
 	 *         multiple ProfileManager.
 	 */
+<<<<<<< HEAD
 	public static ProfileManager instance() {
 		return instance;
 	}
 
 
+=======
+>>>>>>> branch 'master' of https://code.google.com/p/t10-onscreen-keyboard/
 	public static ProfileManager getInstance() {
 		if (instance == null) {
 			instance = new ProfileManager();
@@ -87,6 +94,7 @@ public class ProfileManager {
 			Presenter.getInstance().pack();
 		}
 	}
+<<<<<<< HEAD
 	
 	public Profile getActive() {
 		return profiles.get(activeProfile);
@@ -179,5 +187,102 @@ public class ProfileManager {
 	public KeyboardLayout getKbdLayout() {
 		return kbdLayout;
 		// branch 'master' of https://code.google.com/p/t10-onscreen-keyboard/
+=======
+
+
+	// --------------------------------------------------------------------------
+	// --- getter/setter --------------------------------------------------------
+	// --------------------------------------------------------------------------
+	public Profile getActive() {
+		return profiles.get(activeProfile);
+	}
+	
+	
+	public int create(String profileName) {
+		Profile newProfile = new Profile();
+		newProfile.setName(profileName);
+		newProfile.setID(profiles.size());
+		profiles.add(newProfile);
+		return newProfile.getID();
+	}
+	
+	
+	/**
+	 * 
+	 * Re-arranges the IDs of the profiles after a certain profile gets deleted.
+	 * 
+	 */
+	private void arrangeProfiles() {
+		if (profiles.size() <= 0)
+			return;
+		Profile curProfile = null;
+		for (int i = 0; i < profiles.size(); i++) {
+			curProfile = profiles.get(i);
+			curProfile.setID(i);
+		}
+	}
+	
+	
+	/**
+	 * 
+	 * Deletes a profile depending on the ID.<br/>
+	 * If the ID we deleted was currently active,
+	 * we either mark the first profile as active or mark that we need a new profile.
+	 * 
+	 * @param id - int. ID of the profile you want to delete.
+	 */
+	public void delete(int id) {
+		Profile curProfile = null;
+		if (profiles.size() <= 0)
+			return;
+		for (int i = 0; i < profiles.size(); i++) {
+			curProfile = profiles.get(i);
+			if (curProfile.getID() == id) {
+				profiles.remove(i);
+				arrangeProfiles();
+				break;
+			}
+		}
+		// If the deleted profile was currently active, we choose the first profile or mark "we need a new profile!"
+		if (activeProfile == id) {
+			if (profiles.size() > 0)
+				activeProfile = 0;
+			else
+				activeProfile = -1;
+		}
+	}
+	
+	
+	/**
+	 * 
+	 * Marks a profile (depending on the ID) as "active". If not found, nothing happens.
+	 * 
+	 * @param id
+	 */
+	public void setActive(int id) {
+		Profile curProfile = null;
+		for (int i = 0; i < profiles.size(); i++) {
+			curProfile = profiles.get(i);
+			if (curProfile.getID() == id) {
+				activeProfile = id;
+				break;
+			}
+		}
+	}
+	
+	
+	public ArrayList<Profile> getProfiles() {
+		return profiles;
+	}
+	
+	
+	public int getActiveProfile() {
+		return activeProfile;
+	}
+	
+	
+	public KeyboardLayout getKbdLayout() {
+		return kbdLayout;
+>>>>>>> branch 'master' of https://code.google.com/p/t10-onscreen-keyboard/
 	}
 }
