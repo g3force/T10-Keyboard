@@ -14,6 +14,7 @@ import java.awt.Toolkit;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import edu.dhbw.t10.view.menus.MenuBar;
 import edu.dhbw.t10.view.panels.MainPanel;
 
 
@@ -29,12 +30,12 @@ public class Presenter extends JFrame {
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
-
-	private static final long	serialVersionUID	= 6217926957357225677L;
-	private MainPanel				mainPanel;
-	private JPanel					contentPane;
 	
+	private static final long	serialVersionUID	= 6217926957357225677L;
+	private static Presenter	instance;
+	private JPanel					contentPane;
 
+	
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
@@ -42,28 +43,38 @@ public class Presenter extends JFrame {
 	/**
 	  * 
 	  */
-	public Presenter() {
+	private Presenter() {
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setLocationByPlatform(true);
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("icons/useacc_logo.png"));
 		this.setTitle("T10 On-Screen Keyboard");
 		this.setVisible(true);
-
+		// this.addComponentListener(this);
 
 		// get a reference to the content pane
 		contentPane = (JPanel) getContentPane();
-		mainPanel = new MainPanel();
-		contentPane.add(mainPanel);
+		contentPane.add(MainPanel.getInstance());
+		this.setJMenuBar(MenuBar.getInstance());
 		
 		// build GUI
 		pack();
 	}
 	
+	
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
+	public static Presenter getInstance() {
+		if (instance == null) {
+			instance = new Presenter();
+		}
+		return instance;
+	}
+	
 	
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
+
+	
 }

@@ -9,6 +9,8 @@
  */
 package edu.dhbw.t10.manager;
 
+// import edu.dhbw.t10.type.Ringbuffer;
+
 /**
  * TODO NicolaiO, add comment!
  * - What should this type do (in one sentence)?
@@ -21,7 +23,7 @@ public class Controller {
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
-	
+	// private Ringbuffer<String> lastWords = new Ringbuffer<String>(5);
 
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
@@ -31,7 +33,13 @@ public class Controller {
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
-	
+	// public Profile profileRecommendation() {
+	// Profile active = ProfileManager.getInstance().getActive();
+	// for (Profile p : ProfileManager.getInstance().getProfiles()) {
+	//
+	// }
+	// }
+
 
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
