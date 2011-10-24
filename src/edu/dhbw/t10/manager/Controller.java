@@ -9,11 +9,7 @@
  */
 package edu.dhbw.t10.manager;
 
-<<<<<<< HEAD
 // import edu.dhbw.t10.type.Ringbuffer;
-=======
-import edu.dhbw.t10.type.Ringbuffer;
->>>>>>> branch 'master' of https://code.google.com/p/t10-onscreen-keyboard/
 
 /**
  * TODO NicolaiO, add comment!
@@ -27,11 +23,7 @@ public class Controller {
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
-<<<<<<< HEAD
 	// private Ringbuffer<String> lastWords = new Ringbuffer<String>(5);
-=======
-	private Ringbuffer<String>	lastWords	= new Ringbuffer<String>(5);
->>>>>>> branch 'master' of https://code.google.com/p/t10-onscreen-keyboard/
 
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
