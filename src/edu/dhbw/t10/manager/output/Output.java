@@ -12,14 +12,22 @@ package edu.dhbw.t10.manager.output;
 import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
 
 
 /**
- * TODO NicolaiO, add comment!
- * - What should this type do (in one sentence)?
- * - If not intuitive: A simple example how to use this class
+ * 
+ * This class provides the functionallity of printing Strings via sending Key Strokes to the system.
+ * Letters, big letters and numbers are converted directly to their own java.awt.event.KeyEvent constant, which is sent.
+ * All other symbols are written via their Unicode.
+ * FIXME only Linux Support at this moment
+ * 
+ * Control symbols are sent via their java.awt.event.KeyEvent constant
+ * 
+ * TODO Get several Control symbols and combine them to a key combination
  * 
  * @author Andres
  * 
@@ -29,7 +37,6 @@ public class Output {
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
 	private static final Logger	logger			= Logger.getLogger(Output.class);
-	Keys									keyTransform	= new Keys();
 
 	
 	
@@ -37,11 +44,6 @@ public class Output {
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
 	
-	public Output() {
-	}
-		
-	
-
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
@@ -52,56 +54,118 @@ public class Output {
 	 * @param c
 	 * @return
 	 */
-	public boolean printString(String codeSequence) {
-		int length = codeSequence.length();
-		int[] keyCode;
-		
-		if (codeSequence.charAt(0) == '\\' && codeSequence.charAt(length - 1) == '\\' && length != 2) {
-			keyCode = new int[1];
-			keyCode[0] = keyTransform.getKey(codeSequence.substring(1, length - 1));
-			this.sendKey(keyCode[0]);
-			logger.info("Control Symbol printed: " + codeSequence);
-		} else if (codeSequence.charAt(0) == '\\' && codeSequence.charAt(length - 1) == '\\' && length == 2) {
-			keyCode = new int[1];
-			keyCode[0] = keyTransform.getKey("\\");
-			this.sendKey(keyCode[0]);
-			logger.info("String printed: " + codeSequence);
+	public boolean printString(String charSequence) {
+		int length = charSequence.length();
+		int keyCode = 0;
+
+		if (charSequence.charAt(0) == '\\' && charSequence.charAt(length - 1) == '\\'
+				&& !charSequence.substring(0).startsWith("\\U+")) {
+			keyCode = this.getKeyCode(charSequence.substring(1, length - 1));
+			this.sendKey(keyCode);
+			logger.info("Control Symbol printed: " + charSequence);
 		} else {
-			keyCode = new int[length];
+			ArrayList<Integer> unicodeStart = extractUnicode(charSequence);
 			for (int i = 0; i < length; i++) {
-				// keyCode[i] = KeyEvent.VK_A;
-				keyCode[i] = keyTransform.getKey(codeSequence.substring(i, i + 1).toUpperCase());
-				if (Character.isUpperCase(codeSequence.charAt(i)) == true) {
-					this.sendKey(keyCode[i], 1);
-				} else if (keyTransform.getShift(keyCode[i])) {
-					this.sendKey(keyCode[i], 1);
-				} else if (keyTransform.getAltGr(keyCode[i])) { // FIXME AltGr funktioniert nicht
-					this.sendKey(keyCode[i], 4);
-				} else if (keyTransform.getCrtl(keyCode[i])) {
-					this.sendKey(keyCode[i], 2);
-				} else {
-					this.sendKey(keyCode[i]);
+				// Unterscheidung zwischen Buchstaben (und Zahlen) und Unicode Zeichen
+				if (!unicodeStart.isEmpty() && unicodeStart.get(0) == i) { // Unicode Aufruf unter Linux
+					this.sendKey(0, 6);
+					keyCode = this.getKeyCode(charSequence.substring(i + 3, i + 4));
+					this.sendKey(keyCode, 6);
+					keyCode = this.getKeyCode(charSequence.substring(i + 4, i + 5));
+					this.sendKey(keyCode, 6);
+					keyCode = this.getKeyCode(charSequence.substring(i + 5, i + 6));
+					this.sendKey(keyCode, 6);
+					keyCode = this.getKeyCode(charSequence.substring(i + 6, i + 7));
+					this.sendKey(keyCode, 6);
+					this.sendKey(KeyEvent.VK_ENTER, 6);
+					i += 7;
+					unicodeStart.remove(0);
+				} else if (Character.isUpperCase(charSequence.charAt(i)) == true) { // Big Letters
+					keyCode = this.getKeyCode(charSequence.substring(i, i + 1));
+					this.sendKey(keyCode, 1);
+				} else { // Small letters
+					keyCode = this.getKeyCode(charSequence.substring(i, i + 1));
+					this.sendKey(keyCode);
 				}
 			}
-			logger.info("String printed: " + codeSequence);
+			logger.info("String printed: " + charSequence);
 		}
 		return true;
 	}
 	
 
-	protected boolean sendKey(int key) {
+	/**
+	 * 
+	 * Find a Unicode in a given String and returns a List with the indices
+	 * 
+	 * @param sequence
+	 * @return
+	 */
+	private ArrayList<Integer> extractUnicode(String sequence) {
+		ArrayList<Integer> unicodeStart = new ArrayList<Integer>();
+		int help = 0;
+
+		while (help < sequence.length()) {
+			if (sequence.substring(help).startsWith("\\U+")) {
+				help = sequence.indexOf("\\U+", help);
+				unicodeStart.add(help);
+				help += 7;
+			} else
+				help++;
+		}
+
+		return unicodeStart;
+	}
+	
+
+	/**
+	 * 
+	 * Converts a Stringcode into a Constant of the KeyEvent class via Reflection.
+	 * These constants could be used for sending Keys.
+	 * 
+	 * @param code
+	 * @return
+	 */
+	private Integer getKeyCode(String code) {
+		Field f;
+		try {
+			f = KeyEvent.class.getField("VK_" + code.toUpperCase());
+			f.setAccessible(true);
+			return (Integer) f.get(null);
+		} catch (SecurityException err) {
+			// TODO Auto-generated catch block
+			err.printStackTrace();
+			return 0;
+		} catch (NoSuchFieldException err) {
+			// TODO Auto-generated catch block
+			err.printStackTrace();
+			return 0;
+		} catch (IllegalArgumentException err) {
+			// TODO Auto-generated catch block
+			err.printStackTrace();
+			return 0;
+		} catch (IllegalAccessException err) {
+			// TODO Auto-generated catch block
+			err.printStackTrace();
+			return 0;
+		}
+		
+	}
+
+
+	private boolean sendKey(int key) {
 		return sendKey(key, 0);
 	}
 
-	protected boolean sendKey(int key, int function) {
+
+	private boolean sendKey(int key, int function) {
 		return sendKey(key, function, 0);
 	}
 	
 
-	// FIXME
 	/**
 	 * 
-	 * Send Key Codes to the System
+	 * Send Key Codes to the System with a Robot and ava.awt.event.KeyEvent constants
 	 * 
 	 * Use function to use Shift, ... functionality
 	 * 0: without; 1: Shift; 2: Control; 3: Alt; 4: Alt Gr; 5: Super
@@ -109,8 +173,8 @@ public class Output {
 	 * @param key, function, hold
 	 * @return
 	 */
-	protected boolean sendKey(int key, int function, int hold) {
-		if (key == 0) {
+	private boolean sendKey(int key, int function, int hold) {
+		if (key == 0 && function != 6) {
 			return false;
 		}
 		try {
@@ -161,13 +225,26 @@ public class Output {
 					keyRobot.keyRelease(KeyEvent.VK_WINDOWS);
 				}
 					break;
+				case 6: { // Unicode
+					if (key == 0) {
+						keyRobot.keyPress(KeyEvent.VK_CONTROL);
+						keyRobot.keyPress(KeyEvent.VK_SHIFT);
+						keyRobot.keyPress(KeyEvent.VK_U);
+						keyRobot.keyRelease(KeyEvent.VK_U);
+						keyRobot.keyRelease(KeyEvent.VK_SHIFT);
+						keyRobot.keyRelease(KeyEvent.VK_CONTROL);
+					} else { // 4 Ziffern und ein ENTER
+						keyRobot.keyPress(key);
+						keyRobot.keyRelease(key);
+					}
+				}
+					break;
 			}
-			
-
+			return true;
 		} catch (AWTException e) {
 			e.printStackTrace();
+			return false;
 		}
-		return true;
 	}
 	
 
