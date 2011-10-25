@@ -13,6 +13,9 @@ import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
+import edu.dhbw.t10.manager.EventCollector;
+import edu.dhbw.t10.manager.KeyboardEvent;
+import edu.dhbw.t10.manager.KeyboardListener;
 import edu.dhbw.t10.view.Presenter;
 
 
@@ -51,6 +54,17 @@ public class SuperFelix {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		/*-------- BEGIN TEST BLOCK --------*/
+		EventCollector ec = EventCollector.getInstance();
+		KeyboardListener kl = new KeyboardListener() {
+			
+			@Override
+			public void keyboardActionAlterEy(KeyboardEvent e) {
+				System.out.println("\t\t" + e.getKey());
+			}
+		};
+		/*-------- END TEST BLOCK --------*/
+
 		/*
 		 * initialize log4j, a logger from apache.
 		 * See http://logging.apache.org/log4j/1.2/manual.html for more details
@@ -62,6 +76,9 @@ public class SuperFelix {
 
 		Presenter.getInstance();
 		logger.info("Keyboard started.");
+		
+		ec.addListener(kl); // TEST: add listener to EventController
+
 	}
 	
 	// --------------------------------------------------------------------------
