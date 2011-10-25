@@ -19,7 +19,7 @@ import java.util.EventListener;
  * @author felix
  * 
  */
-public class KeyboardListener implements EventListener {
+public interface KeyboardListener extends EventListener {
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
@@ -33,8 +33,7 @@ public class KeyboardListener implements EventListener {
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
-	void keyboardActionAlterEy(KeyboardEvent e) {
-	};
+	void keyboardActionAlterEy(KeyboardEvent e);
 
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
