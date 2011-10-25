@@ -29,22 +29,32 @@ public class EventCollector implements ActionListener {
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
 	private KeyboardListener	keyListener;
+	private static EventCollector	instance;
 
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
-	
+	private EventCollector() {
+	}
 
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
+	public static EventCollector getInstance() {
+		if (instance == null) {
+			instance = new EventCollector();
+		}
+		return instance;
+	}
+
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() instanceof Key) {
 			this.keyListener.keyboardActionAlterEy(new KeyboardEvent(this, ((Key) e.getSource()).getKeycode()));
 		}
 	}
-	
+
 
 	public void addListener(EventListener listener) {
 		if (listener instanceof KeyboardListener) {
