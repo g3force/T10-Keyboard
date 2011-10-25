@@ -28,7 +28,7 @@ import org.apache.log4j.Logger;
  * Control symbols are sent via their java.awt.event.KeyEvent constant
  * 
  * TODO Get several Control symbols and combine them to a key combination
- * 
+ * TODO Get last active window and write there
  * @author Andres
  * 
  */
@@ -47,6 +47,11 @@ public class Output {
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
+	public boolean printChar(Character c) {
+		return printString(c.toString());
+	}
+
+
 	/**
 	 * 
 	 * Transoforms a given CodeSequence from OutputManager to KeyEvent-Constants and sends it to the System
@@ -93,6 +98,18 @@ public class Output {
 		return true;
 	}
 	
+
+	public boolean deleteChar(int length) {
+		if (length <= 0)
+			return false;
+		else {
+			for (int i = 0; i < length; i++) {
+				this.sendKey(KeyEvent.VK_BACK_SPACE);
+			}
+			return true;
+		}
+	}
+
 
 	/**
 	 * 

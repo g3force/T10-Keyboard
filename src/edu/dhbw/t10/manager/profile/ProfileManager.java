@@ -180,4 +180,30 @@ public class ProfileManager {
 	public KeyboardLayout getKbdLayout() {
 		return kbdLayout;
 	}
+	
+
+	/**
+	 * 
+	 * TODO implementieren... siehe Kontrollfluss Diagramm
+	 * OutputManager requests a Word suggestion with an given Startstring.
+	 * 
+	 * 
+	 * @param givenChars
+	 * @return
+	 */
+	public String getWordSuggest(String givenChars) {
+		return "HallodasistmeinSuggest";
+	}
+	
+
+	/**
+	 * 
+	 * TODO implementieren...
+	 * Gives a word which have to be inserted or updated in the data.
+	 * 
+	 * @param word
+	 */
+	public void acceptWord(String word) {
+		
+	}
 }
