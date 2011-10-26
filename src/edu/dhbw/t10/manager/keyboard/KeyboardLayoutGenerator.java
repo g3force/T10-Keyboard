@@ -26,7 +26,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import edu.dhbw.t10.manager.EventCollector;
+import edu.dhbw.t10.manager.Controller;
 import edu.dhbw.t10.type.keyboard.DropDownList;
 import edu.dhbw.t10.type.keyboard.Key;
 import edu.dhbw.t10.type.keyboard.KeyboardLayout;
@@ -66,14 +66,14 @@ public class KeyboardLayoutGenerator {
 	 * }
 	 * };
 	 */
-	private EventCollector				ec;
+	private Controller				ec;
 
 
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
 	public KeyboardLayoutGenerator() {
-		ec = EventCollector.getInstance();
+		ec = Controller.getInstance();
 		init();
 	}
 	
