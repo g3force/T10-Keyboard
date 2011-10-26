@@ -44,6 +44,8 @@ public class Key extends JButton {
 	private int							pos_y					= 0;
 	private String						currentMode			= "default";
 	private boolean					accept				= false;
+	private int							type					= 1;
+
 
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
@@ -254,5 +256,15 @@ public class Key extends JButton {
 	
 	public void setAccept(boolean accept) {
 		this.accept = accept;
+	}
+	
+	
+	public int getType() {
+		return type;
+	}
+	
+	
+	public void setType(int type) {
+		this.type = type;
 	}
 }
