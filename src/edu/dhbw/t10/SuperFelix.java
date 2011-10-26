@@ -14,8 +14,8 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import edu.dhbw.t10.manager.EventCollector;
-import edu.dhbw.t10.manager.KeyboardEvent;
-import edu.dhbw.t10.manager.KeyboardListener;
+import edu.dhbw.t10.manager.keyboard.KeyboardEvent;
+import edu.dhbw.t10.manager.keyboard.KeyboardListener;
 import edu.dhbw.t10.view.Presenter;
 
 
