@@ -7,7 +7,7 @@
  * 
  * *********************************************************
  */
-package edu.dhbw.t10.manager;
+package edu.dhbw.t10.manager.keyboard;
 
 import java.awt.Font;
 import java.io.File;
@@ -26,9 +26,10 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import edu.dhbw.t10.type.DropDownList;
-import edu.dhbw.t10.type.Key;
-import edu.dhbw.t10.type.KeyboardLayout;
+import edu.dhbw.t10.manager.EventCollector;
+import edu.dhbw.t10.type.keyboard.DropDownList;
+import edu.dhbw.t10.type.keyboard.Key;
+import edu.dhbw.t10.type.keyboard.KeyboardLayout;
 
 
 /**
