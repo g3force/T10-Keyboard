@@ -62,9 +62,17 @@ public class OutputManager
 	public void printSuggest(String newSuggest, String typed) {
 		suggest = newSuggest;
 		int diff = suggest.length() - typed.length();
-		out.printString(suggest.substring(typed.length()));
+		out.printString(convertToUnicode(suggest.substring(typed.length())));
 		out.markChar(diff);
 	}
+	
+
+	public String convertToUnicode(String input) {
+		// TODO
+		return input;
+	}
+
+
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------

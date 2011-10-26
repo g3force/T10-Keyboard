@@ -31,7 +31,7 @@ public class Controller implements ActionListener {
 	// --------------------------------------------------------------------------
 	private static Controller	instance;
 	
-	private String					typedWord;	// FIXME Was ist mit unicode zeichen
+	private String					typedWord;
 	private String					suggest;
 
 	private ProfileManager		profileMan;
@@ -60,86 +60,48 @@ public class Controller implements ActionListener {
 	}
 	
 
-	// TODO DANIEL SCHNELLLLL
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Key key = (Key) e.getSource();
 
-		if (key.getType() == Key.CHAR_KEY) {
+		if (key.isAccept()) {
+			if (suggest.length() > typedWord.length())
+				outputMan.getOutput().unMark();
+			outputMan.getOutput().printChar(key);
+			profileMan.getActive().getTree().insert(suggest);
+			typedWord = "";
+			suggest = "";
+		} else if (key.getType() == Key.CHAR_KEY) {
 			outputMan.getOutput().printChar(key);
 			typedWord = typedWord + key.getText();
 			suggest = profileMan.getActive().getTree().getSuggest(typedWord);
 			outputMan.printSuggest(suggest, typedWord);
-
-
-		} else if (isBackSpace(key.getText())) {
+		} else if (key.getType() == Key.UNICODE_KEY) {
+			outputMan.getOutput().printString(key.getText());
+		} else if (key.getText() == "\\BACK_SPACE\\") {
 			if (typedWord.length() > 0) {
 				typedWord = typedWord.substring(0, typedWord.length() - 2);
-				outputMan.printSuggest(key.getText(), typedWord);
+				outputMan.getOutput().deleteChar(2); // Zwei, weil einmal muss die aktuelle Markierung gelöscht werden und
+																	// dann ein Zeichen.
+				suggest = profileMan.getActive().getTree().getSuggest(typedWord);
+				outputMan.printSuggest(suggest, typedWord);
 			} else {
-				outputMan.getOutput().printChar(key);
+				outputMan.getOutput().deleteChar(1);
 			}
-		} else if (key.isAccept()) {
-			// TODO demarkiere Wort, schreibe SPACE und lösche Buffer; akzeptiere Wort
-		} else if (key.getText() == "\\SPACE\\" && !key.isAccept()) {
-			// TODO schreibe Leerzeiechen und lösche Puffer (WOrt wird wegen Markierung gelöscht)
+		} else if ((key.getText() == "\\SPACE\\" || key.getText() == "\\ENTER\\")) {
+			outputMan.getOutput().printChar(key);
+			typedWord = "";
+			suggest = "";
 		} else if (key.getType() == Key.CONTROL_KEY) {
-			// TODO sende Control_Key
-		} else if (key.getType() == Key.CHAR_KEY || key.getType() == Key.UNICODE_KEY) {
-			outputMan.getOutput().printString(key.getText());
-			outputMan.printSuggest(key.getText(), typedWord);
+			outputMan.getOutput().printChar(key);
+			if (key.getText() == "\\DELETE\\")
+				suggest = "";
 		} else if (key.getType() == Key.MUTE_KEY) {
 			// TODO Do something for mute
 		}
 	}
 	
-
-	/**
-	 * Checks if a Keyinput is a Control Character
-	 */
-	private boolean isControl(String input) {
-		// if (input.charAt(0) == '\\' && input.charAt(input.length() - 1) == '\\' &&
-		// !input.substring(0).startsWith("\\U+")) {
-		if (true) {
-			return true;
-		} else
-			return false;
-	}
-	
-
-	/**
-	 * Checks if a Keyinput is a Back Space
-	 */
-	private boolean isBackSpace(String input) {
-		if (input == "\\BACK_SPACE\\") {
-			return true;
-		} else
-			return false;
-	}
-	
-
-	/**
-	 * Checks if a Keyinput is a Accept Space
-	 */
-	private boolean isAcceptSpace(String input) {
-		if (input == "\\SPACE\\") {
-			return true;
-		} else
-			return false;
-	}
-	
-
-	/**
-	 * Checks if a Keyinput is a Decline Space
-	 */
-	private boolean isDeclineSpace(String input) {
-		if (input == "\\SPACE\\") {
-			return true;
-		} else
-			return false;
-	}
-
 
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------

@@ -62,7 +62,12 @@ public class Output {
 
 
 	public boolean printChar(Key c) {
-		return printString(c.getText());
+		return printString(c.getText(), c.getType());
+	}
+
+
+	public boolean printString(String charSequence) {
+		return printString(charSequence, 0);
 	}
 
 
@@ -73,7 +78,7 @@ public class Output {
 	 * @param c
 	 * @return
 	 */
-	public boolean printString(String charSequence) {
+	public boolean printString(String charSequence, int type) {
 		int length = charSequence.length();
 		int keyCode = 0;
 
@@ -145,6 +150,10 @@ public class Output {
 			
 			return true;
 		}
+	}
+	
+	public void unMark() {
+		this.sendKey(KeyEvent.VK_RIGHT);
 	}
 
 
