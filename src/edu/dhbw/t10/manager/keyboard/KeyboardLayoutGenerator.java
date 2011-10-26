@@ -127,7 +127,7 @@ public class KeyboardLayoutGenerator {
 						Key newKey = getKey(eElement);
 						if (newKey != null) {
 							keys.add(newKey);
-							// newKey.addActionListener(keyListener);
+							newKey.addActionListener(keyListener);
 							newKey.addActionListener(ec); // use EventCollector as listener
 						}
 					} else {
