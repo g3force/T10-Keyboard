@@ -18,9 +18,9 @@ import javax.swing.JPanel;
 import org.apache.log4j.Logger;
 
 import edu.dhbw.t10.manager.profile.ProfileManager;
-import edu.dhbw.t10.type.DropDownList;
-import edu.dhbw.t10.type.Key;
-import edu.dhbw.t10.type.KeyboardLayout;
+import edu.dhbw.t10.type.keyboard.DropDownList;
+import edu.dhbw.t10.type.keyboard.Key;
+import edu.dhbw.t10.type.keyboard.KeyboardLayout;
 
 
 /**

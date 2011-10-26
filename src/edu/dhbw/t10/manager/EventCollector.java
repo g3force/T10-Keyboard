@@ -13,7 +13,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.EventListener;
 
-import edu.dhbw.t10.type.Key;
+import edu.dhbw.t10.manager.keyboard.KeyboardEvent;
+import edu.dhbw.t10.manager.keyboard.KeyboardListener;
+import edu.dhbw.t10.type.keyboard.Key;
 
 
 /**
