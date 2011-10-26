@@ -47,7 +47,7 @@ public class OutputManager
 		if (isBackSpace(newSuggest)) {
 			if (typed.length() > 0) {
 				typed = typed.substring(0, typed.length() - 2);
-				suggest(newSuggest, typed);
+				printSuggest(newSuggest, typed);
 			} else {
 				out.deleteChar(1);
 			}
@@ -66,8 +66,7 @@ public class OutputManager
 			out.printString(newSuggest);
 		} else {
 			out.printString(newSuggest);
-			// TODO mark the suggest letters (SHIFT+LEFT)
-			suggest(newSuggest, typed);
+			printSuggest(newSuggest, typed);
 		}
 		return false;
 	}
@@ -119,14 +118,14 @@ public class OutputManager
 
 	/**
 	 * 
-	 * Suggest deletes the old suggest, requests a new one and prints it out.
+	 * printSuggest deletes the old suggest, prints it out and mark the chars that are added from the suggest word.
 	 * 
 	 */
-	private void suggest(String newSuggest, String typed) {
-		int diff = suggest.length() - typed.length();
-		out.deleteChar(diff);
+	private void printSuggest(String newSuggest, String typed) {
 		suggest = newSuggest;
+		int diff = suggest.length() - typed.length();
 		out.printString(suggest.substring(typed.length()));
+		out.markChar(diff);
 	}
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
