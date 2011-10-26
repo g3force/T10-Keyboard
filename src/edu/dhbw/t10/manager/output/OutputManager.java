@@ -28,7 +28,6 @@ public class OutputManager
 	private static final Logger	logger	= Logger.getLogger(OutputManager.class);
 	
 	Output								out		= Output.getInstance();
-	String								suggest	= "";										// FIXME Was ist mit Unicode zeichen
 	private static OutputManager	instance	= null;
 	
 	// --------------------------------------------------------------------------
@@ -60,10 +59,8 @@ public class OutputManager
 	 * 
 	 */
 	public void printSuggest(String newSuggest, String typed) {
-		suggest = newSuggest;
-		int diff = suggest.length() - typed.length();
-		out.printString(convertToUnicode(suggest.substring(typed.length())));
-		out.markChar(diff);
+		out.printString(convertToUnicode(newSuggest.substring(typed.length())));
+		out.markChar(newSuggest.length() - typed.length());
 	}
 	
 
