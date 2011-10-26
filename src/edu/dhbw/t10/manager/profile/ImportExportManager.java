@@ -7,7 +7,7 @@
  *
  * *********************************************************
  */
-package edu.dhbw.t10.manager;
+package edu.dhbw.t10.manager.profile;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
