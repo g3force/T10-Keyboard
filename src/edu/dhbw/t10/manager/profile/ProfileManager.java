@@ -201,7 +201,6 @@ public class ProfileManager {
 		return activeProfile;
 	}
 
-
 	public KeyboardLayout getKbdLayout() {
 		return kbdLayout;
 	}
