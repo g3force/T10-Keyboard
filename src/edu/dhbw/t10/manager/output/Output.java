@@ -17,6 +17,8 @@ import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
 
+import edu.dhbw.t10.type.keyboard.Key;
+
 
 /**
  * 
@@ -39,16 +41,28 @@ public class Output {
 	private static final Logger	logger	= Logger.getLogger(Output.class);
 	private static int				os			= 1;
 	
+	private static Output			instance;
+
 	
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
-	
+	private Output() {
+		
+	}
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
-	public boolean printChar(Character c) {
-		return printString(c.toString());
+	public static Output getInstance() {
+		if (instance == null) {
+			instance = new Output();
+		}
+		return instance;
+	}
+
+
+	public boolean printChar(Key c) {
+		return printString(c.getText());
 	}
 
 
