@@ -7,9 +7,9 @@
  *
  * *********************************************************
  */
-package edu.dhbw.t10.manager;
+package edu.dhbw.t10.manager.keyboard;
 
-import java.util.EventListener;
+import java.util.EventObject;
 
 /**
  * TODO felix, add comment!
@@ -19,23 +19,35 @@ import java.util.EventListener;
  * @author felix
  * 
  */
-public interface KeyboardListener extends EventListener {
+public class KeyboardEvent extends EventObject {
+	/**  */
+	private static final long	serialVersionUID	= 1825899478530029603L;
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
-	
+	private String	key;
 
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
-	
+	/**
+	 * @param arg0
+	 */
+	public KeyboardEvent(Object source, String key) {
+		super(source);
+		
+		this.key = key;
+	}
 
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
-	void keyboardActionAlterEy(KeyboardEvent e);
+	
 
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
+	public String getKey() {
+		return this.key;
+	}
 }

@@ -7,7 +7,7 @@
  * 
  * *********************************************************
  */
-package edu.dhbw.t10.type;
+package edu.dhbw.t10.type.profile;
 
 import org.apache.log4j.Logger;
 

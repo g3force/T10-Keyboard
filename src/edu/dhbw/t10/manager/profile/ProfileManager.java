@@ -12,9 +12,9 @@ package edu.dhbw.t10.manager.profile;
 import java.awt.Dimension;
 import java.util.ArrayList;
 
-import edu.dhbw.t10.manager.KeyboardLayoutGenerator;
-import edu.dhbw.t10.type.KeyboardLayout;
-import edu.dhbw.t10.type.Profile;
+import edu.dhbw.t10.manager.keyboard.KeyboardLayoutGenerator;
+import edu.dhbw.t10.type.keyboard.KeyboardLayout;
+import edu.dhbw.t10.type.profile.Profile;
 import edu.dhbw.t10.view.Presenter;
 import edu.dhbw.t10.view.panels.MainPanel;
 
@@ -69,7 +69,7 @@ public class ProfileManager {
 		return instance;
 	}
 	
-	
+
 	public void resizeWindow(Dimension size) {
 		if (kbdLayout != null) {
 			float xscale = (float) size.width / (float) kbdLayout.getOrigSize_x();
@@ -84,7 +84,7 @@ public class ProfileManager {
 		}
 	}
 	
-	
+
 	public int create(String profileName) {
 		Profile newProfile = new Profile();
 		newProfile.setName(profileName);
@@ -93,7 +93,7 @@ public class ProfileManager {
 		return newProfile.getID();
 	}
 	
-	
+
 	/**
 	 * 
 	 * Re-arranges the IDs of the profiles after a certain profile gets deleted.
@@ -109,7 +109,7 @@ public class ProfileManager {
 		}
 	}
 	
-	
+
 	/**
 	 * 
 	 * Deletes a profile depending on the ID.<br/>
@@ -139,7 +139,7 @@ public class ProfileManager {
 		}
 	}
 	
-	
+
 	/**
 	 * 
 	 * Marks a profile (depending on the ID) as "active". If not found, nothing happens.
@@ -157,7 +157,7 @@ public class ProfileManager {
 		}
 	}
 	
-	
+
 	/**
 	 * 
 	 * TODO implementieren... siehe Kontrollfluss Diagramm
@@ -171,7 +171,7 @@ public class ProfileManager {
 		return getActive().getTree().getSuggest(givenChars);
 	}
 	
-	
+
 	/**
 	 * 
 	 * TODO implementieren...
@@ -191,7 +191,7 @@ public class ProfileManager {
 		return profiles;
 	}
 	
-	
+
 	public Profile getActive() {
 		return profiles.get(activeProfile);
 	}

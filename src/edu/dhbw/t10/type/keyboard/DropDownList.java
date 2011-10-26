@@ -7,7 +7,7 @@
  * 
  * *********************************************************
  */
-package edu.dhbw.t10.type;
+package edu.dhbw.t10.type.keyboard;
 
 import java.awt.Dimension;
 
