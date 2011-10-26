@@ -36,8 +36,8 @@ public class Output {
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
-	private static final Logger	logger			= Logger.getLogger(Output.class);
-
+	private static final Logger	logger	= Logger.getLogger(Output.class);
+	private static int				os			= 1;
 	
 	
 	// --------------------------------------------------------------------------
@@ -73,18 +73,25 @@ public class Output {
 			for (int i = 0; i < length; i++) {
 				// Unterscheidung zwischen Buchstaben (und Zahlen) und Unicode Zeichen
 				if (!unicodeStart.isEmpty() && unicodeStart.get(0) == i) { // Unicode Aufruf unter Linux
-					this.sendKey(0, 6);
-					keyCode = this.getKeyCode(charSequence.substring(i + 3, i + 4));
-					this.sendKey(keyCode, 6);
-					keyCode = this.getKeyCode(charSequence.substring(i + 4, i + 5));
-					this.sendKey(keyCode, 6);
-					keyCode = this.getKeyCode(charSequence.substring(i + 5, i + 6));
-					this.sendKey(keyCode, 6);
-					keyCode = this.getKeyCode(charSequence.substring(i + 6, i + 7));
-					this.sendKey(keyCode, 6);
-					this.sendKey(KeyEvent.VK_ENTER, 6);
-					i += 7;
-					unicodeStart.remove(0);
+					if (os == 1) {
+						this.sendKey(0, 6);
+						keyCode = this.getKeyCode(charSequence.substring(i + 3, i + 4));
+						this.sendKey(keyCode, 6);
+						keyCode = this.getKeyCode(charSequence.substring(i + 4, i + 5));
+						this.sendKey(keyCode, 6);
+						keyCode = this.getKeyCode(charSequence.substring(i + 5, i + 6));
+						this.sendKey(keyCode, 6);
+						keyCode = this.getKeyCode(charSequence.substring(i + 6, i + 7));
+						this.sendKey(keyCode, 6);
+						this.sendKey(KeyEvent.VK_ENTER, 6);
+						i += 7;
+						unicodeStart.remove(0);
+					} else if (os == 2) {
+						keyCode = 0;// FIXME Convertion from Unicode HexaString to Decimal
+						this.sendKey(0, 7);
+						i += 7;
+						unicodeStart.remove(0);
+					}
 				} else if (Character.isUpperCase(charSequence.charAt(i)) == true) { // Big Letters
 					keyCode = this.getKeyCode(charSequence.substring(i, i + 1));
 					this.sendKey(keyCode, 1);
@@ -109,6 +116,22 @@ public class Output {
 			return true;
 		}
 	}
+	
+
+	public boolean markChar(int length) {
+		if (length <= 0)
+			return false;
+		else {
+			this.sendKey(KeyEvent.VK_SHIFT, 0, 1);
+			
+			for (int i = 0; i < length; i++) {
+				this.sendKey(KeyEvent.VK_LEFT);
+			}
+			this.sendKey(KeyEvent.VK_SHIFT, 0, 1);
+			
+			return true;
+		}
+	}
 
 
 	/**
@@ -121,7 +144,7 @@ public class Output {
 	private ArrayList<Integer> extractUnicode(String sequence) {
 		ArrayList<Integer> unicodeStart = new ArrayList<Integer>();
 		int help = 0;
-
+		// TODO erkenne Sonderzeichen und Konvertiere das in Unicode
 		while (help < sequence.length()) {
 			if (sequence.substring(help).startsWith("\\U+")) {
 				help = sequence.indexOf("\\U+", help);
@@ -156,6 +179,7 @@ public class Output {
 		} catch (NoSuchFieldException err) {
 			// TODO Auto-generated catch block
 			err.printStackTrace();
+			// TODO Umlaute und andere Zeichen in Unicode Konvertieren
 			return 0;
 		} catch (IllegalArgumentException err) {
 			// TODO Auto-generated catch block
@@ -242,7 +266,7 @@ public class Output {
 					keyRobot.keyRelease(KeyEvent.VK_WINDOWS);
 				}
 					break;
-				case 6: { // Unicode
+				case 6: { // Unicode Linux
 					if (key == 0) {
 						keyRobot.keyPress(KeyEvent.VK_CONTROL);
 						keyRobot.keyPress(KeyEvent.VK_SHIFT);
@@ -254,6 +278,14 @@ public class Output {
 						keyRobot.keyPress(key);
 						keyRobot.keyRelease(key);
 					}
+				}
+					break;
+				case 7: { // Unicode Windows
+					keyRobot.keyPress(KeyEvent.VK_ALT);
+					
+					// Keycode erhalten und jede Ziffer ausgeben
+					
+					keyRobot.keyRelease(KeyEvent.VK_ALT);
 				}
 					break;
 			}

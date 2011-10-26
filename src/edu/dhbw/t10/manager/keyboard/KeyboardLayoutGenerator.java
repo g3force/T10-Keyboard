@@ -28,7 +28,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import edu.dhbw.t10.manager.EventCollector;
+import edu.dhbw.t10.manager.Controller;
 import edu.dhbw.t10.manager.profile.ProfileManager;
 import edu.dhbw.t10.type.keyboard.DropDownList;
 import edu.dhbw.t10.type.keyboard.Key;
@@ -56,7 +56,7 @@ public class KeyboardLayoutGenerator {
 	private ArrayList<Key>				keys;
 	private String							filePath		= "conf/keyboard_layout_de_default.xml";
 	private KeyboardLayout				kbdLayout	= new KeyboardLayout(0, 0, 1);
-	
+
 	private ActionListener				keyListener	= new ActionListener() {
 																	
 																	@Override
@@ -69,14 +69,14 @@ public class KeyboardLayoutGenerator {
 																	}
 																};
 
-	private EventCollector				ec;
+	private Controller					ec;
 
 
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
 	public KeyboardLayoutGenerator() {
-		ec = EventCollector.getInstance();
+		ec = Controller.getInstance();
 		init();
 	}
 	
@@ -128,7 +128,7 @@ public class KeyboardLayoutGenerator {
 						Key newKey = getKey(eElement);
 						if (newKey != null) {
 							keys.add(newKey);
-							// newKey.addActionListener(keyListener);
+							newKey.addActionListener(keyListener);
 							newKey.addActionListener(ec); // use EventCollector as listener
 						}
 					} else {
