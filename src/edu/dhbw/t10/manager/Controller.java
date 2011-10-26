@@ -9,12 +9,10 @@
  */
 package edu.dhbw.t10.manager;
 
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import edu.dhbw.t10.manager.output.OutputManager;
 import edu.dhbw.t10.manager.profile.ProfileManager;
-import edu.dhbw.t10.type.keyboard.Key;
 
 
 /**
@@ -41,6 +39,8 @@ public class Controller implements ActionListener {
 	// --------------------------------------------------------------------------
 	private Controller() {
 		typedWord = "";
+		profileMan = ProfileManager.getInstance();
+		outputMan = OutputManager.getInstance();
 	}
 
 	// --------------------------------------------------------------------------
@@ -52,18 +52,90 @@ public class Controller implements ActionListener {
 		}
 		return instance;
 	}
-
+	
+	
+	// TODO DANIEL SCHNELLLLL
 
 	@Override
-	public void actionPerformed(ActionEvent e) {
-		Key k = (Key) e.getSource();
-		typedWord = typedWord + k.getText();
-		String suggest = profileMan.getActive().getTree().getSuggest(typedWord);
-		// outputMan.
-		if (e.getSource() instanceof Key) {
-
-		}
+	// public void actionPerformed(ActionEvent e) {
+	// Key key = (Key) e.getSource();
+	// if (key.getType() == Key.CHAR_KEY) {
+	// typedWord = typedWord + key.getText();
+	// String suggest = profileMan.getActive().getTree().getSuggest(typedWord);
+	// if (isBackSpace(suggest)) {
+	// if (typedWord.length() > 0) {
+	// typedWord = typedWord.substring(0, typedWord.length() - 2);
+	// outputMan.printSuggest(suggest, typedWord);
+	// } else {
+	// outputMan.deleteChar(1);
+	// }
+	// } else if (isAcceptSpace(suggest)) {
+	// outputMan.printString("\\SPACE\\");
+	// typedWord = "";
+	// suggest = "";
+	// } else if (isDeclineSpace(suggest)) {
+	// int diff = suggest.length() - typedWord.length();
+	// outputMan.deleteChar(diff);
+	// outputMan.printString("\\SPACE\\");
+	// typedWord = "";
+	// suggest = "";
+	// } else if (isControl(suggest)) {
+	// outputMan.printString(suggest);
+	// } else {
+	// outputMan.printString(suggest);
+	// printSuggest(suggest, typedWord);
+	// }
+	// }
+	// // outputMan.
+	// if (e.getSource() instanceof Key) {
+	//
+	// }
+	// }
+	
+	
+	/**
+	 * Checks if a Keyinput is a Control Character
+	 */
+	private boolean isControl(String input) {
+		if (input.charAt(0) == '\\' && input.charAt(input.length() - 1) == '\\' && !input.substring(0).startsWith("\\U+")) {
+			return true;
+		} else
+			return false;
 	}
+	
+	
+	/**
+	 * Checks if a Keyinput is a Back Space
+	 */
+	private boolean isBackSpace(String input) {
+		if (input == "\\BACK_SPACE\\") {
+			return true;
+		} else
+			return false;
+	}
+	
+	
+	/**
+	 * Checks if a Keyinput is a Accept Space
+	 */
+	private boolean isAcceptSpace(String input) {
+		if (input == "\\SPACE\\") {
+			return true;
+		} else
+			return false;
+	}
+	
+	
+	/**
+	 * Checks if a Keyinput is a Decline Space
+	 */
+	private boolean isDeclineSpace(String input) {
+		if (input == "\\SPACE\\") {
+			return true;
+		} else
+			return false;
+	}
+
 
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
