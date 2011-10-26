@@ -12,6 +12,7 @@ package edu.dhbw.t10.type;
 import org.apache.log4j.Logger;
 
 import edu.dhbw.t10.manager.Serializer;
+import edu.dhbw.t10.type.tree.PriorityTree;
 
 
 /**

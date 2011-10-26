@@ -7,7 +7,7 @@
  * 
  * *********************************************************
  */
-package edu.dhbw.t10.type;
+package edu.dhbw.t10.type.tree;
 
 import java.io.Serializable;
 import java.util.Calendar;

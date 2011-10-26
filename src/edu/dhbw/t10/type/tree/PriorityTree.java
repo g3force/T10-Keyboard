@@ -7,7 +7,7 @@
  * 
  * *********************************************************
  */
-package edu.dhbw.t10.type;
+package edu.dhbw.t10.type.tree;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -15,6 +15,7 @@ import java.util.LinkedList;
 import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
+
 
 
 /**
@@ -66,7 +67,7 @@ public class PriorityTree implements Serializable {
 	 * @param frequency the start frequency of the inserting word
 	 */
 	private void insert(String word, int frequency, boolean setFreq) {
-		if (inputValid(word)) {
+		// if (inputValid(word)) {
 			logger.debug("Insertig Word...");
 			PriorityElement node = root;
 			char[] inChar = word.toCharArray(); // put every letter of the word alone in an char array
@@ -92,10 +93,12 @@ public class PriorityTree implements Serializable {
 				}
 			}
 			logger.info("Word Inserted");
-		} else {
-			logger.info("Word Ignored - not valid");
-			System.out.println("not valid");
-		}
+		/*
+		 * } else {
+		 * logger.info("Word Ignored - not valid");
+		 * System.out.println("not valid");
+		 * }
+		 */
 	}
 	
 
@@ -293,6 +296,12 @@ public class PriorityTree implements Serializable {
 	}
 	
 	
+	/**
+	 * 
+	 * only for english, ÄÖÜäüö not supported
+	 * @param in string
+	 * @return true if, all chars are in the alphabet
+	 */
 	private boolean inputValid(String in) {
 		for(char letter: in.toCharArray()) {
 			if ((int) letter < 65 || ((int) letter > 90 && (int) letter < 97) || (int) letter > 122) {

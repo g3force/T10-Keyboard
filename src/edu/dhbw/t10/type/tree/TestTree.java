@@ -7,9 +7,10 @@
  *
  * *********************************************************
  */
-package edu.dhbw.t10.type;
+package edu.dhbw.t10.type.tree;
 
 import edu.dhbw.t10.manager.ImportExportManager;
+import edu.dhbw.t10.type.Profile;
 
 
 
