@@ -9,6 +9,9 @@
  */
 package edu.dhbw.t10.manager;
 
+import edu.dhbw.t10.manager.output.OutputManager;
+import edu.dhbw.t10.manager.profile.ProfileManager;
+
 // import edu.dhbw.t10.type.Ringbuffer;
 
 /**
@@ -24,7 +27,9 @@ public class Controller {
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
 	// private Ringbuffer<String> lastWords = new Ringbuffer<String>(5);
-
+	private String	typedWord	= ""; // FIXME Was ist mit unicode zeichen
+	private ProfileManager	profileMan;
+	private OutputManager	outputMan;
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
@@ -33,6 +38,9 @@ public class Controller {
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
+	public void listener(char letter) {
+		
+	}
 	// public Profile profileRecommendation() {
 	// Profile active = ProfileManager.getInstance().getActive();
 	// for (Profile p : ProfileManager.getInstance().getProfiles()) {
