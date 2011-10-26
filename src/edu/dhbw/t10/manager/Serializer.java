@@ -17,7 +17,7 @@ import java.io.ObjectOutputStream;
 
 import org.apache.log4j.Logger;
 
-import edu.dhbw.t10.type.PriorityTree;
+import edu.dhbw.t10.type.tree.PriorityTree;
 
 
 /**
