@@ -10,6 +10,8 @@
 package edu.dhbw.t10.manager.keyboard;
 
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -27,6 +29,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import edu.dhbw.t10.manager.EventCollector;
+import edu.dhbw.t10.manager.profile.ProfileManager;
 import edu.dhbw.t10.type.keyboard.DropDownList;
 import edu.dhbw.t10.type.keyboard.Key;
 import edu.dhbw.t10.type.keyboard.KeyboardLayout;
@@ -53,19 +56,18 @@ public class KeyboardLayoutGenerator {
 	private ArrayList<Key>				keys;
 	private String							filePath		= "conf/keyboard_layout_de_default.xml";
 	private KeyboardLayout				kbdLayout	= new KeyboardLayout(0, 0, 1);
-	/*
-	 * private ActionListener keyListener = new ActionListener() {
-	 * 
-	 * @Override
-	 * public void actionPerformed(ActionEvent e) {
-	 * Key key = (Key) (e.getSource());
-	 * System.out.println(key.getKeycode());
-	 * if (key.getKeycode().equals("\\SHIFT\\")) {
-	 * ProfileManager.getInstance().getKbdLayout().setMode("shift");
-	 * }
-	 * }
-	 * };
-	 */
+	private ActionListener				keyListener	= new ActionListener() {
+																	
+																	@Override
+																	public void actionPerformed(ActionEvent e) {
+																		Key key = (Key) (e.getSource());
+																		System.out.println(key.getKeycode());
+																		if (key.getKeycode().equals("\\SHIFT\\")) {
+																			ProfileManager.getInstance().getKbdLayout().setMode("shift");
+																		}
+																	}
+																};
+
 	private EventCollector				ec;
 
 
