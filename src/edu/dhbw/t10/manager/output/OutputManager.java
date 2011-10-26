@@ -25,9 +25,9 @@ public class OutputManager
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
-	private static final Logger	logger	= Logger.getLogger(Output.class);
+	private static final Logger	logger	= Logger.getLogger(OutputManager.class);
 	
-	Output								out		= new Output();
+	Output								out		= Output.getInstance();
 	String								suggest	= "";										// FIXME Was ist mit Unicode zeichen
 	private static OutputManager	instance	= null;
 	
@@ -59,7 +59,7 @@ public class OutputManager
 	 * printSuggest deletes the old suggest, prints it out and mark the chars that are added from the suggest word.
 	 * 
 	 */
-	private void printSuggest(String newSuggest, String typed) {
+	public void printSuggest(String newSuggest, String typed) {
 		suggest = newSuggest;
 		int diff = suggest.length() - typed.length();
 		out.printString(suggest.substring(typed.length()));
@@ -68,4 +68,8 @@ public class OutputManager
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
+	
+	public Output getOutput() {
+		return out;
+	}
 }
