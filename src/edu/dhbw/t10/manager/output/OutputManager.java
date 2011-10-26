@@ -11,8 +11,6 @@ package edu.dhbw.t10.manager.output;
 
 import org.apache.log4j.Logger;
 
-import edu.dhbw.t10.manager.profile.ProfileManager;
-
 
 /**
  * TODO NicolaiO, add comment!
@@ -30,8 +28,6 @@ public class OutputManager
 	private static final Logger	logger	= Logger.getLogger(Output.class);
 	
 	Output								out		= new Output();
-	ProfileManager						proMan	= ProfileManager.getInstance();
-	String								typed		= "";										// FIXME Was ist mit unicode zeichen
 	String								suggest	= "";										// FIXME Was ist mit Unicode zeichen
 	
 	// --------------------------------------------------------------------------
@@ -47,32 +43,33 @@ public class OutputManager
 	/**
 	 * Process the Input data for 5 cases. 
 	 */
-	public void processInput(String input) {
-		if (isBackSpace(input)) {
+	public boolean print(String newSuggest, String typed) {
+		if (isBackSpace(newSuggest)) {
 			if (typed.length() > 0) {
 				typed = typed.substring(0, typed.length() - 2);
-				suggest();
+				suggest(newSuggest, typed);
 			} else {
 				out.deleteChar(1);
 			}
-		} else if (isAcceptSpace(input)) {
+		} else if (isAcceptSpace(newSuggest)) {
 			out.printString("\\SPACE\\");
-			proMan.acceptWord(suggest);
 			typed = "";
 			suggest = "";
-		} else if (isDeclineSpace(input)) {
+			return true;
+		} else if (isDeclineSpace(newSuggest)) {
 			int diff = suggest.length() - typed.length();
 			out.deleteChar(diff);
 			out.printString("\\SPACE\\");
 			typed = "";
 			suggest = "";
-		} else if (isControl(input)) {
-			out.printString(input);
+		} else if (isControl(newSuggest)) {
+			out.printString(newSuggest);
 		} else {
-			out.printString(input);
-			typed = typed + input;
-			suggest();
+			out.printString(newSuggest);
+			// TODO mark the suggest letters (SHIFT+LEFT)
+			suggest(newSuggest, typed);
 		}
+		return false;
 	}
 	
 
@@ -125,10 +122,10 @@ public class OutputManager
 	 * Suggest deletes the old suggest, requests a new one and prints it out.
 	 * 
 	 */
-	private void suggest() {
+	private void suggest(String newSuggest, String typed) {
 		int diff = suggest.length() - typed.length();
 		out.deleteChar(diff);
-		suggest = proMan.getWordSuggest(typed);
+		suggest = newSuggest;
 		out.printString(suggest.substring(typed.length()));
 	}
 	// --------------------------------------------------------------------------
