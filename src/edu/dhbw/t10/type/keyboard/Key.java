@@ -32,12 +32,18 @@ public class Key extends JButton {
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
 	private static final long		serialVersionUID	= 6949715976373962684L;
+	
+	public static final int			CONTROL_KEY			= 0;
+	public static final int			CHAR_KEY				= 1;
+	public static final int			UNICODE_KEY			= 2;
+	public static final int			MUTE_KEY				= 3;
+
 	private HashMap<String, Mode>	modes					= new HashMap<String, Mode>();
 	private Dimension					origSize				= new Dimension(10, 10);
 	private int							pos_x					= 0;
 	private int							pos_y					= 0;
 	private String						currentMode			= "default";
-	
+	private boolean					accept				= false;
 
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
@@ -238,5 +244,15 @@ public class Key extends JButton {
 		public void setColor(String color) {
 			this.color = color;
 		}
+	}
+	
+	
+	public boolean isAccept() {
+		return accept;
+	}
+	
+	
+	public void setAccept(boolean accept) {
+		this.accept = accept;
 	}
 }
