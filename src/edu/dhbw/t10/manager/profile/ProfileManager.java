@@ -184,7 +184,6 @@ public class ProfileManager {
 	}
 	
 
-
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
@@ -197,9 +196,11 @@ public class ProfileManager {
 		return profiles.get(activeProfile);
 	}
 	
+
 	public int getActiveProfile() {
 		return activeProfile;
 	}
+
 
 	public KeyboardLayout getKbdLayout() {
 		return kbdLayout;
