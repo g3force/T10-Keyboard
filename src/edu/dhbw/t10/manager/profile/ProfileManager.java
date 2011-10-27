@@ -171,7 +171,7 @@ public class ProfileManager {
 		return getActive().getTree().getSuggest(givenChars);
 	}
 	
-
+	
 	/**
 	 * 
 	 * TODO implementieren...
@@ -182,7 +182,7 @@ public class ProfileManager {
 	public void acceptWord(String word) {
 		getActive().getTree().insert(word);
 	}
-	
+
 
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
