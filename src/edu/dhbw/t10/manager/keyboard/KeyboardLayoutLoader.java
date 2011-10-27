@@ -73,7 +73,7 @@ public class KeyboardLayoutLoader {
 				Node nNode = nList.item(temp);
 				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
 					Element eElement = (Element) nNode;
-					ButtonKey newKey = getKey(eElement);
+					ButtonKey newKey = getKey(eElement, keymap);
 					if (newKey != null) {
 						keys.add(newKey);
 						// TODO listener
