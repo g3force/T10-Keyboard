@@ -17,7 +17,7 @@ import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
 
-import edu.dhbw.t10.type.keyboard.Key;
+import edu.dhbw.t10.type.keyboard.ButtonKey;
 
 
 /**
@@ -61,7 +61,7 @@ public class Output {
 	}
 
 
-	public boolean printChar(Key c) {
+	public boolean printChar(ButtonKey c) {
 		return printString(c.getText());
 	}
 

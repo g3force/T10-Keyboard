@@ -1,0 +1,63 @@
+<keymap version="0.1">
+	<keytype name="control">
+		<key id="0" keycode="\ESCAPE\">Esc</key>
+		<key id="1" keycode="\F1\">F1</key>
+		<key id="2" keycode="\F2\">F2</key>
+		<key id="3" keycode="\F3\">F3</key>
+		<key id="4" keycode="\F4\">F4</key>
+		<key id="5" keycode="\F5\">F5</key>
+		<key id="6" keycode="\F6\">F6</key>
+		<key id="7" keycode="\F7\">F7</key>
+		<key id="8" keycode="\F8\">F8</key>
+		<key id="9" keycode="\F9\">F9</key>
+		<key id="10" keycode="\F10\">F10</key>
+		<key id="11" keycode="\F11\">F11</key>
+		<key id="12" keycode="\F12\">F12</key>
+		<key id="13" keycode="\PRINTSCREEN\">Druck</key>
+		<key id="14" keycode="???">Pause</key>
+	</keytype>
+	
+	<keytype name="unicode">
+		<key id="15" keycode="\U+005E\">^</key>
+		<key id="16" keycode="\U+00B0\">°</key>
+		<key id="18" keycode="\U+0021\">!</key>
+		<key id="19" keycode="\U+00B9\">¹</key>
+		<key id="21" keycode="\U+0022\">"</key>
+		<key id="22" keycode="\U+00B2\">²</key>
+		<key id="24" keycode="\U+00A7\">§</key>
+		<key id="25" keycode="\U+00B3\">³</key>
+		<key id="27" keycode="\U+0024\">$</key>
+		<key id="29" keycode="\U+0025\">%</key>
+		<key id="31" keycode="\U+0026\">&amp;</key>
+		<key id="33" keycode="\U+002F\">/</key>
+		<key id="34" keycode="\U+007B\">{</key>
+		<key id="36" keycode="\U+0028\">(</key>
+		<key id="37" keycode="\U+005B\">[</key>
+		<key id="39" keycode="\U+0029\">)</key>
+		<key id="40" keycode="\U+005D\">]</key>
+		<key id="42" keycode="\U+003D\">=</key>
+		<key id="43" keycode="\U+007D\">}</key>
+		<key id="44" keycode="\U+00DF\">ß</key>
+		<key id="45" keycode="\U+003F\">?</key>
+		<key id="46" keycode="\U+005C\">\</key>
+		<key id="47" keycode="\U+00B4\">´</key>
+		<key id="48" keycode="\U+0060\">`</key>
+		<key id="49" keycode="\BACK_SPACE\">Backspace</key>
+	</keytype>
+	
+	<keytype name="char">
+		<key id="17" keycode="1">1</key>
+		<key id="20" keycode="2">2</key>
+		<key id="23" keycode="3">3</key>
+		<key id="26" keycode="4">4</key>
+		<key id="28" keycode="5">5</key>
+		<key id="30" keycode="6">6</key>
+		<key id="32" keycode="7">7</key>
+		<key id="35" keycode="8">8</key>
+		<key id="38" keycode="9">9</key>
+		<key id="41" keycode="0">0</key>
+	</keytype>
+</keymap>
+
+
+		
