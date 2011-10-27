@@ -14,7 +14,7 @@ import java.awt.event.ActionListener;
 
 import edu.dhbw.t10.manager.output.OutputManager;
 import edu.dhbw.t10.manager.profile.ProfileManager;
-import edu.dhbw.t10.type.keyboard.Key;
+import edu.dhbw.t10.type.keyboard.ButtonKey;
 
 
 /**
@@ -64,9 +64,9 @@ public class Controller implements ActionListener {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		Key key = (Key) e.getSource();
+		ButtonKey key = (ButtonKey) e.getSource();
 
-		if (key.getType() == Key.CHAR_KEY) {
+		if (key.getType() == ButtonKey.CHAR_KEY) {
 			outputMan.getOutput().printChar(key);
 			typedWord = typedWord + key.getText();
 			suggest = profileMan.getActive().getTree().getSuggest(typedWord);
@@ -84,12 +84,12 @@ public class Controller implements ActionListener {
 			// TODO demarkiere Wort, schreibe SPACE und lösche Buffer; akzeptiere Wort
 		} else if (key.getText() == "\\SPACE\\" && !key.isAccept()) {
 			// TODO schreibe Leerzeiechen und lösche Puffer (WOrt wird wegen Markierung gelöscht)
-		} else if (key.getType() == Key.CONTROL_KEY) {
+		} else if (key.getType() == ButtonKey.CONTROL_KEY) {
 			// TODO sende Control_Key
-		} else if (key.getType() == Key.CHAR_KEY || key.getType() == Key.UNICODE_KEY) {
+		} else if (key.getType() == ButtonKey.CHAR_KEY || key.getType() == ButtonKey.UNICODE_KEY) {
 			outputMan.getOutput().printString(key.getText());
 			outputMan.printSuggest(key.getText(), typedWord);
-		} else if (key.getType() == Key.MUTE_KEY) {
+		} else if (key.getType() == ButtonKey.MUTE_KEY) {
 			// TODO Do something for mute
 		}
 	}

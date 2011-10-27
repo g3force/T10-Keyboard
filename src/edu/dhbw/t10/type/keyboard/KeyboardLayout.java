@@ -27,7 +27,7 @@ public class KeyboardLayout {
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
-	private ArrayList<Key>				keys			= new ArrayList<Key>();
+	private ArrayList<ButtonKey>				keys			= new ArrayList<ButtonKey>();
 	private ArrayList<DropDownList>	ddls			= new ArrayList<DropDownList>();
 	private int								size_x		= 0;
 	private int								size_y		= 0;
@@ -53,7 +53,7 @@ public class KeyboardLayout {
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
-	public void addKey(Key key) {
+	public void addKey(ButtonKey key) {
 		keys.add(key);
 	}
 	
@@ -63,7 +63,7 @@ public class KeyboardLayout {
 	}
 	
 	public void rescale() {
-		for (Key k : keys) {
+		for (ButtonKey k : keys) {
 			Rectangle rect = k.getBounds();
 			rect.setBounds((int) (k.getPos_x() * scale_x), (int) (k.getPos_y() * scale_y),
 					(int) (k.getOrigSize().width * scale_x), (int) (k.getOrigSize().height * scale_y));
@@ -79,9 +79,9 @@ public class KeyboardLayout {
 	}
 	
 	
-	private void changeMode(String nMode) {
+	private void addMode(String nMode) {
 		mode = nMode;
-		for (Key key : keys) {
+		for (ButtonKey key : keys) {
 			key.setCurrentMode(mode);
 		}
 	}
@@ -91,12 +91,12 @@ public class KeyboardLayout {
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
 	
-	public ArrayList<Key> getKeys() {
+	public ArrayList<ButtonKey> getKeys() {
 		return keys;
 	}
 	
 	
-	public void setKeys(ArrayList<Key> keys) {
+	public void setKeys(ArrayList<ButtonKey> keys) {
 		this.keys = keys;
 	}
 	
@@ -128,16 +128,6 @@ public class KeyboardLayout {
 
 	public void setSize_y(int size_y) {
 		this.size_y = size_y;
-	}
-	
-	
-	public String getMode() {
-		return mode;
-	}
-	
-	
-	public void setMode(String mode) {
-		changeMode(mode);
 	}
 	
 	

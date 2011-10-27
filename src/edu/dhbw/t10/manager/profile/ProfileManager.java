@@ -12,7 +12,7 @@ package edu.dhbw.t10.manager.profile;
 import java.awt.Dimension;
 import java.util.ArrayList;
 
-import edu.dhbw.t10.manager.keyboard.KeyboardLayoutGenerator;
+import edu.dhbw.t10.manager.keyboard.KeyboardLayoutLoader;
 import edu.dhbw.t10.type.keyboard.KeyboardLayout;
 import edu.dhbw.t10.type.profile.Profile;
 import edu.dhbw.t10.view.Presenter;
@@ -49,7 +49,7 @@ public class ProfileManager {
 		profiles = new ArrayList<Profile>();
 		activeProfile = -1; // No profile.
 		instance = this;
-		KeyboardLayoutGenerator lfm = new KeyboardLayoutGenerator();
+		KeyboardLayoutLoader lfm = new KeyboardLayoutLoader();
 		kbdLayout = lfm.getKbdLayout();
 		// profiles = loadProfiles();
 	}
