@@ -34,7 +34,6 @@ public class KeyboardLayout {
 	private float							scale_x		= 1;
 	private float							scale_y		= 1;
 	private float							scale_font	= 1;
-	private String							mode			= "default";
 	private Font							font			= new Font("Dialog", Font.PLAIN, 12);
 
 	
@@ -79,12 +78,7 @@ public class KeyboardLayout {
 	}
 	
 	
-	private void addMode(String nMode) {
-		mode = nMode;
-		for (ButtonKey key : keys) {
-			key.setCurrentMode(mode);
-		}
-	}
+
 
 
 	// --------------------------------------------------------------------------

@@ -57,6 +57,7 @@ public class KeyboardLayoutLoader {
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
+
 	public static KeyboardLayout load(String filePath, HashMap<Integer, SingleKey> keymap) {
 		KeyboardLayout kbdLayout = new KeyboardLayout(0, 0, 1);
 		File layoutFile = new File(filePath);
@@ -143,7 +144,7 @@ public class KeyboardLayoutLoader {
 			
 			kbdLayout.setFont(new Font(fname, fstyle, fsize));
 			kbdLayout.setKeys(keys);
-			kbdLayout.setMode("default");
+			// kbdLayout.setMode("default"); TODO to be fixed by Nico ;) Dirk
 			kbdLayout.rescale();
 			logger.info("loaded " + keys.size() + " Buttonkeys.");
 		} catch (ParserConfigurationException err) {
@@ -187,7 +188,7 @@ public class KeyboardLayoutLoader {
 					if (color != null) {
 						sColor = color.getTextContent();
 					}
-					key.addMode(sModeName, item.getTextContent(), keymap.get(keycode), sColor);
+					key.addMode(sModeName, keymap.get(item.getTextContent()));
 				}
 			}
 			

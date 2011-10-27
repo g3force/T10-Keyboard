@@ -81,7 +81,8 @@ public class KeymapLoader {
 						if (key.getNodeName().equals("key")) {
 							int id = Integer.parseInt(key.getAttributes().getNamedItem("id").getTextContent());
 							String keycode = key.getAttributes().getNamedItem("keycode").getTextContent();
-							keymap.put(id, new SingleKey(id, keycode, type));
+							String name = key.getTextContent();
+							keymap.put(id, new SingleKey(id, name, keycode, type));
 						}
 					} catch (NullPointerException e) {
 						logger.warn("A key in keymap could not be read. j=" + j + " i=" + i);

@@ -29,15 +29,15 @@ public class SingleKey {
 	private int					id				= 0;
 	private String				keycode		= "";
 	private int					type			= UNKNOWN_KEY;
-	private boolean			accept		= false;
 	private String				name			= "";
 	// the name appearing on the button in the screen keyboard
 	
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
-	public SingleKey(int id, String keycode, int type) {
+	public SingleKey(int id, String name, String keycode, int type) {
 		this.id = id;
+		this.name = name;
 		this.keycode = keycode;
 		this.type = type;
 	}
@@ -77,16 +77,6 @@ public class SingleKey {
 	
 	public void setType(int type) {
 		this.type = type;
-	}
-	
-	
-	public boolean isAccept() {
-		return accept;
-	}
-	
-	
-	public void setAccept(boolean accept) {
-		this.accept = accept;
 	}
 	
 	
