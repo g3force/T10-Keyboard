@@ -35,12 +35,12 @@ public class ButtonKey extends JButton {
 	private static final long		serialVersionUID	= 6949715976373962684L;
 	
 
-	private HashMap<String, SingleKey>	modes					= new HashMap<String, SingleKey>();
+	private HashMap<Mode, SingleKey>	modes					= new HashMap<Mode, SingleKey>();
 	// assigns to every modi
 	private Dimension					origSize				= new Dimension(10, 10);
 	private int							pos_x					= 0;
 	private int							pos_y					= 0;
-	private ArrayList<String>		activeControlKeys	= new ArrayList<String>();
+	private ArrayList<Mode>				activeModes			= new ArrayList<Mode>();
 	
 	
 	// contains the activated control key like shift
@@ -90,7 +90,7 @@ public class ButtonKey extends JButton {
 	 */
 	// TODO INTERFACE for keyboardlayoutloader
 	public void addMode(Mode mode, SingleKey accordingKey) {
-		// modes.put(mode, new Mode(name, keycode, color));
+		modes.put(mode, accordingKey);
 	}
 	
 	
@@ -106,9 +106,9 @@ public class ButtonKey extends JButton {
 	 * @param currentMode
 	 * @author NicolaiO
 	 */
-	public void setCurrentMode(String currentMode) {
-		this.currentMode = currentMode;
-		setText(getKeyName());
+	public void addCurrentMode(Mode mode) {
+		activeModes.add(mode);
+		setText(modes.get(mode).getName());
 		setBackground(getColorFromString(getColor()));
 	}
 	
