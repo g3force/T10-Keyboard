@@ -15,7 +15,6 @@ import java.awt.Insets;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Set;
 
 import javax.swing.JButton;
 
@@ -35,12 +34,13 @@ public class ButtonKey extends JButton {
 	private static final long		serialVersionUID	= 6949715976373962684L;
 	
 
-	private HashMap<Mode, SingleKey>	modes					= new HashMap<Mode, SingleKey>();
+	private HashMap<String, SingleKey>	modes					= new HashMap<String, SingleKey>();
 	// assigns to every modi
 	private Dimension					origSize				= new Dimension(10, 10);
 	private int							pos_x					= 0;
 	private int							pos_y					= 0;
-	private ArrayList<Mode>				activeModes			= new ArrayList<Mode>();
+	private boolean							accept				= false;
+	private ArrayList<String>					activeModes			= new ArrayList<String>();
 	
 	
 	// contains the activated control key like shift
@@ -89,7 +89,7 @@ public class ButtonKey extends JButton {
 	 * @author NicolaiO
 	 */
 	// TODO INTERFACE for keyboardlayoutloader
-	public void addMode(Mode mode, SingleKey accordingKey) {
+	public void addMode(String mode, SingleKey accordingKey) {
 		modes.put(mode, accordingKey);
 	}
 	
@@ -106,17 +106,14 @@ public class ButtonKey extends JButton {
 	 * @param currentMode
 	 * @author NicolaiO
 	 */
-	public void addCurrentMode(Mode mode) {
+	public void addCurrentMode(String mode) {
 		activeModes.add(mode);
 		setText(modes.get(mode).getName());
-		setBackground(getColorFromString(getColor()));
+		// setBackground(getColorFromString(getColor()));
 	}
 	
 	
 	/**
-	 * 
-	 * TODO NicolaiO, add comment!
-	 * 
 	 * @param bgColor
 	 * @return
 	 * @author NicolaiO
@@ -131,6 +128,17 @@ public class ButtonKey extends JButton {
 		}
 		return color;
 	}
+	
+	
+	public String getKeycode() {
+		return modes.get("default").getKeycode();
+	}
+	
+	
+	public boolean isAccept() {
+		return accept;
+	}
+
 
 
 	// --------------------------------------------------------------------------
@@ -144,57 +152,23 @@ public class ButtonKey extends JButton {
 	 * @return
 	 * @author NicolaiO
 	 */
-	public String getKeyName() {
-		if (modes.containsKey(currentMode)) {
-			return modes.get(currentMode).getName();
-		} else if (modes.containsKey("default")) {
-			return modes.get("default").getName();
-		} else {
-			return "";
-		}
-	}
+	// public String getColor() {
+	// Mode m = modes.get(currentMode);
+	// if (m != null) {
+	// return modes.get(currentMode).getColor();
+	// } else if (modes.containsKey("default")) {
+	// return modes.get("default").getColor();
+	// }
+	// return "";
+	// }
 	
 	
-	/**
-	 * 
-	 * TODO NicolaiO, add comment!
-	 * 
-	 * @return
-	 * @author NicolaiO
-	 */
-	public String getKeycode() {
-		Mode m = modes.get(currentMode);
-		if (m != null) {
-			return modes.get(currentMode).getKeycode();
-		} else if (modes.containsKey("default")) {
-			return modes.get("default").getKeycode();
-		}
-		return "";
-	}
+	// public Set<String> getAllModes() {
+	// return modes.keySet();
+	// }
 	
 	
-	/**
-	 * 
-	 * TODO NicolaiO, add comment!
-	 * 
-	 * @return
-	 * @author NicolaiO
-	 */
-	public String getColor() {
-		Mode m = modes.get(currentMode);
-		if (m != null) {
-			return modes.get(currentMode).getColor();
-		} else if (modes.containsKey("default")) {
-			return modes.get("default").getColor();
-		}
-		return "";
-	}
-	
-	
-	public Set<String> getAllModes() {
-		return modes.keySet();
-	}
-	
+
 	
 	public int getPos_x() {
 		return pos_x;
@@ -216,18 +190,18 @@ public class ButtonKey extends JButton {
 	}
 	
 	
-	public HashMap<String, Mode> getModes() {
+	public HashMap<String, SingleKey> getModes() {
 		return modes;
 	}
 	
 	
-	public void setModes(HashMap<String, Mode> modes) {
+	public void setModes(HashMap<String, SingleKey> modes) {
 		this.modes = modes;
 	}
 	
 	
-	public String getCurrentMode() {
-		return currentMode;
+	public ArrayList<String> getActiveMode() {
+		return activeModes;
 	}
 	
 	
@@ -240,6 +214,16 @@ public class ButtonKey extends JButton {
 		this.origSize = origSize;
 	}
 	
+	
+	public int getType() {
+		if (activeModes.size() == 0) {
+			return modes.get("default").getType();
+		} else {
+			return modes.get(activeModes.get(0)).getType();
+			// TODO returns the fist activeMode, insert priority?
+		}
+	}
+
 	// private class Mode {
 	// private String name = "";
 	// private String keycode = "";

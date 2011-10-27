@@ -13,6 +13,7 @@ import java.awt.Dimension;
 import java.util.ArrayList;
 
 import edu.dhbw.t10.manager.keyboard.KeyboardLayoutLoader;
+import edu.dhbw.t10.manager.keyboard.KeymapLoader;
 import edu.dhbw.t10.type.keyboard.KeyboardLayout;
 import edu.dhbw.t10.type.profile.Profile;
 import edu.dhbw.t10.view.Presenter;
@@ -49,8 +50,9 @@ public class ProfileManager {
 		profiles = new ArrayList<Profile>();
 		activeProfile = -1; // No profile.
 		instance = this;
-		KeyboardLayoutLoader lfm = new KeyboardLayoutLoader();
-		kbdLayout = lfm.getKbdLayout();
+		KeymapLoader keyMapL = new KeymapLoader();
+		KeyboardLayoutLoader keyBoardL = new KeyboardLayoutLoader();
+		kbdLayout = keyBoardL.load("conf/keyboard_layout_de_default.xml", keyMapL.load("conf/keymap.xml"));
 		// profiles = loadProfiles();
 	}
 

@@ -56,6 +56,8 @@ public class Presenter extends JFrame {
 		contentPane.add(MainPanel.getInstance());
 		this.setJMenuBar(MenuBar.getInstance());
 		
+
+
 		// build GUI
 		pack();
 	}
