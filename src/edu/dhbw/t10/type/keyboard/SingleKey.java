@@ -30,6 +30,8 @@ public class SingleKey {
 	private String				keycode		= "";
 	private int					type			= UNKNOWN_KEY;
 	private boolean			accept		= false;
+	private String				name			= "";
+	// the name appearing on the button in the screen keyboard
 	
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
@@ -86,4 +88,16 @@ public class SingleKey {
 	public void setAccept(boolean accept) {
 		this.accept = accept;
 	}
+	
+	
+	public String getName() {
+		return name;
+	}
+	
+	
+	public void setName(String name) {
+		this.name = name;
+	}
+
+
 }
