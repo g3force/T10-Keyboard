@@ -35,11 +35,15 @@ public class ButtonKey extends JButton {
 	private static final long		serialVersionUID	= 6949715976373962684L;
 	
 
-	private HashMap<String, Mode>	modes					= new HashMap<String, Mode>();
+	private HashMap<String, SingleKey>	modes					= new HashMap<String, SingleKey>();
+	// assigns to every modi
 	private Dimension					origSize				= new Dimension(10, 10);
 	private int							pos_x					= 0;
 	private int							pos_y					= 0;
 	private ArrayList<String>		activeControlKeys	= new ArrayList<String>();
+	
+	
+	// contains the activated control key like shift
 
 
 	// --------------------------------------------------------------------------
@@ -84,8 +88,9 @@ public class ButtonKey extends JButton {
 	 * @param color
 	 * @author NicolaiO
 	 */
-	public void addMode(String mode, String name, String keycode, String color) {
-		modes.put(mode, new Mode(name, keycode, color));
+	// TODO INTERFACE for keyboardlayoutloader
+	public void addMode(Mode mode, SingleKey accordingKey) {
+		// modes.put(mode, new Mode(name, keycode, color));
 	}
 	
 	
@@ -235,57 +240,57 @@ public class ButtonKey extends JButton {
 		this.origSize = origSize;
 	}
 	
-	private class Mode {
-		private String	name		= "";
-		private String	keycode	= "";
-		private String	color		= "";
-		
-		
-		public Mode(String _name, String _keycode, String _color) {
-			name = _name;
-			keycode = _keycode;
-			color = _color;
-		}
-		
-		
-		public String toString() {
-			return "(" + name + " " + keycode + ")";
-		}
-		
-
-		@SuppressWarnings("unused")
-		public String getName() {
-			return name;
-		}
-		
-		
-		@SuppressWarnings("unused")
-		public void setName(String name) {
-			this.name = name;
-		}
-		
-		
-		@SuppressWarnings("unused")
-		public String getKeycode() {
-			return keycode;
-		}
-		
-		
-		@SuppressWarnings("unused")
-		public void setKeycode(String keycode) {
-			this.keycode = keycode;
-		}
-		
-		
-		@SuppressWarnings("unused")
-		public String getColor() {
-			return color;
-		}
-		
-		
-		@SuppressWarnings("unused")
-		public void setColor(String color) {
-			this.color = color;
-		}
-	}
+	// private class Mode {
+	// private String name = "";
+	// private String keycode = "";
+	// private String color = "";
+	//
+	//
+	// public Mode(String _name, String _keycode, String _color) {
+	// name = _name;
+	// keycode = _keycode;
+	// color = _color;
+	// }
+	//
+	//
+	// public String toString() {
+	// return "(" + name + " " + keycode + ")";
+	// }
+	//
+	//
+	// @SuppressWarnings("unused")
+	// public String getName() {
+	// return name;
+	// }
+	//
+	//
+	// @SuppressWarnings("unused")
+	// public void setName(String name) {
+	// this.name = name;
+	// }
+	//
+	//
+	// @SuppressWarnings("unused")
+	// public String getKeycode() {
+	// return keycode;
+	// }
+	//
+	//
+	// @SuppressWarnings("unused")
+	// public void setKeycode(String keycode) {
+	// this.keycode = keycode;
+	// }
+	//
+	//
+	// @SuppressWarnings("unused")
+	// public String getColor() {
+	// return color;
+	// }
+	//
+	//
+	// @SuppressWarnings("unused")
+	// public void setColor(String color) {
+	// this.color = color;
+	// }
+	// }
 }
