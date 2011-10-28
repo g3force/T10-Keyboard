@@ -50,7 +50,7 @@ public class KeyboardLayoutGenerator {
 	private DocumentBuilderFactory	dbFactory;
 	private DocumentBuilder				dBuilder;
 	private Document						doc;
-	private ArrayList<Key>				keys;
+	private ArrayList<Button>				keys;
 	private String							filePath		= "conf/keyboard_layout_de_default.xml";
 	private KeyboardLayout				kbdLayout	= new KeyboardLayout(0, 0, 1);
 
@@ -116,13 +116,13 @@ public class KeyboardLayoutGenerator {
 				doc = dBuilder.parse(layoutFile);
 				doc.getDocumentElement().normalize();
 				NodeList nList = doc.getElementsByTagName(KEY);
-				keys = new ArrayList<Key>();
+				keys = new ArrayList<Button>();
 				
 				for (int temp = 0; temp < nList.getLength(); temp++) {
 					Node nNode = nList.item(temp);
 					if (nNode.getNodeType() == Node.ELEMENT_NODE) {
 						Element eElement = (Element) nNode;
-						Key newKey = getKey(eElement);
+						Button newKey = getKey(eElement);
 						if (newKey != null) {
 							keys.add(newKey);
 							// newKey.addActionListener(keyListener);
@@ -213,10 +213,10 @@ public class KeyboardLayoutGenerator {
 	 * @param eElement must be a <key> node
 	 * @return Key
 	 */
-	private Key getKey(Element eElement) {
+	private Button getKey(Element eElement) {
 		try {
 			NamedNodeMap attr = eElement.getAttributes();
-			Key key = new Key(getIntAttribute(attr, "size_x"), getIntAttribute(attr, "size_y"), getIntAttribute(attr,
+			Button key = new Button(getIntAttribute(attr, "size_x"), getIntAttribute(attr, "size_y"), getIntAttribute(attr,
 					"pos_x"), getIntAttribute(attr, "pos_y"));
 			
 			// Modes
@@ -248,7 +248,7 @@ public class KeyboardLayoutGenerator {
 			System.out.println("In getKey:");
 			e.printStackTrace();
 		}
-		return new Key();
+		return new Button();
 	}
 	
 

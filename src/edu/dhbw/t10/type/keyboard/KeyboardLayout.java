@@ -14,7 +14,7 @@ import java.awt.Font;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 
-import edu.dhbw.t10.type.keyboard.key.ButtonKey;
+import edu.dhbw.t10.type.keyboard.key.Button;
 
 
 /**
@@ -29,7 +29,7 @@ public class KeyboardLayout {
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
-	private ArrayList<ButtonKey>				keys			= new ArrayList<ButtonKey>();
+	private ArrayList<Button>				keys			= new ArrayList<Button>();
 	private ArrayList<DropDownList>	ddls			= new ArrayList<DropDownList>();
 	private int								size_x		= 0;
 	private int								size_y		= 0;
@@ -54,7 +54,7 @@ public class KeyboardLayout {
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
-	public void addKey(ButtonKey key) {
+	public void addKey(Button key) {
 		keys.add(key);
 	}
 	
@@ -64,7 +64,7 @@ public class KeyboardLayout {
 	}
 	
 	public void rescale() {
-		for (ButtonKey k : keys) {
+		for (Button k : keys) {
 			Rectangle rect = k.getBounds();
 			rect.setBounds((int) (k.getPos_x() * scale_x), (int) (k.getPos_y() * scale_y),
 					(int) (k.getOrigSize().width * scale_x), (int) (k.getOrigSize().height * scale_y));
@@ -87,12 +87,12 @@ public class KeyboardLayout {
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
 	
-	public ArrayList<ButtonKey> getKeys() {
+	public ArrayList<Button> getKeys() {
 		return keys;
 	}
 	
 	
-	public void setKeys(ArrayList<ButtonKey> keys) {
+	public void setKeys(ArrayList<Button> keys) {
 		this.keys = keys;
 	}
 	
