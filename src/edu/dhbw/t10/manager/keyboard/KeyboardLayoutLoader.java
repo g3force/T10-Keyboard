@@ -31,13 +31,12 @@ import edu.dhbw.t10.manager.Controller;
 import edu.dhbw.t10.type.keyboard.DropDownList;
 import edu.dhbw.t10.type.keyboard.KeyboardLayout;
 import edu.dhbw.t10.type.keyboard.key.ButtonKey;
+import edu.dhbw.t10.type.keyboard.key.PhysicalKey;
 import edu.dhbw.t10.type.keyboard.key.SingleKey;
 
 
 /**
- * TODO NicolaiO, add comment!
- * - What should this type do (in one sentence)?
- * - If not intuitive: A simple example how to use this class
+ * This class loads a layout file. It needs a keymap to map the buttons to their according keys!
  * 
  * @author NicolaiO
  * 
@@ -46,18 +45,28 @@ public class KeyboardLayoutLoader {
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
-	private static final Logger		logger		= Logger.getLogger(KeyboardLayoutLoader.class);
+	private static final Logger	logger	= Logger.getLogger(KeyboardLayoutLoader.class);
 
 
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
-	
+	private KeyboardLayoutLoader() {
+		throw new AssertionError();
+	}
 
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
 
+	/**
+	 * Load a keyboardLayout
+	 * 
+	 * @param filePath to an keymap XML file
+	 * @param keymap that was loaded from file
+	 * @return KeyboardLayout
+	 * @author NicolaiO
+	 */
 	public static KeyboardLayout load(String filePath, HashMap<Integer, SingleKey> keymap) {
 		KeyboardLayout kbdLayout = new KeyboardLayout(0, 0, 1);
 		File layoutFile = new File(filePath);
@@ -68,17 +77,16 @@ public class KeyboardLayoutLoader {
 			doc.getDocumentElement().normalize();
 			
 			NodeList nList = doc.getElementsByTagName("key");
-			ArrayList<ButtonKey> keys = new ArrayList<ButtonKey>();
+			ArrayList<PhysicalKey> keys = new ArrayList<PhysicalKey>();
 			
 			for (int temp = 0; temp < nList.getLength(); temp++) {
 				Node nNode = nList.item(temp);
 				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
 					Element eElement = (Element) nNode;
-					ButtonKey newKey = getKey(eElement, keymap);
+					PhysicalKey newKey = getKey(eElement, keymap);
 					if (newKey != null) {
 						keys.add(newKey);
 						// TODO listener
-						// newKey.addActionListener(keyListener);
 						newKey.addActionListener(Controller.getInstance()); // use EventCollector as listener
 					}
 				} else {
@@ -167,11 +175,11 @@ public class KeyboardLayoutLoader {
 	 * @param eElement must be a <key> node
 	 * @return Key
 	 */
-	private static ButtonKey getKey(Element eElement, HashMap<Integer, SingleKey> keymap) {
+	private static PhysicalKey getKey(Element eElement, HashMap<Integer, SingleKey> keymap) {
 		try {
 			NamedNodeMap attr = eElement.getAttributes();
-			ButtonKey key = new ButtonKey(getIntAttribute(attr, "size_x"), getIntAttribute(attr, "size_y"), getIntAttribute(attr,
-					"pos_x"), getIntAttribute(attr, "pos_y"));
+			ButtonKey key = new ButtonKey(getIntAttribute(attr, "size_x"), getIntAttribute(attr, "size_y"),
+					getIntAttribute(attr, "pos_x"), getIntAttribute(attr, "pos_y"));
 			
 			// Modes
 			NodeList modes = eElement.getElementsByTagName("mode");
@@ -188,7 +196,8 @@ public class KeyboardLayoutLoader {
 					if (color != null) {
 						sColor = color.getTextContent();
 					}
-					key.addMode(sModeName, keymap.get(item.getTextContent()));
+					// TODO add mode...
+					// key.addMode(sModeName, keymap.get(item.getTextContent()));
 				}
 			}
 			
@@ -197,10 +206,20 @@ public class KeyboardLayoutLoader {
 			System.out.println("In getKey:");
 			e.printStackTrace();
 		}
-		return new ButtonKey();
+		return new PhysicalKey();
 	}
 	
-
+	
+	/**
+	 * Helper function for receiving an attribute by name
+	 * TODO NicolaiO, add comment!
+	 * 
+	 * @param attr
+	 * @param name
+	 * @return
+	 * @throws NullPointerException
+	 * @author NicolaiO
+	 */
 	private static String getAttribute(NamedNodeMap attr, String name) throws NullPointerException {
 		Node node = attr.getNamedItem(name);
 		if (node != null) {
@@ -220,6 +239,16 @@ public class KeyboardLayoutLoader {
 	}
 	
 	
+	// private static int getModeFromString(String mode) {
+	// if(mode.equals("default")) {
+	// return null;
+	// }
+	// else {
+	// return new ModeKey(modeKey, size_x, size_y, pos_x, pos_y)
+	// }
+	// }
+	
+
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
