@@ -115,8 +115,9 @@ public class PriorityTree implements Serializable {
 			logger.info("Suggest created (same as wordPart)");
 			return wordPart;
 		} else {
-			logger.info("Suggest created (suggest from dicctionary)");
-			return suggest.getSuggest().buildWord();
+			String out = suggest.getSuggest().buildWord();
+			logger.info("Suggest created (suggest word: " + out + ")");
+			return out;
 		}
 	}
 	
@@ -271,6 +272,7 @@ public class PriorityTree implements Serializable {
 			PriorityElement pe = toDelete.pop();
 			delete(pe.buildWord());
 		}
+		logger.info("Cleaned (removed elements: " + length + ")");
 		return length;
 	}
 	
