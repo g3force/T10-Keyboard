@@ -50,9 +50,8 @@ public class ProfileManager {
 		profiles = new ArrayList<Profile>();
 		activeProfile = -1; // No profile.
 		instance = this;
-		KeymapLoader keyMapL = new KeymapLoader();
-		KeyboardLayoutLoader keyBoardL = new KeyboardLayoutLoader();
-		kbdLayout = keyBoardL.load("conf/keyboard_layout_de_default.xml", keyMapL.load("conf/keymap.xml"));
+		kbdLayout = KeyboardLayoutLoader
+				.load("conf/keyboard_layout_de_default.xml", KeymapLoader.load("conf/keymap.xml"));
 		// profiles = loadProfiles();
 	}
 

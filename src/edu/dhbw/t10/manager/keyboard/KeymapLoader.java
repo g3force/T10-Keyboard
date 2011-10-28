@@ -23,7 +23,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import edu.dhbw.t10.type.keyboard.key.SingleKey;
+import edu.dhbw.t10.type.keyboard.key.Key;
 
 
 /**
@@ -47,6 +47,7 @@ public class KeymapLoader {
 		throw new AssertionError();
 	}
 	
+
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
@@ -57,7 +58,7 @@ public class KeymapLoader {
 	 * @return HashMap with id->SingleKey
 	 * @author NicolaiO
 	 */
-	public static HashMap<Integer, SingleKey> load(String filePath) {
+	public static HashMap<Integer, Key> load(String filePath) {
 		File layoutFile = new File(filePath);
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 		try {
@@ -65,17 +66,17 @@ public class KeymapLoader {
 			Document doc = dBuilder.parse(layoutFile);
 			doc.getDocumentElement().normalize();
 			
-			HashMap<Integer, SingleKey> keymap = new HashMap<Integer, SingleKey>();
+			HashMap<Integer, Key> keymap = new HashMap<Integer, Key>();
 			NodeList keytypes = doc.getElementsByTagName("keytype");
-			int type = SingleKey.UNKNOWN_KEY;
+			// int type = Key.UNKNOWN_KEY;
 			for (int i = 0; i < keytypes.getLength(); i++) {
 				NodeList keys = keytypes.item(i).getChildNodes();
 				try {
-					String stype = keys.item(i).getAttributes().getNamedItem("name").getTextContent();
-					type = convertType(stype);
+					// String stype = keys.item(i).getAttributes().getNamedItem("name").getTextContent();
+					// type = convertType(stype);
 				} catch (NullPointerException e) {
 					logger.warn("A keytype could not be read. i=" + i);
-					type = SingleKey.UNKNOWN_KEY;
+					// type = Key.UNKNOWN_KEY;
 				}
 				for (int j = 0; j < keys.getLength(); j++) {
 					Node key = keys.item(j);
@@ -84,7 +85,7 @@ public class KeymapLoader {
 							int id = Integer.parseInt(key.getAttributes().getNamedItem("id").getTextContent());
 							String keycode = key.getAttributes().getNamedItem("keycode").getTextContent();
 							String name = key.getTextContent();
-							keymap.put(id, new SingleKey(id, name, keycode, type));
+							keymap.put(id, new Key(id, name, keycode));
 						}
 					} catch (NullPointerException e) {
 						logger.warn("A key in keymap could not be read. j=" + j + " i=" + i);
@@ -105,19 +106,19 @@ public class KeymapLoader {
 			logger.error("Could not parse document");
 			err.printStackTrace();
 		}
-		return new HashMap<Integer, SingleKey>();
+		return new HashMap<Integer, Key>();
 	}
 	
 	
-	private static int convertType(String stype) {
-		if (stype.equals("control"))
-			return SingleKey.CONTROL_KEY;
-		else if (stype.equals("char"))
-			return SingleKey.CHAR_KEY;
-		else if (stype.equals("unicode"))
-			return SingleKey.UNICODE_KEY;
-		return SingleKey.UNKNOWN_KEY;
-	}
+	// private static int convertType(String stype) {
+	// if (stype.equals("control"))
+	// return Key.CONTROL_KEY;
+	// else if (stype.equals("char"))
+	// return Key.CHAR_KEY;
+	// else if (stype.equals("unicode"))
+	// return Key.UNICODE_KEY;
+	// return Key.UNKNOWN_KEY;
+	// }
 
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------

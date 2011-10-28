@@ -20,7 +20,6 @@ import edu.dhbw.t10.view.Presenter;
  * TODOs
  * 
  * TODO graphical buttons (keys) e.g. pause- and arrow keys
- * TODO
  * 
  */
 /**
