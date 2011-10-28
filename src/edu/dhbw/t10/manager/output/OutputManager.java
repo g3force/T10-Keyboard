@@ -82,8 +82,10 @@ public class OutputManager {
 	 * 
 	 */
 	public void printSuggest(String newSuggest, String typed) {
+		if (newSuggest.length() > typed.length()) { //
 		out.printString(convertToUnicode(newSuggest.substring(typed.length())));
 		out.markChar(newSuggest.length() - typed.length());
+		}
 	}
 	
 

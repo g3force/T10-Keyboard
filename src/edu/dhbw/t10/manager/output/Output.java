@@ -62,11 +62,13 @@ public class Output {
 
 
 	public boolean printChar(Key c) {
+		logger.info(c.getType());
 		return printString(c.getText(), c.getType());
 	}
 
 
 	public boolean printString(String charSequence) {
+
 		return printString(charSequence, 0);
 	}
 
@@ -82,35 +84,21 @@ public class Output {
 		int length = charSequence.length();
 		int keyCode = 0;
 
-		if (charSequence.charAt(0) == '\\' && charSequence.charAt(length - 1) == '\\'
-				&& !charSequence.substring(0).startsWith("\\U+")) {
+		// if (charSequence.charAt(0) == '\\' && charSequence.charAt(length - 1) == '\\'
+		// && !charSequence.substring(0).startsWith("\\U+")) {
+		if (type == Key.CONTROL_KEY) {
 			keyCode = this.getKeyCode(charSequence.substring(1, length - 1));
 			this.sendKey(keyCode);
 			logger.info("Control Symbol printed: " + charSequence);
+		} else if (type == Key.UNICODE_KEY) {
+			sendUnicode(charSequence);
 		} else {
 			ArrayList<Integer> unicodeStart = extractUnicode(charSequence);
 			for (int i = 0; i < length; i++) {
 				// Unterscheidung zwischen Buchstaben (und Zahlen) und Unicode Zeichen
 				if (!unicodeStart.isEmpty() && unicodeStart.get(0) == i) { // Unicode Aufruf unter Linux
-					if (os == 1) {
-						this.sendKey(0, 6);
-						keyCode = this.getKeyCode(charSequence.substring(i + 3, i + 4));
-						this.sendKey(keyCode, 6);
-						keyCode = this.getKeyCode(charSequence.substring(i + 4, i + 5));
-						this.sendKey(keyCode, 6);
-						keyCode = this.getKeyCode(charSequence.substring(i + 5, i + 6));
-						this.sendKey(keyCode, 6);
-						keyCode = this.getKeyCode(charSequence.substring(i + 6, i + 7));
-						this.sendKey(keyCode, 6);
-						this.sendKey(KeyEvent.VK_ENTER, 6);
-						i += 7;
-						unicodeStart.remove(0);
-					} else if (os == 2) {
-						keyCode = 0;// FIXME Convertion from Unicode HexaString to Decimal
-						this.sendKey(0, 7);
-						i += 7;
-						unicodeStart.remove(0);
-					}
+					sendUnicode(charSequence.substring(i, i + 7));
+					unicodeStart.remove(0);
 				} else if (Character.isUpperCase(charSequence.charAt(i)) == true) { // Big Letters
 					keyCode = this.getKeyCode(charSequence.substring(i, i + 1));
 					this.sendKey(keyCode, 1);
@@ -212,6 +200,29 @@ public class Output {
 		return sendKey(key, function, 0);
 	}
 	
+
+	private boolean sendUnicode(String uni) {
+		int keyCode;
+		if (uni.length() != 7 || uni.substring(0,2)!= "\\U+" || uni.substring(6,7)!= "\\")
+			return false;
+		if (os == 1) {
+			this.sendKey(0, 6);
+			keyCode = this.getKeyCode(uni.substring(3, 4).toLowerCase());
+			this.sendKey(keyCode, 6);
+			keyCode = this.getKeyCode(uni.substring(4, 5).toLowerCase());
+			this.sendKey(keyCode, 6);
+			keyCode = this.getKeyCode(uni.substring(5, 6).toLowerCase());
+			this.sendKey(keyCode, 6);
+			keyCode = this.getKeyCode(uni.substring(6, 7).toLowerCase());
+			this.sendKey(keyCode, 6);
+			this.sendKey(KeyEvent.VK_ENTER, 6);
+		} else if (os == 2) {
+			keyCode = 0;// FIXME Convertion from Unicode HexaString to Decimal
+			this.sendKey(0, 7);
+		}
+		return true;
+	}
+
 
 	/**
 	 * 
