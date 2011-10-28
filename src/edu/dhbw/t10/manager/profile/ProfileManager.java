@@ -33,7 +33,7 @@ public class ProfileManager {
 	// --------------------------------------------------------------------------
 	private static ProfileManager	instance;
 	private ArrayList<Profile>		profiles;
-	private int							activeProfile;
+	private Profile					activeProfile;
 	private KeyboardLayout			kbdLayout;
 
 
@@ -46,8 +46,17 @@ public class ProfileManager {
 	 */
 	private ProfileManager() {
 		// ....
-		profiles = new ArrayList<Profile>();
-		activeProfile = -1; // No profile.
+		getSerializedProfiles();
+		if (profiles.size() == 0) {
+			profiles.add(new Profile());
+		}
+		activeProfile = profiles.get(0); // TODO save active profile
+		// ---------------------DUMMY CODE------------------------------
+		Profile prof = new Profile(1, "Pflichteheft", "/home/dirk/Desktop/PFL");
+		profiles.add(prof);
+		setActive(prof);
+		
+		// -------------------ENDE DUMMY CODE---------------------------
 		instance = this;
 		KeyboardLayoutGenerator lfm = new KeyboardLayoutGenerator();
 		kbdLayout = lfm.getKbdLayout();
@@ -85,12 +94,14 @@ public class ProfileManager {
 	}
 	
 
-	public int create(String profileName) {
+	public Profile create(String profileName) {
 		Profile newProfile = new Profile();
 		newProfile.setName(profileName);
 		newProfile.setID(profiles.size());
 		profiles.add(newProfile);
-		return newProfile.getID();
+		if (activeProfile == null)
+			activeProfile = newProfile;
+		return newProfile;
 	}
 	
 
@@ -131,11 +142,11 @@ public class ProfileManager {
 			}
 		}
 		// If the deleted profile was currently active, we choose the first profile or mark "we need a new profile!"
-		if (activeProfile == id) {
+		if (activeProfile.getID() == id) {
 			if (profiles.size() > 0)
-				activeProfile = 0;
+				activeProfile = profiles.get(0);
 			else
-				activeProfile = -1;
+				activeProfile = null;
 		}
 	}
 	
@@ -146,24 +157,29 @@ public class ProfileManager {
 	 * 
 	 * @param id
 	 */
-	public void setActive(int id) {
+	public void setActiveByID(int id) {
 		Profile curProfile = null;
 		for (int i = 0; i < profiles.size(); i++) {
 			curProfile = profiles.get(i);
 			if (curProfile.getID() == id) {
-				activeProfile = id;
+				activeProfile = curProfile;
 				break;
 			}
 		}
 	}
 	
+	
+	public void setActive(Profile newActive) {
+		activeProfile.saveTree();
+		activeProfile = newActive;
+		activeProfile.loadTree();
+	}
+
 
 	/**
 	 * 
 	 * TODO implementieren... siehe Kontrollfluss Diagramm
 	 * OutputManager requests a Word suggestion with an given Startstring.
-	 * 
-	 * 
 	 * @param givenChars
 	 * @return
 	 */
@@ -183,6 +199,24 @@ public class ProfileManager {
 		getActive().getTree().insert(word);
 	}
 
+	
+	/**
+	 * 
+	 * Serializing Profile-Arraylist
+	 * 
+	 * @author hpadmin
+	 */
+	public void serializeProfiles() {
+		Serializer.serialize(profiles, "./conf/profiles");
+	}
+	
+	
+	public void getSerializedProfiles() {
+		profiles = Serializer.deserialize("./conf/profiles");
+		if (profiles == null) {
+			profiles = new ArrayList<Profile>();
+		}
+	}
 
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
@@ -190,17 +224,10 @@ public class ProfileManager {
 	public ArrayList<Profile> getProfiles() {
 		return profiles;
 	}
-	
 
 	public Profile getActive() {
-		return profiles.get(activeProfile);
-	}
-	
-
-	public int getActiveProfile() {
 		return activeProfile;
 	}
-
 
 	public KeyboardLayout getKbdLayout() {
 		return kbdLayout;

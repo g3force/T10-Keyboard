@@ -16,7 +16,6 @@ import edu.dhbw.t10.type.tree.PriorityTree;
 
 
 /**
- * TODO NicolaiO, add comment!
  * - What should this type do (in one sentence)?
  * - If not intuitive: A simple example how to use this class
  * 
@@ -54,13 +53,21 @@ public class Profile {
 		tree = ptree;
 		// tree = new PriorityTree();
 	}
+	
+	
+	public Profile(int pID, String pName, String pPath) {
+		profileID = pID;
+		name = pName;
+		pathToFile = pPath;
+		tree = new PriorityTree();
+	}
 
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
 	
 	public void loadTree() {
-		tree = (PriorityTree) Serializer.deserialize(pathToFile);
+		tree = Serializer.deserialize(pathToFile);
 	}
 	
 	
