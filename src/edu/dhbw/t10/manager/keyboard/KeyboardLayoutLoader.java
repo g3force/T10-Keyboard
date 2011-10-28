@@ -28,10 +28,10 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import edu.dhbw.t10.manager.Controller;
-import edu.dhbw.t10.type.keyboard.ButtonKey;
 import edu.dhbw.t10.type.keyboard.DropDownList;
 import edu.dhbw.t10.type.keyboard.KeyboardLayout;
-import edu.dhbw.t10.type.keyboard.SingleKey;
+import edu.dhbw.t10.type.keyboard.key.ButtonKey;
+import edu.dhbw.t10.type.keyboard.key.SingleKey;
 
 
 /**
