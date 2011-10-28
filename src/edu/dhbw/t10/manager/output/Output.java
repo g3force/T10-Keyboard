@@ -171,20 +171,24 @@ public class Output {
 			return (Integer) f.get(null);
 		} catch (SecurityException err) {
 			// TODO Auto-generated catch block
-			err.printStackTrace();
+			// err.printStackTrace();
+			logger.error("getKeyCode: Security:" + code);
 			return 0;
 		} catch (NoSuchFieldException err) {
 			// TODO Auto-generated catch block
-			err.printStackTrace();
+			// err.printStackTrace();
+			logger.error("getKeyCode: No Such Field:" + code);
 			// TODO Umlaute und andere Zeichen in Unicode Konvertieren
 			return 0;
 		} catch (IllegalArgumentException err) {
 			// TODO Auto-generated catch block
-			err.printStackTrace();
+			// err.printStackTrace();
+			logger.error("getKeyCode: Illegal Argument:" + code);
 			return 0;
 		} catch (IllegalAccessException err) {
 			// TODO Auto-generated catch block
-			err.printStackTrace();
+			// err.printStackTrace();
+			logger.error("getKeyCode: Illegal Access:" + code);
 			return 0;
 		}
 		
@@ -311,7 +315,8 @@ public class Output {
 			}
 			return true;
 		} catch (AWTException e) {
-			e.printStackTrace();
+			// e.printStackTrace();
+			logger.error("sendKey: AWTException:" + key);
 			return false;
 		}
 	}
