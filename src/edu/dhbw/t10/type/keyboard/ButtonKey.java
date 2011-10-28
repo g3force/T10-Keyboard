@@ -108,7 +108,7 @@ public class ButtonKey extends JButton {
 	 * @author NicolaiO
 	 */
 	public void addCurrentMode(String mode) {
-		activeModes.add(mode);
+		// activeModes.add(mode);
 		setText(modes.get(mode).getName());
 		// setBackground(getColorFromString(getColor()));
 	}
