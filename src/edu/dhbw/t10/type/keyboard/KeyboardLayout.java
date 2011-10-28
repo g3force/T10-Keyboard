@@ -14,6 +14,8 @@ import java.awt.Font;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 
+import edu.dhbw.t10.type.keyboard.key.ButtonKey;
+
 
 /**
  * TODO NicolaiO, add comment!

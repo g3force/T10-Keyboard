@@ -7,7 +7,7 @@
  * 
  * *********************************************************
  */
-package edu.dhbw.t10.type.keyboard;
+package edu.dhbw.t10.type.keyboard.key;
 
 /**
  * TODO NicolaiO, add comment!

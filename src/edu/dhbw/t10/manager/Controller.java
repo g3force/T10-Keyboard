@@ -14,8 +14,8 @@ import java.awt.event.ActionListener;
 
 import edu.dhbw.t10.manager.output.OutputManager;
 import edu.dhbw.t10.manager.profile.ProfileManager;
-import edu.dhbw.t10.type.keyboard.ButtonKey;
-import edu.dhbw.t10.type.keyboard.SingleKey;
+import edu.dhbw.t10.type.keyboard.key.ButtonKey;
+import edu.dhbw.t10.type.keyboard.key.SingleKey;
 
 
 /**

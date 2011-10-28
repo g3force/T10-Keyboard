@@ -19,8 +19,8 @@ import org.apache.log4j.Logger;
 
 import edu.dhbw.t10.manager.profile.ProfileManager;
 import edu.dhbw.t10.type.keyboard.DropDownList;
-import edu.dhbw.t10.type.keyboard.ButtonKey;
 import edu.dhbw.t10.type.keyboard.KeyboardLayout;
+import edu.dhbw.t10.type.keyboard.key.ButtonKey;
 
 
 /**

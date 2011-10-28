@@ -17,7 +17,7 @@ import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
 
-import edu.dhbw.t10.type.keyboard.ButtonKey;
+import edu.dhbw.t10.type.keyboard.key.ButtonKey;
 
 
 /**
