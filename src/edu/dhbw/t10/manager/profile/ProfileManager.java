@@ -46,8 +46,11 @@ public class ProfileManager {
 	 */
 	private ProfileManager() {
 		// ....
-		profiles = new ArrayList<Profile>();
-		activeProfile = null; // No profile.
+		getSerializedProfiles();
+		if (profiles.size() == 0) {
+			profiles.add(new Profile());
+		}
+		activeProfile = profiles.get(0); // TODO save active profile
 		instance = this;
 		KeyboardLayoutGenerator lfm = new KeyboardLayoutGenerator();
 		kbdLayout = lfm.getKbdLayout();
@@ -169,8 +172,6 @@ public class ProfileManager {
 	 * 
 	 * TODO implementieren... siehe Kontrollfluss Diagramm
 	 * OutputManager requests a Word suggestion with an given Startstring.
-	 * 
-	 * 
 	 * @param givenChars
 	 * @return
 	 */
@@ -203,7 +204,10 @@ public class ProfileManager {
 	
 	
 	public void getSerializedProfiles() {
-		profiles = (ArrayList<Profile>) Serializer.deserialize("./conf/profiles");
+		profiles = Serializer.deserialize("./conf/profiles");
+		if (profiles == null) {
+			profiles = new ArrayList<Profile>();
+		}
 	}
 
 	// --------------------------------------------------------------------------
