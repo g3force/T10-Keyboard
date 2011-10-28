@@ -46,12 +46,26 @@ public class ProfileManager {
 	 */
 	private ProfileManager() {
 		// ....
-		profiles = new ArrayList<Profile>();
-		activeProfile = null; // No profile.
+		getSerializedProfiles();
+		if (profiles.size() == 0) {
+			Profile prof = new Profile(0, "default");
+			prof.saveTree();
+			profiles.add(new Profile());
+		}
+		activeProfile = profiles.get(0); // TODO save active profile
+		// ---------------------DUMMY CODE------------------------------
+		Profile prof = new Profile(1, "Pflichteheft", "/home/dirk/Desktop/PFL");
+		setActive(prof);
+		prof.setPathToFile("conf/trees/" + prof.getName());
+		prof.saveTree();
+		profiles.add(prof);
+
+		// -------------------ENDE DUMMY CODE---------------------------
+		serializeProfiles();
 		instance = this;
 		KeyboardLayoutGenerator lfm = new KeyboardLayoutGenerator();
 		kbdLayout = lfm.getKbdLayout();
-		// profiles = loadProfiles();
+
 	}
 
 
@@ -161,7 +175,9 @@ public class ProfileManager {
 	
 	
 	public void setActive(Profile newActive) {
+		activeProfile.saveTree();
 		activeProfile = newActive;
+		activeProfile.loadTree();
 	}
 
 
@@ -169,8 +185,6 @@ public class ProfileManager {
 	 * 
 	 * TODO implementieren... siehe Kontrollfluss Diagramm
 	 * OutputManager requests a Word suggestion with an given Startstring.
-	 * 
-	 * 
 	 * @param givenChars
 	 * @return
 	 */
@@ -203,7 +217,10 @@ public class ProfileManager {
 	
 	
 	public void getSerializedProfiles() {
-		profiles = (ArrayList<Profile>) Serializer.deserialize("./conf/profiles");
+		profiles = Serializer.deserialize("./conf/profiles");
+		if (profiles == null) {
+			profiles = new ArrayList<Profile>();
+		}
 	}
 
 	// --------------------------------------------------------------------------
