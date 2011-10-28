@@ -191,6 +191,12 @@ public class ProfileManager {
 	}
 
 	
+	/**
+	 * 
+	 * Serializing Profile-Arraylist
+	 * 
+	 * @author hpadmin
+	 */
 	public void serializeProfiles() {
 		Serializer.serialize(profiles, "./conf/profiles");
 	}
