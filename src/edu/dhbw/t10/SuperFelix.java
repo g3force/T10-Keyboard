@@ -13,6 +13,7 @@ import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
+import edu.dhbw.t10.manager.Controller;
 import edu.dhbw.t10.view.Presenter;
 
 
@@ -61,7 +62,7 @@ public class SuperFelix {
 		logger.setLevel(Level.ALL);
 
 		BasicConfigurator.configure();
-
+		Controller.getInstance();
 		Presenter.getInstance();
 		logger.info("Keyboard started.");
 		

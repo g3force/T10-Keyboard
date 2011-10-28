@@ -53,6 +53,14 @@ public class Profile {
 		tree = ptree;
 		// tree = new PriorityTree();
 	}
+	
+	
+	public Profile(int pID, String pName, String pPath) {
+		profileID = pID;
+		name = pName;
+		pathToFile = pPath;
+		tree = new PriorityTree();
+	}
 
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
