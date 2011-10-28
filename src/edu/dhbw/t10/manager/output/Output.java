@@ -125,18 +125,6 @@ public class Output {
 	}
 	
 
-	public boolean deleteChar(int length) {
-		if (length <= 0)
-			return false;
-		else {
-			for (int i = 0; i < length; i++) {
-				this.sendKey(KeyEvent.VK_BACK_SPACE);
-			}
-			return true;
-		}
-	}
-	
-
 	public boolean markChar(int length) {
 		if (length <= 0)
 			return false;
@@ -152,9 +140,7 @@ public class Output {
 		}
 	}
 	
-	public void unMark() {
-		this.sendKey(KeyEvent.VK_RIGHT);
-	}
+
 
 
 	/**
