@@ -96,7 +96,7 @@ public class Controller implements ActionListener {
 		} else if (key.getType() == Key.CONTROL_KEY) {
 			outputMan.printChar(key);
 			if (key.getText() == "\\DELETE\\")
-				suggest = "";
+				suggest = typedWord;
 		} else if (key.getType() == Key.MUTE_KEY) {
 			// TODO Do something for mute
 		}
