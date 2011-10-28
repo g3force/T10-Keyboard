@@ -19,10 +19,7 @@ import edu.dhbw.t10.type.profile.Profile;
 
 
 /**
- * TODO dirk, add comment!
- * - What should this type do (in one sentence)?
- * - If not intuitive: A simple example how to use this class
- * 
+ * TODO DELETE
  * @author dirk
  * 
  */
@@ -35,7 +32,6 @@ public class TestTree {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		// BasicConfigurator.configure();
 		
 		
