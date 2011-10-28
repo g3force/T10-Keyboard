@@ -34,13 +34,13 @@ public class ButtonKey extends JButton {
 	private static final long		serialVersionUID	= 6949715976373962684L;
 	
 
-	private HashMap<String, SingleKey>	modes					= new HashMap<String, SingleKey>();
+	private HashMap<SingleKey, SingleKey>	modes					= new HashMap<SingleKey, SingleKey>();
 	// assigns to every modi
 	private Dimension					origSize				= new Dimension(10, 10);
 	private int							pos_x					= 0;
 	private int							pos_y					= 0;
 	private boolean							accept				= false;
-	private ArrayList<String>					activeModes			= new ArrayList<String>();
+	private ArrayList<SingleKey>				activeModes			= new ArrayList<SingleKey>();
 	private String								color					= "";
 	
 	
@@ -90,7 +90,7 @@ public class ButtonKey extends JButton {
 	 * @author NicolaiO
 	 */
 	// TODO INTERFACE for keyboardlayoutloader
-	public void addMode(String mode, SingleKey accordingKey) {
+	public void addMode(SingleKey mode, SingleKey accordingKey) {
 		modes.put(mode, accordingKey);
 	}
 	
@@ -131,15 +131,15 @@ public class ButtonKey extends JButton {
 	}
 	
 	
-	public ArrayList<String> getKeycode() {
-		ArrayList<String> output = new ArrayList<String>();
+	public ArrayList<SingleKey> getKeycode() {
+		ArrayList<SingleKey> output = new ArrayList<SingleKey>();
 		if (activeModes.size() == 0) {
-			output.add(modes.get("default").getKeycode());
+			output.add(modes.get("default"));
 		} else if (activeModes.size() == 1) {
-			output.add(modes.get(activeModes.get(0)).getKeycode());
+			output.add(modes.get(activeModes.get(0)));
 		} else {
 			output.addAll(activeModes);
-			output.add(modes.get("default").getKeycode());
+			output.add(modes.get("default"));
 		}
 		return output;
 	}
