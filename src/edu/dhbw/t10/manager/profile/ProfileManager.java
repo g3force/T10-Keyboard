@@ -51,6 +51,12 @@ public class ProfileManager {
 			profiles.add(new Profile());
 		}
 		activeProfile = profiles.get(0); // TODO save active profile
+		// ---------------------DUMMY CODE------------------------------
+		Profile prof = new Profile(1, "Pflichteheft", "/home/dirk/Desktop/PFL");
+		profiles.add(prof);
+		setActive(prof);
+		
+		// -------------------ENDE DUMMY CODE---------------------------
 		instance = this;
 		KeyboardLayoutGenerator lfm = new KeyboardLayoutGenerator();
 		kbdLayout = lfm.getKbdLayout();
@@ -164,7 +170,9 @@ public class ProfileManager {
 	
 	
 	public void setActive(Profile newActive) {
+		activeProfile.saveTree();
 		activeProfile = newActive;
+		activeProfile.loadTree();
 	}
 
 

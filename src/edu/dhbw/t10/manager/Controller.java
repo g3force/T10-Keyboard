@@ -69,13 +69,13 @@ public class Controller implements ActionListener {
 			if (suggest.length() > typedWord.length())
 				outputMan.getOutput().unMark();
 			outputMan.getOutput().printChar(key);
-			profileMan.getActive().getTree().insert(suggest);
+			profileMan.acceptWord(suggest);
 			typedWord = "";
 			suggest = "";
 		} else if (key.getType() == Key.CHAR_KEY) {
 			outputMan.getOutput().printChar(key);
 			typedWord = typedWord + key.getText();
-			suggest = profileMan.getActive().getTree().getSuggest(typedWord);
+			suggest = profileMan.getWordSuggest(typedWord);
 			outputMan.printSuggest(suggest, typedWord);
 		} else if (key.getType() == Key.UNICODE_KEY) {
 			outputMan.getOutput().printString(key.getText());
