@@ -54,10 +54,8 @@ public class ProfileManager {
 		}
 		activeProfile = profiles.get(0); // TODO save active profile
 		// ---------------------DUMMY CODE------------------------------
-		Profile prof = new Profile(1, "Pflichteheft", "/home/dirk/Desktop/PFL");
+		Profile prof = new Profile(1, "Pflichteheft");
 		setActive(prof);
-		prof.setPathToFile("conf/trees/" + prof.getName());
-		prof.saveTree();
 		profiles.add(prof);
 
 		// -------------------ENDE DUMMY CODE---------------------------
