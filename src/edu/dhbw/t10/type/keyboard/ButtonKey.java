@@ -41,6 +41,7 @@ public class ButtonKey extends JButton {
 	private int							pos_y					= 0;
 	private boolean							accept				= false;
 	private ArrayList<String>					activeModes			= new ArrayList<String>();
+	private String								color					= "";
 	
 	
 	// contains the activated control key like shift
@@ -130,8 +131,17 @@ public class ButtonKey extends JButton {
 	}
 	
 	
-	public String getKeycode() {
-		return modes.get("default").getKeycode();
+	public ArrayList<String> getKeycode() {
+		ArrayList<String> output = new ArrayList<String>();
+		if (activeModes.size() == 0) {
+			output.add(modes.get("default").getKeycode());
+		} else if (activeModes.size() == 1) {
+			output.add(modes.get(activeModes.get(0)).getKeycode());
+		} else {
+			output.addAll(activeModes);
+			output.add(modes.get("default").getKeycode());
+		}
+		return output;
 	}
 	
 	
@@ -152,15 +162,15 @@ public class ButtonKey extends JButton {
 	 * @return
 	 * @author NicolaiO
 	 */
-	// public String getColor() {
-	// Mode m = modes.get(currentMode);
-	// if (m != null) {
-	// return modes.get(currentMode).getColor();
-	// } else if (modes.containsKey("default")) {
-	// return modes.get("default").getColor();
-	// }
-	// return "";
-	// }
+	public String getColor() {
+		String m = modes.get(currentMode);
+		if (m != null) {
+			return modes.get(currentMode).getColor();
+		} else if (modes.containsKey("default")) {
+			return modes.get("default").getColor();
+		}
+		return "";
+	}
 	
 	
 	// public Set<String> getAllModes() {
