@@ -29,7 +29,7 @@ public class Profile {
 	private int		profileID;
 	private String	name;
 	private String			pathToFile;
-	private PriorityTree	tree;
+	private PriorityTree				tree;
 	
 	@SuppressWarnings("unused")
 	private static final Logger	logger	= Logger.getLogger(Profile.class);
@@ -59,6 +59,14 @@ public class Profile {
 		profileID = pID;
 		name = pName;
 		pathToFile = pPath;
+		tree = new PriorityTree();
+	}
+	
+	
+	public Profile(int pID, String pName) {
+		profileID = pID;
+		name = pName;
+		pathToFile = "conf/trees/" + name;
 		tree = new PriorityTree();
 	}
 

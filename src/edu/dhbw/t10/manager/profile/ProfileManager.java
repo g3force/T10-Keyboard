@@ -48,19 +48,24 @@ public class ProfileManager {
 		// ....
 		getSerializedProfiles();
 		if (profiles.size() == 0) {
+			Profile prof = new Profile(0, "default");
+			prof.saveTree();
 			profiles.add(new Profile());
 		}
 		activeProfile = profiles.get(0); // TODO save active profile
 		// ---------------------DUMMY CODE------------------------------
 		Profile prof = new Profile(1, "Pflichteheft", "/home/dirk/Desktop/PFL");
-		profiles.add(prof);
 		setActive(prof);
-		
+		prof.setPathToFile("conf/trees/" + prof.getName());
+		prof.saveTree();
+		profiles.add(prof);
+
 		// -------------------ENDE DUMMY CODE---------------------------
+		serializeProfiles();
 		instance = this;
 		KeyboardLayoutGenerator lfm = new KeyboardLayoutGenerator();
 		kbdLayout = lfm.getKbdLayout();
-		// profiles = loadProfiles();
+
 	}
 
 
