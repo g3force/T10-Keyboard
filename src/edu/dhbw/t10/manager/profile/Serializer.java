@@ -32,7 +32,6 @@ public class Serializer {
 	// --------------------------------------------------------------------------
 	private static final Logger	logger	= Logger.getLogger(Serializer.class);
 
-	
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
@@ -42,12 +41,13 @@ public class Serializer {
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
 	
-	public static Object deserialize(String pathToFile) {
-		Object out = null;
+	@SuppressWarnings("unchecked")
+	public static <T> T deserialize(String pathToFile) {
+		T out = null;
 		try {
 			FileInputStream file = new FileInputStream(pathToFile);
 			ObjectInputStream o = new ObjectInputStream(file);
-			out = o.readObject();
+			out = (T) o.readObject();
 			o.close();
 		} catch (IOException e) {
 			logger.error("Failure during Deserializing: " + e);
@@ -58,7 +58,7 @@ public class Serializer {
 	}
 
 	
-	public static void serialize(Object toS, String pathToFile) {
+	public static <T> void serialize(T toS, String pathToFile) {
 		try {
 			FileOutputStream file = new FileOutputStream(pathToFile);
 			ObjectOutputStream o = new ObjectOutputStream(file);
