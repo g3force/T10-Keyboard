@@ -17,8 +17,6 @@ import java.io.ObjectOutputStream;
 
 import org.apache.log4j.Logger;
 
-import edu.dhbw.t10.type.tree.PriorityTree;
-
 
 /**
  * TODO dirk, add comment!
@@ -49,7 +47,7 @@ public class Serializer {
 		try {
 			FileInputStream file = new FileInputStream(pathToFile);
 			ObjectInputStream o = new ObjectInputStream(file);
-			out = (PriorityTree) o.readObject();
+			out = o.readObject();
 			o.close();
 		} catch (IOException e) {
 			logger.error("Failure during Deserializing: " + e);
