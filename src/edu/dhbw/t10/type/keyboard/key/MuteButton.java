@@ -1,74 +1,49 @@
-/*
+/* 
  * *********************************************************
  * Copyright (c) 2011 - 2011, DHBW Mannheim
  * Project: T10 On-Screen Keyboard
- * Date: Oct 27, 2011
- * Author(s): NicolaiO
- * 
+ * Date: Oct 28, 2011
+ * Author(s): dirk
+ *
  * *********************************************************
  */
 package edu.dhbw.t10.type.keyboard.key;
 
 /**
- * TODO NicolaiO, add comment!
+ * TODO dirk, add comment!
  * - What should this type do (in one sentence)?
  * - If not intuitive: A simple example how to use this class
  * 
- * @author NicolaiO
+ * @author dirk
  * 
  */
-public class SingleKey {
+public class MuteButton extends PhysicalButton {
+	/**  */
+	private static final long	serialVersionUID	= -4124533718708150504L;
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
-	public static final int	UNKNOWN_KEY	= 0;
-	public static final int	CONTROL_KEY	= 1;
-	public static final int	CHAR_KEY		= 2;
-	public static final int	UNICODE_KEY	= 3;
-	public static final int	MUTE_KEY		= 4;
-	private int					id				= 0;
-	private String				keycode		= "";
-	private int					type			= UNKNOWN_KEY;
-	private String				name			= "";
-	// the name appearing on the button in the screen keyboard
+	private int	type;
+	private static int			profileChange		= 0;
+	private static int			autoCompleting		= 1;
+	private static int			treeInserting		= 2;
 	
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
-	public SingleKey(int id, String name, String keycode, int type) {
-		this.id = id;
-		this.name = name;
-		this.keycode = keycode;
+	public MuteButton(int type, int size_x, int size_y, int pos_x, int pos_y) {
+		super(size_x, size_y, pos_x, pos_y);
 		this.type = type;
 	}
 	
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
-	
+
 	
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
-	public int getId() {
-		return id;
-	}
-	
-	
-	public void setId(int id) {
-		this.id = id;
-	}
-	
-	
-	public String getKeycode() {
-		return keycode;
-	}
-	
-	
-	public void setKeycode(String keycode) {
-		this.keycode = keycode;
-	}
-	
 	
 	public int getType() {
 		return type;
@@ -78,16 +53,5 @@ public class SingleKey {
 	public void setType(int type) {
 		this.type = type;
 	}
-	
-	
-	public String getName() {
-		return name;
-	}
-	
-	
-	public void setName(String name) {
-		this.name = name;
-	}
-
 
 }

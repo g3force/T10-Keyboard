@@ -25,7 +25,7 @@ import javax.swing.JButton;
  * @author dirk
  * 
  */
-public class PhysicalKey extends JButton {
+public class PhysicalButton extends JButton {
 	/**  */
 	private static final long	serialVersionUID	= -5515131562102664028L;
 	// --------------------------------------------------------------------------
@@ -46,7 +46,7 @@ public class PhysicalKey extends JButton {
 	 * @param pos_x Position of the key button
 	 * @param pos_y Position of the key button
 	 */
-	public PhysicalKey(int size_x, int size_y, int pos_x, int pos_y) {
+	public PhysicalButton(int size_x, int size_y, int pos_x, int pos_y) {
 		this.origSize = new Dimension(size_x, size_y);
 		this.pos_x = pos_x;
 		this.pos_y = pos_y;
@@ -59,7 +59,7 @@ public class PhysicalKey extends JButton {
 	/**
 	 * This constructor is only for compatibility and to avoid nullPointerExceptions...
 	 */
-	public PhysicalKey() {
+	public PhysicalButton() {
 		setLayout(null);
 	}
 
