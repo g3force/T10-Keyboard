@@ -30,8 +30,8 @@ import org.xml.sax.SAXException;
 import edu.dhbw.t10.manager.Controller;
 import edu.dhbw.t10.type.keyboard.DropDownList;
 import edu.dhbw.t10.type.keyboard.KeyboardLayout;
-import edu.dhbw.t10.type.keyboard.key.ButtonKey;
-import edu.dhbw.t10.type.keyboard.key.SingleKey;
+import edu.dhbw.t10.type.keyboard.key.Button;
+import edu.dhbw.t10.type.keyboard.key.Key;
 
 
 /**
@@ -58,7 +58,7 @@ public class KeyboardLayoutLoader {
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
 
-	public static KeyboardLayout load(String filePath, HashMap<Integer, SingleKey> keymap) {
+	public static KeyboardLayout load(String filePath, HashMap<Integer, Key> keymap) {
 		KeyboardLayout kbdLayout = new KeyboardLayout(0, 0, 1);
 		File layoutFile = new File(filePath);
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -68,13 +68,13 @@ public class KeyboardLayoutLoader {
 			doc.getDocumentElement().normalize();
 			
 			NodeList nList = doc.getElementsByTagName("key");
-			ArrayList<ButtonKey> keys = new ArrayList<ButtonKey>();
+			ArrayList<Button> keys = new ArrayList<Button>();
 			
 			for (int temp = 0; temp < nList.getLength(); temp++) {
 				Node nNode = nList.item(temp);
 				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
 					Element eElement = (Element) nNode;
-					ButtonKey newKey = getKey(eElement, keymap);
+					Button newKey = getKey(eElement, keymap);
 					if (newKey != null) {
 						keys.add(newKey);
 						// TODO listener
@@ -167,10 +167,10 @@ public class KeyboardLayoutLoader {
 	 * @param eElement must be a <key> node
 	 * @return Key
 	 */
-	private static ButtonKey getKey(Element eElement, HashMap<Integer, SingleKey> keymap) {
+	private static Button getKey(Element eElement, HashMap<Integer, Key> keymap) {
 		try {
 			NamedNodeMap attr = eElement.getAttributes();
-			ButtonKey key = new ButtonKey(getIntAttribute(attr, "size_x"), getIntAttribute(attr, "size_y"), getIntAttribute(attr,
+			Button key = new Button(getIntAttribute(attr, "size_x"), getIntAttribute(attr, "size_y"), getIntAttribute(attr,
 					"pos_x"), getIntAttribute(attr, "pos_y"));
 			
 			// Modes
@@ -197,7 +197,7 @@ public class KeyboardLayoutLoader {
 			System.out.println("In getKey:");
 			e.printStackTrace();
 		}
-		return new ButtonKey();
+		return new Button();
 	}
 	
 

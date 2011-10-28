@@ -14,8 +14,8 @@ import java.awt.event.ActionListener;
 
 import edu.dhbw.t10.manager.output.OutputManager;
 import edu.dhbw.t10.manager.profile.ProfileManager;
-import edu.dhbw.t10.type.keyboard.key.ButtonKey;
-import edu.dhbw.t10.type.keyboard.key.SingleKey;
+import edu.dhbw.t10.type.keyboard.key.Button;
+import edu.dhbw.t10.type.keyboard.key.Key;
 
 
 /**
@@ -65,9 +65,9 @@ public class Controller implements ActionListener {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		ButtonKey key = (ButtonKey) e.getSource();
+		Button key = (Button) e.getSource();
 
-		if (key.getType() == SingleKey.CHAR_KEY) {
+		if (key.getType() == Key.CHAR_KEY) {
 			outputMan.getOutput().printChar(key);
 			typedWord = typedWord + key.getText();
 			suggest = profileMan.getActive().getTree().getSuggest(typedWord);
@@ -85,12 +85,12 @@ public class Controller implements ActionListener {
 			// TODO demarkiere Wort, schreibe SPACE und lösche Buffer; akzeptiere Wort
 		} else if (key.getText() == "\\SPACE\\" && !key.isAccept()) {
 			// TODO schreibe Leerzeiechen und lösche Puffer (WOrt wird wegen Markierung gelöscht)
-		} else if (key.getType() == SingleKey.CONTROL_KEY) {
+		} else if (key.getType() == Key.CONTROL_KEY) {
 			// TODO sende Control_Key
-		} else if (key.getType() == SingleKey.CHAR_KEY || key.getType() == SingleKey.UNICODE_KEY) {
+		} else if (key.getType() == Key.CHAR_KEY || key.getType() == Key.UNICODE_KEY) {
 			outputMan.getOutput().printString(key.getText());
 			outputMan.printSuggest(key.getText(), typedWord);
-		} else if (key.getType() == SingleKey.MUTE_KEY) {
+		} else if (key.getType() == Key.MUTE_KEY) {
 			// TODO Do something for mute
 		}
 	}

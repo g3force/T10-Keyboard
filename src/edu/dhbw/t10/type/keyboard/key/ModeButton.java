@@ -17,17 +17,17 @@ package edu.dhbw.t10.type.keyboard.key;
  * @author dirk
  * 
  */
-public class ModeKey extends PhysicalKey {
+public class ModeButton extends PhysicalButton {
 	/**  */
 	private static final long	serialVersionUID	= 5356736981172867044L;
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
-	SingleKey modeKey;
+	Key modeKey;
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
-	public ModeKey(SingleKey modeKey, int size_x, int size_y, int pos_x, int pos_y) {
+	public ModeButton(Key modeKey, int size_x, int size_y, int pos_x, int pos_y) {
 		super(size_x, size_y, pos_x, pos_y);
 		this.modeKey = modeKey;
 	}
@@ -41,10 +41,10 @@ public class ModeKey extends PhysicalKey {
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
-	public SingleKey getModeKey() {
+	public Key getModeKey() {
 		return modeKey;
 	}
-	public void setModeKey(SingleKey modeKey) {
+	public void setModeKey(Key modeKey) {
 		this.modeKey = modeKey;
 	}
 }

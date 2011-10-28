@@ -22,17 +22,17 @@ import java.util.HashMap;
  * @author NicolaiO
  * 
  */
-public class ButtonKey extends PhysicalKey {
+public class Button extends PhysicalButton {
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
 	private static final long		serialVersionUID	= 6949715976373962684L;
 	
 
-	private HashMap<ModeKey, SingleKey>	modes					= new HashMap<ModeKey, SingleKey>();
+	private HashMap<ModeButton, Key>	modes					= new HashMap<ModeButton, Key>();
 	// assigns to every modi
 	private boolean							accept				= false;
-	private ArrayList<ModeKey>				activeModes			= new ArrayList<ModeKey>();
+	private ArrayList<ModeButton>				activeModes			= new ArrayList<ModeButton>();
 	
 	
 	// contains the activated control key like shift
@@ -41,7 +41,7 @@ public class ButtonKey extends PhysicalKey {
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
-	public ButtonKey(int size_x, int size_y, int pos_x, int pos_y) {
+	public Button(int size_x, int size_y, int pos_x, int pos_y) {
 		super(size_x, size_y, pos_x, pos_y);
 	}
 
@@ -60,7 +60,7 @@ public class ButtonKey extends PhysicalKey {
 	 * @author NicolaiO
 	 */
 	// TODO INTERFACE for keyboardlayoutloader
-	public void addMode(ModeKey mode, SingleKey accordingKey) {
+	public void addMode(ModeButton mode, Key accordingKey) {
 		modes.put(mode, accordingKey);
 	}
 	
@@ -77,7 +77,7 @@ public class ButtonKey extends PhysicalKey {
 	 * @param currentMode
 	 * @author NicolaiO
 	 */
-	public void addCurrentMode(ModeKey mode) {
+	public void addCurrentMode(ModeButton mode) {
 		activeModes.add(mode);
 		setText(modes.get(mode).getName());
 		// setBackground(getColorFromString(getColor()));
@@ -87,14 +87,14 @@ public class ButtonKey extends PhysicalKey {
 	
 	
 
-	public ArrayList<SingleKey> getKeycode() {
-		ArrayList<SingleKey> output = new ArrayList<SingleKey>();
+	public ArrayList<Key> getSingleKey() {
+		ArrayList<Key> output = new ArrayList<Key>();
 		if (activeModes.size() == 0) {
 			output.add(modes.get("default"));
-		} else if (activeModes.size() == 1) {
+		} else if (activeModes.size() == 1 && modes.containsKey(activeModes.get(0))) {
 			output.add(modes.get(activeModes.get(0)));
 		} else {
-			for (ModeKey modeKey : activeModes)
+			for (ModeButton modeKey : activeModes)
 				output.add(modeKey.getModeKey());
 			output.add(modes.get("default"));
 		}
@@ -123,17 +123,17 @@ public class ButtonKey extends PhysicalKey {
 
 	
 	
-	public HashMap<ModeKey, SingleKey> getModes() {
+	public HashMap<ModeButton, Key> getModes() {
 		return modes;
 	}
 	
 	
-	public void setModes(HashMap<ModeKey, SingleKey> modes) {
+	public void setModes(HashMap<ModeButton, Key> modes) {
 		this.modes = modes;
 	}
 	
 	
-	public ArrayList<ModeKey> getActiveMode() {
+	public ArrayList<ModeButton> getActiveMode() {
 		return activeModes;
 	}
 
