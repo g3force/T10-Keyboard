@@ -83,7 +83,9 @@ public class Controller implements ActionListener {
 				if (key.isAccept())
 					this.keyIsAccept(key);
 				else if (key.getType() == Key.CHAR)
-					this.KeyIsCHAR(key);
+					this.keyIsChar(key);
+				else if (key.getType() == Key.UNICODE)
+					this.KeyIsUnicode(key);
 				else if (key.getName() == "\\BACK_SPACE\\")
 					this.KeyIsBackspace();
 				else if ((key.getName() == "\\SPACE\\" || key.getName() == "\\ENTER\\"))
@@ -91,8 +93,6 @@ public class Controller implements ActionListener {
 				else if (key.getName() == "\\DELETE\\") {
 					outputMan.printChar(key);
 					suggest = typedWord;
-				} else {
-					outputMan.printChar(key);
 				}
 			}
 		} // end if instanceof Bbutton
@@ -167,7 +167,7 @@ public class Controller implements ActionListener {
 	}
 	
 
-	private void KeyIsCHAR(Key key) {
+	private void keyIsChar(Key key) {
 		outputMan.printChar(key);
 		typedWord = typedWord + key.getName();
 		suggest = profileMan.getWordSuggest(typedWord);
@@ -177,6 +177,9 @@ public class Controller implements ActionListener {
 
 	private void KeyIsUnicode(Key key) {
 		outputMan.printChar(key);
+		typedWord = typedWord + key.getName();
+		suggest = profileMan.getWordSuggest(typedWord);
+		outputMan.printSuggest(suggest, typedWord);
 	}
 	
 
