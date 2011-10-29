@@ -85,12 +85,12 @@ public class KeyboardLayoutSaver {
 			doc.appendChild(layout);
 
 			Element sizex = doc.createElement("sizex");
-			Text text = doc.createTextNode(kbdLayout.getSize_x() + "");
+			Text text = doc.createTextNode(kbdLayout.getOrigSize_x() + "");
 			sizex.appendChild(text);
 			layout.appendChild(sizex);
 
 			Element sizey = doc.createElement("sizey");
-			text = doc.createTextNode(kbdLayout.getSize_y() + "");
+			text = doc.createTextNode(kbdLayout.getOrigSize_y() + "");
 			sizey.appendChild(text);
 			layout.appendChild(sizey);
 
@@ -126,10 +126,10 @@ public class KeyboardLayoutSaver {
 			for (DropDownList dd : kbdLayout.getDdls()) {
 				Element dropdown = doc.createElement("dropdown");
 				dropdown.setAttribute("type", dd.getName());
-				dropdown.setAttribute("size_x", dd.getWidth() + "");
-				dropdown.setAttribute("size_y", dd.getHeight() + "");
+				dropdown.setAttribute("size_x", dd.getOrigSize().getWidth() + "");
+				dropdown.setAttribute("size_y", dd.getOrigSize().getHeight() + "");
 				dropdown.setAttribute("pos_x", dd.getX() + "");
-				dropdown.setAttribute("pos_y", dd.getX() + "");
+				dropdown.setAttribute("pos_y", dd.getY() + "");
 				System.out.println("Dropdown");
 				layout.appendChild(dropdown);
 			}
@@ -165,6 +165,7 @@ public class KeyboardLayoutSaver {
 				layout.appendChild(modeButtonEl);
 			}
 			String xml = convertDocToString(doc);
+			printToPath(xml, filePath);
 
 		} catch (ParserConfigurationException err) {
 			logger.error("Could not initialize dBuilder");
@@ -201,13 +202,11 @@ public class KeyboardLayoutSaver {
 		}
 		String xmlString = sw.toString();
 		
-		// print xml
-		System.out.println("Here's the xml:\n\n" + xmlString);
 		return xmlString;
 	}
 	
 	
-	private void printToPath(String xmlString, String file) {
+	private static void printToPath(String xmlString, String file) {
 		File confFile = new File(file);
 		FileWriter fw;
 		try {
@@ -218,9 +217,10 @@ public class KeyboardLayoutSaver {
 			err1.printStackTrace();
 		}
 		BufferedWriter bw = new BufferedWriter(fw);
-		
 		try {
 			bw.write(xmlString);
+			bw.close();
+			logger.debug("XML written to file " + file);
 		} catch (IOException err) {
 			logger.error("Failed to write the keyboard xml string to file (2)");
 			err.printStackTrace();
@@ -235,9 +235,6 @@ public class KeyboardLayoutSaver {
 		el.setAttribute("pos_y", button.getPos_y() + "");
 	}
 
-
-	
-	
 
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
