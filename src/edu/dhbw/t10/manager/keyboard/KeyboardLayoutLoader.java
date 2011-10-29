@@ -219,7 +219,7 @@ public class KeyboardLayoutLoader {
 						int id = Integer.parseInt(defkey.item(0).getTextContent());
 						Key key = keymap.get(id);
 						if (key == null) {
-							logger.warn("key not found keymap. temp=" + temp + " id=" + id);
+							logger.warn("key not found in keymap. temp=" + temp + " id=" + id);
 							continue;
 						}
 						button.setKey(key);

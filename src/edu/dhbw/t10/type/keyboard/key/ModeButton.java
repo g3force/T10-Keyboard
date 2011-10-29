@@ -28,6 +28,7 @@ public class ModeButton extends PhysicalButton {
 	public ModeButton(Key modeKey, int size_x, int size_y, int pos_x, int pos_y) {
 		super(size_x, size_y, pos_x, pos_y);
 		this.modeKey = modeKey;
+		setText(modeKey.getName());
 	}
 	
 	
@@ -44,6 +45,7 @@ public class ModeButton extends PhysicalButton {
 	}
 	public void setModeKey(Key modeKey) {
 		this.modeKey = modeKey;
+		setText(modeKey.getName());
 	}
 }
 	
