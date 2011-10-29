@@ -15,10 +15,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-import org.apache.log4j.Logger;
-
-import edu.dhbw.t10.type.tree.PriorityTree;
-
 
 /**
  * Serializes an arbitrary Object
@@ -29,7 +25,6 @@ public class Serializer {
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
-	private static final Logger	logger	= Logger.getLogger(Serializer.class);
 
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
@@ -41,31 +36,25 @@ public class Serializer {
 	// --------------------------------------------------------------------------
 	
 	@SuppressWarnings("unchecked")
-	public static <T> T deserialize(String pathToFile) {
+	public static <T> T deserialize(String pathToFile) throws IOException {
 		T out = null;
+		FileInputStream file = new FileInputStream(pathToFile);
+		ObjectInputStream o = new ObjectInputStream(file);
 		try {
-			FileInputStream file = new FileInputStream(pathToFile);
-			ObjectInputStream o = new ObjectInputStream(file);
 			out = (T) o.readObject();
-			o.close();
-		} catch (IOException e) {
-			logger.error("Failure during Deserializing: " + e);
-		} catch (ClassNotFoundException e) {
-			logger.error("Class not found, not possible: " + e);
+		} catch (ClassNotFoundException err) {
+			err.printStackTrace();
 		}
+		o.close();
 		return out;
 	}
 
 	
-	public static <T> void serialize(T toS, String pathToFile) {
-		try {
-			FileOutputStream file = new FileOutputStream(pathToFile);
-			ObjectOutputStream o = new ObjectOutputStream(file);
-			o.writeObject(toS);
-			o.close();
-		} catch (IOException e) {
-			logger.error(e);
-		}
+	public static <T> void serialize(T toS, String pathToFile) throws IOException {
+		FileOutputStream file = new FileOutputStream(pathToFile);
+		ObjectOutputStream o = new ObjectOutputStream(file);
+		o.writeObject(toS);
+		o.close();
 	}
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
