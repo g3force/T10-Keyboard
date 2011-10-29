@@ -94,7 +94,14 @@ public class Controller implements ActionListener {
 		}
 		
 		if (e.getSource() instanceof MuteButton) {
-			// TODO Do something for mute
+			MuteButton muteB = (MuteButton) e.getSource();
+			if (muteB.getType() == MuteButton.AUTO_COMPLETING) {
+				profileMan.toggleAutoCompleting();
+			} else if (muteB.getType() == MuteButton.AUTO_PROFILE_CHANGE) {
+				profileMan.toggleAutoProfileChange();
+			} else if (muteB.getType() == MuteButton.TREE_EXPANDING) {
+				profileMan.toggleTreeExpanding();
+			}
 		}
 
 //		if (key.isAccept()) {
