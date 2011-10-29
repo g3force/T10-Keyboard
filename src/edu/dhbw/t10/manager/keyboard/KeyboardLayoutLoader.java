@@ -70,6 +70,7 @@ public class KeyboardLayoutLoader {
 	 * @author NicolaiO
 	 */
 	public static KeyboardLayout load(String filePath, HashMap<Integer, Key> _keymap) {
+		logger.debug("initializing...");
 		DocumentBuilder dBuilder;
 		Document doc;
 		keymap = _keymap;
@@ -182,6 +183,7 @@ public class KeyboardLayoutLoader {
 		kbdLayout.setFont(new Font(fname, fstyle, fsize));
 		kbdLayout.rescale();
 
+		logger.debug("initialized.");
 		return kbdLayout;
 	}
 	
@@ -209,7 +211,7 @@ public class KeyboardLayoutLoader {
 				Element eElement = (Element) nNode;
 				Bounds b = getBounds(nNode);
 				Button button = new Button(b.size_x, b.size_y, b.pos_x, b.pos_y);
-				
+
 				// receive default key
 				NodeList defkey = eElement.getElementsByTagName("key");
 				if (defkey.getLength() == 1) {
@@ -224,8 +226,12 @@ public class KeyboardLayoutLoader {
 					} catch (NumberFormatException e) {
 						logger.warn("key id could not be parsed to Integer. id=" + defkey.item(0).getTextContent());
 					}
-
+					
+				} else {
+					logger.warn("Number of key-elements is not 1: " + defkey.getLength());
 				}
+				
+				buttons.add(button);
 
 				// receive Modes
 				NodeList modes = eElement.getElementsByTagName("mode");
@@ -263,8 +269,6 @@ public class KeyboardLayoutLoader {
 							logger.warn("Could not parse key to Integer. i=" + i);
 						}
 					}
-
-					buttons.add(button);
 				}
 			} catch (NullPointerException e) {
 				logger.warn("A Button could not be read: NullPointerException");

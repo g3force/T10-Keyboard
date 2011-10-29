@@ -59,6 +59,7 @@ public class KeymapLoader {
 	 * @author NicolaiO
 	 */
 	public static HashMap<Integer, Key> load(String filePath) {
+		logger.debug("initializing...");
 		File layoutFile = new File(filePath);
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 		try {
@@ -106,6 +107,7 @@ public class KeymapLoader {
 			logger.error("Could not parse document");
 			err.printStackTrace();
 		}
+		logger.debug("initialized.");
 		return new HashMap<Integer, Key>();
 	}
 	

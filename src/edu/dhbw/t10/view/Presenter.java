@@ -14,6 +14,8 @@ import java.awt.Toolkit;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import org.apache.log4j.Logger;
+
 import edu.dhbw.t10.view.menus.MenuBar;
 import edu.dhbw.t10.view.panels.MainPanel;
 
@@ -30,7 +32,7 @@ public class Presenter extends JFrame {
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
-	
+	private static final Logger	logger				= Logger.getLogger(Presenter.class);
 	private static final long	serialVersionUID	= 6217926957357225677L;
 	private static Presenter	instance;
 	private JPanel					contentPane;
@@ -44,6 +46,7 @@ public class Presenter extends JFrame {
 	  * 
 	  */
 	private Presenter() {
+		logger.debug("Initializing...");
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setLocationByPlatform(true);
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("icons/useacc_logo.png"));
@@ -60,6 +63,7 @@ public class Presenter extends JFrame {
 
 		// build GUI
 		pack();
+		logger.debug("Initialized.");
 	}
 	
 	

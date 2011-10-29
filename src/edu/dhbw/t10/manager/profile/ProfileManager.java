@@ -57,6 +57,7 @@ public class ProfileManager {
 	 * Constructor as Singleton. This way, we prevent having multiple manager and
 	 */
 	private ProfileManager() {
+		logger.debug("initializing...");
 		instance = this;
 		System.out.println("prof");
 		activeProfileName = "default";
@@ -75,6 +76,7 @@ public class ProfileManager {
 
 		// -------------------ENDE DUMMY CODE---------------------------
 		serializeProfiles();
+		logger.debug("initialized.");
 	}
 
 
