@@ -1,7 +1,9 @@
 <layout>
 	<sizex>1010</sizex>
 	<sizey>335</sizey>
-	<scale>0.8</scale>
+	<scalex>0.8</scalex>
+	<scaley>0.8</scaley>
+	<scale_font>0.8</scale_font>
 	<font>
 		<!-- For description, see javadoc of Font-class -->
 		<name></name>
