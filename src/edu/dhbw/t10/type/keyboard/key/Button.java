@@ -29,6 +29,7 @@ public class Button extends PhysicalButton {
 
 	
 	private HashMap<ModeButton, Key>	modes					= new HashMap<ModeButton, Key>();
+	private Key								key;
 	// assigns to every modi
 	private ArrayList<ModeButton>		activeModes			= new ArrayList<ModeButton>();
 	
@@ -113,4 +114,16 @@ public class Button extends PhysicalButton {
 	public ArrayList<ModeButton> getActiveMode() {
 		return activeModes;
 	}
+	
+	
+	public Key getKey() {
+		return key;
+	}
+	
+	
+	public void setKey(Key key) {
+		this.key = key;
+	}
+
+
 }

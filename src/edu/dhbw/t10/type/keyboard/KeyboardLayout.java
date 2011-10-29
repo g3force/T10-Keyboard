@@ -31,7 +31,7 @@ public class KeyboardLayout {
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
-	private ArrayList<Button>			button		= new ArrayList<Button>();
+	private ArrayList<Button>			buttons		= new ArrayList<Button>();
 	private ArrayList<ModeButton>		modeButtons	= new ArrayList<ModeButton>();
 	private ArrayList<MuteButton>		muteButtons	= new ArrayList<MuteButton>();
 	private ArrayList<DropDownList>	ddls			= new ArrayList<DropDownList>();
@@ -59,7 +59,7 @@ public class KeyboardLayout {
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
 	public void addKey(Button key) {
-		button.add(key);
+		buttons.add(key);
 	}
 	
 	
@@ -69,7 +69,7 @@ public class KeyboardLayout {
 	
 
 	public void rescale() {
-		for (Button k : button) {
+		for (Button k : buttons) {
 			Rectangle rect = k.getBounds();
 			rect.setBounds((int) (k.getPos_x() * scale_x), (int) (k.getPos_y() * scale_y),
 					(int) (k.getOrigSize().width * scale_x), (int) (k.getOrigSize().height * scale_y));
@@ -89,13 +89,13 @@ public class KeyboardLayout {
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
 	
-	public ArrayList<Button> getKeys() {
-		return button;
+	public ArrayList<Button> getButtons() {
+		return buttons;
 	}
 	
 	
-	public void setKeys(ArrayList<Button> keys) {
-		this.button = keys;
+	public void setButtons(ArrayList<Button> buttons) {
+		this.buttons = buttons;
 	}
 	
 	
