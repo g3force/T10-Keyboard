@@ -153,10 +153,11 @@ public class KeyboardLayoutSaver {
 				// TODO Auto-generated catch block
 				err.printStackTrace();
 			}
-         String xmlString = sw.toString();
+        String xmlString = sw.toString();
 
          //print xml
          System.out.println("Here's the xml:\n\n" + xmlString);
+
 		} catch (ParserConfigurationException err) {
 			logger.error("Could not initialize dBuilder");
 			err.printStackTrace();
@@ -164,7 +165,6 @@ public class KeyboardLayoutSaver {
 			// TODO Auto-generated catch block
 			err.printStackTrace();
 		}
-
 	}
 	
 	

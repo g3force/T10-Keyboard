@@ -32,6 +32,8 @@ import edu.dhbw.t10.type.keyboard.DropDownList;
 import edu.dhbw.t10.type.keyboard.KeyboardLayout;
 import edu.dhbw.t10.type.keyboard.key.Button;
 import edu.dhbw.t10.type.keyboard.key.Key;
+import edu.dhbw.t10.type.keyboard.key.ModeButton;
+import edu.dhbw.t10.type.keyboard.key.PhysicalButton;
 
 
 /**
@@ -44,7 +46,8 @@ public class KeyboardLayoutLoader {
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
-	private static final Logger	logger	= Logger.getLogger(KeyboardLayoutLoader.class);
+	private static final Logger				logger	= Logger.getLogger(KeyboardLayoutLoader.class);
+	private static HashMap<Integer, Key>	keymap;
 
 
 	// --------------------------------------------------------------------------
@@ -67,103 +70,110 @@ public class KeyboardLayoutLoader {
 	 * @return KeyboardLayout
 	 * @author NicolaiO
 	 */
-	public static KeyboardLayout load(String filePath, HashMap<Integer, Key> keymap) {
-		KeyboardLayout kbdLayout = new KeyboardLayout(0, 0, 1);
+	public static KeyboardLayout load(String filePath, HashMap<Integer, Key> _keymap) {
+		DocumentBuilder dBuilder;
+		Document doc;
+		keymap = _keymap;
+		KeyboardLayout kbdLayout = new KeyboardLayout(0, 0, 1, 1, 1);
 		File layoutFile = new File(filePath);
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+
 		try {
-			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-			Document doc = dBuilder.parse(layoutFile);
+			dBuilder = dbFactory.newDocumentBuilder();
+			doc = dBuilder.parse(layoutFile);
 			doc.getDocumentElement().normalize();
-			
-			NodeList nList = doc.getElementsByTagName("key");
-			ArrayList<Button> keys = new ArrayList<Button>();
-			
-			for (int temp = 0; temp < nList.getLength(); temp++) {
-				Node nNode = nList.item(temp);
-				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-					Element eElement = (Element) nNode;
-					Button newKey = getKey(eElement, keymap);
-					if (newKey != null) {
-						keys.add(newKey);
-						// TODO NicolaiO, Felix listener
-						newKey.addActionListener(Controller.getInstance()); // use EventCollector as listener
-					}
-				} else {
-					logger.warn("key-node is not an element-node");
-				}
-			}
-			
-			int sizex = 0, sizey = 0;
-			float scale = 1.0f;
-			nList = doc.getElementsByTagName("sizex");
-			if (nList.getLength() > 0)
-				sizex = Integer.parseInt(nList.item(0).getTextContent());
-			nList = doc.getElementsByTagName("sizey");
-			if (nList.getLength() > 0)
-				sizey = Integer.parseInt(nList.item(0).getTextContent());
-			nList = doc.getElementsByTagName("scale");
-			if (nList.getLength() > 0)
-				scale = Float.parseFloat(nList.item(0).getTextContent());
-			kbdLayout = new KeyboardLayout(sizex, sizey, scale);
-			
-			nList = doc.getElementsByTagName("font");
-			String fname = "";
-			int fstyle = 0, fsize = 0;
-			if (nList.getLength() > 0) {
-				NodeList font = nList.item(0).getChildNodes();
-				for (int i = 0; i < font.getLength(); i++) {
-					Node n = font.item(i);
-					if (n.getNodeName() == "name") {
-						fname = n.getTextContent();
-					} else if (n.getNodeName() == "style") {
-						try {
-							fstyle = Integer.parseInt(n.getTextContent());
-						} catch (NumberFormatException e) {
-						}
-					} else if (n.getNodeName() == "size") {
-						try {
-							fsize = Integer.parseInt(n.getTextContent());
-						} catch (NumberFormatException e) {
-						}
-					}
-				}
-			}
-			
-			nList = doc.getElementsByTagName("dropdown");
-			for (int temp = 0; temp < nList.getLength(); temp++) {
-				Node nNode = nList.item(temp);
-				try {
-					if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-						Element eElement = (Element) nNode;
-						NamedNodeMap attr = eElement.getAttributes();
-						DropDownList cb = new DropDownList(getAttribute(attr, "type"), getIntAttribute(attr, "size_x"),
-								getIntAttribute(attr, "size_y"), getIntAttribute(attr, "pos_x"), getIntAttribute(attr, "pos_y"));
-						kbdLayout.addDdl(cb);
-						// TODO NicolaiO, Felix listener
-					}
-				} catch (NullPointerException e) {
-					logger.warn("Dropdown-element found, but can not be read correctly! node nr " + temp + ": "
-							+ nNode.toString());
-				}
-			}
-			
-			
-			kbdLayout.setFont(new Font(fname, fstyle, fsize));
-			kbdLayout.setKeys(keys);
-			// kbdLayout.setMode("default"); TODO NicolaiO to be fixed by Nico ;) Dirk
-			kbdLayout.rescale();
-			logger.info("loaded " + keys.size() + " Buttonkeys.");
 		} catch (ParserConfigurationException err) {
 			logger.error("Could not initialize dBuilder");
 			err.printStackTrace();
+			return kbdLayout;
 		} catch (SAXException err) {
 			logger.error("Could not parse document");
 			err.printStackTrace();
+			return kbdLayout;
 		} catch (IOException err) {
 			logger.error("Could not parse document");
 			err.printStackTrace();
+			return kbdLayout;
 		}
+		NodeList nList;
+		
+		// ########################## read ModeButtons ########################
+		HashMap<Integer, ModeButton> modeButtons = new HashMap<Integer, ModeButton>();
+		// ########################## read Buttons ############################
+		ArrayList<Button> buttons = getButtons(doc, modeButtons);
+		// ########################## read MuteButtons ###########################
+		
+		int sizex = 0, sizey = 0;
+		float scalex = 1.0f, scaley = 1.0f, scale_font = 1.0f;
+
+		nList = doc.getElementsByTagName("sizex");
+		if (nList.getLength() > 0)
+			sizex = Integer.parseInt(nList.item(0).getTextContent());
+
+		nList = doc.getElementsByTagName("sizey");
+		if (nList.getLength() > 0)
+			sizey = Integer.parseInt(nList.item(0).getTextContent());
+
+		nList = doc.getElementsByTagName("scalex");
+		if (nList.getLength() > 0)
+			scalex = Float.parseFloat(nList.item(0).getTextContent());
+
+		nList = doc.getElementsByTagName("scaley");
+		if (nList.getLength() > 0)
+			scaley = Float.parseFloat(nList.item(0).getTextContent());
+		
+		nList = doc.getElementsByTagName("scale_font");
+		if (nList.getLength() > 0)
+			scale_font = Float.parseFloat(nList.item(0).getTextContent());
+
+		kbdLayout = new KeyboardLayout(sizex, sizey, scalex, scaley, scale_font);
+		
+		nList = doc.getElementsByTagName("font");
+		String fname = "";
+		int fstyle = 0, fsize = 0;
+		if (nList.getLength() > 0) {
+			NodeList font = nList.item(0).getChildNodes();
+			for (int i = 0; i < font.getLength(); i++) {
+				Node n = font.item(i);
+				if (n.getNodeName() == "name") {
+					fname = n.getTextContent();
+				} else if (n.getNodeName() == "style") {
+					try {
+						fstyle = Integer.parseInt(n.getTextContent());
+					} catch (NumberFormatException e) {
+					}
+				} else if (n.getNodeName() == "size") {
+					try {
+						fsize = Integer.parseInt(n.getTextContent());
+					} catch (NumberFormatException e) {
+					}
+				}
+			}
+		}
+		
+		nList = doc.getElementsByTagName("dropdown");
+		for (int temp = 0; temp < nList.getLength(); temp++) {
+			Node nNode = nList.item(temp);
+			try {
+				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+					Element eElement = (Element) nNode;
+					NamedNodeMap attr = eElement.getAttributes();
+					DropDownList cb = new DropDownList(getAttribute(attr, "type"), getIntAttribute(attr, "size_x"),
+							getIntAttribute(attr, "size_y"), getIntAttribute(attr, "pos_x"), getIntAttribute(attr, "pos_y"));
+					kbdLayout.addDdl(cb);
+					// TODO NicolaiO, Felix listener for dropdown list
+				}
+			} catch (NullPointerException e) {
+				logger.warn("Dropdown-element found, but can not be read correctly! node nr " + temp + ": "
+						+ nNode.toString());
+			}
+		}
+		
+		
+		kbdLayout.setFont(new Font(fname, fstyle, fsize));
+		kbdLayout.rescale();
+		logger.info("loaded " + buttons.size() + " Buttonkeys.");
+
 		return kbdLayout;
 	}
 	
@@ -174,44 +184,77 @@ public class KeyboardLayoutLoader {
 	 * @param eElement must be a <key> node
 	 * @return Key
 	 */
-	private static Button getKey(Element eElement, HashMap<Integer, Key> keymap) {
-		try {
-			NamedNodeMap attr = eElement.getAttributes();
-			Button key = new Button(getIntAttribute(attr, "size_x"), getIntAttribute(attr, "size_y"), getIntAttribute(
-					attr, "pos_x"), getIntAttribute(attr, "pos_y"));
-			
-			// Modes
-			NodeList modes = eElement.getElementsByTagName("mode");
-			for (int i = 0; i < modes.getLength(); i++) {
-				Node item = modes.item(i);
-				if (item != null) {
-					String sModeName = "";
-					String sColor = "";
-					Node modeName = item.getAttributes().getNamedItem("name");
-					Node color = item.getAttributes().getNamedItem("color");
-					if (modeName != null) {
-						sModeName = modeName.getTextContent();
+	private static ArrayList<Button> getButtons(Document doc, HashMap<Integer, ModeButton> modeButtons) {
+		ArrayList<Button> buttons = new ArrayList<Button>();
+		NodeList nList = doc.getElementsByTagName("button");
+		
+		// loop through buttons
+		for (int temp = 0; temp < nList.getLength(); temp++) {
+			Node nNode = nList.item(temp);
+
+			if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+				Element eElement = (Element) nNode;
+				
+				try {
+					Button button = (Button) getPhysicalButton(nNode);
+					
+					// receive Modes
+					NodeList modes = eElement.getElementsByTagName("mode");
+					for (int i = 0; i < modes.getLength(); i++) {
+						Node item = modes.item(i);
+						if (item != null) {
+							int iModeName = 0;
+							String sColor = "";
+							boolean accept = false;
+							Node modeName = item.getAttributes().getNamedItem("modename");
+							Node color = item.getAttributes().getNamedItem("color");
+							Node nAccept = item.getAttributes().getNamedItem("accept");
+							if (modeName != null) {
+								iModeName = Integer.parseInt(modeName.getTextContent());
+							}
+							if (color != null) {
+								sColor = color.getTextContent();
+							}
+							if (nAccept != null && nAccept.getTextContent().equals("true")) {
+								accept = true;
+							}
+							button.addActionListener(Controller.getInstance()); // use EventCollector as listener
+							// TODO NicolaiO add mode: color and accept
+							button.addMode(modeButtons.get(iModeName), keymap.get(item.getTextContent()));
+							buttons.add(button);
+						}
 					}
-					if (color != null) {
-						sColor = color.getTextContent();
-					}
-					// TODO NicolaiO add mode...
-					// key.addMode(sModeName, keymap.get(item.getTextContent()));
+				} catch (NullPointerException e) {
+					System.out.println("In getKey:");
+					e.printStackTrace();
 				}
+
+
+			} else {
+				logger.warn("key-node is not an element-node");
 			}
-			
-			return key;
-		} catch (NullPointerException e) {
-			System.out.println("In getKey:");
-			e.printStackTrace();
 		}
 		return null;
 	}
 	
 	
+	private static PhysicalButton getPhysicalButton(Node node) {
+		if (node.getNodeType() == Node.ELEMENT_NODE) {
+			try {
+				Element eElement = (Element) node;
+				NamedNodeMap attr = eElement.getAttributes();
+				return new PhysicalButton(getIntAttribute(attr, "size_x"), getIntAttribute(attr, "size_y"),
+						getIntAttribute(attr, "pos_x"), getIntAttribute(attr, "pos_y"));
+			} catch (NullPointerException e) {
+				logger.warn("Could not read node as PhysicalButton. Node: " + node);
+			}
+		}
+		return null;
+	}
+
+
 	/**
 	 * Helper function for receiving an attribute by name
-	 * TODO NicolaiO, add comment!
 	 * 
 	 * @param attr
 	 * @param name
@@ -227,7 +270,16 @@ public class KeyboardLayoutLoader {
 		return "";
 	}
 	
-
+	
+	/**
+	 * Helper function for receiving an attribute by name, returning as int
+	 * 
+	 * @param attr
+	 * @param name
+	 * @return
+	 * @throws NullPointerException
+	 * @author NicolaiO
+	 */
 	private static int getIntAttribute(NamedNodeMap attr, String name) throws NullPointerException {
 		try {
 			int value = Integer.parseInt(getAttribute(attr, name));
@@ -238,16 +290,6 @@ public class KeyboardLayoutLoader {
 	}
 	
 	
-	// private static int getModeFromString(String mode) {
-	// if(mode.equals("default")) {
-	// return null;
-	// }
-	// else {
-	// return new ModeKey(modeKey, size_x, size_y, pos_x, pos_y)
-	// }
-	// }
-	
-
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
