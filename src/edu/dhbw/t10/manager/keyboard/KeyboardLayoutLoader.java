@@ -33,7 +33,6 @@ import edu.dhbw.t10.type.keyboard.KeyboardLayout;
 import edu.dhbw.t10.type.keyboard.key.Button;
 import edu.dhbw.t10.type.keyboard.key.Key;
 import edu.dhbw.t10.type.keyboard.key.ModeButton;
-import edu.dhbw.t10.type.keyboard.key.PhysicalButton;
 
 
 /**
@@ -48,7 +47,7 @@ public class KeyboardLayoutLoader {
 	// --------------------------------------------------------------------------
 	private static final Logger				logger	= Logger.getLogger(KeyboardLayoutLoader.class);
 	private static HashMap<Integer, Key>	keymap;
-
+	
 
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
@@ -103,6 +102,8 @@ public class KeyboardLayoutLoader {
 		ArrayList<Button> buttons = getButtons(doc, modeButtons);
 		// ########################## read MuteButtons ###########################
 		
+		
+		// get other infos from layout file
 		int sizex = 0, sizey = 0;
 		float scalex = 1.0f, scaley = 1.0f, scale_font = 1.0f;
 
@@ -179,7 +180,7 @@ public class KeyboardLayoutLoader {
 	
 	
 	/**
-	 * Return Key-Object from given element
+	 * TODO Nicolai add comment...
 	 * 
 	 * @param eElement must be a <key> node
 	 * @return Key
@@ -192,59 +193,102 @@ public class KeyboardLayoutLoader {
 		for (int temp = 0; temp < nList.getLength(); temp++) {
 			Node nNode = nList.item(temp);
 
+			if (nNode.getNodeType() != Node.ELEMENT_NODE) {
+				logger.warn("key-node is not an element-node");
+				continue;
+			}
+			Element eElement = (Element) nNode;
+			
+			try {
+				Bounds b = getBounds(nNode);
+				Button button = new Button(b.size_x, b.size_y, b.pos_x, b.pos_y);
+				
+				// receive default key
+				NodeList defkey = eElement.getElementsByTagName("key");
+				if (defkey.getLength() == 1) {
+					button.setKey(keymap.get(defkey.item(0).getTextContent()));
+				}
+
+				
+				// receive Modes
+				NodeList modes = eElement.getElementsByTagName("mode");
+				for (int i = 0; i < modes.getLength(); i++) {
+					Node item = modes.item(i);
+					if (item != null) {
+						int iModeName = 0;
+						// String sColor = "";
+						boolean accept = false;
+						Node modeName = item.getAttributes().getNamedItem("modename");
+						// Node color = item.getAttributes().getNamedItem("color");
+						Node nAccept = item.getAttributes().getNamedItem("accept");
+						if (modeName != null) {
+							iModeName = Integer.parseInt(modeName.getTextContent());
+						}
+						// if (color != null) {
+						// sColor = color.getTextContent();
+						// }
+						if (nAccept != null && nAccept.getTextContent().equals("true")) {
+							accept = true;
+						}
+						button.addActionListener(Controller.getInstance()); // use EventCollector as listener
+						Key key = keymap.get(item.getTextContent());
+						key.setAccept(accept);
+						button.addMode(modeButtons.get(iModeName), key);
+					}
+				}
+				buttons.add(button);
+			} catch (NullPointerException e) {
+				System.out.println("In getKey:");
+				e.printStackTrace();
+			}
+
+		}
+		return null;
+	}
+	
+	
+	private static HashMap<Integer, ModeButton> getModeButtons(Document doc) {
+		ArrayList<Button> buttons = new ArrayList<Button>();
+		NodeList nList = doc.getElementsByTagName("modebutton");
+		
+		// loop through buttons
+		for (int temp = 0; temp < nList.getLength(); temp++) {
+			Node nNode = nList.item(temp);
+			
 			if (nNode.getNodeType() == Node.ELEMENT_NODE) {
 				Element eElement = (Element) nNode;
 				
 				try {
-					Button button = (Button) getPhysicalButton(nNode);
+					Bounds b = getBounds(nNode);
+					Button button = new Button(b.size_x, b.size_y, b.pos_x, b.pos_y);
 					
-					// receive Modes
-					NodeList modes = eElement.getElementsByTagName("mode");
-					for (int i = 0; i < modes.getLength(); i++) {
-						Node item = modes.item(i);
-						if (item != null) {
-							int iModeName = 0;
-							String sColor = "";
-							boolean accept = false;
-							Node modeName = item.getAttributes().getNamedItem("modename");
-							Node color = item.getAttributes().getNamedItem("color");
-							Node nAccept = item.getAttributes().getNamedItem("accept");
-							if (modeName != null) {
-								iModeName = Integer.parseInt(modeName.getTextContent());
-							}
-							if (color != null) {
-								sColor = color.getTextContent();
-							}
-							if (nAccept != null && nAccept.getTextContent().equals("true")) {
-								accept = true;
-							}
-							button.addActionListener(Controller.getInstance()); // use EventCollector as listener
-							// TODO NicolaiO add mode: color and accept
-							button.addMode(modeButtons.get(iModeName), keymap.get(item.getTextContent()));
-							buttons.add(button);
-						}
+					// receive default key
+					NodeList defkey = eElement.getElementsByTagName("key");
+					if (defkey.getLength() == 1) {
+						button.setKey(keymap.get(defkey.item(0).getTextContent()));
 					}
 				} catch (NullPointerException e) {
-					System.out.println("In getKey:");
+					logger.warn("");
 					e.printStackTrace();
 				}
-
-
+				
+				
 			} else {
 				logger.warn("key-node is not an element-node");
 			}
 		}
 		return null;
 	}
-	
-	
-	private static PhysicalButton getPhysicalButton(Node node) {
+
+
+	private static Bounds getBounds(Node node) {
 		if (node.getNodeType() == Node.ELEMENT_NODE) {
 			try {
 				Element eElement = (Element) node;
 				NamedNodeMap attr = eElement.getAttributes();
-				return new PhysicalButton(getIntAttribute(attr, "size_x"), getIntAttribute(attr, "size_y"),
-						getIntAttribute(attr, "pos_x"), getIntAttribute(attr, "pos_y"));
+				return new Bounds(getIntAttribute(attr, "size_x"), getIntAttribute(attr, "size_y"), getIntAttribute(attr,
+						"pos_x"), getIntAttribute(attr, "pos_y"));
+
 			} catch (NullPointerException e) {
 				logger.warn("Could not read node as PhysicalButton. Node: " + node);
 			}
@@ -293,4 +337,15 @@ public class KeyboardLayoutLoader {
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
+	private static class Bounds {
+		public int	size_x, size_y, pos_x, pos_y;
+		
+		
+		public Bounds(int size_x, int size_y, int pos_x, int pos_y) {
+			this.size_x = size_x;
+			this.size_y = size_y;
+			this.pos_x = pos_x;
+			this.pos_y = pos_y;
+		}
+	}
 }
