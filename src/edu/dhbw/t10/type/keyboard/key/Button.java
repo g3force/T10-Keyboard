@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 
-
 /**
  * This class is the body of one key on the keyboard. It contains information
  * about size and position as well as for the names and keycodes for the several
@@ -26,13 +25,13 @@ public class Button extends PhysicalButton {
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
-	private static final long		serialVersionUID	= 6949715976373962684L;
-	
+	private static final long			serialVersionUID	= 6949715976373962684L;
 
+	
 	private HashMap<ModeButton, Key>	modes					= new HashMap<ModeButton, Key>();
 	// assigns to every modi
-	private boolean							accept				= false;
-	private ArrayList<ModeButton>				activeModes			= new ArrayList<ModeButton>();
+	private boolean						accept				= false;
+	private ArrayList<ModeButton>		activeModes			= new ArrayList<ModeButton>();
 	
 	
 	// contains the activated control key like shift
@@ -44,6 +43,7 @@ public class Button extends PhysicalButton {
 	public Button(int size_x, int size_y, int pos_x, int pos_y) {
 		super(size_x, size_y, pos_x, pos_y);
 	}
+
 
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
@@ -59,15 +59,9 @@ public class Button extends PhysicalButton {
 	 * @param color
 	 * @author NicolaiO
 	 */
-	// TODO INTERFACE for keyboardlayoutloader
 	public void addMode(ModeButton mode, Key accordingKey) {
 		modes.put(mode, accordingKey);
 	}
-	
-	
-	// public String toString() {
-	// return "Size: " + origSize + " Pos: " + pos_x + "," + pos_y + " Modes: " + modes;
-	// }
 	
 	
 	/**
@@ -84,9 +78,6 @@ public class Button extends PhysicalButton {
 	}
 	
 	
-	
-	
-
 	public ArrayList<Key> getSingleKey() {
 		ArrayList<Key> output = new ArrayList<Key>();
 		if (activeModes.size() == 0) {
@@ -107,20 +98,14 @@ public class Button extends PhysicalButton {
 	}
 
 
-
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
 	
 	
-	
 	// public Set<String> getAllModes() {
 	// return modes.keySet();
 	// }
-	
-	
-
-
 	
 	
 	public HashMap<ModeButton, Key> getModes() {
