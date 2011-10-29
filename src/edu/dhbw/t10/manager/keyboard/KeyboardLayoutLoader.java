@@ -231,6 +231,7 @@ public class KeyboardLayoutLoader {
 					logger.warn("Number of key-elements is not 1: " + defkey.getLength());
 				}
 				
+				button.addActionListener(Controller.getInstance()); // use EventCollector as listener
 				buttons.add(button);
 
 				// receive Modes
@@ -257,7 +258,6 @@ public class KeyboardLayoutLoader {
 						if (nAccept != null && nAccept.getTextContent().equals("true")) {
 							accept = true;
 						}
-						button.addActionListener(Controller.getInstance()); // use EventCollector as listener
 						try {
 							Key key = keymap.get(Integer.parseInt(item.getTextContent()));
 							if (key == null) {
