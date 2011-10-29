@@ -18,7 +18,7 @@ import java.io.ObjectOutputStream;
 
 /**
  * Serializes an arbitrary Object
- * @author dirk
+ * * @author dirk
  * 
  */
 public class Serializer {
