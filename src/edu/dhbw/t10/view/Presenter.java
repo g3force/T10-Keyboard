@@ -46,6 +46,7 @@ public class Presenter extends JFrame {
 	  * 
 	  */
 	private Presenter() {
+		instance = this; // VERRRRRY IMPORTANT, IF YOU DONT WANT TO HAVE MULTIPLE KEYBOARDS
 		logger.debug("Initializing...");
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setLocationByPlatform(true);
