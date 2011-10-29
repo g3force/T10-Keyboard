@@ -62,6 +62,7 @@ public class Profile {
 		name = pName;
 		pathToTree = pPath;
 		tree = ptree;
+		pathToProfile = "";
 		// tree = new PriorityTree();
 	}
 	
@@ -71,6 +72,7 @@ public class Profile {
 		name = pName;
 		pathToTree = pPath;
 		tree = new PriorityTree();
+		pathToProfile = "";
 	}
 	
 	
@@ -79,6 +81,7 @@ public class Profile {
 		name = pName;
 		pathToTree = "conf/trees/" + name;
 		tree = new PriorityTree();
+		pathToProfile = "";
 	}
 
 	// --------------------------------------------------------------------------
