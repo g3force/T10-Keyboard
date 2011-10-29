@@ -24,9 +24,9 @@ public class MuteButton extends PhysicalButton {
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
 	private int	type;
-	private static final int	profileChange		= 0;
-	private static final int	autoCompleting		= 1;
-	private static final int	treeInserting		= 2;
+	public static final int		AUTO_PROFILE_CHANGE	= 0;
+	public static final int		AUTO_COMPLETING		= 1;
+	public static final int		TREE_EXPANDING			= 2;
 	
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------

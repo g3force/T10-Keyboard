@@ -72,7 +72,7 @@ public class Controller implements ActionListener {
 			profileMan.acceptWord(suggest);
 			typedWord = "";
 			suggest = "";
-		} else if (key.getType() == Key.CHAR_KEY) {
+		} else if (key.getType() == Key.CHAR) {
 			outputMan.printChar(key);
 			typedWord = typedWord + key.getText();
 			suggest = profileMan.getWordSuggest(typedWord);
