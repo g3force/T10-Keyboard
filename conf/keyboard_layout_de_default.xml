@@ -68,10 +68,10 @@
 	<!-- 2nd row keys in order-->
 	<key size_x="50" size_y="50" pos_x="5" pos_y="60">
 		<mode modekey="0">15</mode>
-		<mode modekey="shift">29</mode>
+		<mode modekey="1001">29</mode>
 	</key>
 	<key size_x="50" size_y="50" pos_x="60" pos_y="60">
-		<mode modekey="0">16</mode>
+		<mode modekey="0" >16</mode>
 		<mode modekey="shift">30</mode>
 		<mode modekey="altgr">42</mode>
 	</key>
