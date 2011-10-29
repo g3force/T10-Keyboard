@@ -9,15 +9,21 @@
  */
 package edu.dhbw.t10.manager.keyboard;
 
-import java.awt.Font;
 import java.io.File;
-import java.io.IOException;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
@@ -25,13 +31,13 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
+import org.w3c.dom.Text;
 
-import edu.dhbw.t10.manager.Controller;
 import edu.dhbw.t10.type.keyboard.DropDownList;
 import edu.dhbw.t10.type.keyboard.KeyboardLayout;
 import edu.dhbw.t10.type.keyboard.key.Button;
 import edu.dhbw.t10.type.keyboard.key.Key;
+import edu.dhbw.t10.type.keyboard.key.ModeButton;
 
 
 /**
@@ -72,99 +78,93 @@ public class KeyboardLayoutSaver {
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 		try {
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-			
 			Document doc = dBuilder.newDocument();// dBuilder.parse(layoutFile);
 			// doc.getDocumentElement().normalize();
+			Element layout = doc.createElement("layout");
+
+			Element sizex = doc.createElement("sizex");
+			Text text = doc.createTextNode(kbdLayout.getSize_x() + "");
+			sizex.appendChild(text);
+			layout.appendChild(sizex);
+
+			Element sizey = doc.createElement("sizey");
+			text = doc.createTextNode(kbdLayout.getSize_y() + "");
+			sizey.appendChild(text);
+			layout.appendChild(sizey);
+
+			Element scalex = doc.createElement("scalex");
+			text = doc.createTextNode(kbdLayout.getScale_x() + "");
+			scalex.appendChild(text);
+			layout.appendChild(scalex);
+
+			Element scaley = doc.createElement("scaley");
+			text = doc.createTextNode(kbdLayout.getScale_y() + "");
+			scaley.appendChild(text);
+			layout.appendChild(scaley);
 			
-			NodeList nList = doc.getElementsByTagName("key");
+			Element scale_font = doc.createElement("scale_font");
+			text = doc.createTextNode(kbdLayout.getScale_font() + "");
+			scale_font.appendChild(text);
+			layout.appendChild(scale_font);
+
+			Element font = doc.createElement("font");
+			layout.appendChild(font);
+			
+			Element modekey = doc.createElement("modekey");
+			font.appendChild(modekey);
+			
+			Element style = doc.createElement("style");
+			font.appendChild(style);
+			
+			Element size = doc.createElement("size");
+			text = doc.createTextNode(kbdLayout.getFontSize() + "");
+			size.appendChild(text);
+			font.appendChild(size);
+			
+			for (DropDownList dd : kbdLayout.getDdls()) {
+				Element dropdown = doc.createElement("dropdown");
+				dropdown.setAttribute("type", dd.getName());
+				dropdown.setAttribute("size_x", dd.getWidth() + "");
+				dropdown.setAttribute("size_y", dd.getHeight() + "");
+				dropdown.setAttribute("pos_x", dd.getX() + "");
+				dropdown.setAttribute("pos_y", dd.getX() + "");
+				layout.appendChild(dropdown);
+			}
+			for (ModeButton modeB : kbdLayout.getModeButtons()) {
+
+			}
 			ArrayList<Button> keys = new ArrayList<Button>();
 			
-			for (int temp = 0; temp < nList.getLength(); temp++) {
-				Node nNode = nList.item(temp);
-				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-					Element eElement = (Element) nNode;
-					Button newKey = getKey(eElement, keymap);
-					if (newKey != null) {
-						keys.add(newKey);
-						// TODO NicolaiO, Felix listener
-						newKey.addActionListener(Controller.getInstance()); // use EventCollector as listener
-					}
-				} else {
-					logger.warn("key-node is not an element-node");
-				}
+			// OUTPUT TO FILE
+			TransformerFactory transfac = TransformerFactory.newInstance();
+         Transformer trans;
+			trans = transfac.newTransformer();
+			
+         trans.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+         trans.setOutputProperty(OutputKeys.INDENT, "yes");
+
+         //create string from xml tree
+         StringWriter sw = new StringWriter();
+         StreamResult result = new StreamResult(sw);
+         DOMSource source = new DOMSource(doc);
+			try {
+				trans.transform(source, result);
+			} catch (TransformerException err) {
+				// TODO Auto-generated catch block
+				err.printStackTrace();
 			}
-			
-			int sizex = 0, sizey = 0;
-			float scale = 1.0f;
-			nList = doc.getElementsByTagName("sizex");
-			if (nList.getLength() > 0)
-				sizex = Integer.parseInt(nList.item(0).getTextContent());
-			nList = doc.getElementsByTagName("sizey");
-			if (nList.getLength() > 0)
-				sizey = Integer.parseInt(nList.item(0).getTextContent());
-			nList = doc.getElementsByTagName("scale");
-			if (nList.getLength() > 0)
-				scale = Float.parseFloat(nList.item(0).getTextContent());
-			kbdLayout = new KeyboardLayout(sizex, sizey, scale);
-			
-			nList = doc.getElementsByTagName("font");
-			String fname = "";
-			int fstyle = 0, fsize = 0;
-			if (nList.getLength() > 0) {
-				NodeList font = nList.item(0).getChildNodes();
-				for (int i = 0; i < font.getLength(); i++) {
-					Node n = font.item(i);
-					if (n.getNodeName() == "name") {
-						fname = n.getTextContent();
-					} else if (n.getNodeName() == "style") {
-						try {
-							fstyle = Integer.parseInt(n.getTextContent());
-						} catch (NumberFormatException e) {
-						}
-					} else if (n.getNodeName() == "size") {
-						try {
-							fsize = Integer.parseInt(n.getTextContent());
-						} catch (NumberFormatException e) {
-						}
-					}
-				}
-			}
-			
-			nList = doc.getElementsByTagName("dropdown");
-			for (int temp = 0; temp < nList.getLength(); temp++) {
-				Node nNode = nList.item(temp);
-				try {
-					if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-						Element eElement = (Element) nNode;
-						NamedNodeMap attr = eElement.getAttributes();
-						DropDownList cb = new DropDownList(getAttribute(attr, "type"), getIntAttribute(attr, "size_x"),
-								getIntAttribute(attr, "size_y"), getIntAttribute(attr, "pos_x"), getIntAttribute(attr, "pos_y"));
-						kbdLayout.addDdl(cb);
-						// TODO NicolaiO, Felix listener
-					}
-				} catch (NullPointerException e) {
-					logger.warn("Dropdown-element found, but can not be read correctly! node nr " + temp + ": "
-							+ nNode.toString());
-				}
-			}
-			
-			
-			kbdLayout.setFont(new Font(fname, fstyle, fsize));
-			kbdLayout.setKeys(keys);
-			// kbdLayout.setMode("default"); TODO NicolaiO to be fixed by Nico ;) Dirk
-			kbdLayout.rescale();
-			logger.info("loaded " + keys.size() + " Buttonkeys.");
+         String xmlString = sw.toString();
+
+         //print xml
+         System.out.println("Here's the xml:\n\n" + xmlString);
 		} catch (ParserConfigurationException err) {
 			logger.error("Could not initialize dBuilder");
 			err.printStackTrace();
-		} catch (SAXException err) {
-			logger.error("Could not parse document");
-			err.printStackTrace();
-		} catch (IOException err) {
-			logger.error("Could not parse document");
+		} catch (TransformerConfigurationException err) {
+			// TODO Auto-generated catch block
 			err.printStackTrace();
 		}
-		return kbdLayout;
+
 	}
 	
 	
