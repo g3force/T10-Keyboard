@@ -28,7 +28,8 @@ public class Profile {
 	// --------------------------------------------------------------------------
 	private int		profileID;
 	private String	name;
-	private String			pathToFile;
+	private String			pathToTree;
+	private String						pathToProfile;
 	private PriorityTree				tree;
 	
 	@SuppressWarnings("unused")
@@ -40,16 +41,26 @@ public class Profile {
 	public Profile() {
 		profileID = -1;
 		name = "";
-		pathToFile = "";
+		pathToTree = "";
+		pathToProfile = "";
 		tree = null;
 		// tree = new PriorityTree();
 	}
+
 	
+	public Profile(int pID, String pName, String pPath, PriorityTree ptree, String pFile) {
+		profileID = pID;
+		name = pName;
+		pathToTree = pPath;
+		tree = ptree;
+		pathToProfile = pFile;
+		// tree = new PriorityTree();
+	}
 	
 	public Profile(int pID, String pName, String pPath, PriorityTree ptree) {
 		profileID = pID;
 		name = pName;
-		pathToFile = pPath;
+		pathToTree = pPath;
 		tree = ptree;
 		// tree = new PriorityTree();
 	}
@@ -58,7 +69,7 @@ public class Profile {
 	public Profile(int pID, String pName, String pPath) {
 		profileID = pID;
 		name = pName;
-		pathToFile = pPath;
+		pathToTree = pPath;
 		tree = new PriorityTree();
 	}
 	
@@ -66,7 +77,7 @@ public class Profile {
 	public Profile(int pID, String pName) {
 		profileID = pID;
 		name = pName;
-		pathToFile = "conf/trees/" + name;
+		pathToTree = "conf/trees/" + name;
 		tree = new PriorityTree();
 	}
 
@@ -75,12 +86,12 @@ public class Profile {
 	// --------------------------------------------------------------------------
 	
 	public void loadTree() {
-		tree = Serializer.deserialize(pathToFile);
+		tree = Serializer.deserialize(pathToTree);
 	}
 	
 	
 	public void saveTree() {
-		Serializer.serialize(tree, pathToFile);
+		Serializer.serialize(tree, pathToTree);
 	}
 
 	// --------------------------------------------------------------------------
@@ -132,6 +143,16 @@ public class Profile {
 	}
 	
 	
+	public String getPathToProfile() {
+		return pathToProfile;
+	}
+	
+	
+	public void setPathToProfile(String path) {
+		pathToProfile = path;
+	}
+
+	
 	public int getProfileID() {
 		return profileID;
 	}
@@ -142,13 +163,13 @@ public class Profile {
 	}
 	
 	
-	public String getPathToFile() {
-		return pathToFile;
+	public String getPathToTree() {
+		return pathToTree;
 	}
 	
 	
-	public void setPathToFile(String pathToFile) {
-		this.pathToFile = pathToFile;
+	public void setPathToTree(String pathToFile) {
+		this.pathToTree = pathToFile;
 	}
 	
 	
