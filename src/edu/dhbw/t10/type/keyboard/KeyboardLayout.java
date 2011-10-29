@@ -15,6 +15,8 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 
 import edu.dhbw.t10.type.keyboard.key.Button;
+import edu.dhbw.t10.type.keyboard.key.ModeButton;
+import edu.dhbw.t10.type.keyboard.key.MuteButton;
 
 
 /**
@@ -29,7 +31,9 @@ public class KeyboardLayout {
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
-	private ArrayList<Button>			keys			= new ArrayList<Button>();
+	private ArrayList<Button>			button		= new ArrayList<Button>();
+	private ArrayList<ModeButton>		modeButtons	= new ArrayList<ModeButton>();
+	private ArrayList<MuteButton>		muteButtons	= new ArrayList<MuteButton>();
 	private ArrayList<DropDownList>	ddls			= new ArrayList<DropDownList>();
 	private int								size_x		= 0;
 	private int								size_y		= 0;
@@ -55,7 +59,7 @@ public class KeyboardLayout {
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
 	public void addKey(Button key) {
-		keys.add(key);
+		button.add(key);
 	}
 	
 	
@@ -65,7 +69,7 @@ public class KeyboardLayout {
 	
 
 	public void rescale() {
-		for (Button k : keys) {
+		for (Button k : button) {
 			Rectangle rect = k.getBounds();
 			rect.setBounds((int) (k.getPos_x() * scale_x), (int) (k.getPos_y() * scale_y),
 					(int) (k.getOrigSize().width * scale_x), (int) (k.getOrigSize().height * scale_y));
@@ -86,12 +90,12 @@ public class KeyboardLayout {
 	// --------------------------------------------------------------------------
 	
 	public ArrayList<Button> getKeys() {
-		return keys;
+		return button;
 	}
 	
 	
 	public void setKeys(ArrayList<Button> keys) {
-		this.keys = keys;
+		this.button = keys;
 	}
 	
 	
@@ -190,6 +194,26 @@ public class KeyboardLayout {
 
 	public ArrayList<DropDownList> getDdls() {
 		return ddls;
+	}
+
+
+	public ArrayList<ModeButton> getModeButtons() {
+		return modeButtons;
+	}
+	
+	
+	public void setModeButtons(ArrayList<ModeButton> modeButtons) {
+		this.modeButtons = modeButtons;
+	}
+	
+	
+	public ArrayList<MuteButton> getMuteButtons() {
+		return muteButtons;
+	}
+	
+	
+	public void setMuteButtons(ArrayList<MuteButton> muteButtons) {
+		this.muteButtons = muteButtons;
 	}
 
 
