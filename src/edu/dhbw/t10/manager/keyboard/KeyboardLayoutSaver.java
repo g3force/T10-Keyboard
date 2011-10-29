@@ -2,16 +2,18 @@
  * *********************************************************
  * Copyright (c) 2011 - 2011, DHBW Mannheim
  * Project: T10 On-Screen Keyboard
- * Date: Oct 20, 2011
- * Author(s): NicolaiO
+ * Date: Oct 29, 2011
+ * Author(s): dirk
  * 
  * *********************************************************
  */
 package edu.dhbw.t10.manager.keyboard;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.StringWriter;
-import java.util.HashMap;
 import java.util.Map.Entry;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -64,14 +66,15 @@ public class KeyboardLayoutSaver {
 	// --------------------------------------------------------------------------
 
 	/**
-	 * Load a keyboardLayout
+	 * Save the keyboardLayout
 	 * 
+	 * @param kbdLayout the layout which shall be converted to a xml file
 	 * @param filePath to an keymap XML file
-	 * @param keymap that was loaded from file
-	 * @return KeyboardLayout
-	 * @author NicolaiO
+	 * 
+	 * @author dirk
 	 */
-	public static void save(KeyboardLayout kbdLayout, String filePath, HashMap<Integer, Key> keymap) {
+	public static void save(KeyboardLayout kbdLayout, String filePath) {
+		logger.info("Starting to save the KeyboardLayout to XML");
 		File layoutFile = new File(filePath);
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 		try {
@@ -79,6 +82,7 @@ public class KeyboardLayoutSaver {
 			Document doc = dBuilder.newDocument();// dBuilder.parse(layoutFile);
 			// doc.getDocumentElement().normalize();
 			Element layout = doc.createElement("layout");
+			doc.appendChild(layout);
 
 			Element sizex = doc.createElement("sizex");
 			Text text = doc.createTextNode(kbdLayout.getSize_x() + "");
@@ -108,8 +112,8 @@ public class KeyboardLayoutSaver {
 			Element font = doc.createElement("font");
 			layout.appendChild(font);
 			
-			Element modekey = doc.createElement("modekey");
-			font.appendChild(modekey);
+			Element name = doc.createElement("name");
+			font.appendChild(name);
 			
 			Element style = doc.createElement("style");
 			font.appendChild(style);
@@ -126,6 +130,7 @@ public class KeyboardLayoutSaver {
 				dropdown.setAttribute("size_y", dd.getHeight() + "");
 				dropdown.setAttribute("pos_x", dd.getX() + "");
 				dropdown.setAttribute("pos_y", dd.getX() + "");
+				System.out.println("Dropdown");
 				layout.appendChild(dropdown);
 			}
 			for (Button button : kbdLayout.getButtons()) {
@@ -151,43 +156,77 @@ public class KeyboardLayoutSaver {
 			for (ModeButton modeButton : kbdLayout.getModeButtons()) {
 				Element modeButtonEl = doc.createElement("modebutton");
 				setSizeOfPhysicalButton(modeButtonEl, modeButton);
+				
+				Element key = doc.createElement("key");		
 				text = doc.createTextNode(modeButton.getModeKey().getId() + "");
-				modeButtonEl.appendChild(text);
+				key.appendChild(text);
+				modeButtonEl.appendChild(key);
+				
 				layout.appendChild(modeButtonEl);
 			}
-			
-			// OUTPUT TO FILE
-			TransformerFactory transfac = TransformerFactory.newInstance();
-         Transformer trans;
-			trans = transfac.newTransformer();
-			
-         trans.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-         trans.setOutputProperty(OutputKeys.INDENT, "yes");
-
-         //create string from xml tree
-         StringWriter sw = new StringWriter();
-         StreamResult result = new StreamResult(sw);
-         DOMSource source = new DOMSource(doc);
-			try {
-				trans.transform(source, result);
-			} catch (TransformerException err) {
-				// TODO Auto-generated catch block
-				err.printStackTrace();
-			}
-        String xmlString = sw.toString();
-
-         //print xml
-         System.out.println("Here's the xml:\n\n" + xmlString);
+			String xml = convertDocToString(doc);
 
 		} catch (ParserConfigurationException err) {
 			logger.error("Could not initialize dBuilder");
 			err.printStackTrace();
-		} catch (TransformerConfigurationException err) {
-			// TODO Auto-generated catch block
+		}
+		logger.info("The KeyboardLayout is saved to XML");
+	}
+	
+	
+	private static String convertDocToString(Document doc) {
+		// OUTPUT TO FILE
+		TransformerFactory transfac = TransformerFactory.newInstance();
+		Transformer trans;
+		try {
+			trans = transfac.newTransformer();
+		} catch (TransformerConfigurationException err1) {
+			logger.error("Failed to convert the keyboard XML-DOM to String (1)");
+			trans = null;
+			err1.printStackTrace();
+		}
+		
+		trans.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+		trans.setOutputProperty(OutputKeys.INDENT, "yes");
+		
+		// create string from xml tree
+		StringWriter sw = new StringWriter();
+		StreamResult result = new StreamResult(sw);
+		DOMSource source = new DOMSource(doc);
+		try {
+			trans.transform(source, result);
+		} catch (TransformerException err) {
+			logger.error("Failed to convert the keyboard XML-DOM to String (2)");
+			err.printStackTrace();
+		}
+		String xmlString = sw.toString();
+		
+		// print xml
+		System.out.println("Here's the xml:\n\n" + xmlString);
+		return xmlString;
+	}
+	
+	
+	private void printToPath(String xmlString, String file) {
+		File confFile = new File(file);
+		FileWriter fw;
+		try {
+			fw = new FileWriter(confFile);
+		} catch (IOException err1) {
+			logger.error("Failed to write the keyboard xml string to file (1)");
+			fw = null;
+			err1.printStackTrace();
+		}
+		BufferedWriter bw = new BufferedWriter(fw);
+		
+		try {
+			bw.write(xmlString);
+		} catch (IOException err) {
+			logger.error("Failed to write the keyboard xml string to file (2)");
 			err.printStackTrace();
 		}
 	}
-	
+
 	
 	private static void setSizeOfPhysicalButton(Element el, PhysicalButton button) {
 		el.setAttribute("size_x", button.getOrigSize().getWidth() + "");
