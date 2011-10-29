@@ -81,7 +81,7 @@ public class Button extends PhysicalButton {
 	public ArrayList<Key> getSingleKey() {
 		ArrayList<Key> output = new ArrayList<Key>();
 		if (activeModes.size() == 0) {
-			output.add(modes.get("default"));
+			output.add(key);
 		} else if (activeModes.size() == 1 && modes.containsKey(activeModes.get(0))) {
 			output.add(modes.get(activeModes.get(0)));
 		} else {

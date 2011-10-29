@@ -9,7 +9,9 @@
  */
 package edu.dhbw.t10.type.profile;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 
 import org.apache.log4j.Logger;
 
@@ -29,7 +31,9 @@ import edu.dhbw.t10.view.panels.MainPanel;
  * @author NicolaiO
  * 
  */
-public class Profile {
+public class Profile implements Serializable {
+	/**  */
+	private static final long			serialVersionUID	= 5085464540715301874L;
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
@@ -49,8 +53,17 @@ public class Profile {
 	
 	public Profile(String pName) {
 		name = pName;
+		File file = new File("profiles");
+		if (!file.isDirectory()) {
+			file.mkdir();
+		}
 		pathToProfile = "profiles/" + name + ".profile";
+		file = new File("trees");
+		if (!file.isDirectory()) {
+			file.mkdir();
+		}
 		pathToTree = "trees/" + name + ".tree";
+
 		tree = new PriorityTree();
 		saveTree();
 		kbdLayout = KeyboardLayoutLoader
@@ -68,8 +81,7 @@ public class Profile {
 			tree = Serializer.deserialize(pathToTree);
 		} catch (IOException io) {
 			tree = new PriorityTree();
-			logger.error("IOException: " );
-			io.printStackTrace();
+			logger.info("No Tree found for Profile" + name + ", new Tree created");
 		}
 	}
 	
@@ -78,8 +90,7 @@ public class Profile {
 		try {
 			Serializer.serialize(tree, pathToTree);
 		} catch (IOException io) {
-			logger.error("IOException: " + io.toString());
-			io.printStackTrace();
+			logger.error("Tree not saved, no folder found");
 		}
 	}
 
