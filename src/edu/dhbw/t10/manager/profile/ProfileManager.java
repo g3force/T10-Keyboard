@@ -46,6 +46,7 @@ public class ProfileManager {
 	private ArrayList<Profile>		profiles;
 	private ArrayList<String>		profilePath;
 	private Profile					activeProfile;
+	private String						activeProfileName;														// Just for initializing
 	private KeyboardLayout			kbdLayout;
 	private boolean					autoProfileChange	= true;
 	private boolean					autoCompleting		= true;
@@ -61,14 +62,16 @@ public class ProfileManager {
 	 */
 	private ProfileManager() {
 		// ....
+		activeProfileName = "";
 		profilePath = new ArrayList<String>();
+		readConfig();
 		getSerializedProfiles();
 		if (profiles.size() == 0) {
 			Profile prof = new Profile(0, "default");
 			prof.saveTree();
 			profiles.add(new Profile());
 		}
-		activeProfile = profiles.get(0); // TODO save active profile
+		activeProfile = getProfileByName(activeProfileName); // TODO save active profile
 		// ---------------------DUMMY CODE------------------------------
 		Profile prof = new Profile(1, "Pflichteheft");
 		setActive(prof);
@@ -117,31 +120,39 @@ public class ProfileManager {
 	
 	public void readConfig() {
 		try {
-			File confFile = new File("./config");
-			FileReader fr = new FileReader(confFile);
-			BufferedReader br = new BufferedReader(fr);
-			
-			String entry = "";
-			while ((entry = br.readLine()) != null) {
-				// Commentary-Indicator: //
-				if (entry.indexOf("//") >= 0)
-					entry = entry.substring(0, entry.indexOf("//"));
+			File confFile = new File("./config.db");
+			if (confFile.exists()) {
+				FileReader fr = new FileReader(confFile);
+				BufferedReader br = new BufferedReader(fr);
 				
-				if (entry.isEmpty())
-					continue;
-				
-				// Indicators deleted.
-				int posOfEql = entry.indexOf("=");
-				String valName = entry.substring(0, posOfEql);
-				String value = entry.substring(posOfEql + 1, entry.length());
-				if (valName.equals("ProfilePath")) {
-					profilePath.add(value);
-				} else if (valName.equals("XMLPath")) {
-					// XMLPath.add(value);
-					logger.debug("XMLPath: " + value);
+				String entry = "";
+				while ((entry = br.readLine()) != null) {
+					// Commentary-Indicator: //
+					if (entry.indexOf("//") >= 0)
+						entry = entry.substring(0, entry.indexOf("//"));
+					
+					if (entry.isEmpty())
+						continue;
+					
+					// Indicators deleted.
+					// Format:
+					// ActiveProfile=NAMEOFPROFILE
+					// ProfilePath=config.cfg
+					// ProfilePath=C:\lol.cfg
+					int posOfEql = entry.indexOf("=");
+					String valName = entry.substring(0, posOfEql);
+					String value = entry.substring(posOfEql + 1, entry.length());
+					if (valName.equals("ProfilePath")) {
+						profilePath.add(value);
+					} else if (valName.equals("XMLPath")) {
+						// XMLPath.add(value);
+						logger.debug("XMLPath: " + value);
+					} else if (valName.equals("ActiveProfile")) {
+						activeProfileName = value;
+					}
 				}
+				br.close();
 			}
-			br.close();
 		} catch (IOException io) {
 			logger.debug("IOException in readConfig()");
 			io.printStackTrace();
@@ -165,8 +176,11 @@ public class ProfileManager {
 			
 			bw.write(createComment("Configfile for T10"));
 			
-			for (int i = 0; i < profilePath.size(); i++) {
-				bw.write("ProfilePath=" + profilePath.get(i) + "\n");
+			if (activeProfile != null)
+				bw.write("ActiveProfile=" + activeProfile.getName());
+
+			for (int i = 0; i < profiles.size(); i++) {
+				bw.write("ProfilePath=" + profiles.get(i).getPathToProfile() + "\n");
 			}
 			bw.close();
 		} catch (IOException io) {
@@ -192,7 +206,6 @@ public class ProfileManager {
 	public Profile create(String profileName, String pathToNewProfile) {
 		Profile newProfile = new Profile();
 		newProfile.setName(profileName);
-		newProfile.setID(profiles.size());
 		profilePath.add(pathToNewProfile);
 		profiles.add(newProfile);
 		if (activeProfile == null) {
@@ -202,24 +215,26 @@ public class ProfileManager {
 		return newProfile;
 	}
 	
-
+	
 	/**
 	 * 
-	 * Re-arranges the IDs of the profiles after a certain profile gets deleted.
+	 * Get a Profile based on its name
 	 * 
+	 * @param name - String. Name of the profile.
+	 * @return If found, handle/reference to said profile. Otherwise NULL
+	 * @author DerBaschti
 	 */
-	private void arrangeProfiles() {
-		if (profiles.size() <= 0) {
-			logger.debug("profiles.size()==0 at arrange");
-			return;
-		}
-		Profile curProfile = null;
-		for (int i = 0; i < profiles.size(); i++) {
-			curProfile = profiles.get(i);
-			curProfile.setID(i);
-		}
-	}
 	
+	public Profile getProfileByName(String name) {
+		if (!profiles.isEmpty()) {
+			for (int i = 0; i < profiles.size(); i++) {
+				if (profiles.get(i).getName().equals(name))
+					return profiles.get(i);
+			}
+		}
+		return null;
+	}
+
 
 	/**
 	 * 
@@ -229,46 +244,30 @@ public class ProfileManager {
 	 * 
 	 * @param id - int. ID of the profile you want to delete.
 	 */
-	public void delete(int id) {
+	public void delete(Profile toDelete) {
 		Profile curProfile = null;
 		if (profiles.size() <= 0) {
 			logger.debug("profiles.size()==0 at delete");
 			return;
+		} else if (toDelete == null) {
+			logger.debug("toDelete==null at delete");
+			return;
 		}
 		for (int i = 0; i < profiles.size(); i++) {
 			curProfile = profiles.get(i);
-			if (curProfile.getID() == id) {
+			if (curProfile == toDelete) {
 				profiles.remove(i);
-				arrangeProfiles();
 				break;
 			}
 		}
 		// If the deleted profile was currently active, we choose the first profile or mark "we need a new profile!"
-		if (activeProfile.getID() == id) {
+		if (activeProfile == toDelete) {
 			if (profiles.size() > 0) {
 				logger.debug("activeProfile=profiles(0)");
 				activeProfile = profiles.get(0);
 			} else {
 				logger.debug("activeProfile=NULL");
 				activeProfile = null;
-			}
-		}
-	}
-	
-
-	/**
-	 * 
-	 * Marks a profile (depending on the ID) as "active". If not found, nothing happens.
-	 * 
-	 * @param id
-	 */
-	public void setActiveByID(int id) {
-		Profile curProfile = null;
-		for (int i = 0; i < profiles.size(); i++) {
-			curProfile = profiles.get(i);
-			if (curProfile.getID() == id) {
-				setActive(curProfile);
-				break;
 			}
 		}
 	}
