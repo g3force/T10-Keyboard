@@ -324,7 +324,8 @@ public class ProfileManager {
 			try {
 				Serializer.serialize(cProfile, cProfile.getPathToProfile());
 			} catch (IOException io) {
-				logger.error("IOException: " + io.toString());
+				logger.error("Not able to serialize Profiles, IOException: ");
+				io.printStackTrace();
 			}
 		}
 	}
@@ -335,7 +336,7 @@ public class ProfileManager {
 			try {
 				profiles.add((Profile) Serializer.deserialize(profilePath.get(i)));
 			} catch (IOException io) {
-				logger.error("IOException: " + io.toString());
+				logger.error("Not able to deserialize Profile from file" + profilePath.get(i));
 			}
 		}
 		if (profiles == null) {
@@ -343,10 +344,7 @@ public class ProfileManager {
 		}
 	}
 	
-	
-	private boolean toogle(boolean tt) {
-		return !tt;
-	}
+
 
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
