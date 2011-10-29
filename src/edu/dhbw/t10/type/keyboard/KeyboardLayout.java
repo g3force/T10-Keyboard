@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import edu.dhbw.t10.type.keyboard.key.Button;
 import edu.dhbw.t10.type.keyboard.key.ModeButton;
 import edu.dhbw.t10.type.keyboard.key.MuteButton;
+import edu.dhbw.t10.type.keyboard.key.PhysicalButton;
 
 
 /**
@@ -58,9 +59,6 @@ public class KeyboardLayout {
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
-	public void addKey(Button key) {
-		buttons.add(key);
-	}
 	
 	
 	public void addDdl(DropDownList ddl) {
@@ -69,12 +67,18 @@ public class KeyboardLayout {
 	
 
 	public void rescale() {
-		for (Button k : buttons) {
+		ArrayList<PhysicalButton> tempb = new ArrayList<PhysicalButton>();
+		tempb.addAll(buttons);
+		tempb.addAll(modeButtons);
+		tempb.addAll(muteButtons);
+		System.out.println("size:" + tempb.size());
+		for (PhysicalButton k : tempb) {
 			Rectangle rect = k.getBounds();
 			rect.setBounds((int) (k.getPos_x() * scale_x), (int) (k.getPos_y() * scale_y),
 					(int) (k.getOrigSize().width * scale_x), (int) (k.getOrigSize().height * scale_y));
 			k.setBounds(rect);
 			k.setFont(new Font(font.getName(), font.getStyle(), (int) (font.getSize() * scale_font)));
+			System.out.println(rect);
 		}
 		for (DropDownList ddl : ddls) {
 			Rectangle rect = ddl.getBounds();

@@ -97,9 +97,17 @@ public class KeyboardLayoutLoader {
 		NodeList nList;
 		
 		// ########################## read ModeButtons ########################
-		HashMap<Integer, ModeButton> modeButtons = new HashMap<Integer, ModeButton>();
+		HashMap<Integer, ModeButton> modeButtons = getModeButtons(doc);
+		ArrayList<ModeButton> modeButtonArray = new ArrayList<ModeButton>();
+		for (ModeButton b : modeButtons.values()) {
+			modeButtonArray.add(b);
+		}
+		kbdLayout.setModeButtons(modeButtonArray);
+		logger.info("loaded " + modeButtonArray.size() + " ModeButtons.");
 		// ########################## read Buttons ############################
 		ArrayList<Button> buttons = getButtons(doc, modeButtons);
+		kbdLayout.setButtons(buttons);
+		logger.info("loaded " + buttons.size() + " Buttons.");
 		// ########################## read MuteButtons ###########################
 		
 		
@@ -173,7 +181,6 @@ public class KeyboardLayoutLoader {
 		
 		kbdLayout.setFont(new Font(fname, fstyle, fsize));
 		kbdLayout.rescale();
-		logger.info("loaded " + buttons.size() + " Buttonkeys.");
 
 		return kbdLayout;
 	}
@@ -191,25 +198,35 @@ public class KeyboardLayoutLoader {
 		
 		// loop through buttons
 		for (int temp = 0; temp < nList.getLength(); temp++) {
-			Node nNode = nList.item(temp);
-
-			if (nNode.getNodeType() != Node.ELEMENT_NODE) {
-				logger.warn("key-node is not an element-node");
-				continue;
-			}
-			Element eElement = (Element) nNode;
-			
 			try {
+				Node nNode = nList.item(temp);
+				
+				if (nNode.getNodeType() != Node.ELEMENT_NODE) {
+					logger.warn("key-node is not an element-node");
+					continue;
+				}
+
+				Element eElement = (Element) nNode;
 				Bounds b = getBounds(nNode);
 				Button button = new Button(b.size_x, b.size_y, b.pos_x, b.pos_y);
 				
 				// receive default key
 				NodeList defkey = eElement.getElementsByTagName("key");
 				if (defkey.getLength() == 1) {
-					button.setKey(keymap.get(defkey.item(0).getTextContent()));
+					try {
+						int id = Integer.parseInt(defkey.item(0).getTextContent());
+						Key key = keymap.get(id);
+						if (key == null) {
+							logger.warn("key not found keymap. temp=" + temp + " id=" + id);
+							continue;
+						}
+						button.setKey(key);
+					} catch (NumberFormatException e) {
+						logger.warn("key id could not be parsed to Integer. id=" + defkey.item(0).getTextContent());
+					}
+
 				}
 
-				
 				// receive Modes
 				NodeList modes = eElement.getElementsByTagName("mode");
 				for (int i = 0; i < modes.getLength(); i++) {
@@ -222,7 +239,11 @@ public class KeyboardLayoutLoader {
 						// Node color = item.getAttributes().getNamedItem("color");
 						Node nAccept = item.getAttributes().getNamedItem("accept");
 						if (modeName != null) {
-							iModeName = Integer.parseInt(modeName.getTextContent());
+							try {
+								iModeName = Integer.parseInt(modeName.getTextContent());
+							} catch (NumberFormatException e) {
+								logger.warn("modename could not be parsed to Integer. modename=" + modeName.getTextContent());
+							}
 						}
 						// if (color != null) {
 						// sColor = color.getTextContent();
@@ -231,53 +252,68 @@ public class KeyboardLayoutLoader {
 							accept = true;
 						}
 						button.addActionListener(Controller.getInstance()); // use EventCollector as listener
-						Key key = keymap.get(item.getTextContent());
-						key.setAccept(accept);
-						button.addMode(modeButtons.get(iModeName), key);
+						try {
+							Key key = keymap.get(Integer.parseInt(item.getTextContent()));
+							if (key == null) {
+								logger.warn("key not found in keymap. key content=" + item.getTextContent());
+							}
+							key.setAccept(accept);
+							button.addMode(modeButtons.get(iModeName), key);
+						} catch (NumberFormatException e) {
+							logger.warn("Could not parse key to Integer. i=" + i);
+						}
 					}
+
+					buttons.add(button);
 				}
-				buttons.add(button);
 			} catch (NullPointerException e) {
-				System.out.println("In getKey:");
+				logger.warn("A Button could not be read: NullPointerException");
+				e.printStackTrace();
+			} catch (NumberFormatException e) {
+				logger.warn("A Button could not be read: NumberFormatException");
 				e.printStackTrace();
 			}
-
 		}
-		return null;
+		return buttons;
 	}
 	
 	
 	private static HashMap<Integer, ModeButton> getModeButtons(Document doc) {
-		ArrayList<Button> buttons = new ArrayList<Button>();
+		HashMap<Integer, ModeButton> modeButtons = new HashMap<Integer, ModeButton>();
 		NodeList nList = doc.getElementsByTagName("modebutton");
 		
 		// loop through buttons
 		for (int temp = 0; temp < nList.getLength(); temp++) {
-			Node nNode = nList.item(temp);
-			
-			if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-				Element eElement = (Element) nNode;
+			try {
+				Node nNode = nList.item(temp);
 				
-				try {
-					Bounds b = getBounds(nNode);
-					Button button = new Button(b.size_x, b.size_y, b.pos_x, b.pos_y);
-					
-					// receive default key
-					NodeList defkey = eElement.getElementsByTagName("key");
-					if (defkey.getLength() == 1) {
-						button.setKey(keymap.get(defkey.item(0).getTextContent()));
-					}
-				} catch (NullPointerException e) {
-					logger.warn("");
-					e.printStackTrace();
+				if (nNode.getNodeType() != Node.ELEMENT_NODE) {
+					logger.warn("key-node is not an element-node");
+					continue;
 				}
 				
-				
-			} else {
-				logger.warn("key-node is not an element-node");
+				Element eElement = (Element) nNode;
+				Key key = null;
+				// receive default key
+				NodeList defkey = eElement.getElementsByTagName("key");
+				if (defkey.getLength() == 1) {
+					try {
+						key = keymap.get(Integer.parseInt(defkey.item(0).getTextContent()));
+					} catch (NumberFormatException e) {
+						logger.warn("Could not parse key: " + defkey.item(0).getTextContent());
+					}
+					if (key == null)
+						continue;
+				} else
+					continue;
+				Bounds b = getBounds(nNode);
+				ModeButton button = new ModeButton(key, b.size_x, b.size_y, b.pos_x, b.pos_y);
+				modeButtons.put(key.getId(), button);
+			} catch (NullPointerException e) {
+				logger.warn("A ModeButton could not be read.");
 			}
 		}
-		return null;
+		return modeButtons;
 	}
 
 
