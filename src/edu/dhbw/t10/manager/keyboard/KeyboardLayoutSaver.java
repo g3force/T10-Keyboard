@@ -2,8 +2,8 @@
  * *********************************************************
  * Copyright (c) 2011 - 2011, DHBW Mannheim
  * Project: T10 On-Screen Keyboard
- * Date: Oct 20, 2011
- * Author(s): NicolaiO
+ * Date: Oct 29, 2011
+ * Author(s): dirk
  * 
  * *********************************************************
  */
@@ -11,7 +11,6 @@ package edu.dhbw.t10.manager.keyboard;
 
 import java.io.File;
 import java.io.StringWriter;
-import java.util.HashMap;
 import java.util.Map.Entry;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -64,14 +63,14 @@ public class KeyboardLayoutSaver {
 	// --------------------------------------------------------------------------
 
 	/**
-	 * Load a keyboardLayout
+	 * Save the keyboardLayout
 	 * 
+	 * @param kbdLayout the layout which shall be converted to a xml file
 	 * @param filePath to an keymap XML file
-	 * @param keymap that was loaded from file
-	 * @return KeyboardLayout
-	 * @author NicolaiO
+	 * 
+	 * @author dirk
 	 */
-	public static void save(KeyboardLayout kbdLayout, String filePath, HashMap<Integer, Key> keymap) {
+	public static void save(KeyboardLayout kbdLayout, String filePath) {
 		File layoutFile = new File(filePath);
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 		try {
@@ -155,39 +154,47 @@ public class KeyboardLayoutSaver {
 				modeButtonEl.appendChild(text);
 				layout.appendChild(modeButtonEl);
 			}
-			
-			// OUTPUT TO FILE
-			TransformerFactory transfac = TransformerFactory.newInstance();
-         Transformer trans;
-			trans = transfac.newTransformer();
-			
-         trans.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-         trans.setOutputProperty(OutputKeys.INDENT, "yes");
-
-         //create string from xml tree
-         StringWriter sw = new StringWriter();
-         StreamResult result = new StreamResult(sw);
-         DOMSource source = new DOMSource(doc);
-			try {
-				trans.transform(source, result);
-			} catch (TransformerException err) {
-				// TODO Auto-generated catch block
-				err.printStackTrace();
-			}
-        String xmlString = sw.toString();
-
-         //print xml
-         System.out.println("Here's the xml:\n\n" + xmlString);
+			String xml = convertDocToString(doc);
 
 		} catch (ParserConfigurationException err) {
 			logger.error("Could not initialize dBuilder");
 			err.printStackTrace();
-		} catch (TransformerConfigurationException err) {
-			// TODO Auto-generated catch block
-			err.printStackTrace();
 		}
 	}
 	
+	
+	private static String convertDocToString(Document doc) {
+		// OUTPUT TO FILE
+		TransformerFactory transfac = TransformerFactory.newInstance();
+		Transformer trans;
+		try {
+			trans = transfac.newTransformer();
+		} catch (TransformerConfigurationException err1) {
+			// TODO Auto-generated catch block
+			trans = null;
+			err1.printStackTrace();
+		}
+		
+		trans.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+		trans.setOutputProperty(OutputKeys.INDENT, "yes");
+		
+		// create string from xml tree
+		StringWriter sw = new StringWriter();
+		StreamResult result = new StreamResult(sw);
+		DOMSource source = new DOMSource(doc);
+		try {
+			trans.transform(source, result);
+		} catch (TransformerException err) {
+			// TODO Auto-generated catch block
+			err.printStackTrace();
+		}
+		String xmlString = sw.toString();
+		
+		// print xml
+		System.out.println("Here's the xml:\n\n" + xmlString);
+		return xmlString;
+	}
+
 	
 	private static void setSizeOfPhysicalButton(Element el, PhysicalButton button) {
 		el.setAttribute("size_x", button.getOrigSize().getWidth() + "");
