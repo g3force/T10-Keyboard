@@ -75,7 +75,6 @@ public class ProfileManager {
 		// ---------------------DUMMY CODE------------------------------
 		Profile prof = new Profile(1, "Pflichteheft");
 		setActive(prof);
-		prof.setPathToTree("conf/trees/" + prof.getName());
 		prof.saveTree();
 		profiles.add(prof);
 

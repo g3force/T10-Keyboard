@@ -81,7 +81,7 @@ public class Profile {
 	public Profile(int pID, String pName) {
 		profileID = pID;
 		name = pName;
-		pathToTree = "conf/trees/" + name;
+		pathToTree = "conf/trees/" + name + ".tree";
 		tree = new PriorityTree();
 		pathToProfile = "";
 	}
