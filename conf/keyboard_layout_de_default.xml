@@ -135,39 +135,39 @@
 	
 	
 	<!-- mode buttons -->
-	<button size_x="90" size_y="50" pos_x="5" pos_y="170">
+	<modebutton size_x="90" size_y="50" pos_x="5" pos_y="170">
 		<mode modename="0">1000</mode>
-	</button>
-	<button size_x="70" size_y="50" pos_x="5" pos_y="225">
+	</modebutton>
+	<modebutton size_x="70" size_y="50" pos_x="5" pos_y="225">
 		<mode modename="0">1001</mode>
-	</button>
-	<button size_x="155" size_y="50" pos_x="685" pos_y="225">
+	</modebutton>
+	<modebutton size_x="155" size_y="50" pos_x="685" pos_y="225">
 		<mode modename="0">1001</mode>
-	</button>
-	<button size_x="80" size_y="50" pos_x="5" pos_y="280">
+	</modebutton>
+	<modebutton size_x="80" size_y="50" pos_x="5" pos_y="280">
 		<mode modename="0">1002</mode>
-	</button>
-	<button size_x="60" size_y="50" pos_x="90" pos_y="280">
+	</modebutton>
+	<modebutton size_x="60" size_y="50" pos_x="90" pos_y="280">
 		<mode modename="0">1003</mode>
-	</button>
-	<button size_x="80" size_y="50" pos_x="155" pos_y="280">
+	</modebutton>
+	<modebutton size_x="80" size_y="50" pos_x="155" pos_y="280">
 		<mode modename="0">1004</mode>
-	</button>
-	<button size_x="150" size_y="50" pos_x="240" pos_y="280">
+	</modebutton>
+	<modebutton size_x="150" size_y="50" pos_x="240" pos_y="280">
 		<mode modename="0">1005</mode>
-	</button>
-	<button size_x="150" size_y="50" pos_x="395" pos_y="280">
+	</modebutton>
+	<modebutton size_x="150" size_y="50" pos_x="395" pos_y="280">
 		<mode modename="0">1006</mode>
-	</button>
-	<button size_x="50" size_y="50" pos_x="550" pos_y="280">
+	</modebutton>
+	<modebutton size_x="50" size_y="50" pos_x="550" pos_y="280">
 		<mode modename="0">1007</mode>
-	</button>
-	<button size_x="50" size_y="50" pos_x="605" pos_y="280">
+	</modebutton>
+	<modebutton size_x="50" size_y="50" pos_x="605" pos_y="280">
 		<mode modename="0">1008</mode>
-	</button>
-	<button size_x="50" size_y="50" pos_x="660" pos_y="280">
+	</modebutton>
+	<modebutton size_x="50" size_y="50" pos_x="660" pos_y="280">
 		<mode modename="0">1009</mode>
-	</button>
+	</modebutton>
 
 
 <!-- up to here correct -->
