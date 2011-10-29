@@ -19,10 +19,8 @@ import org.apache.log4j.Logger;
 
 
 /**
- * TODO NicolaiO, add comment!
- * - What should this type do (in one sentence)?
- * - If not intuitive: A simple example how to use this class
- * 
+ * data container for the dictionary, the data it self is stored in the PriorityElements, PriorityTree has functions
+ * like insert, delete,...
  * @author dirk
  * 
  */
@@ -304,6 +302,8 @@ public class PriorityTree implements Serializable {
 	 * @param in string
 	 * @return true if, all chars are in the alphabet
 	 */
+	
+	@SuppressWarnings("unused")
 	private boolean inputValid(String in) {
 		for(char letter: in.toCharArray()) {
 			if ((int) letter < 65 || ((int) letter > 90 && (int) letter < 97) || (int) letter > 122) {

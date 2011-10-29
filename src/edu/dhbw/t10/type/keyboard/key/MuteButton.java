@@ -2,72 +2,53 @@
  * *********************************************************
  * Copyright (c) 2011 - 2011, DHBW Mannheim
  * Project: T10 On-Screen Keyboard
- * Date: Oct 24, 2011
+ * Date: Oct 28, 2011
  * Author(s): dirk
  *
  * *********************************************************
  */
-package edu.dhbw.t10.manager.profile;
-
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-
-import org.apache.log4j.Logger;
-
-import edu.dhbw.t10.type.tree.PriorityTree;
-
+package edu.dhbw.t10.type.keyboard.key;
 
 /**
- * Serializes an arbitrary Object
+ * button for the mute options
  * @author dirk
  * 
  */
-public class Serializer {
+public class MuteButton extends PhysicalButton {
+	/**  */
+	private static final long	serialVersionUID	= -4124533718708150504L;
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
-	private static final Logger	logger	= Logger.getLogger(Serializer.class);
-
+	private int	type;
+	public static final int		AUTO_PROFILE_CHANGE	= 0;
+	public static final int		AUTO_COMPLETING		= 1;
+	public static final int		TREE_EXPANDING			= 2;
+	
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
-	
+	public MuteButton(int type, int size_x, int size_y, int pos_x, int pos_y) {
+		super(size_x, size_y, pos_x, pos_y);
+		this.type = type;
+	}
 	
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
-	
-	@SuppressWarnings("unchecked")
-	public static <T> T deserialize(String pathToFile) {
-		T out = null;
-		try {
-			FileInputStream file = new FileInputStream(pathToFile);
-			ObjectInputStream o = new ObjectInputStream(file);
-			out = (T) o.readObject();
-			o.close();
-		} catch (IOException e) {
-			logger.error("Failure during Deserializing: " + e);
-		} catch (ClassNotFoundException e) {
-			logger.error("Class not found, not possible: " + e);
-		}
-		return out;
-	}
 
 	
-	public static <T> void serialize(T toS, String pathToFile) {
-		try {
-			FileOutputStream file = new FileOutputStream(pathToFile);
-			ObjectOutputStream o = new ObjectOutputStream(file);
-			o.writeObject(toS);
-			o.close();
-		} catch (IOException e) {
-			logger.error(e);
-		}
-	}
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
+	
+	public int getType() {
+		return type;
+	}
+	
+	
+	public void setType(int type) {
+		this.type = type;
+	}
+
 }

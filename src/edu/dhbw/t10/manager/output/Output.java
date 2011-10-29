@@ -17,7 +17,7 @@ import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
 
-import edu.dhbw.t10.type.keyboard.Key;
+import edu.dhbw.t10.type.keyboard.key.Button;
 
 
 /**
@@ -29,8 +29,8 @@ import edu.dhbw.t10.type.keyboard.Key;
  * 
  * Control symbols are sent via their java.awt.event.KeyEvent constant
  * 
- * TODO Get several Control symbols and combine them to a key combination
- * TODO Get last active window and write there
+ * TODO Daniel Get several Control symbols and combine them to a key combination
+ * TODO Daniel Get last active window and write there
  * @author Andres
  * 
  */
@@ -61,13 +61,8 @@ public class Output {
 	}
 
 
-	public boolean printChar(Key c) {
-		return printString(c.getText(), c.getType());
-	}
-
-
-	public boolean printString(String charSequence) {
-		return printString(charSequence, 0);
+	public boolean printChar(Button c) {
+		return printString(c.getText());
 	}
 
 
@@ -82,35 +77,21 @@ public class Output {
 		int length = charSequence.length();
 		int keyCode = 0;
 
-		if (charSequence.charAt(0) == '\\' && charSequence.charAt(length - 1) == '\\'
-				&& !charSequence.substring(0).startsWith("\\U+")) {
+		// if (charSequence.charAt(0) == '\\' && charSequence.charAt(length - 1) == '\\'
+		// && !charSequence.substring(0).startsWith("\\U+")) {
+		if (type == Key.CONTROL_KEY) {
 			keyCode = this.getKeyCode(charSequence.substring(1, length - 1));
 			this.sendKey(keyCode);
 			logger.info("Control Symbol printed: " + charSequence);
+		} else if (type == Key.UNICODE_KEY) {
+			sendUnicode(charSequence);
 		} else {
 			ArrayList<Integer> unicodeStart = extractUnicode(charSequence);
 			for (int i = 0; i < length; i++) {
 				// Unterscheidung zwischen Buchstaben (und Zahlen) und Unicode Zeichen
 				if (!unicodeStart.isEmpty() && unicodeStart.get(0) == i) { // Unicode Aufruf unter Linux
-					if (os == 1) {
-						this.sendKey(0, 6);
-						keyCode = this.getKeyCode(charSequence.substring(i + 3, i + 4));
-						this.sendKey(keyCode, 6);
-						keyCode = this.getKeyCode(charSequence.substring(i + 4, i + 5));
-						this.sendKey(keyCode, 6);
-						keyCode = this.getKeyCode(charSequence.substring(i + 5, i + 6));
-						this.sendKey(keyCode, 6);
-						keyCode = this.getKeyCode(charSequence.substring(i + 6, i + 7));
-						this.sendKey(keyCode, 6);
-						this.sendKey(KeyEvent.VK_ENTER, 6);
-						i += 7;
-						unicodeStart.remove(0);
-					} else if (os == 2) {
-						keyCode = 0;// FIXME Convertion from Unicode HexaString to Decimal
-						this.sendKey(0, 7);
-						i += 7;
-						unicodeStart.remove(0);
-					}
+					sendUnicode(charSequence.substring(i, i + 7));
+					unicodeStart.remove(0);
 				} else if (Character.isUpperCase(charSequence.charAt(i)) == true) { // Big Letters
 					keyCode = this.getKeyCode(charSequence.substring(i, i + 1));
 					this.sendKey(keyCode, 1);
@@ -122,18 +103,6 @@ public class Output {
 			logger.info("String printed: " + charSequence);
 		}
 		return true;
-	}
-	
-
-	public boolean deleteChar(int length) {
-		if (length <= 0)
-			return false;
-		else {
-			for (int i = 0; i < length; i++) {
-				this.sendKey(KeyEvent.VK_BACK_SPACE);
-			}
-			return true;
-		}
 	}
 	
 
@@ -152,9 +121,7 @@ public class Output {
 		}
 	}
 	
-	public void unMark() {
-		this.sendKey(KeyEvent.VK_RIGHT);
-	}
+
 
 
 	/**
@@ -167,7 +134,7 @@ public class Output {
 	private ArrayList<Integer> extractUnicode(String sequence) {
 		ArrayList<Integer> unicodeStart = new ArrayList<Integer>();
 		int help = 0;
-		// TODO erkenne Sonderzeichen und Konvertiere das in Unicode
+		// TODO Daniel erkenne Sonderzeichen und Konvertiere das in Unicode
 		while (help < sequence.length()) {
 			if (sequence.substring(help).startsWith("\\U+")) {
 				help = sequence.indexOf("\\U+", help);
@@ -196,20 +163,20 @@ public class Output {
 			f.setAccessible(true);
 			return (Integer) f.get(null);
 		} catch (SecurityException err) {
-			// TODO Auto-generated catch block
+			logger.error("getKeyCode: Security:" + code);
 			err.printStackTrace();
 			return 0;
 		} catch (NoSuchFieldException err) {
-			// TODO Auto-generated catch block
+			logger.error("getKeyCode: No Such Field:" + code);
 			err.printStackTrace();
-			// TODO Umlaute und andere Zeichen in Unicode Konvertieren
+			// TODO Daniel Umlaute und andere Zeichen in Unicode Konvertieren
 			return 0;
 		} catch (IllegalArgumentException err) {
-			// TODO Auto-generated catch block
+			logger.error("getKeyCode: Illegal Argument:" + code);
 			err.printStackTrace();
 			return 0;
 		} catch (IllegalAccessException err) {
-			// TODO Auto-generated catch block
+			logger.error("getKeyCode: Illegal Access:" + code);
 			err.printStackTrace();
 			return 0;
 		}
@@ -226,6 +193,29 @@ public class Output {
 		return sendKey(key, function, 0);
 	}
 	
+
+	private boolean sendUnicode(String uni) {
+		int keyCode;
+		if (uni.length() != 7 || uni.substring(0,2)!= "\\U+" || uni.substring(6,7)!= "\\")
+			return false;
+		if (os == 1) {
+			this.sendKey(0, 6);
+			keyCode = this.getKeyCode(uni.substring(3, 4).toLowerCase());
+			this.sendKey(keyCode, 6);
+			keyCode = this.getKeyCode(uni.substring(4, 5).toLowerCase());
+			this.sendKey(keyCode, 6);
+			keyCode = this.getKeyCode(uni.substring(5, 6).toLowerCase());
+			this.sendKey(keyCode, 6);
+			keyCode = this.getKeyCode(uni.substring(6, 7).toLowerCase());
+			this.sendKey(keyCode, 6);
+			this.sendKey(KeyEvent.VK_ENTER, 6);
+		} else if (os == 2) {
+			keyCode = 0;// FIXME Convertion from Unicode HexaString to Decimal
+			this.sendKey(0, 7);
+		}
+		return true;
+	}
+
 
 	/**
 	 * 
@@ -314,7 +304,8 @@ public class Output {
 			}
 			return true;
 		} catch (AWTException e) {
-			e.printStackTrace();
+			// e.printStackTrace();
+			logger.error("sendKey: AWTException:" + key);
 			return false;
 		}
 	}
