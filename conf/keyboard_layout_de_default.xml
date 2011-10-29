@@ -18,157 +18,157 @@
 
 	<!-- Esc -->
 	<button size_x="50" size_y="50" pos_x="5" pos_y="5">
-		<mode modename="0">0</mode>
+		<key>0</mode>
 	</button>
 	<!-- Function buttons -->
 	<button size_x="50" size_y="50" pos_x="60" pos_y="5">
-		<mode modename="0">1</mode>
+		<key>1</mode>
 	</button>
 	<button size_x="50" size_y="50" pos_x="115" pos_y="5">
-		<mode modename="0">2</mode>
+		<key>2</mode>
 	</button>
 	<button size_x="50" size_y="50" pos_x="170" pos_y="5">
-		<mode modename="0">3</mode>
+		<key>3</mode>
 	</button>
 	<button size_x="50" size_y="50" pos_x="225" pos_y="5">
-		<mode modename="0">4</mode>
+		<key>4</mode>
 	</button>
 	<button size_x="50" size_y="50" pos_x="280" pos_y="5">
-		<mode modename="0">5</mode>
+		<key>5</mode>
 	</button>
 	<button size_x="50" size_y="50" pos_x="335" pos_y="5">
-		<mode modename="0">6</mode>
+		<key>6</mode>
 	</button>
 	<button size_x="50" size_y="50" pos_x="390" pos_y="5">
-		<mode modename="0">7</mode>
+		<key>7</mode>
 	</button>
 	<button size_x="50" size_y="50" pos_x="445" pos_y="5">
-		<mode modename="0">8</mode>
+		<key>8</mode>
 	</button>
 	<button size_x="50" size_y="50" pos_x="500" pos_y="5">
-		<mode modename="0">9</mode>
+		<key>9</mode>
 	</button>
 	<button size_x="50" size_y="50" pos_x="555" pos_y="5">
-		<mode modename="0">10</mode>
+		<key>10</mode>
 	</button>
 	<button size_x="50" size_y="50" pos_x="610" pos_y="5">
-		<mode modename="0">11</mode>
+		<key>11</mode>
 	</button>
 	<button size_x="50" size_y="50" pos_x="665" pos_y="5">
-		<mode modename="0">12</mode>
+		<key>12</mode>
 	</button>
 	<!-- Print -->
 	<button size_x="50" size_y="50" pos_x="720" pos_y="5">
-		<mode modename="0">13</mode>
+		<key>13</mode>
 	</button>
 	<!-- Pause -->
 	<button size_x="50" size_y="50" pos_x="775" pos_y="5">
-		<mode modename="0">14</mode>
+		<key>14</mode>
 	</button>
 
 
 	<!-- 2nd row buttons in order-->
 	<button size_x="50" size_y="50" pos_x="5" pos_y="60">
-		<mode modename="0">15</mode>
+		<key>15</mode>
 		<mode modename="1001">29</mode>
 	</button>
 	<button size_x="50" size_y="50" pos_x="60" pos_y="60">
-		<mode modename="0" >16</mode>
+		<key >16</mode>
 		<mode modename="shift">30</mode>
 		<mode modename="altgr">42</mode>
 	</button>
 	<button size_x="50" size_y="50" pos_x="115" pos_y="60">
-		<mode modename="0">17</mode>
+		<key>17</mode>
 		<mode modename="shift">31</mode>
 		<mode modename="altgr">43</mode>
 	</button>
 	<button size_x="50" size_y="50" pos_x="170" pos_y="60">
-		<mode modename="0">18</mode>
+		<key>18</mode>
 		<mode modename="shift">32</mode>
 		<mode modename="altgr">44</mode>
 	</button>
 	<button size_x="50" size_y="50" pos_x="225" pos_y="60">
-		<mode modename="0">19</mode>
+		<key>19</mode>
 		<mode modename="shift">33</mode>
 	</button>
 	<button size_x="50" size_y="50" pos_x="280" pos_y="60">
-		<mode modename="0">20</mode>
+		<key>20</mode>
 		<mode modename="shift">34</mode>
 	</button>
 	<button size_x="50" size_y="50" pos_x="335" pos_y="60">
-		<mode modename="0">21</mode>
+		<key>21</mode>
 		<mode modename="shift">35</mode>
 	</button>
 	<button size_x="50" size_y="50" pos_x="390" pos_y="60">
-		<mode modename="0">22</mode>
+		<key>22</mode>
 		<mode modename="shift">36</mode>
 		<mode modename="altgr">45</mode>
 	</button>
 	<button size_x="50" size_y="50" pos_x="445" pos_y="60">
-		<mode modename="0">23</mode>
+		<key>23</mode>
 		<mode modename="shift">37</mode>
 		<mode modename="altgr">46</mode>
 	</button>
 	<button size_x="50" size_y="50" pos_x="500" pos_y="60">
-		<mode modename="0">24</mode>
+		<key>24</mode>
 		<mode modename="shift">38</mode>
 		<mode modename="altgr">47</mode>
 	</button>
 	<button size_x="50" size_y="50" pos_x="555" pos_y="60">
-		<mode modename="0">25</mode>
+		<key>25</mode>
 		<mode modename="shift">39</mode>
 		<mode modename="altgr">48</mode>
 	</button>
 	<button size_x="50" size_y="50" pos_x="610" pos_y="60">
-		<mode modename="0">26</mode>
+		<key>26</mode>
 		<mode modename="shift">40</mode>
 		<mode modename="altgr">49</mode>
 	</button>
 	<button size_x="50" size_y="50" pos_x="665" pos_y="60">
-		<mode modename="0">27</mode>
+		<key>27</mode>
 		<mode modename="shift">41</mode>
 	</button>
 	
 	<!-- Backspace -->
 	<button size_x="120" size_y="50" pos_x="720" pos_y="60">
-		<mode modename="0">28</mode>
+		<key>28</mode>
 	</button>
 	
 	
 	
 	<!-- mode buttons -->
 	<modebutton size_x="90" size_y="50" pos_x="5" pos_y="170">
-		<mode modename="0">1000</mode>
+		<key>1000</key>
 	</modebutton>
 	<modebutton size_x="70" size_y="50" pos_x="5" pos_y="225">
-		<mode modename="0">1001</mode>
+		<key>1001</key>
 	</modebutton>
 	<modebutton size_x="155" size_y="50" pos_x="685" pos_y="225">
-		<mode modename="0">1001</mode>
+		<key>1001</key>
 	</modebutton>
 	<modebutton size_x="80" size_y="50" pos_x="5" pos_y="280">
-		<mode modename="0">1002</mode>
+		<key>1002</key>
 	</modebutton>
 	<modebutton size_x="60" size_y="50" pos_x="90" pos_y="280">
-		<mode modename="0">1003</mode>
+		<key>1003</key>
 	</modebutton>
 	<modebutton size_x="80" size_y="50" pos_x="155" pos_y="280">
-		<mode modename="0">1004</mode>
+		<key>1004</key>
 	</modebutton>
 	<modebutton size_x="150" size_y="50" pos_x="240" pos_y="280">
-		<mode modename="0">1005</mode>
+		<key>1005</key>
 	</modebutton>
 	<modebutton size_x="150" size_y="50" pos_x="395" pos_y="280">
-		<mode modename="0">1006</mode>
+		<key>1006</key>
 	</modebutton>
 	<modebutton size_x="50" size_y="50" pos_x="550" pos_y="280">
-		<mode modename="0">1007</mode>
+		<key>1007</key>
 	</modebutton>
 	<modebutton size_x="50" size_y="50" pos_x="605" pos_y="280">
-		<mode modename="0">1008</mode>
+		<key>1008</key>
 	</modebutton>
 	<modebutton size_x="50" size_y="50" pos_x="660" pos_y="280">
-		<mode modename="0">1009</mode>
+		<key>1009</key>
 	</modebutton>
 
 
