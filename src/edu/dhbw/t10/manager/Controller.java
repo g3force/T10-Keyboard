@@ -48,6 +48,7 @@ public class Controller implements ActionListener {
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
 	private Controller() {
+		instance = this;
 		logger.debug("initializing...");
 		typedWord = "";
 		suggest = "";
@@ -71,12 +72,14 @@ public class Controller implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		logger.debug("Action Performed");
 		if(e.getSource() instanceof Button){
 			Button button = (Button) e.getSource();
 			
 			if (button.getSingleKey().size() == 1) {
-				Key key = button.getSingleKey().get(0);
-				
+				Key key = (Key) button.getSingleKey().get(0);
+				logger.debug("Key pressed (Name:" + key.getName() + ", Type: " + key.getType() + ", Keycode: "
+						+ key.getKeycode() + ")");
 				if (key.isAccept())
 					this.keyIsAccept(key);
 				else if (key.getType() == Key.CHAR)

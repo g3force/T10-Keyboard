@@ -39,7 +39,7 @@ public class ProfileManager {
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
 	private static final Logger	logger	= Logger.getLogger(ProfileManager.class);
-	private static ProfileManager	instance;
+	private static ProfileManager	instance				= new ProfileManager();
 	private ArrayList<Profile>		profiles;
 	private ArrayList<String>		profilePath;
 	private Profile					activeProfile;
@@ -58,7 +58,6 @@ public class ProfileManager {
 	 */
 	private ProfileManager() {
 		logger.debug("initializing...");
-		instance = this;
 		System.out.println("prof");
 		activeProfileName = "default";
 		profilePath = new ArrayList<String>();
@@ -69,6 +68,7 @@ public class ProfileManager {
 		}
 		activeProfile = getProfileByName(activeProfileName); // TODO save active profile
 		// ---------------------DUMMY CODE------------------------------
+
 		// Profile prof = new Profile("Pflichteheft");
 		// setActive(prof);
 		// prof.saveTree();
@@ -88,9 +88,6 @@ public class ProfileManager {
 	 *         multiple ProfileManager.
 	 */
 	public static ProfileManager getInstance() {
-		if (instance == null) {
-			new ProfileManager();
-		}
 		return instance;
 	}
 	
@@ -326,7 +323,8 @@ public class ProfileManager {
 			try {
 				Serializer.serialize(cProfile, cProfile.getPathToProfile());
 			} catch (IOException io) {
-				logger.error("IOException: " + io.toString());
+				logger.error("Not able to serialize Profiles, IOException: ");
+				io.printStackTrace();
 			}
 		}
 	}
@@ -337,7 +335,7 @@ public class ProfileManager {
 			try {
 				profiles.add((Profile) Serializer.deserialize(profilePath.get(i)));
 			} catch (IOException io) {
-				logger.error("IOException: " + io.toString());
+				logger.error("Not able to deserialize Profile from file" + profilePath.get(i));
 			}
 		}
 		if (profiles == null) {
@@ -345,10 +343,7 @@ public class ProfileManager {
 		}
 	}
 	
-	
-	private boolean toogle(boolean tt) {
-		return !tt;
-	}
+
 
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------

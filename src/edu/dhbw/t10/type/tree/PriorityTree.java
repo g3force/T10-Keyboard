@@ -107,7 +107,7 @@ public class PriorityTree implements Serializable {
 	 * @return suggested Word
 	 */
 	public String getSuggest(String wordPart) {
-		logger.debug("Creating suggest...");
+		logger.debug("Creating suggest for " + wordPart + "...");
 		PriorityElement suggest = getElement(wordPart);
 		if (suggest == null) {
 			logger.info("Suggest created (same as wordPart)");

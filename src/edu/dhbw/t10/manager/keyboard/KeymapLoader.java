@@ -96,6 +96,7 @@ public class KeymapLoader {
 				}
 			}
 			logger.info("loaded " + keymap.size() + " keys.");
+			logger.debug("initialized.");
 			return keymap;
 		} catch (ParserConfigurationException err) {
 			logger.error("Could not initialize dBuilder");
@@ -107,7 +108,7 @@ public class KeymapLoader {
 			logger.error("Could not parse document");
 			err.printStackTrace();
 		}
-		logger.debug("initialized.");
+		logger.warn("Keymap not finished.");
 		return new HashMap<Integer, Key>();
 	}
 	
