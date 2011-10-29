@@ -17,12 +17,11 @@ import java.io.ObjectOutputStream;
 
 import org.apache.log4j.Logger;
 
+import edu.dhbw.t10.type.tree.PriorityTree;
+
 
 /**
- * TODO dirk, add comment!
- * - What should this type do (in one sentence)?
- * - If not intuitive: A simple example how to use this class
- * 
+ * Serializes an arbitrary Object
  * @author dirk
  * 
  */
