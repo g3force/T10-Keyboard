@@ -1,82 +1,57 @@
-/*
+/* 
  * *********************************************************
  * Copyright (c) 2011 - 2011, DHBW Mannheim
  * Project: T10 On-Screen Keyboard
- * Date: Oct 15, 2011
- * Author(s): NicolaiO
- * 
+ * Date: Oct 28, 2011
+ * Author(s): dirk
+ *
  * *********************************************************
  */
-package edu.dhbw.t10.view;
-
-import java.awt.Toolkit;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-
-import edu.dhbw.t10.view.menus.MenuBar;
-import edu.dhbw.t10.view.panels.MainPanel;
-
+package edu.dhbw.t10.type.keyboard.key;
 
 /**
- * TODO NicolaiO, add comment!
+ * TODO dirk, add comment!
  * - What should this type do (in one sentence)?
  * - If not intuitive: A simple example how to use this class
  * 
- * @author NicolaiO
+ * @author dirk
  * 
  */
-public class Presenter extends JFrame {
+public class MuteButton extends PhysicalButton {
+	/**  */
+	private static final long	serialVersionUID	= -4124533718708150504L;
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
-	
-	private static final long	serialVersionUID	= 6217926957357225677L;
-	private static Presenter	instance;
-	private JPanel					contentPane;
-
+	private int	type;
+	private static final int	profileChange		= 0;
+	private static final int	autoCompleting		= 1;
+	private static final int	treeInserting		= 2;
 	
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
-	
-	/**
-	  * 
-	  */
-	private Presenter() {
-		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		this.setLocationByPlatform(true);
-		this.setIconImage(Toolkit.getDefaultToolkit().getImage("icons/useacc_logo.png"));
-		this.setTitle("T10 On-Screen Keyboard");
-		this.setVisible(true);
-		// this.addComponentListener(this);
-
-		// get a reference to the content pane
-		contentPane = (JPanel) getContentPane();
-		contentPane.add(MainPanel.getInstance());
-		this.setJMenuBar(MenuBar.getInstance());
-		
-
-
-		// build GUI
-		pack();
+	public MuteButton(int type, int size_x, int size_y, int pos_x, int pos_y) {
+		super(size_x, size_y, pos_x, pos_y);
+		this.type = type;
 	}
-	
 	
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
-	public static Presenter getInstance() {
-		if (instance == null) {
-			instance = new Presenter();
-		}
-		return instance;
-	}
-	
+
 	
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
-
 	
+	public int getType() {
+		return type;
+	}
+	
+	
+	public void setType(int type) {
+		this.type = type;
+	}
+
 }

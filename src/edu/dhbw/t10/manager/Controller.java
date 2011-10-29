@@ -14,7 +14,7 @@ import java.awt.event.ActionListener;
 
 import edu.dhbw.t10.manager.output.OutputManager;
 import edu.dhbw.t10.manager.profile.ProfileManager;
-import edu.dhbw.t10.type.keyboard.Key;
+import edu.dhbw.t10.type.keyboard.key.Button;
 
 
 /**
@@ -63,7 +63,7 @@ public class Controller implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		Key key = (Key) e.getSource();
+		Button key = (Button) e.getSource();
 
 		if (key.isAccept()) {
 			if (suggest.length() > typedWord.length())
