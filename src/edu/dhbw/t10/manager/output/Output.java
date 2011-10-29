@@ -17,7 +17,7 @@ import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
 
-import edu.dhbw.t10.type.keyboard.key.Button;
+import edu.dhbw.t10.type.keyboard.key.Key;
 
 
 /**
@@ -61,8 +61,8 @@ public class Output {
 	}
 
 
-	public boolean printChar(Button c) {
-		return printString(c.getText());
+	public boolean printChar(Key c) {
+		return printString(c.getName(), c.getType());
 	}
 
 
@@ -79,11 +79,11 @@ public class Output {
 
 		// if (charSequence.charAt(0) == '\\' && charSequence.charAt(length - 1) == '\\'
 		// && !charSequence.substring(0).startsWith("\\U+")) {
-		if (type == Key.CONTROL_KEY) {
+		if (type == Key.CONTROL) {
 			keyCode = this.getKeyCode(charSequence.substring(1, length - 1));
 			this.sendKey(keyCode);
 			logger.info("Control Symbol printed: " + charSequence);
-		} else if (type == Key.UNICODE_KEY) {
+		} else if (type == Key.UNICODE) {
 			sendUnicode(charSequence);
 		} else {
 			ArrayList<Integer> unicodeStart = extractUnicode(charSequence);

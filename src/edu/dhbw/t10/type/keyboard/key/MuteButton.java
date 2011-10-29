@@ -10,10 +10,7 @@
 package edu.dhbw.t10.type.keyboard.key;
 
 /**
- * TODO dirk, add comment!
- * - What should this type do (in one sentence)?
- * - If not intuitive: A simple example how to use this class
- * 
+ * button for the mute options
  * @author dirk
  * 
  */
@@ -24,9 +21,9 @@ public class MuteButton extends PhysicalButton {
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
 	private int	type;
-	private static final int	profileChange		= 0;
-	private static final int	autoCompleting		= 1;
-	private static final int	treeInserting		= 2;
+	public static final int		AUTO_PROFILE_CHANGE	= 0;
+	public static final int		AUTO_COMPLETING		= 1;
+	public static final int		TREE_EXPANDING			= 2;
 	
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
