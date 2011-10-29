@@ -10,7 +10,15 @@
 package edu.dhbw.t10.manager.profile;
 
 import java.awt.Dimension;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
+
+import org.apache.log4j.Logger;
 
 import edu.dhbw.t10.manager.keyboard.KeyboardLayoutGenerator;
 import edu.dhbw.t10.type.keyboard.KeyboardLayout;
@@ -31,8 +39,10 @@ public class ProfileManager {
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
+	private static final Logger	logger	= Logger.getLogger(ProfileManager.class);
 	private static ProfileManager	instance;
 	private ArrayList<Profile>		profiles;
+	private ArrayList<String>		profilePath;
 	private Profile					activeProfile;
 	private KeyboardLayout			kbdLayout;
 
@@ -56,12 +66,13 @@ public class ProfileManager {
 		// ---------------------DUMMY CODE------------------------------
 		Profile prof = new Profile(1, "Pflichteheft", "/home/dirk/Desktop/PFL");
 		setActive(prof);
-		prof.setPathToFile("conf/trees/" + prof.getName());
+		prof.setPathToTree("conf/trees/" + prof.getName());
 		prof.saveTree();
 		profiles.add(prof);
 
 		// -------------------ENDE DUMMY CODE---------------------------
 		serializeProfiles();
+		profilePath = new ArrayList<String>();
 		instance = this;
 		KeyboardLayoutGenerator lfm = new KeyboardLayoutGenerator();
 		kbdLayout = lfm.getKbdLayout();
@@ -98,14 +109,91 @@ public class ProfileManager {
 		}
 	}
 	
+	
+	public void readConfig() {
+		try {
+			File confFile = new File("./config");
+			FileReader fr = new FileReader(confFile);
+			BufferedReader br = new BufferedReader(fr);
+			
+			String entry = "";
+			while ((entry = br.readLine()) != null) {
+				// Commentary-Indicator: //
+				if (entry.indexOf("//") >= 0)
+					entry = entry.substring(0, entry.indexOf("//"));
+				
+				if (entry.isEmpty())
+					continue;
+				
+				// Indicators deleted.
+				int posOfEql = entry.indexOf("=");
+				String valName = entry.substring(0, posOfEql);
+				String value = entry.substring(posOfEql + 1, entry.length());
+				if (valName.equals("ProfilePath")) {
+					profilePath.add(value);
+				} else if (valName.equals("XMLPath")) {
+					// XMLPath.add(value);
+					logger.debug("XMLPath: " + value);
+				}
+			}
+			br.close();
+		} catch (IOException io) {
+			logger.debug("IOException in readConfig()");
+			io.printStackTrace();
+		} catch (Exception ex) {
+			logger.debug("Exception in readConfig(): " + ex.toString());
+			ex.printStackTrace();
+		}
+	}
+	
+	private String createComment(String comment) {
+		comment = "//" + comment;
+		return comment;
+	}
+	
+	
+	public void saveConfig() {
+		try {
+			File confFile = new File("./config");
+			FileWriter fw = new FileWriter(confFile);
+			BufferedWriter bw = new BufferedWriter(fw);
+			
+			bw.write(createComment("Configfile for T10"));
+			
+			for (int i = 0; i < profilePath.size(); i++) {
+				bw.write("ProfilePath=" + profilePath.get(i) + "\n");
+			}
+			bw.close();
+		} catch (IOException io) {
+			logger.debug("IOException in readConfig()");
+			io.printStackTrace();
+		} catch (Exception ex) {
+			logger.debug("Exception in readConfig(): " + ex.toString());
+			ex.printStackTrace();
+		}
+	}
 
-	public Profile create(String profileName) {
+	
+	/**
+	 * 
+	 * Create a new profile
+	 * 
+	 * @param profileName - String. Name of the profile.
+	 * @param pathToNewProfile - String. Path to the new profile.
+	 * @return Handle/Pointer to the new profile.
+	 * @author DerBaschti
+	 */
+
+	public Profile create(String profileName, String pathToNewProfile) {
 		Profile newProfile = new Profile();
 		newProfile.setName(profileName);
 		newProfile.setID(profiles.size());
+		profilePath.add(pathToNewProfile);
 		profiles.add(newProfile);
-		if (activeProfile == null)
+		if (activeProfile == null) {
+			logger.info("Active profile was set to newProfile");
 			activeProfile = newProfile;
+		}
 		return newProfile;
 	}
 	
@@ -116,8 +204,10 @@ public class ProfileManager {
 	 * 
 	 */
 	private void arrangeProfiles() {
-		if (profiles.size() <= 0)
+		if (profiles.size() <= 0) {
+			logger.debug("profiles.size()==0 at arrange");
 			return;
+		}
 		Profile curProfile = null;
 		for (int i = 0; i < profiles.size(); i++) {
 			curProfile = profiles.get(i);
@@ -136,8 +226,10 @@ public class ProfileManager {
 	 */
 	public void delete(int id) {
 		Profile curProfile = null;
-		if (profiles.size() <= 0)
+		if (profiles.size() <= 0) {
+			logger.debug("profiles.size()==0 at delete");
 			return;
+		}
 		for (int i = 0; i < profiles.size(); i++) {
 			curProfile = profiles.get(i);
 			if (curProfile.getID() == id) {
@@ -148,10 +240,13 @@ public class ProfileManager {
 		}
 		// If the deleted profile was currently active, we choose the first profile or mark "we need a new profile!"
 		if (activeProfile.getID() == id) {
-			if (profiles.size() > 0)
+			if (profiles.size() > 0) {
+				logger.debug("activeProfile=profiles(0)");
 				activeProfile = profiles.get(0);
-			else
+			} else {
+				logger.debug("activeProfile=NULL");
 				activeProfile = null;
+			}
 		}
 	}
 	
@@ -167,7 +262,7 @@ public class ProfileManager {
 		for (int i = 0; i < profiles.size(); i++) {
 			curProfile = profiles.get(i);
 			if (curProfile.getID() == id) {
-				activeProfile = curProfile;
+				setActive(curProfile);
 				break;
 			}
 		}
@@ -189,6 +284,13 @@ public class ProfileManager {
 	 * @return
 	 */
 	public String getWordSuggest(String givenChars) {
+		if (getActive() == null) {
+			logger.error("getActive()==NULL at getWordSuggest");
+			return "";
+		} else if (getActive().getTree() == null) {
+			logger.error("PriorityTree of activeProfile==NULL at getWordSuggest");
+			return "";
+		}
 		return getActive().getTree().getSuggest(givenChars);
 	}
 	
@@ -201,6 +303,10 @@ public class ProfileManager {
 	 * @param word
 	 */
 	public void acceptWord(String word) {
+		if (getActive() == null) {
+			logger.error("getActive()==NULL at acceptWord");
+			return;
+		}
 		getActive().getTree().insert(word);
 	}
 
@@ -209,15 +315,18 @@ public class ProfileManager {
 	 * 
 	 * Serializing Profile-Arraylist
 	 * 
-	 * @author hpadmin
 	 */
 	public void serializeProfiles() {
-		Serializer.serialize(profiles, "./conf/profiles");
+		for (int i = 0; i < profiles.size(); i++) {
+			Profile cProfile = profiles.get(i);
+			Serializer.serialize(cProfile, cProfile.getPathToProfile());
+		}
 	}
 	
 	
 	public void getSerializedProfiles() {
-		profiles = Serializer.deserialize("./conf/profiles");
+		for (int i = 0; i < profilePath.size(); i++)
+			profiles.add((Profile) Serializer.deserialize(profilePath.get(i)));
 		if (profiles == null) {
 			profiles = new ArrayList<Profile>();
 		}
