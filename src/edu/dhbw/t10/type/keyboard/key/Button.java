@@ -123,6 +123,7 @@ public class Button extends PhysicalButton {
 	
 	public void setKey(Key key) {
 		this.key = key;
+		setText(key.getName());
 	}
 
 
