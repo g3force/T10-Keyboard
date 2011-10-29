@@ -130,7 +130,6 @@ public class KeyboardLayoutSaver {
 				dropdown.setAttribute("size_y", dd.getOrigSize().getHeight() + "");
 				dropdown.setAttribute("pos_x", dd.getX() + "");
 				dropdown.setAttribute("pos_y", dd.getY() + "");
-				System.out.println("Dropdown");
 				layout.appendChild(dropdown);
 			}
 			for (Button button : kbdLayout.getButtons()) {

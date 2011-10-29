@@ -21,6 +21,7 @@ import edu.dhbw.t10.manager.profile.ProfileManager;
 import edu.dhbw.t10.type.keyboard.DropDownList;
 import edu.dhbw.t10.type.keyboard.KeyboardLayout;
 import edu.dhbw.t10.type.keyboard.key.PhysicalButton;
+import edu.dhbw.t10.view.Presenter;
 
 
 /**
@@ -95,8 +96,11 @@ public class MainPanel extends JPanel implements ComponentListener {
 	
 	@Override
 	public void componentResized(ComponentEvent e) {
-		if (initilized)
+		if (initilized && Presenter.getInstance().isInitilized()) {// do not delete Presenter is initialized, rescale
+																						// before GUI has a size
+			logger.debug("Window resized handler called");
 			ProfileManager.getInstance().resizeWindow(e.getComponent().getSize());
+		}
 	}
 	
 	

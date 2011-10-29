@@ -16,7 +16,6 @@ import java.io.Serializable;
 import org.apache.log4j.Logger;
 
 import edu.dhbw.t10.manager.keyboard.KeyboardLayoutLoader;
-import edu.dhbw.t10.manager.keyboard.KeyboardLayoutSaver;
 import edu.dhbw.t10.manager.keyboard.KeymapLoader;
 import edu.dhbw.t10.manager.profile.Serializer;
 import edu.dhbw.t10.type.keyboard.KeyboardLayout;
@@ -68,7 +67,6 @@ public class Profile implements Serializable {
 		saveTree();
 		kbdLayout = KeyboardLayoutLoader
 				.load("conf/keyboard_layout_de_default.xml", KeymapLoader.load("conf/keymap.xml"));
-		KeyboardLayoutSaver.save(kbdLayout, "conf/keyboard_output.xml");
 		MainPanel.getInstance().setKbdLayout(kbdLayout);
 	}
 
