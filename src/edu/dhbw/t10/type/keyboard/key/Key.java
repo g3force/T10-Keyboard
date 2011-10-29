@@ -21,13 +21,17 @@ public class Key {
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
-	private int					id				= 0;
-	private String				keycode		= "";
-	private String				name			= "";
-	private int		type		= 0;
-	private static final int	CONTROL	= 0;
-	private static final int	UNICODE	= 0;
-	private static final int	CHAR		= 0;
+	public static final int	UNKNOWN	= 0;
+	public static final int	CONTROL	= 1;
+	public static final int	UNICODE	= 2;
+	public static final int	CHAR		= 3;
+
+	private int						id			= 0;
+	private String					keycode	= "";
+	private String					name		= "";
+	private int						type		= 0;
+
+
 	// the name appearing on the button in the screen keyboard
 	
 	// --------------------------------------------------------------------------
@@ -40,6 +44,7 @@ public class Key {
 		this.type = type;
 	}
 	
+
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
@@ -76,8 +81,8 @@ public class Key {
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	
+
 	public int getType() {
 		return type;
 	}
