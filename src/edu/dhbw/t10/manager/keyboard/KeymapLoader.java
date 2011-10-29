@@ -110,15 +110,15 @@ public class KeymapLoader {
 	}
 	
 	
-	// private static int convertType(String stype) {
-	// if (stype.equals("control"))
-	// return Key.CONTROL_KEY;
-	// else if (stype.equals("char"))
-	// return Key.CHAR_KEY;
-	// else if (stype.equals("unicode"))
-	// return Key.UNICODE_KEY;
-	// return Key.UNKNOWN_KEY;
-	// }
+	private static int convertType(String stype) {
+		if (stype.equals("control"))
+			return Key.CONTROL_KEY;
+		else if (stype.equals("char"))
+			return Key.CHAR_KEY;
+		else if (stype.equals("unicode"))
+			return Key.UNICODE_KEY;
+		return Key.UNKNOWN_KEY;
+	}
 
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
