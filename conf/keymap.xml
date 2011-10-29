@@ -26,6 +26,8 @@
 		<key id="1007" keycode="\ALT_GRAPH\">Altgr</key>
 		<key id="1008" keycode="\CONTEXT_MENU\">Menu</key>
 		<key id="1009" keycode="\CONTROL\">Strg</key>
+		<key id="50" keycode="\TAB\">TAB</key>
+		<key id="63" keycode="\ENTER\">Enter</key>
 	</keytype>
 	
 	<keytype name="unicode">
@@ -55,6 +57,15 @@
 		<key id="47" keycode="\U+005D\">]</key>
 		<key id="48" keycode="\U+007D\">}</key>
 		<key id="49" keycode="\U+005C\">\</key>
+		
+		<key id="61" keycode="\U+00DC\">ü</key>
+		<key id="62" keycode="\U+002B\">+</key>
+		<key id="74" keycode="\U+00FC\">Ü</key>
+		<key id="75" keycode="\U+002A\">*</key>
+		
+		<key id="76" keycode="\U+0040\">@</key>
+		<key id="77" keycode="\U+20AC\">€</key>
+		<key id="78" keycode="\U+007E\">~</key>
 	</keytype>
 	
 	<keytype name="char">
@@ -68,6 +79,28 @@
 		<key id="23" keycode="8">8</key>
 		<key id="24" keycode="9">9</key>
 		<key id="25" keycode="0">0</key>
+		
+		<key id="51" keycode="q">q</key>
+		<key id="52" keycode="w">w</key>
+		<key id="53" keycode="e">e</key>
+		<key id="54" keycode="r">r</key>
+		<key id="55" keycode="t">t</key>
+		<key id="56" keycode="z">z</key>
+		<key id="57" keycode="u">u</key>
+		<key id="58" keycode="i">i</key>
+		<key id="59" keycode="o">o</key>
+		<key id="60" keycode="p">p</key>
+		
+		<key id="64" keycode="Q">Q</key>
+		<key id="65" keycode="W">W</key>
+		<key id="66" keycode="E">E</key>
+		<key id="67" keycode="R">R</key>
+		<key id="68" keycode="T">T</key>
+		<key id="69" keycode="Z">Z</key>
+		<key id="70" keycode="U">U</key>
+		<key id="71" keycode="I">I</key>
+		<key id="72" keycode="O">O</key>
+		<key id="73" keycode="P">P</key>
 	</keytype>
 </keymap>
 
