@@ -60,6 +60,7 @@ public class ProfileManager {
 	 */
 	private ProfileManager() {
 		// ....
+		profilePath = new ArrayList<String>();
 		getSerializedProfiles();
 		if (profiles.size() == 0) {
 			Profile prof = new Profile(0, "default");
@@ -76,7 +77,6 @@ public class ProfileManager {
 
 		// -------------------ENDE DUMMY CODE---------------------------
 		serializeProfiles();
-		profilePath = new ArrayList<String>();
 		instance = this;
 		kbdLayout = KeyboardLayoutLoader
 				.load("conf/keyboard_layout_de_default.xml", KeymapLoader.load("conf/keymap.xml"));
@@ -328,6 +328,8 @@ public class ProfileManager {
 	public void serializeProfiles() {
 		for (int i = 0; i < profiles.size(); i++) {
 			Profile cProfile = profiles.get(i);
+			if (cProfile.getPathToProfile() == null || cProfile.getPathToProfile().isEmpty())
+				continue;
 			Serializer.serialize(cProfile, cProfile.getPathToProfile());
 		}
 	}
