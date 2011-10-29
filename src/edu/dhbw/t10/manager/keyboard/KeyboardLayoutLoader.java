@@ -102,11 +102,9 @@ public class KeyboardLayoutLoader {
 		for (ModeButton b : modeButtons.values()) {
 			modeButtonArray.add(b);
 		}
-		kbdLayout.setModeButtons(modeButtonArray);
 		logger.info("loaded " + modeButtonArray.size() + " ModeButtons.");
 		// ########################## read Buttons ############################
 		ArrayList<Button> buttons = getButtons(doc, modeButtons);
-		kbdLayout.setButtons(buttons);
 		logger.info("loaded " + buttons.size() + " Buttons.");
 		// ########################## read MuteButtons ###########################
 		
@@ -179,6 +177,8 @@ public class KeyboardLayoutLoader {
 		}
 		
 		
+		kbdLayout.setModeButtons(modeButtonArray);
+		kbdLayout.setButtons(buttons);
 		kbdLayout.setFont(new Font(fname, fstyle, fsize));
 		kbdLayout.rescale();
 
