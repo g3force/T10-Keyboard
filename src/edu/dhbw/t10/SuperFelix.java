@@ -20,14 +20,11 @@ import edu.dhbw.t10.view.Presenter;
 /**
  * TODOs
  * 
- * TODO graphical buttons (keys) e.g. pause- and arrow keys
- * TODO
+ * TODO ALL graphical buttons (keys) e.g. pause- and arrow keys
  * 
  */
 /**
- * TODO NicolaiO, add comment!
- * - What should this type do (in one sentence)?
- * - If not intuitive: A simple example how to use this class
+ * This is the main class of the t10 keyboard. It only initializes the first important classes.
  * 
  * @author NicolaiO
  * 

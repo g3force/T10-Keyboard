@@ -20,7 +20,8 @@ import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
 
-import edu.dhbw.t10.manager.keyboard.KeyboardLayoutGenerator;
+import edu.dhbw.t10.manager.keyboard.KeyboardLayoutLoader;
+import edu.dhbw.t10.manager.keyboard.KeymapLoader;
 import edu.dhbw.t10.type.keyboard.KeyboardLayout;
 import edu.dhbw.t10.type.profile.Profile;
 import edu.dhbw.t10.view.Presenter;
@@ -45,6 +46,9 @@ public class ProfileManager {
 	private ArrayList<String>		profilePath;
 	private Profile					activeProfile;
 	private KeyboardLayout			kbdLayout;
+	private boolean					autoProfileChange	= true;
+	private boolean					autoCompleting		= true;
+	private boolean					treeExpanding		= true;
 
 
 	// --------------------------------------------------------------------------
@@ -64,7 +68,7 @@ public class ProfileManager {
 		}
 		activeProfile = profiles.get(0); // TODO save active profile
 		// ---------------------DUMMY CODE------------------------------
-		Profile prof = new Profile(1, "Pflichteheft", "/home/dirk/Desktop/PFL");
+		Profile prof = new Profile(1, "Pflichteheft");
 		setActive(prof);
 		prof.setPathToTree("conf/trees/" + prof.getName());
 		prof.saveTree();
@@ -74,9 +78,8 @@ public class ProfileManager {
 		serializeProfiles();
 		profilePath = new ArrayList<String>();
 		instance = this;
-		KeyboardLayoutGenerator lfm = new KeyboardLayoutGenerator();
-		kbdLayout = lfm.getKbdLayout();
-
+		kbdLayout = KeyboardLayoutLoader
+				.load("conf/keyboard_layout_de_default.xml", KeymapLoader.load("conf/keymap.xml"));
 	}
 
 
@@ -278,26 +281,31 @@ public class ProfileManager {
 
 	/**
 	 * 
-	 * TODO implementieren... siehe Kontrollfluss Diagramm
+	 * TODO ??? implementieren... siehe Kontrollfluss Diagramm
 	 * OutputManager requests a Word suggestion with an given Startstring.
 	 * @param givenChars
 	 * @return
 	 */
 	public String getWordSuggest(String givenChars) {
-		if (getActive() == null) {
-			logger.error("getActive()==NULL at getWordSuggest");
-			return "";
-		} else if (getActive().getTree() == null) {
-			logger.error("PriorityTree of activeProfile==NULL at getWordSuggest");
-			return "";
+		if (autoCompleting) {
+			if (getActive() == null) {
+				logger.error("getActive()==NULL at getWordSuggest");
+				return "";
+			} else if (getActive().getTree() == null) {
+				logger.error("PriorityTree of activeProfile==NULL at getWordSuggest");
+				return "";
+			}
+			return getActive().getTree().getSuggest(givenChars);
+		} else {
+			return givenChars;
 		}
-		return getActive().getTree().getSuggest(givenChars);
+
 	}
 	
 	
 	/**
 	 * 
-	 * TODO implementieren...
+	 * TODO ??? implementieren...
 	 * Gives a word which have to be inserted or updated in the data.
 	 * 
 	 * @param word
@@ -307,7 +315,8 @@ public class ProfileManager {
 			logger.error("getActive()==NULL at acceptWord");
 			return;
 		}
-		getActive().getTree().insert(word);
+		if (treeExpanding)
+			getActive().getTree().insert(word);
 	}
 
 	
@@ -345,6 +354,36 @@ public class ProfileManager {
 
 	public KeyboardLayout getKbdLayout() {
 		return kbdLayout;
+	}
+	
+	
+	public boolean isAutoProfileChange() {
+		return autoProfileChange;
+	}
+	
+	
+	public void setAutoProfileChange(boolean autoProfileChange) {
+		this.autoProfileChange = autoProfileChange;
+	}
+	
+	
+	public boolean isAutoCompleting() {
+		return autoCompleting;
+	}
+	
+	
+	public void setAutoCompleting(boolean autoCompleting) {
+		this.autoCompleting = autoCompleting;
+	}
+	
+	
+	public boolean isTreeExpanding() {
+		return treeExpanding;
+	}
+	
+	
+	public void setTreeExpanding(boolean treeExpanding) {
+		this.treeExpanding = treeExpanding;
 	}
 	
 

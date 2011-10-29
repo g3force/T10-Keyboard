@@ -14,7 +14,7 @@ import java.awt.event.ActionListener;
 
 import edu.dhbw.t10.manager.output.OutputManager;
 import edu.dhbw.t10.manager.profile.ProfileManager;
-import edu.dhbw.t10.type.keyboard.Key;
+import edu.dhbw.t10.type.keyboard.key.Key;
 
 
 /**
@@ -63,41 +63,43 @@ public class Controller implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		Key key = (Key) e.getSource();
+		if(e.getSource() instanceof Button){
+			Button key = (Button) e.getSource();
+		}
 
 		if (key.isAccept()) {
 			if (suggest.length() > typedWord.length())
-				outputMan.getOutput().unMark();
-			outputMan.getOutput().printChar(key);
+				outputMan.unMark();
+			outputMan.printChar(key);
 			profileMan.acceptWord(suggest);
 			typedWord = "";
 			suggest = "";
-		} else if (key.getType() == Key.CHAR_KEY) {
-			outputMan.getOutput().printChar(key);
+		} else if (key.getType() == Key.CHAR) {
+			outputMan.printChar(key);
 			typedWord = typedWord + key.getText();
 			suggest = profileMan.getWordSuggest(typedWord);
 			outputMan.printSuggest(suggest, typedWord);
-		} else if (key.getType() == Key.UNICODE_KEY) {
-			outputMan.getOutput().printString(key.getText());
-		} else if (key.getText() == "\\BACK_SPACE\\") {
+		} else if (key.getType() == Key.UNICODE) {
+			outputMan.printChar(key);
+		} else if (key.getName() == "\\BACK_SPACE\\") {
 			if (typedWord.length() > 0) {
 				typedWord = typedWord.substring(0, typedWord.length() - 2);
-				outputMan.getOutput().deleteChar(2); // Zwei, weil einmal muss die aktuelle Markierung gelöscht werden und
+				outputMan.deleteChar(2); // Zwei, weil einmal muss die aktuelle Markierung gelöscht werden und
 																	// dann ein Zeichen.
-				suggest = profileMan.getActive().getTree().getSuggest(typedWord);
+				suggest = profileMan.getWordSuggest(typedWord);
 				outputMan.printSuggest(suggest, typedWord);
 			} else {
-				outputMan.getOutput().deleteChar(1);
+				outputMan.deleteChar(1);
 			}
-		} else if ((key.getText() == "\\SPACE\\" || key.getText() == "\\ENTER\\")) {
-			outputMan.getOutput().printChar(key);
+		} else if ((key.getName() == "\\SPACE\\" || key.getName() == "\\ENTER\\")) {
+			outputMan.printChar(key);
 			typedWord = "";
 			suggest = "";
-		} else if (key.getType() == Key.CONTROL_KEY) {
-			outputMan.getOutput().printChar(key);
-			if (key.getText() == "\\DELETE\\")
-				suggest = "";
-		} else if (key.getType() == Key.MUTE_KEY) {
+		} else if (key.getType() == Key.CONTROL) {
+			outputMan.printChar(key);
+			if (key.getName() == "\\DELETE\\")
+				suggest = typedWord;
+		} else if (key.getType() == Key.MUTE) {
 			// TODO Do something for mute
 		}
 	}
