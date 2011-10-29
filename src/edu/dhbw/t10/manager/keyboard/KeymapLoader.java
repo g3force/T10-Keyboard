@@ -72,7 +72,7 @@ public class KeymapLoader {
 			for (int i = 0; i < keytypes.getLength(); i++) {
 				NodeList keys = keytypes.item(i).getChildNodes();
 				try {
-					String stype = keys.item(i).getAttributes().getNamedItem("name").getTextContent();
+					String stype = keytypes.item(i).getAttributes().getNamedItem("name").getTextContent();
 					type = convertType(stype);
 				} catch (NullPointerException e) {
 					logger.warn("A keytype could not be read. i=" + i);
