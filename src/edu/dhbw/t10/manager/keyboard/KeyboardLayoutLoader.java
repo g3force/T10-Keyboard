@@ -229,6 +229,7 @@ public class KeyboardLayoutLoader {
 					
 				} else {
 					logger.warn("Number of key-elements is not 1: " + defkey.getLength());
+					continue;
 				}
 				
 				button.addActionListener(Controller.getInstance()); // use EventCollector as listener
@@ -249,7 +250,8 @@ public class KeyboardLayoutLoader {
 							try {
 								iModeName = Integer.parseInt(modeName.getTextContent());
 							} catch (NumberFormatException e) {
-								logger.warn("modename could not be parsed to Integer. modename=" + modeName.getTextContent());
+								logger.warn("modename could not be parsed to Integer. modename=" + modeName.getTextContent()
+										+ "i=" + i);
 							}
 						}
 						// if (color != null) {
@@ -264,7 +266,13 @@ public class KeyboardLayoutLoader {
 								logger.warn("key not found in keymap. key content=" + item.getTextContent());
 							}
 							key.setAccept(accept);
-							button.addMode(modeButtons.get(iModeName), key);
+							if (modeButtons.get(iModeName) != null) {
+								button.addMode(modeButtons.get(iModeName), key);
+							} else {
+								logger.warn("A modeButton could not be found in keymap: " + iModeName + " i=" + i
+										+ key.getName());
+							}
+
 						} catch (NumberFormatException e) {
 							logger.warn("Could not parse key to Integer. i=" + i);
 						}
@@ -272,10 +280,8 @@ public class KeyboardLayoutLoader {
 				}
 			} catch (NullPointerException e) {
 				logger.warn("A Button could not be read: NullPointerException");
-				e.printStackTrace();
 			} catch (NumberFormatException e) {
 				logger.warn("A Button could not be read: NumberFormatException");
-				e.printStackTrace();
 			}
 		}
 		return buttons;
@@ -285,7 +291,7 @@ public class KeyboardLayoutLoader {
 	private static HashMap<Integer, ModeButton> getModeButtons(Document doc) {
 		HashMap<Integer, ModeButton> modeButtons = new HashMap<Integer, ModeButton>();
 		NodeList nList = doc.getElementsByTagName("modebutton");
-		
+
 		// loop through buttons
 		for (int temp = 0; temp < nList.getLength(); temp++) {
 			try {
@@ -306,10 +312,15 @@ public class KeyboardLayoutLoader {
 					} catch (NumberFormatException e) {
 						logger.warn("Could not parse key: " + defkey.item(0).getTextContent());
 					}
-					if (key == null)
+					if (key == null) {
+						logger.warn("Could not find key in keymap: " + defkey.item(0).getTextContent());
 						continue;
-				} else
+					}
+				} else {
+					logger.warn("Number of key-elements is not 1: " + defkey.getLength());
 					continue;
+				}
+				System.out.println(key.getId());
 				Bounds b = getBounds(nNode);
 				ModeButton button = new ModeButton(key, b.size_x, b.size_y, b.pos_x, b.pos_y);
 				modeButtons.put(key.getId(), button);
