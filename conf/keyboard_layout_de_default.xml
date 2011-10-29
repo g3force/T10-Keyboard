@@ -339,7 +339,7 @@
 
 
 
-	
+	-->
 	<!-- 
 	<key size_x="50" size_y="50" pos_x="845" pos_y="225">
 		<mode modekey="0">1009</mode>
@@ -364,5 +364,4 @@
 		<mode modekey="0" keycode="\END\">Ende</mode>
 	</key>
 	 -->
-	  -->
 </layout>

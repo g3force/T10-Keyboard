@@ -81,16 +81,16 @@ public class Controller implements ActionListener {
 		// outputMan.getOutput().printChar(key);
 		// }
 		// } else if (key.isAccept()) {
-		// // TODO demarkiere Wort, schreibe SPACE und lösche Buffer; akzeptiere Wort
+		// // TODO Daniel demarkiere Wort, schreibe SPACE und lösche Buffer; akzeptiere Wort
 		// } else if (key.getText() == "\\SPACE\\" && !key.isAccept()) {
-		// // TODO schreibe Leerzeiechen und lösche Puffer (WOrt wird wegen Markierung gelöscht)
+		// // TODO Daniel schreibe Leerzeiechen und lösche Puffer (WOrt wird wegen Markierung gelöscht)
 		// } else if (key.getType() == Key.CONTROL_KEY) {
-		// // TODO sende Control_Key
+		// // TODO Daniel sende Control_Key
 		// } else if (key.getType() == Key.CHAR_KEY || key.getType() == Key.UNICODE_KEY) {
 		// outputMan.getOutput().printString(key.getText());
 		// outputMan.printSuggest(key.getText(), typedWord);
 		// } else if (key.getType() == Key.MUTE_KEY) {
-		// // TODO Do something for mute
+		// // TODO Daniel Do something for mute
 		// }
 	}
 	

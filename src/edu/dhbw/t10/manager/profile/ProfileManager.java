@@ -161,7 +161,7 @@ public class ProfileManager {
 
 	/**
 	 * 
-	 * TODO implementieren... siehe Kontrollfluss Diagramm
+	 * TODO ??? implementieren... siehe Kontrollfluss Diagramm
 	 * OutputManager requests a Word suggestion with an given Startstring.
 	 * 
 	 * 
@@ -175,7 +175,7 @@ public class ProfileManager {
 
 	/**
 	 * 
-	 * TODO implementieren...
+	 * TODO ??? implementieren...
 	 * Gives a word which have to be inserted or updated in the data.
 	 * 
 	 * @param word

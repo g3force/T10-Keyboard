@@ -1,10 +1,10 @@
-/* 
+/*
  * *********************************************************
  * Copyright (c) 2011 - 2011, DHBW Mannheim
  * Project: T10 On-Screen Keyboard
  * Date: Oct 28, 2011
  * Author(s): dirk
- *
+ * 
  * *********************************************************
  */
 package edu.dhbw.t10.type.keyboard.key;
@@ -31,10 +31,11 @@ public class PhysicalButton extends JButton {
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
-	private int	pos_x	= 0;
-	private int	pos_y	= 0;
-	private Dimension	origSize	= new Dimension(10, 10);
-	private String		color		= "";
+	private int						pos_x					= 0;
+	private int						pos_y					= 0;
+	private Dimension				origSize				= new Dimension(10, 10);
+	private String					color					= "";
+
 	
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
@@ -83,18 +84,12 @@ public class PhysicalButton extends JButton {
 		return color;
 	}
 	
+
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
 	
 	
-	/**
-	 * 
-	 * TODO NicolaiO, add comment!
-	 * 
-	 * @return
-	 * @author NicolaiO
-	 */
 	public String getColor() {
 		return color;
 	}

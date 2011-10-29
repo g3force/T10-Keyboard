@@ -86,14 +86,13 @@ public class KeyboardLayoutLoader {
 					Button newKey = getKey(eElement, keymap);
 					if (newKey != null) {
 						keys.add(newKey);
-						// TODO listener
+						// TODO NicolaiO, Felix listener
 						newKey.addActionListener(Controller.getInstance()); // use EventCollector as listener
 					}
 				} else {
 					logger.warn("key-node is not an element-node");
 				}
 			}
-			logger.debug("Loaded " + keys.size() + " keys.");
 			
 			int sizex = 0, sizey = 0;
 			float scale = 1.0f;
@@ -141,7 +140,7 @@ public class KeyboardLayoutLoader {
 						DropDownList cb = new DropDownList(getAttribute(attr, "type"), getIntAttribute(attr, "size_x"),
 								getIntAttribute(attr, "size_y"), getIntAttribute(attr, "pos_x"), getIntAttribute(attr, "pos_y"));
 						kbdLayout.addDdl(cb);
-						// TODO listener
+						// TODO NicolaiO, Felix listener
 					}
 				} catch (NullPointerException e) {
 					logger.warn("Dropdown-element found, but can not be read correctly! node nr " + temp + ": "
@@ -152,7 +151,7 @@ public class KeyboardLayoutLoader {
 			
 			kbdLayout.setFont(new Font(fname, fstyle, fsize));
 			kbdLayout.setKeys(keys);
-			// kbdLayout.setMode("default"); TODO to be fixed by Nico ;) Dirk
+			// kbdLayout.setMode("default"); TODO NicolaiO to be fixed by Nico ;) Dirk
 			kbdLayout.rescale();
 			logger.info("loaded " + keys.size() + " Buttonkeys.");
 		} catch (ParserConfigurationException err) {
@@ -196,7 +195,7 @@ public class KeyboardLayoutLoader {
 					if (color != null) {
 						sColor = color.getTextContent();
 					}
-					// TODO add mode...
+					// TODO NicolaiO add mode...
 					// key.addMode(sModeName, keymap.get(item.getTextContent()));
 				}
 			}
