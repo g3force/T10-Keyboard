@@ -19,8 +19,8 @@ import org.apache.log4j.Logger;
 
 import edu.dhbw.t10.manager.profile.ProfileManager;
 import edu.dhbw.t10.type.keyboard.DropDownList;
-import edu.dhbw.t10.type.keyboard.Key;
 import edu.dhbw.t10.type.keyboard.KeyboardLayout;
+import edu.dhbw.t10.type.keyboard.key.Button;
 
 
 /**
@@ -51,7 +51,7 @@ public class MainPanel extends JPanel implements ComponentListener {
 		this.addComponentListener(this);
 		KeyboardLayout kbd = ProfileManager.getInstance().getKbdLayout();
 		this.setPreferredSize(new Dimension(kbd.getSize_x(), kbd.getSize_y()));
-		for (Key key : kbd.getKeys()) {
+		for (Button key : kbd.getKeys()) {
 			this.add(key);
 		}
 		for (DropDownList ddl : kbd.getDdls()) {

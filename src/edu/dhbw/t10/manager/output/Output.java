@@ -17,7 +17,7 @@ import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
 
-import edu.dhbw.t10.type.keyboard.Key;
+import edu.dhbw.t10.type.keyboard.key.Button;
 
 
 /**
@@ -29,8 +29,8 @@ import edu.dhbw.t10.type.keyboard.Key;
  * 
  * Control symbols are sent via their java.awt.event.KeyEvent constant
  * 
- * TODO Get several Control symbols and combine them to a key combination
- * TODO Get last active window and write there
+ * TODO Daniel Get several Control symbols and combine them to a key combination
+ * TODO Daniel Get last active window and write there
  * @author Andres
  * 
  */
@@ -61,15 +61,8 @@ public class Output {
 	}
 
 
-	public boolean printChar(Key c) {
-		logger.info(c.getType());
-		return printString(c.getText(), c.getType());
-	}
-
-
-	public boolean printString(String charSequence) {
-
-		return printString(charSequence, 0);
+	public boolean printChar(Button c) {
+		return printString(c.getText());
 	}
 
 
@@ -141,7 +134,7 @@ public class Output {
 	private ArrayList<Integer> extractUnicode(String sequence) {
 		ArrayList<Integer> unicodeStart = new ArrayList<Integer>();
 		int help = 0;
-		// TODO erkenne Sonderzeichen und Konvertiere das in Unicode
+		// TODO Daniel erkenne Sonderzeichen und Konvertiere das in Unicode
 		while (help < sequence.length()) {
 			if (sequence.substring(help).startsWith("\\U+")) {
 				help = sequence.indexOf("\\U+", help);
@@ -170,25 +163,21 @@ public class Output {
 			f.setAccessible(true);
 			return (Integer) f.get(null);
 		} catch (SecurityException err) {
-			// TODO Auto-generated catch block
-			// err.printStackTrace();
 			logger.error("getKeyCode: Security:" + code);
+			err.printStackTrace();
 			return 0;
 		} catch (NoSuchFieldException err) {
-			// TODO Auto-generated catch block
-			// err.printStackTrace();
 			logger.error("getKeyCode: No Such Field:" + code);
-			// TODO Umlaute und andere Zeichen in Unicode Konvertieren
+			err.printStackTrace();
+			// TODO Daniel Umlaute und andere Zeichen in Unicode Konvertieren
 			return 0;
 		} catch (IllegalArgumentException err) {
-			// TODO Auto-generated catch block
-			// err.printStackTrace();
 			logger.error("getKeyCode: Illegal Argument:" + code);
+			err.printStackTrace();
 			return 0;
 		} catch (IllegalAccessException err) {
-			// TODO Auto-generated catch block
-			// err.printStackTrace();
 			logger.error("getKeyCode: Illegal Access:" + code);
+			err.printStackTrace();
 			return 0;
 		}
 		
