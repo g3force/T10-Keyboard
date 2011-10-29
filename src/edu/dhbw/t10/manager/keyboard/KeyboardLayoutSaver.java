@@ -11,8 +11,8 @@ package edu.dhbw.t10.manager.keyboard;
 
 import java.io.File;
 import java.io.StringWriter;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -28,9 +28,6 @@ import javax.xml.transform.stream.StreamResult;
 import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 
 import edu.dhbw.t10.type.keyboard.DropDownList;
@@ -38,6 +35,7 @@ import edu.dhbw.t10.type.keyboard.KeyboardLayout;
 import edu.dhbw.t10.type.keyboard.key.Button;
 import edu.dhbw.t10.type.keyboard.key.Key;
 import edu.dhbw.t10.type.keyboard.key.ModeButton;
+import edu.dhbw.t10.type.keyboard.key.PhysicalButton;
 
 
 /**
@@ -130,10 +128,33 @@ public class KeyboardLayoutSaver {
 				dropdown.setAttribute("pos_y", dd.getX() + "");
 				layout.appendChild(dropdown);
 			}
-			for (ModeButton modeB : kbdLayout.getModeButtons()) {
+			for (Button button : kbdLayout.getButtons()) {
+				Element buttonEl = doc.createElement("button");
+				setSizeOfPhysicalButton(buttonEl, button);
 
+				Element key = doc.createElement("key");
+				key.setAttribute("modename", "0");
+				text = doc.createTextNode(button.getKey().getId() + "");
+				key.appendChild(text);
+				buttonEl.appendChild(key);
+
+				for (Entry<ModeButton, Key> mode : button.getModes().entrySet()) {
+					Element modeEl = doc.createElement("dropdown");
+					modeEl.setAttribute("modename", mode.getKey().getModeKey().getId() + "");
+					text = doc.createTextNode(mode.getValue().getId() + "");
+					modeEl.appendChild(text);
+					buttonEl.appendChild(modeEl);
+				}
+				layout.appendChild(buttonEl);
 			}
-			ArrayList<Button> keys = new ArrayList<Button>();
+
+			for (ModeButton modeButton : kbdLayout.getModeButtons()) {
+				Element modeButtonEl = doc.createElement("modebutton");
+				setSizeOfPhysicalButton(modeButtonEl, modeButton);
+				text = doc.createTextNode(modeButton.getModeKey().getId() + "");
+				modeButtonEl.appendChild(text);
+				layout.appendChild(modeButtonEl);
+			}
 			
 			// OUTPUT TO FILE
 			TransformerFactory transfac = TransformerFactory.newInstance();
@@ -168,84 +189,15 @@ public class KeyboardLayoutSaver {
 	}
 	
 	
-	/**
-	 * Return Key-Object from given element
-	 * 
-	 * @param eElement must be a <key> node
-	 * @return Key
-	 */
-	private static Button getKey(Element eElement, HashMap<Integer, Key> keymap) {
-		try {
-			NamedNodeMap attr = eElement.getAttributes();
-			Button key = new Button(getIntAttribute(attr, "size_x"), getIntAttribute(attr, "size_y"), getIntAttribute(
-					attr, "pos_x"), getIntAttribute(attr, "pos_y"));
-			
-			// Modes
-			NodeList modes = eElement.getElementsByTagName("mode");
-			for (int i = 0; i < modes.getLength(); i++) {
-				Node item = modes.item(i);
-				if (item != null) {
-					String sModeName = "";
-					String sColor = "";
-					Node modeName = item.getAttributes().getNamedItem("name");
-					Node color = item.getAttributes().getNamedItem("color");
-					if (modeName != null) {
-						sModeName = modeName.getTextContent();
-					}
-					if (color != null) {
-						sColor = color.getTextContent();
-					}
-					// TODO NicolaiO add mode...
-					// key.addMode(sModeName, keymap.get(item.getTextContent()));
-				}
-			}
-			
-			return key;
-		} catch (NullPointerException e) {
-			System.out.println("In getKey:");
-			e.printStackTrace();
-		}
-		return null;
+	private static void setSizeOfPhysicalButton(Element el, PhysicalButton button) {
+		el.setAttribute("size_x", button.getOrigSize().getWidth() + "");
+		el.setAttribute("size_y", button.getOrigSize().getHeight() + "");
+		el.setAttribute("pos_x", button.getPos_x() + "");
+		el.setAttribute("pos_y", button.getPos_y() + "");
 	}
-	
-	
-	/**
-	 * Helper function for receiving an attribute by name
-	 * TODO NicolaiO, add comment!
-	 * 
-	 * @param attr
-	 * @param name
-	 * @return
-	 * @throws NullPointerException
-	 * @author NicolaiO
-	 */
-	private static String getAttribute(NamedNodeMap attr, String name) throws NullPointerException {
-		Node node = attr.getNamedItem(name);
-		if (node != null) {
-			return node.getTextContent();
-		}
-		return "";
-	}
-	
 
-	private static int getIntAttribute(NamedNodeMap attr, String name) throws NullPointerException {
-		try {
-			int value = Integer.parseInt(getAttribute(attr, name));
-			return value;
-		} catch (NumberFormatException e) {
-			return 0;
-		}
-	}
+
 	
-	
-	// private static int getModeFromString(String mode) {
-	// if(mode.equals("default")) {
-	// return null;
-	// }
-	// else {
-	// return new ModeKey(modeKey, size_x, size_y, pos_x, pos_y)
-	// }
-	// }
 	
 
 	// --------------------------------------------------------------------------
