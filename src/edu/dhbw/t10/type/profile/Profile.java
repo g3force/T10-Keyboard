@@ -9,6 +9,8 @@
  */
 package edu.dhbw.t10.type.profile;
 
+import java.io.IOException;
+
 import org.apache.log4j.Logger;
 
 import edu.dhbw.t10.manager.profile.Serializer;
@@ -89,12 +91,20 @@ public class Profile {
 	// --------------------------------------------------------------------------
 	
 	public void loadTree() {
-		tree = Serializer.deserialize(pathToTree);
+		try {
+			tree = Serializer.deserialize(pathToTree);
+		} catch (IOException io) {
+			logger.error("IOException: " + io.toString());
+		}
 	}
 	
 	
 	public void saveTree() {
-		Serializer.serialize(tree, pathToTree);
+		try {
+			Serializer.serialize(tree, pathToTree);
+		} catch (IOException io) {
+			logger.error("IOException: " + io.toString());
+		}
 	}
 
 	// --------------------------------------------------------------------------

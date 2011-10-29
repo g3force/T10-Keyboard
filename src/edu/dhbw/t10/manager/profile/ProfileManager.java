@@ -332,14 +332,23 @@ public class ProfileManager {
 			Profile cProfile = profiles.get(i);
 			if (cProfile.getPathToProfile()==null || cProfile.getPathToProfile().isEmpty())
 				continue;
-			Serializer.serialize(cProfile, cProfile.getPathToProfile());
+			try {
+				Serializer.serialize(cProfile, cProfile.getPathToProfile());
+			} catch (IOException io) {
+				logger.error("IOException: " + io.toString());
+			}
 		}
 	}
-	
+
 	
 	public void getSerializedProfiles() {
-		for (int i = 0; i < profilePath.size(); i++)
-			profiles.add((Profile) Serializer.deserialize(profilePath.get(i)));
+		for (int i = 0; i < profilePath.size(); i++) {
+			try {
+				profiles.add((Profile) Serializer.deserialize(profilePath.get(i)));
+			} catch (IOException io) {
+				logger.error("IOException: " + io.toString());
+			}
+		}
 		if (profiles == null) {
 			profiles = new ArrayList<Profile>();
 		}
