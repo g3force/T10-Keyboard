@@ -12,6 +12,8 @@ package edu.dhbw.t10.manager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import org.apache.log4j.Logger;
+
 import edu.dhbw.t10.manager.output.OutputManager;
 import edu.dhbw.t10.manager.profile.ProfileManager;
 import edu.dhbw.t10.type.keyboard.key.Button;
@@ -32,6 +34,7 @@ public class Controller implements ActionListener {
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
+	private static final Logger	logger	= Logger.getLogger(Controller.class);
 	private static Controller	instance;
 	
 	private String					typedWord;
@@ -45,10 +48,12 @@ public class Controller implements ActionListener {
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
 	private Controller() {
+		logger.debug("initializing...");
 		typedWord = "";
 		suggest = "";
 		profileMan = ProfileManager.getInstance();
 		outputMan = OutputManager.getInstance();
+		logger.debug("initialized.");
 	}
 
 

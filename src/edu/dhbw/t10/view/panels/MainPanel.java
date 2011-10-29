@@ -20,7 +20,7 @@ import org.apache.log4j.Logger;
 import edu.dhbw.t10.manager.profile.ProfileManager;
 import edu.dhbw.t10.type.keyboard.DropDownList;
 import edu.dhbw.t10.type.keyboard.KeyboardLayout;
-import edu.dhbw.t10.type.keyboard.key.Button;
+import edu.dhbw.t10.type.keyboard.key.PhysicalButton;
 
 
 /**
@@ -40,6 +40,7 @@ public class MainPanel extends JPanel implements ComponentListener {
 	private static MainPanel		instance;
 	@SuppressWarnings("unused")
 	private static final Logger	logger				= Logger.getLogger(MainPanel.class);
+	private boolean					initilized			= false;
 	
 
 	// --------------------------------------------------------------------------
@@ -47,16 +48,10 @@ public class MainPanel extends JPanel implements ComponentListener {
 	// --------------------------------------------------------------------------
 	
 	private MainPanel() {
+		logger.debug("Initializing...");
 		this.setLayout(null);
 		this.addComponentListener(this);
-		KeyboardLayout kbd = ProfileManager.getInstance().getKbdLayout();
-		this.setPreferredSize(new Dimension(kbd.getSize_x(), kbd.getSize_y()));
-		for (Button key : kbd.getButtons()) {
-			this.add(key);
-		}
-		for (DropDownList ddl : kbd.getDdls()) {
-			this.add(ddl);
-		}
+		logger.debug("Initializied.");
 	}
 	
 	
@@ -69,6 +64,20 @@ public class MainPanel extends JPanel implements ComponentListener {
 			instance = new MainPanel();
 		}
 		return instance;
+	}
+	
+	
+	public void setKbdLayout(KeyboardLayout kbd) {
+		logger.debug("adding Layout...");
+		this.setPreferredSize(new Dimension(kbd.getSize_x(), kbd.getSize_y()));
+		for (PhysicalButton button : kbd.getAllPhysicalButtons()) {
+			this.add(button);
+		}
+		for (DropDownList ddl : kbd.getDdls()) {
+			this.add(ddl);
+		}
+		initilized = true;
+		logger.debug("Layout added.");
 	}
 
 
@@ -86,7 +95,8 @@ public class MainPanel extends JPanel implements ComponentListener {
 	
 	@Override
 	public void componentResized(ComponentEvent e) {
-		ProfileManager.getInstance().resizeWindow(e.getComponent().getSize());
+		if (initilized)
+			ProfileManager.getInstance().resizeWindow(e.getComponent().getSize());
 	}
 	
 	

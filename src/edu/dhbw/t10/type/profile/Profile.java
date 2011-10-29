@@ -21,6 +21,7 @@ import edu.dhbw.t10.manager.keyboard.KeymapLoader;
 import edu.dhbw.t10.manager.profile.Serializer;
 import edu.dhbw.t10.type.keyboard.KeyboardLayout;
 import edu.dhbw.t10.type.tree.PriorityTree;
+import edu.dhbw.t10.view.panels.MainPanel;
 
 
 /**
@@ -68,6 +69,7 @@ public class Profile implements Serializable {
 		kbdLayout = KeyboardLayoutLoader
 				.load("conf/keyboard_layout_de_default.xml", KeymapLoader.load("conf/keymap.xml"));
 		KeyboardLayoutSaver.save(kbdLayout, "conf/keyboard_output.xml");
+		MainPanel.getInstance().setKbdLayout(kbdLayout);
 	}
 
 	// --------------------------------------------------------------------------
