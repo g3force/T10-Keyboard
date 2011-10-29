@@ -68,15 +68,15 @@ public class KeymapLoader {
 			
 			HashMap<Integer, Key> keymap = new HashMap<Integer, Key>();
 			NodeList keytypes = doc.getElementsByTagName("keytype");
-			// int type = Key.UNKNOWN_KEY;
+			int type = Key.UNKNOWN;
 			for (int i = 0; i < keytypes.getLength(); i++) {
 				NodeList keys = keytypes.item(i).getChildNodes();
 				try {
-					// String stype = keys.item(i).getAttributes().getNamedItem("name").getTextContent();
-					// type = convertType(stype);
+					String stype = keys.item(i).getAttributes().getNamedItem("name").getTextContent();
+					type = convertType(stype);
 				} catch (NullPointerException e) {
 					logger.warn("A keytype could not be read. i=" + i);
-					// type = Key.UNKNOWN_KEY;
+					type = Key.UNKNOWN;
 				}
 				for (int j = 0; j < keys.getLength(); j++) {
 					Node key = keys.item(j);
@@ -85,7 +85,7 @@ public class KeymapLoader {
 							int id = Integer.parseInt(key.getAttributes().getNamedItem("id").getTextContent());
 							String keycode = key.getAttributes().getNamedItem("keycode").getTextContent();
 							String name = key.getTextContent();
-							keymap.put(id, new Key(id, name, keycode));
+							keymap.put(id, new Key(id, name, keycode, type));
 						}
 					} catch (NullPointerException e) {
 						logger.warn("A key in keymap could not be read. j=" + j + " i=" + i);
@@ -112,12 +112,12 @@ public class KeymapLoader {
 	
 	private static int convertType(String stype) {
 		if (stype.equals("control"))
-			return Key.CONTROL_KEY;
+			return Key.CONTROL;
 		else if (stype.equals("char"))
-			return Key.CHAR_KEY;
+			return Key.CHAR;
 		else if (stype.equals("unicode"))
-			return Key.UNICODE_KEY;
-		return Key.UNKNOWN_KEY;
+			return Key.UNICODE;
+		return Key.UNKNOWN;
 	}
 
 	// --------------------------------------------------------------------------

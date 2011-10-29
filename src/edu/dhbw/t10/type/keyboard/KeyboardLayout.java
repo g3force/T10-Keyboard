@@ -46,12 +46,12 @@ public class KeyboardLayout {
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
-	public KeyboardLayout(int size_x, int size_y, float scale) {
+	public KeyboardLayout(int size_x, int size_y, float scalex, float scaley, float scale_font) {
 		this.size_x = size_x;
 		this.size_y = size_y;
-		this.scale_x = scale;
-		this.scale_y = scale;
-		this.scale_font = scale;
+		this.scale_x = scalex;
+		this.scale_y = scaley;
+		this.scale_font = scale_font;
 	}
 	
 

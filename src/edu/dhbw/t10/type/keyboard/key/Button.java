@@ -30,7 +30,6 @@ public class Button extends PhysicalButton {
 	
 	private HashMap<ModeButton, Key>	modes					= new HashMap<ModeButton, Key>();
 	// assigns to every modi
-	private boolean						accept				= false;
 	private ArrayList<ModeButton>		activeModes			= new ArrayList<ModeButton>();
 	
 	
@@ -91,13 +90,6 @@ public class Button extends PhysicalButton {
 		}
 		return output;
 	}
-	
-	
-	public boolean isAccept() {
-		return accept;
-	}
-
-
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
