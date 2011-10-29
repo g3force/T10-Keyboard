@@ -1,9 +1,9 @@
 <layout>
 	<sizex>1010</sizex>
 	<sizey>335</sizey>
-	<scalex>0.8</scalex>
-	<scaley>0.8</scaley>
-	<scale_font>0.8</scale_font>
+	<scalex>1</scalex>
+	<scaley>1</scaley>
+	<scale_font>1</scale_font>
 	<font>
 		<!-- For description, see javadoc of Font-class -->
 		<name></name>
@@ -73,7 +73,7 @@
 		<mode modename="1001">29</mode>
 	</button>
 	<button size_x="50" size_y="50" pos_x="60" pos_y="60">
-		<key >16</key>
+		<key>16</key>
 		<mode modename="1001">30</mode>
 		<mode modename="1007">42</mode>
 	</button>

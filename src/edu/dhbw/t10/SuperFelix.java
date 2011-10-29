@@ -49,21 +49,19 @@ public class SuperFelix {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-
-
 		/*
 		 * initialize log4j, a logger from apache.
 		 * See http://logging.apache.org/log4j/1.2/manual.html for more details
 		 * Log Levels: TRACE, DEBUG, INFO, WARN, ERROR and FATAL
 		 */
 		logger.setLevel(Level.ALL);
-
 		BasicConfigurator.configure();
+
+		logger.debug("calling Controller first time.");
 		Controller.getInstance();
+		logger.debug("calling Presenter first time.");
 		Presenter.getInstance();
 		logger.info("Keyboard started.");
-		
-
 	}
 	
 	// --------------------------------------------------------------------------
