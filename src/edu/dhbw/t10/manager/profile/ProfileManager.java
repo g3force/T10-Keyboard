@@ -328,7 +328,7 @@ public class ProfileManager {
 	public void serializeProfiles() {
 		for (int i = 0; i < profiles.size(); i++) {
 			Profile cProfile = profiles.get(i);
-			if (cProfile.getPathToProfile() == null || cProfile.getPathToProfile().isEmpty())
+			if (cProfile.getPathToProfile()==null || cProfile.getPathToProfile().isEmpty())
 				continue;
 			Serializer.serialize(cProfile, cProfile.getPathToProfile());
 		}
