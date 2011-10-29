@@ -58,7 +58,6 @@ public class ProfileManager {
 	 */
 	private ProfileManager() {
 		logger.debug("initializing...");
-		System.out.println("prof");
 		activeProfileName = "default";
 		profilePath = new ArrayList<String>();
 		readConfig();
@@ -104,6 +103,7 @@ public class ProfileManager {
 			kbdLayout.rescale();
 			MainPanel.getInstance().setPreferredSize(new Dimension(kbdLayout.getSize_x(), kbdLayout.getSize_y()));
 			Presenter.getInstance().pack();
+			logger.debug("Window rescaled");
 		}
 	}
 	

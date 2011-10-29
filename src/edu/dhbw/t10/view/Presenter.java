@@ -36,6 +36,7 @@ public class Presenter extends JFrame {
 	private static final long	serialVersionUID	= 6217926957357225677L;
 	private static Presenter	instance;
 	private JPanel					contentPane;
+	private boolean					initilized			= false;
 
 	
 	// --------------------------------------------------------------------------
@@ -64,6 +65,7 @@ public class Presenter extends JFrame {
 
 		// build GUI
 		pack();
+		initilized = true;
 		logger.debug("Initialized.");
 	}
 	
@@ -77,11 +79,18 @@ public class Presenter extends JFrame {
 		}
 		return instance;
 	}
-	
+
 	
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
-
 	
+	public boolean isInitilized() {
+		return initilized;
+	}
+
+
+	public void setInitilized(boolean initilized) {
+		this.initilized = initilized;
+	}
 }
