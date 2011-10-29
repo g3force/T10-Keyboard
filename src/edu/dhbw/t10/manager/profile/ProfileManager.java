@@ -20,9 +20,6 @@ import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
 
-import edu.dhbw.t10.manager.keyboard.KeyboardLayoutLoader;
-import edu.dhbw.t10.manager.keyboard.KeyboardLayoutSaver;
-import edu.dhbw.t10.manager.keyboard.KeymapLoader;
 import edu.dhbw.t10.type.keyboard.KeyboardLayout;
 import edu.dhbw.t10.type.profile.Profile;
 import edu.dhbw.t10.view.Presenter;
@@ -47,7 +44,6 @@ public class ProfileManager {
 	private ArrayList<String>		profilePath;
 	private Profile					activeProfile;
 	private String						activeProfileName;														// Just for initializing
-	private KeyboardLayout			kbdLayout;
 	private boolean					autoProfileChange	= true;
 	private boolean					autoCompleting		= true;
 	private boolean					treeExpanding		= true;
@@ -61,29 +57,24 @@ public class ProfileManager {
 	 * Constructor as Singleton. This way, we prevent having multiple manager and
 	 */
 	private ProfileManager() {
-		// ....
-		activeProfileName = "";
+		instance = this;
+		System.out.println("prof");
+		activeProfileName = "default";
 		profilePath = new ArrayList<String>();
 		readConfig();
 		getSerializedProfiles();
 		if (profiles.size() == 0) {
-			Profile prof = new Profile(0, "default");
-			prof.saveTree();
-			profiles.add(new Profile());
+			profiles.add(new Profile("default"));
 		}
 		activeProfile = getProfileByName(activeProfileName); // TODO save active profile
 		// ---------------------DUMMY CODE------------------------------
-		Profile prof = new Profile(1, "Pflichteheft");
-		setActive(prof);
-		prof.saveTree();
-		profiles.add(prof);
+		// Profile prof = new Profile("Pflichteheft");
+		// setActive(prof);
+		// prof.saveTree();
+		// profiles.add(prof);
 
 		// -------------------ENDE DUMMY CODE---------------------------
 		serializeProfiles();
-		instance = this;
-		kbdLayout = KeyboardLayoutLoader
-				.load("conf/keyboard_layout_de_default.xml", KeymapLoader.load("conf/keymap.xml"));
-		KeyboardLayoutSaver.save(kbdLayout, "");
 	}
 
 
@@ -96,13 +87,14 @@ public class ProfileManager {
 	 */
 	public static ProfileManager getInstance() {
 		if (instance == null) {
-			instance = new ProfileManager();
+			new ProfileManager();
 		}
 		return instance;
 	}
 	
 
 	public void resizeWindow(Dimension size) {
+		KeyboardLayout kbdLayout = activeProfile.getKbdLayout();
 		if (kbdLayout != null) {
 			float xscale = (float) size.width / (float) kbdLayout.getOrigSize_x();
 			float yscale = (float) size.height / (float) kbdLayout.getOrigSize_y();
@@ -203,8 +195,7 @@ public class ProfileManager {
 	 */
 
 	public Profile create(String profileName, String pathToNewProfile) {
-		Profile newProfile = new Profile();
-		newProfile.setName(profileName);
+		Profile newProfile = new Profile(profileName);
 		profilePath.add(pathToNewProfile);
 		profiles.add(newProfile);
 		if (activeProfile == null) {
@@ -369,7 +360,7 @@ public class ProfileManager {
 	}
 
 	public KeyboardLayout getKbdLayout() {
-		return kbdLayout;
+		return activeProfile.getKbdLayout();
 	}
 	
 	
