@@ -352,6 +352,11 @@ public class ProfileManager {
 			profiles = new ArrayList<Profile>();
 		}
 	}
+	
+	
+	private boolean toogle(boolean tt) {
+		return !tt;
+	}
 
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
@@ -379,6 +384,14 @@ public class ProfileManager {
 	}
 	
 	
+	public void toggleAutoProfileChange() {
+		if (autoProfileChange)
+			autoProfileChange = false;
+		else
+			autoProfileChange = true;
+	}
+
+	
 	public boolean isAutoCompleting() {
 		return autoCompleting;
 	}
@@ -389,6 +402,14 @@ public class ProfileManager {
 	}
 	
 	
+	public void toggleAutoCompleting() {
+		if (autoCompleting)
+			autoCompleting = false;
+		else
+			autoCompleting = true;
+	}
+	
+
 	public boolean isTreeExpanding() {
 		return treeExpanding;
 	}
@@ -398,5 +419,13 @@ public class ProfileManager {
 		this.treeExpanding = treeExpanding;
 	}
 	
+	
+	public void toggleTreeExpanding() {
+		if (treeExpanding)
+			treeExpanding = false;
+		else
+			treeExpanding = true;
+	}
+
 
 }
