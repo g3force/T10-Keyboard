@@ -51,7 +51,7 @@ public class MainPanel extends JPanel implements ComponentListener {
 		this.addComponentListener(this);
 		KeyboardLayout kbd = ProfileManager.getInstance().getKbdLayout();
 		this.setPreferredSize(new Dimension(kbd.getSize_x(), kbd.getSize_y()));
-		for (Button key : kbd.getKeys()) {
+		for (Button key : kbd.getButtons()) {
 			this.add(key);
 		}
 		for (DropDownList ddl : kbd.getDdls()) {
