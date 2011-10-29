@@ -11,7 +11,7 @@ package edu.dhbw.t10.manager.output;
 
 import org.apache.log4j.Logger;
 
-import edu.dhbw.t10.type.keyboard.Key;
+import edu.dhbw.t10.type.keyboard.key.Key;
 
 
 /**
@@ -53,16 +53,21 @@ public class OutputManager {
 			return false;
 		else {
 			for (int i = 0; i < length; i++) {
-				out.printString("\\BACK_SPACE\\", Key.CONTROL_KEY);
+				out.printString("\\BACK_SPACE\\", Key.CONTROL);
 			}
 			return true;
 		}
 	}
 
 
-	public boolean printString(String input) {
-		return out.printString(input);
-	}
+	
+	
+
+	// // TODO printString bentigt ein Argument für den Type!!!!
+	// public boolean printString(String input) {
+	// // TODO Key.UNICODE enterfernen und Type vom function header übernehmen!!!
+	// return out.printString(input, Key.UNICODE);
+	// }
 	
 
 	public boolean mark(int i) {
@@ -72,7 +77,7 @@ public class OutputManager {
 	
 
 	public void unMark() {
-		out.printString("\\RIGHT\\", Key.CONTROL_KEY);
+		out.printString("\\RIGHT\\", Key.CONTROL);
 	}
 
 	
@@ -83,7 +88,7 @@ public class OutputManager {
 	 */
 	public void printSuggest(String newSuggest, String typed) {
 		if (newSuggest.length() > typed.length()) { //
-		out.printString(convertToUnicode(newSuggest.substring(typed.length())));
+			out.printString(convertToUnicode(newSuggest.substring(typed.length())), Key.UNICODE);
 		out.markChar(newSuggest.length() - typed.length());
 		}
 	}
