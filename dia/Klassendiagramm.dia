@@ -2702,19 +2702,19 @@ communication between GUI and controler through observer design pattern#</dia:st
     </dia:object>
     <dia:object type="UML - Class" version="0" id="O15">
       <dia:attribute name="obj_pos">
-        <dia:point val="51.2376,41.3"/>
+        <dia:point val="64.6376,39.5"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="51.1876,41.25;57.1776,48.15"/>
+        <dia:rectangle val="64.5876,39.45;70.5776,43.95"/>
       </dia:attribute>
       <dia:attribute name="elem_corner">
-        <dia:point val="51.2376,41.3"/>
+        <dia:point val="64.6376,39.5"/>
       </dia:attribute>
       <dia:attribute name="elem_width">
         <dia:real val="5.8899999999999997"/>
       </dia:attribute>
       <dia:attribute name="elem_height">
-        <dia:real val="6.8000000000000007"/>
+        <dia:real val="4.4000000000000004"/>
       </dia:attribute>
       <dia:attribute name="name">
         <dia:string>#PhysicalKey#</dia:string>
@@ -2806,76 +2806,7 @@ communication between GUI and controler through observer design pattern#</dia:st
       <dia:attribute name="attributes">
         <dia:composite type="umlattribute">
           <dia:attribute name="name">
-            <dia:string>#accept#</dia:string>
-          </dia:attribute>
-          <dia:attribute name="type">
-            <dia:string>##</dia:string>
-          </dia:attribute>
-          <dia:attribute name="value">
-            <dia:string>##</dia:string>
-          </dia:attribute>
-          <dia:attribute name="comment">
-            <dia:string>##</dia:string>
-          </dia:attribute>
-          <dia:attribute name="visibility">
-            <dia:enum val="0"/>
-          </dia:attribute>
-          <dia:attribute name="abstract">
-            <dia:boolean val="false"/>
-          </dia:attribute>
-          <dia:attribute name="class_scope">
-            <dia:boolean val="false"/>
-          </dia:attribute>
-        </dia:composite>
-        <dia:composite type="umlattribute">
-          <dia:attribute name="name">
-            <dia:string>#activeModes#</dia:string>
-          </dia:attribute>
-          <dia:attribute name="type">
-            <dia:string>##</dia:string>
-          </dia:attribute>
-          <dia:attribute name="value">
-            <dia:string>##</dia:string>
-          </dia:attribute>
-          <dia:attribute name="comment">
-            <dia:string>##</dia:string>
-          </dia:attribute>
-          <dia:attribute name="visibility">
-            <dia:enum val="0"/>
-          </dia:attribute>
-          <dia:attribute name="abstract">
-            <dia:boolean val="false"/>
-          </dia:attribute>
-          <dia:attribute name="class_scope">
-            <dia:boolean val="false"/>
-          </dia:attribute>
-        </dia:composite>
-        <dia:composite type="umlattribute">
-          <dia:attribute name="name">
             <dia:string>#color#</dia:string>
-          </dia:attribute>
-          <dia:attribute name="type">
-            <dia:string>##</dia:string>
-          </dia:attribute>
-          <dia:attribute name="value">
-            <dia:string>##</dia:string>
-          </dia:attribute>
-          <dia:attribute name="comment">
-            <dia:string>##</dia:string>
-          </dia:attribute>
-          <dia:attribute name="visibility">
-            <dia:enum val="0"/>
-          </dia:attribute>
-          <dia:attribute name="abstract">
-            <dia:boolean val="false"/>
-          </dia:attribute>
-          <dia:attribute name="class_scope">
-            <dia:boolean val="false"/>
-          </dia:attribute>
-        </dia:composite>
-        <dia:composite type="umlattribute">
-          <dia:attribute name="name">
-            <dia:string>#modes#</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
             <dia:string>##</dia:string>
@@ -2951,19 +2882,19 @@ communication between GUI and controler through observer design pattern#</dia:st
     </dia:object>
     <dia:object type="UML - Class" version="0" id="O16">
       <dia:attribute name="obj_pos">
-        <dia:point val="51.6626,50.4"/>
+        <dia:point val="48.1126,43.1"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="51.6126,50.35;56.6926,55.65"/>
+        <dia:rectangle val="48.0626,43.05;53.6676,49.15"/>
       </dia:attribute>
       <dia:attribute name="elem_corner">
-        <dia:point val="51.6626,50.4"/>
+        <dia:point val="48.1126,43.1"/>
       </dia:attribute>
       <dia:attribute name="elem_width">
-        <dia:real val="4.9800000000000004"/>
+        <dia:real val="5.5049999999999999"/>
       </dia:attribute>
       <dia:attribute name="elem_height">
-        <dia:real val="5.2000000000000011"/>
+        <dia:real val="6"/>
       </dia:attribute>
       <dia:attribute name="name">
         <dia:string>#SingleKey#</dia:string>
@@ -3128,6 +3059,29 @@ communication between GUI and controler through observer design pattern#</dia:st
           </dia:attribute>
           <dia:attribute name="type">
             <dia:string>##</dia:string>
+          </dia:attribute>
+          <dia:attribute name="value">
+            <dia:string>##</dia:string>
+          </dia:attribute>
+          <dia:attribute name="comment">
+            <dia:string>##</dia:string>
+          </dia:attribute>
+          <dia:attribute name="visibility">
+            <dia:enum val="0"/>
+          </dia:attribute>
+          <dia:attribute name="abstract">
+            <dia:boolean val="false"/>
+          </dia:attribute>
+          <dia:attribute name="class_scope">
+            <dia:boolean val="false"/>
+          </dia:attribute>
+        </dia:composite>
+        <dia:composite type="umlattribute">
+          <dia:attribute name="name">
+            <dia:string>#accept#</dia:string>
+          </dia:attribute>
+          <dia:attribute name="type">
+            <dia:string>#bool#</dia:string>
           </dia:attribute>
           <dia:attribute name="value">
             <dia:string>##</dia:string>
@@ -4451,78 +4405,7 @@ communication between GUI and controler through observer design pattern#</dia:st
         <dia:connection handle="1" to="O20" connection="8"/>
       </dia:connections>
     </dia:object>
-    <dia:object type="UML - Association" version="2" id="O29">
-      <dia:attribute name="name">
-        <dia:string>##</dia:string>
-      </dia:attribute>
-      <dia:attribute name="direction">
-        <dia:enum val="1"/>
-      </dia:attribute>
-      <dia:attribute name="show_direction">
-        <dia:boolean val="false"/>
-      </dia:attribute>
-      <dia:attribute name="assoc_type">
-        <dia:enum val="1"/>
-      </dia:attribute>
-      <dia:attribute name="role_a">
-        <dia:string>##</dia:string>
-      </dia:attribute>
-      <dia:attribute name="multipicity_a">
-        <dia:string>##</dia:string>
-      </dia:attribute>
-      <dia:attribute name="visibility_a">
-        <dia:enum val="3"/>
-      </dia:attribute>
-      <dia:attribute name="show_arrow_a">
-        <dia:boolean val="false"/>
-      </dia:attribute>
-      <dia:attribute name="role_b">
-        <dia:string>##</dia:string>
-      </dia:attribute>
-      <dia:attribute name="multipicity_b">
-        <dia:string>##</dia:string>
-      </dia:attribute>
-      <dia:attribute name="visibility_b">
-        <dia:enum val="3"/>
-      </dia:attribute>
-      <dia:attribute name="show_arrow_b">
-        <dia:boolean val="false"/>
-      </dia:attribute>
-      <dia:attribute name="obj_pos">
-        <dia:point val="54.1826,48.1504"/>
-      </dia:attribute>
-      <dia:attribute name="obj_bb">
-        <dia:rectangle val="53.4326,47.4004;54.9326,51.1497"/>
-      </dia:attribute>
-      <dia:attribute name="meta">
-        <dia:composite type="dict"/>
-      </dia:attribute>
-      <dia:attribute name="orth_points">
-        <dia:point val="54.1826,48.1504"/>
-        <dia:point val="54.1826,49.25"/>
-        <dia:point val="54.1526,49.25"/>
-        <dia:point val="54.1526,50.3497"/>
-      </dia:attribute>
-      <dia:attribute name="orth_orient">
-        <dia:enum val="1"/>
-        <dia:enum val="0"/>
-        <dia:enum val="1"/>
-      </dia:attribute>
-      <dia:attribute name="orth_autoroute">
-        <dia:boolean val="true"/>
-      </dia:attribute>
-      <dia:attribute name="text_colour">
-        <dia:color val="#000000"/>
-      </dia:attribute>
-      <dia:attribute name="line_colour">
-        <dia:color val="#000000"/>
-      </dia:attribute>
-      <dia:connections>
-        <dia:connection handle="0" to="O15" connection="20"/>
-        <dia:connection handle="1" to="O16" connection="16"/>
-      </dia:connections>
-    </dia:object>
-    <dia:object type="UML - Dependency" version="1" id="O30">
+    <dia:object type="UML - Dependency" version="1" id="O29">
       <dia:attribute name="obj_pos">
         <dia:point val="58.1899,22.5"/>
       </dia:attribute>
@@ -4566,7 +4449,7 @@ communication between GUI and controler through observer design pattern#</dia:st
         <dia:connection handle="1" to="O22" connection="10"/>
       </dia:connections>
     </dia:object>
-    <dia:object type="UML - Dependency" version="1" id="O31">
+    <dia:object type="UML - Dependency" version="1" id="O30">
       <dia:attribute name="obj_pos">
         <dia:point val="58.1905,22.5"/>
       </dia:attribute>
@@ -4610,12 +4493,12 @@ communication between GUI and controler through observer design pattern#</dia:st
         <dia:connection handle="1" to="O21" connection="10"/>
       </dia:connections>
     </dia:object>
-    <dia:object type="UML - Dependency" version="1" id="O32">
+    <dia:object type="UML - Dependency" version="1" id="O31">
       <dia:attribute name="obj_pos">
         <dia:point val="82.4476,17.6"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="56.2429,17.55;83.5476,53.45"/>
+        <dia:rectangle val="53.2179,17.55;83.5476,46.55"/>
       </dia:attribute>
       <dia:attribute name="meta">
         <dia:composite type="dict"/>
@@ -4623,8 +4506,8 @@ communication between GUI and controler through observer design pattern#</dia:st
       <dia:attribute name="orth_points">
         <dia:point val="82.4476,17.6"/>
         <dia:point val="83.4476,17.6"/>
-        <dia:point val="83.4476,53"/>
-        <dia:point val="56.6929,53"/>
+        <dia:point val="83.4476,46.1"/>
+        <dia:point val="53.6679,46.1"/>
       </dia:attribute>
       <dia:attribute name="orth_orient">
         <dia:enum val="0"/>
@@ -4651,15 +4534,15 @@ communication between GUI and controler through observer design pattern#</dia:st
       </dia:attribute>
       <dia:connections>
         <dia:connection handle="0" to="O22" connection="4"/>
-        <dia:connection handle="1" to="O16" connection="16"/>
+        <dia:connection handle="1" to="O16" connection="18"/>
       </dia:connections>
     </dia:object>
-    <dia:object type="UML - Dependency" version="1" id="O33">
+    <dia:object type="UML - Dependency" version="1" id="O32">
       <dia:attribute name="obj_pos">
         <dia:point val="72.3276,23.95"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="56.7273,23.9;72.4751,45.15"/>
+        <dia:rectangle val="69.8284,23.9;72.4751,42.15"/>
       </dia:attribute>
       <dia:attribute name="meta">
         <dia:composite type="dict"/>
@@ -4667,8 +4550,8 @@ communication between GUI and controler through observer design pattern#</dia:st
       <dia:attribute name="orth_points">
         <dia:point val="72.3276,23.95"/>
         <dia:point val="72.3751,23.95"/>
-        <dia:point val="72.3751,44.7"/>
-        <dia:point val="57.1773,44.7"/>
+        <dia:point val="72.3751,41.7"/>
+        <dia:point val="70.2784,41.7"/>
       </dia:attribute>
       <dia:attribute name="orth_orient">
         <dia:enum val="0"/>
@@ -4695,24 +4578,24 @@ communication between GUI and controler through observer design pattern#</dia:st
       </dia:attribute>
       <dia:connections>
         <dia:connection handle="0" to="O21" connection="6"/>
-        <dia:connection handle="1" to="O15" connection="20"/>
+        <dia:connection handle="1" to="O15" connection="14"/>
       </dia:connections>
     </dia:object>
-    <dia:object type="UML - Class" version="0" id="O34">
+    <dia:object type="UML - Class" version="0" id="O33">
       <dia:attribute name="obj_pos">
-        <dia:point val="46.4896,31.92"/>
+        <dia:point val="45.0396,31.92"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="46.4396,31.87;50.1046,34.17"/>
+        <dia:rectangle val="44.9896,31.87;50.2096,35.57"/>
       </dia:attribute>
       <dia:attribute name="elem_corner">
-        <dia:point val="46.4896,31.92"/>
+        <dia:point val="45.0396,31.92"/>
       </dia:attribute>
       <dia:attribute name="elem_width">
-        <dia:real val="3.5649999999999999"/>
+        <dia:real val="5.1200000000000001"/>
       </dia:attribute>
       <dia:attribute name="elem_height">
-        <dia:real val="2.1999999999999997"/>
+        <dia:real val="3.6000000000000001"/>
       </dia:attribute>
       <dia:attribute name="name">
         <dia:string>#Button#</dia:string>
@@ -4801,19 +4684,66 @@ communication between GUI and controler through observer design pattern#</dia:st
       <dia:attribute name="comment_font_height">
         <dia:real val="0.69999999999999996"/>
       </dia:attribute>
-      <dia:attribute name="attributes"/>
+      <dia:attribute name="attributes">
+        <dia:composite type="umlattribute">
+          <dia:attribute name="name">
+            <dia:string>#activeModes#</dia:string>
+          </dia:attribute>
+          <dia:attribute name="type">
+            <dia:string>##</dia:string>
+          </dia:attribute>
+          <dia:attribute name="value">
+            <dia:string>##</dia:string>
+          </dia:attribute>
+          <dia:attribute name="comment">
+            <dia:string>##</dia:string>
+          </dia:attribute>
+          <dia:attribute name="visibility">
+            <dia:enum val="0"/>
+          </dia:attribute>
+          <dia:attribute name="abstract">
+            <dia:boolean val="false"/>
+          </dia:attribute>
+          <dia:attribute name="class_scope">
+            <dia:boolean val="false"/>
+          </dia:attribute>
+        </dia:composite>
+        <dia:composite type="umlattribute">
+          <dia:attribute name="name">
+            <dia:string>#modes#</dia:string>
+          </dia:attribute>
+          <dia:attribute name="type">
+            <dia:string>##</dia:string>
+          </dia:attribute>
+          <dia:attribute name="value">
+            <dia:string>##</dia:string>
+          </dia:attribute>
+          <dia:attribute name="comment">
+            <dia:string>##</dia:string>
+          </dia:attribute>
+          <dia:attribute name="visibility">
+            <dia:enum val="0"/>
+          </dia:attribute>
+          <dia:attribute name="abstract">
+            <dia:boolean val="false"/>
+          </dia:attribute>
+          <dia:attribute name="class_scope">
+            <dia:boolean val="false"/>
+          </dia:attribute>
+        </dia:composite>
+      </dia:attribute>
       <dia:attribute name="operations"/>
       <dia:attribute name="template">
         <dia:boolean val="false"/>
       </dia:attribute>
       <dia:attribute name="templates"/>
     </dia:object>
-    <dia:object type="UML - Class" version="0" id="O35">
+    <dia:object type="UML - Class" version="0" id="O34">
       <dia:attribute name="obj_pos">
         <dia:point val="50.5396,31.97"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="50.4896,31.92;56.6146,34.22"/>
+        <dia:rectangle val="50.4896,31.92;56.6146,34.82"/>
       </dia:attribute>
       <dia:attribute name="elem_corner">
         <dia:point val="50.5396,31.97"/>
@@ -4822,7 +4752,7 @@ communication between GUI and controler through observer design pattern#</dia:st
         <dia:real val="6.0250000000000004"/>
       </dia:attribute>
       <dia:attribute name="elem_height">
-        <dia:real val="2.1999999999999997"/>
+        <dia:real val="2.7999999999999998"/>
       </dia:attribute>
       <dia:attribute name="name">
         <dia:string>#ModeButton#</dia:string>
@@ -4911,14 +4841,38 @@ communication between GUI and controler through observer design pattern#</dia:st
       <dia:attribute name="comment_font_height">
         <dia:real val="0.69999999999999996"/>
       </dia:attribute>
-      <dia:attribute name="attributes"/>
+      <dia:attribute name="attributes">
+        <dia:composite type="umlattribute">
+          <dia:attribute name="name">
+            <dia:string>#key#</dia:string>
+          </dia:attribute>
+          <dia:attribute name="type">
+            <dia:string>##</dia:string>
+          </dia:attribute>
+          <dia:attribute name="value">
+            <dia:string>##</dia:string>
+          </dia:attribute>
+          <dia:attribute name="comment">
+            <dia:string>##</dia:string>
+          </dia:attribute>
+          <dia:attribute name="visibility">
+            <dia:enum val="0"/>
+          </dia:attribute>
+          <dia:attribute name="abstract">
+            <dia:boolean val="false"/>
+          </dia:attribute>
+          <dia:attribute name="class_scope">
+            <dia:boolean val="false"/>
+          </dia:attribute>
+        </dia:composite>
+      </dia:attribute>
       <dia:attribute name="operations"/>
       <dia:attribute name="template">
         <dia:boolean val="false"/>
       </dia:attribute>
       <dia:attribute name="templates"/>
     </dia:object>
-    <dia:object type="UML - Class" version="0" id="O36">
+    <dia:object type="UML - Class" version="0" id="O35">
       <dia:attribute name="obj_pos">
         <dia:point val="57.3146,31.94"/>
       </dia:attribute>
@@ -5028,6 +4982,77 @@ communication between GUI and controler through observer design pattern#</dia:st
       </dia:attribute>
       <dia:attribute name="templates"/>
     </dia:object>
+    <dia:object type="UML - Association" version="2" id="O36">
+      <dia:attribute name="name">
+        <dia:string>##</dia:string>
+      </dia:attribute>
+      <dia:attribute name="direction">
+        <dia:enum val="1"/>
+      </dia:attribute>
+      <dia:attribute name="show_direction">
+        <dia:boolean val="false"/>
+      </dia:attribute>
+      <dia:attribute name="assoc_type">
+        <dia:enum val="1"/>
+      </dia:attribute>
+      <dia:attribute name="role_a">
+        <dia:string>##</dia:string>
+      </dia:attribute>
+      <dia:attribute name="multipicity_a">
+        <dia:string>##</dia:string>
+      </dia:attribute>
+      <dia:attribute name="visibility_a">
+        <dia:enum val="3"/>
+      </dia:attribute>
+      <dia:attribute name="show_arrow_a">
+        <dia:boolean val="false"/>
+      </dia:attribute>
+      <dia:attribute name="role_b">
+        <dia:string>##</dia:string>
+      </dia:attribute>
+      <dia:attribute name="multipicity_b">
+        <dia:string>##</dia:string>
+      </dia:attribute>
+      <dia:attribute name="visibility_b">
+        <dia:enum val="3"/>
+      </dia:attribute>
+      <dia:attribute name="show_arrow_b">
+        <dia:boolean val="false"/>
+      </dia:attribute>
+      <dia:attribute name="obj_pos">
+        <dia:point val="52.3826,26.9003"/>
+      </dia:attribute>
+      <dia:attribute name="obj_bb">
+        <dia:rectangle val="47.5496,26.1503;53.1326,32.6695"/>
+      </dia:attribute>
+      <dia:attribute name="meta">
+        <dia:composite type="dict"/>
+      </dia:attribute>
+      <dia:attribute name="orth_points">
+        <dia:point val="52.3826,26.9003"/>
+        <dia:point val="52.3826,29.3849"/>
+        <dia:point val="47.5996,29.3849"/>
+        <dia:point val="47.5996,31.8695"/>
+      </dia:attribute>
+      <dia:attribute name="orth_orient">
+        <dia:enum val="1"/>
+        <dia:enum val="0"/>
+        <dia:enum val="1"/>
+      </dia:attribute>
+      <dia:attribute name="orth_autoroute">
+        <dia:boolean val="true"/>
+      </dia:attribute>
+      <dia:attribute name="text_colour">
+        <dia:color val="#000000"/>
+      </dia:attribute>
+      <dia:attribute name="line_colour">
+        <dia:color val="#000000"/>
+      </dia:attribute>
+      <dia:connections>
+        <dia:connection handle="0" to="O19" connection="20"/>
+        <dia:connection handle="1" to="O33" connection="12"/>
+      </dia:connections>
+    </dia:object>
     <dia:object type="UML - Association" version="2" id="O37">
       <dia:attribute name="name">
         <dia:string>##</dia:string>
@@ -5069,16 +5094,16 @@ communication between GUI and controler through observer design pattern#</dia:st
         <dia:point val="52.3826,26.9003"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="48.2221,26.1503;53.1326,33.4697"/>
+        <dia:rectangle val="51.6326,26.1503;53.7521,32.7196"/>
       </dia:attribute>
       <dia:attribute name="meta">
         <dia:composite type="dict"/>
       </dia:attribute>
       <dia:attribute name="orth_points">
         <dia:point val="52.3826,26.9003"/>
-        <dia:point val="52.3826,29.385"/>
-        <dia:point val="48.2721,29.385"/>
-        <dia:point val="48.2721,31.8697"/>
+        <dia:point val="52.3826,29.41"/>
+        <dia:point val="53.5521,29.41"/>
+        <dia:point val="53.5521,31.9196"/>
       </dia:attribute>
       <dia:attribute name="orth_orient">
         <dia:enum val="1"/>
@@ -5096,7 +5121,7 @@ communication between GUI and controler through observer design pattern#</dia:st
       </dia:attribute>
       <dia:connections>
         <dia:connection handle="0" to="O19" connection="20"/>
-        <dia:connection handle="1" to="O34" connection="8"/>
+        <dia:connection handle="1" to="O34" connection="10"/>
       </dia:connections>
     </dia:object>
     <dia:object type="UML - Association" version="2" id="O38">
@@ -5140,16 +5165,16 @@ communication between GUI and controler through observer design pattern#</dia:st
         <dia:point val="52.3826,26.9003"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="51.6326,26.1503;53.7521,33.5197"/>
+        <dia:rectangle val="51.6326,26.1503;60.4421,32.6897"/>
       </dia:attribute>
       <dia:attribute name="meta">
         <dia:composite type="dict"/>
       </dia:attribute>
       <dia:attribute name="orth_points">
         <dia:point val="52.3826,26.9003"/>
-        <dia:point val="52.3826,29.41"/>
-        <dia:point val="53.5521,29.41"/>
-        <dia:point val="53.5521,31.9197"/>
+        <dia:point val="52.3826,29.395"/>
+        <dia:point val="60.2421,29.395"/>
+        <dia:point val="60.2421,31.8897"/>
       </dia:attribute>
       <dia:attribute name="orth_orient">
         <dia:enum val="1"/>
@@ -5170,7 +5195,130 @@ communication between GUI and controler through observer design pattern#</dia:st
         <dia:connection handle="1" to="O35" connection="8"/>
       </dia:connections>
     </dia:object>
-    <dia:object type="UML - Association" version="2" id="O39">
+    <dia:object type="UML - Generalization" version="1" id="O39">
+      <dia:attribute name="obj_pos">
+        <dia:point val="67.5826,39.4497"/>
+      </dia:attribute>
+      <dia:attribute name="obj_bb">
+        <dia:rectangle val="47.5496,35.5205;68.4326,39.4997"/>
+      </dia:attribute>
+      <dia:attribute name="meta">
+        <dia:composite type="dict"/>
+      </dia:attribute>
+      <dia:attribute name="orth_points">
+        <dia:point val="67.5826,39.4497"/>
+        <dia:point val="67.5826,37.5101"/>
+        <dia:point val="47.5996,37.5101"/>
+        <dia:point val="47.5996,35.5705"/>
+      </dia:attribute>
+      <dia:attribute name="orth_orient">
+        <dia:enum val="1"/>
+        <dia:enum val="0"/>
+        <dia:enum val="1"/>
+      </dia:attribute>
+      <dia:attribute name="orth_autoroute">
+        <dia:boolean val="true"/>
+      </dia:attribute>
+      <dia:attribute name="text_colour">
+        <dia:color val="#000000"/>
+      </dia:attribute>
+      <dia:attribute name="line_colour">
+        <dia:color val="#000000"/>
+      </dia:attribute>
+      <dia:attribute name="name">
+        <dia:string>##</dia:string>
+      </dia:attribute>
+      <dia:attribute name="stereotype">
+        <dia:string>##</dia:string>
+      </dia:attribute>
+      <dia:connections>
+        <dia:connection handle="0" to="O15" connection="14"/>
+        <dia:connection handle="1" to="O33" connection="12"/>
+      </dia:connections>
+    </dia:object>
+    <dia:object type="UML - Generalization" version="1" id="O40">
+      <dia:attribute name="obj_pos">
+        <dia:point val="67.5826,39.4497"/>
+      </dia:attribute>
+      <dia:attribute name="obj_bb">
+        <dia:rectangle val="53.5021,34.7704;68.4326,39.4997"/>
+      </dia:attribute>
+      <dia:attribute name="meta">
+        <dia:composite type="dict"/>
+      </dia:attribute>
+      <dia:attribute name="orth_points">
+        <dia:point val="67.5826,39.4497"/>
+        <dia:point val="67.5826,37.135"/>
+        <dia:point val="53.5521,37.135"/>
+        <dia:point val="53.5521,34.8204"/>
+      </dia:attribute>
+      <dia:attribute name="orth_orient">
+        <dia:enum val="1"/>
+        <dia:enum val="0"/>
+        <dia:enum val="1"/>
+      </dia:attribute>
+      <dia:attribute name="orth_autoroute">
+        <dia:boolean val="true"/>
+      </dia:attribute>
+      <dia:attribute name="text_colour">
+        <dia:color val="#000000"/>
+      </dia:attribute>
+      <dia:attribute name="line_colour">
+        <dia:color val="#000000"/>
+      </dia:attribute>
+      <dia:attribute name="name">
+        <dia:string>##</dia:string>
+      </dia:attribute>
+      <dia:attribute name="stereotype">
+        <dia:string>##</dia:string>
+      </dia:attribute>
+      <dia:connections>
+        <dia:connection handle="0" to="O15" connection="14"/>
+        <dia:connection handle="1" to="O34" connection="10"/>
+      </dia:connections>
+    </dia:object>
+    <dia:object type="UML - Generalization" version="1" id="O41">
+      <dia:attribute name="obj_pos">
+        <dia:point val="67.5826,39.4497"/>
+      </dia:attribute>
+      <dia:attribute name="obj_bb">
+        <dia:rectangle val="60.1921,34.1403;68.4326,39.4997"/>
+      </dia:attribute>
+      <dia:attribute name="meta">
+        <dia:composite type="dict"/>
+      </dia:attribute>
+      <dia:attribute name="orth_points">
+        <dia:point val="67.5826,39.4497"/>
+        <dia:point val="67.5826,36.82"/>
+        <dia:point val="60.2421,36.82"/>
+        <dia:point val="60.2421,34.1903"/>
+      </dia:attribute>
+      <dia:attribute name="orth_orient">
+        <dia:enum val="1"/>
+        <dia:enum val="0"/>
+        <dia:enum val="1"/>
+      </dia:attribute>
+      <dia:attribute name="orth_autoroute">
+        <dia:boolean val="true"/>
+      </dia:attribute>
+      <dia:attribute name="text_colour">
+        <dia:color val="#000000"/>
+      </dia:attribute>
+      <dia:attribute name="line_colour">
+        <dia:color val="#000000"/>
+      </dia:attribute>
+      <dia:attribute name="name">
+        <dia:string>##</dia:string>
+      </dia:attribute>
+      <dia:attribute name="stereotype">
+        <dia:string>##</dia:string>
+      </dia:attribute>
+      <dia:connections>
+        <dia:connection handle="0" to="O15" connection="14"/>
+        <dia:connection handle="1" to="O35" connection="8"/>
+      </dia:connections>
+    </dia:object>
+    <dia:object type="UML - Association" version="2" id="O42">
       <dia:attribute name="name">
         <dia:string>##</dia:string>
       </dia:attribute>
@@ -5208,19 +5356,19 @@ communication between GUI and controler through observer design pattern#</dia:st
         <dia:boolean val="false"/>
       </dia:attribute>
       <dia:attribute name="obj_pos">
-        <dia:point val="52.3826,26.9003"/>
+        <dia:point val="47.5996,35.5705"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="51.6326,26.1503;60.4421,33.4897"/>
+        <dia:rectangle val="46.8496,34.8205;51.0651,44.6496"/>
       </dia:attribute>
       <dia:attribute name="meta">
         <dia:composite type="dict"/>
       </dia:attribute>
       <dia:attribute name="orth_points">
-        <dia:point val="52.3826,26.9003"/>
-        <dia:point val="52.3826,29.395"/>
-        <dia:point val="60.2421,29.395"/>
-        <dia:point val="60.2421,31.8897"/>
+        <dia:point val="47.5996,35.5705"/>
+        <dia:point val="47.5996,39.31"/>
+        <dia:point val="50.8651,39.31"/>
+        <dia:point val="50.8651,43.0496"/>
       </dia:attribute>
       <dia:attribute name="orth_orient">
         <dia:enum val="1"/>
@@ -5237,66 +5385,61 @@ communication between GUI and controler through observer design pattern#</dia:st
         <dia:color val="#000000"/>
       </dia:attribute>
       <dia:connections>
-        <dia:connection handle="0" to="O19" connection="20"/>
-        <dia:connection handle="1" to="O36" connection="8"/>
+        <dia:connection handle="0" to="O33" connection="12"/>
+        <dia:connection handle="1" to="O16" connection="18"/>
       </dia:connections>
     </dia:object>
-    <dia:object type="UML - Generalization" version="1" id="O40">
-      <dia:attribute name="obj_pos">
-        <dia:point val="48.2721,34.12"/>
+    <dia:object type="UML - Association" version="2" id="O43">
+      <dia:attribute name="name">
+        <dia:string>##</dia:string>
       </dia:attribute>
-      <dia:attribute name="obj_bb">
-        <dia:rectangle val="47.4221,34.07;54.2326,41.3004"/>
-      </dia:attribute>
-      <dia:attribute name="meta">
-        <dia:composite type="dict"/>
-      </dia:attribute>
-      <dia:attribute name="orth_points">
-        <dia:point val="48.2721,34.12"/>
-        <dia:point val="48.2721,37.7"/>
-        <dia:point val="54.1826,37.7"/>
-        <dia:point val="54.1826,41.2504"/>
-      </dia:attribute>
-      <dia:attribute name="orth_orient">
-        <dia:enum val="1"/>
-        <dia:enum val="0"/>
+      <dia:attribute name="direction">
         <dia:enum val="1"/>
       </dia:attribute>
-      <dia:attribute name="orth_autoroute">
+      <dia:attribute name="show_direction">
         <dia:boolean val="false"/>
       </dia:attribute>
-      <dia:attribute name="text_colour">
-        <dia:color val="#000000"/>
+      <dia:attribute name="assoc_type">
+        <dia:enum val="1"/>
       </dia:attribute>
-      <dia:attribute name="line_colour">
-        <dia:color val="#000000"/>
-      </dia:attribute>
-      <dia:attribute name="name">
+      <dia:attribute name="role_a">
         <dia:string>##</dia:string>
       </dia:attribute>
-      <dia:attribute name="stereotype">
+      <dia:attribute name="multipicity_a">
         <dia:string>##</dia:string>
       </dia:attribute>
-      <dia:connections>
-        <dia:connection handle="0" to="O34" connection="6"/>
-        <dia:connection handle="1" to="O15" connection="20"/>
-      </dia:connections>
-    </dia:object>
-    <dia:object type="UML - Generalization" version="1" id="O41">
+      <dia:attribute name="visibility_a">
+        <dia:enum val="3"/>
+      </dia:attribute>
+      <dia:attribute name="show_arrow_a">
+        <dia:boolean val="false"/>
+      </dia:attribute>
+      <dia:attribute name="role_b">
+        <dia:string>##</dia:string>
+      </dia:attribute>
+      <dia:attribute name="multipicity_b">
+        <dia:string>##</dia:string>
+      </dia:attribute>
+      <dia:attribute name="visibility_b">
+        <dia:enum val="3"/>
+      </dia:attribute>
+      <dia:attribute name="show_arrow_b">
+        <dia:boolean val="false"/>
+      </dia:attribute>
       <dia:attribute name="obj_pos">
-        <dia:point val="53.5521,34.2203"/>
+        <dia:point val="53.5521,34.8204"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="52.7021,34.1703;54.4021,41.2996"/>
+        <dia:rectangle val="50.8151,34.0704;54.3021,44.6496"/>
       </dia:attribute>
       <dia:attribute name="meta">
         <dia:composite type="dict"/>
       </dia:attribute>
       <dia:attribute name="orth_points">
-        <dia:point val="53.5521,34.2203"/>
-        <dia:point val="53.5521,37.7349"/>
-        <dia:point val="54.1826,37.7349"/>
-        <dia:point val="54.1826,41.2496"/>
+        <dia:point val="53.5521,34.8204"/>
+        <dia:point val="53.5521,38.935"/>
+        <dia:point val="50.8651,38.935"/>
+        <dia:point val="50.8651,43.0496"/>
       </dia:attribute>
       <dia:attribute name="orth_orient">
         <dia:enum val="1"/>
@@ -5312,56 +5455,9 @@ communication between GUI and controler through observer design pattern#</dia:st
       <dia:attribute name="line_colour">
         <dia:color val="#000000"/>
       </dia:attribute>
-      <dia:attribute name="name">
-        <dia:string>##</dia:string>
-      </dia:attribute>
-      <dia:attribute name="stereotype">
-        <dia:string>##</dia:string>
-      </dia:attribute>
       <dia:connections>
-        <dia:connection handle="0" to="O35" connection="8"/>
-        <dia:connection handle="1" to="O15" connection="20"/>
-      </dia:connections>
-    </dia:object>
-    <dia:object type="UML - Generalization" version="1" id="O42">
-      <dia:attribute name="obj_pos">
-        <dia:point val="60.2421,34.1903"/>
-      </dia:attribute>
-      <dia:attribute name="obj_bb">
-        <dia:rectangle val="54.1326,34.1403;61.0921,41.2996"/>
-      </dia:attribute>
-      <dia:attribute name="meta">
-        <dia:composite type="dict"/>
-      </dia:attribute>
-      <dia:attribute name="orth_points">
-        <dia:point val="60.2421,34.1903"/>
-        <dia:point val="60.2421,37.7199"/>
-        <dia:point val="54.1826,37.7199"/>
-        <dia:point val="54.1826,41.2496"/>
-      </dia:attribute>
-      <dia:attribute name="orth_orient">
-        <dia:enum val="1"/>
-        <dia:enum val="0"/>
-        <dia:enum val="1"/>
-      </dia:attribute>
-      <dia:attribute name="orth_autoroute">
-        <dia:boolean val="true"/>
-      </dia:attribute>
-      <dia:attribute name="text_colour">
-        <dia:color val="#000000"/>
-      </dia:attribute>
-      <dia:attribute name="line_colour">
-        <dia:color val="#000000"/>
-      </dia:attribute>
-      <dia:attribute name="name">
-        <dia:string>##</dia:string>
-      </dia:attribute>
-      <dia:attribute name="stereotype">
-        <dia:string>##</dia:string>
-      </dia:attribute>
-      <dia:connections>
-        <dia:connection handle="0" to="O36" connection="8"/>
-        <dia:connection handle="1" to="O15" connection="20"/>
+        <dia:connection handle="0" to="O34" connection="10"/>
+        <dia:connection handle="1" to="O16" connection="18"/>
       </dia:connections>
     </dia:object>
   </dia:layer>
