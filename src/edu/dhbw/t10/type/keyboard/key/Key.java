@@ -30,6 +30,7 @@ public class Key {
 	private String					keycode	= "";
 	private String					name		= "";
 	private int						type		= 0;
+	private boolean			accept	= false;
 
 
 	// the name appearing on the button in the screen keyboard
@@ -90,6 +91,16 @@ public class Key {
 	
 	public void setType(int type) {
 		this.type = type;
+	}
+
+	
+	public boolean isAccept() {
+		return accept;
+	}
+	
+	
+	public void setAccept(boolean accept) {
+		this.accept = accept;
 	}
 
 
