@@ -25,6 +25,7 @@ public class Key {
 	private String				keycode		= "";
 	private String				name			= "";
 	private int		type		= 0;
+	private boolean			accept	= false;
 	public static final int	CONTROL	= 0;
 	public static final int	UNICODE	= 0;
 	public static final int	CHAR		= 0;
@@ -85,6 +86,16 @@ public class Key {
 	
 	public void setType(int type) {
 		this.type = type;
+	}
+
+	
+	public boolean isAccept() {
+		return accept;
+	}
+	
+	
+	public void setAccept(boolean accept) {
+		this.accept = accept;
 	}
 
 
