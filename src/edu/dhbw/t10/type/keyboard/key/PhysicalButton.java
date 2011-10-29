@@ -25,7 +25,7 @@ import javax.swing.JButton;
  * @author dirk
  * 
  */
-public class PhysicalButton extends JButton {
+public abstract class PhysicalButton extends JButton {
 	/**  */
 	private static final long	serialVersionUID	= -5515131562102664028L;
 	// --------------------------------------------------------------------------
@@ -34,7 +34,6 @@ public class PhysicalButton extends JButton {
 	private int						pos_x					= 0;
 	private int						pos_y					= 0;
 	private Dimension				origSize				= new Dimension(10, 10);
-	private String					color					= "";
 
 	
 	// --------------------------------------------------------------------------
@@ -88,11 +87,6 @@ public class PhysicalButton extends JButton {
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
-	
-	
-	public String getColor() {
-		return color;
-	}
 	
 	
 	public int getPos_x() {
