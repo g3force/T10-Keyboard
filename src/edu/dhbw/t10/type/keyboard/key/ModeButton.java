@@ -10,9 +10,7 @@
 package edu.dhbw.t10.type.keyboard.key;
 
 /**
- * TODO dirk, add comment!
- * - What should this type do (in one sentence)?
- * - If not intuitive: A simple example how to use this class
+ * button for the different modes like shift, strg pressed
  * 
  * @author dirk
  * 

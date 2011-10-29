@@ -18,9 +18,9 @@ import javax.swing.JButton;
 
 
 /**
- * TODO dirk, add comment!
- * - What should this type do (in one sentence)?
- * - If not intuitive: A simple example how to use this class
+ * this ist he PhysicalButton visible on the screen
+ * extends JButton and consists position and such stuff
+ * is never created itself, only extended
  * 
  * @author dirk
  * 

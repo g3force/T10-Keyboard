@@ -36,6 +36,9 @@ public class ProfileManager {
 	private ArrayList<Profile>		profiles;
 	private Profile					activeProfile;
 	private KeyboardLayout			kbdLayout;
+	private boolean					autoProfileChange	= true;
+	private boolean					autoCompleting		= true;
+	private boolean					treeExpanding		= true;
 
 
 	// --------------------------------------------------------------------------
@@ -187,7 +190,11 @@ public class ProfileManager {
 	 * @return
 	 */
 	public String getWordSuggest(String givenChars) {
-		return getActive().getTree().getSuggest(givenChars);
+		if (autoCompleting) {
+			return getActive().getTree().getSuggest(givenChars);
+		} else {
+			return givenChars;
+		}
 	}
 	
 	
@@ -199,7 +206,8 @@ public class ProfileManager {
 	 * @param word
 	 */
 	public void acceptWord(String word) {
-		getActive().getTree().insert(word);
+		if (treeExpanding)
+			getActive().getTree().insert(word);
 	}
 
 	
@@ -234,6 +242,36 @@ public class ProfileManager {
 
 	public KeyboardLayout getKbdLayout() {
 		return kbdLayout;
+	}
+	
+	
+	public boolean isAutoProfileChange() {
+		return autoProfileChange;
+	}
+	
+	
+	public void setAutoProfileChange(boolean autoProfileChange) {
+		this.autoProfileChange = autoProfileChange;
+	}
+	
+	
+	public boolean isAutoCompleting() {
+		return autoCompleting;
+	}
+	
+	
+	public void setAutoCompleting(boolean autoCompleting) {
+		this.autoCompleting = autoCompleting;
+	}
+	
+	
+	public boolean isTreeExpanding() {
+		return treeExpanding;
+	}
+	
+	
+	public void setTreeExpanding(boolean treeExpanding) {
+		this.treeExpanding = treeExpanding;
 	}
 	
 
