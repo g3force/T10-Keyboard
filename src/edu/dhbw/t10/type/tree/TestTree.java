@@ -55,7 +55,7 @@ public class TestTree {
 		ImportExportManager.exportToFile(tree.exportToHashMap(), "/home/dirk/Desktop/dict");
 		// System.out.println("finished");
 		// System.out.println("1");
-		Profile prof = new Profile(1, "Pflichteheft", "/home/dirk/Desktop/PFL", tree);
+		Profile prof = new Profile("Pflichteheft");
 		// System.out.println("2");
 		prof.saveTree();
 		prof.setTree(new PriorityTree());
