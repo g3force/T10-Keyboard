@@ -24,15 +24,20 @@ public class Key {
 	private int					id				= 0;
 	private String				keycode		= "";
 	private String				name			= "";
+	private int		type		= 0;
+	private static final int	CONTROL	= 0;
+	private static final int	UNICODE	= 0;
+	private static final int	CHAR		= 0;
 	// the name appearing on the button in the screen keyboard
 	
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
-	public Key(int id, String name, String keycode) {
+	public Key(int id, String name, String keycode, int type) {
 		this.id = id;
 		this.name = name;
 		this.keycode = keycode;
+		this.type = type;
 	}
 	
 	// --------------------------------------------------------------------------
@@ -70,6 +75,16 @@ public class Key {
 	
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	
+	public int getType() {
+		return type;
+	}
+	
+	
+	public void setType(int type) {
+		this.type = type;
 	}
 
 
