@@ -63,7 +63,9 @@ public class Controller implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		Key key = (Key) e.getSource();
+		if(e.getSource() instanceof Button){
+			Button key = (Button) e.getSource();
+		}
 
 		if (key.isAccept()) {
 			if (suggest.length() > typedWord.length())
@@ -77,9 +79,9 @@ public class Controller implements ActionListener {
 			typedWord = typedWord + key.getText();
 			suggest = profileMan.getWordSuggest(typedWord);
 			outputMan.printSuggest(suggest, typedWord);
-		} else if (key.getType() == Key.UNICODE_KEY) {
+		} else if (key.getType() == Key.UNICODE) {
 			outputMan.printChar(key);
-		} else if (key.getText() == "\\BACK_SPACE\\") {
+		} else if (key.getName() == "\\BACK_SPACE\\") {
 			if (typedWord.length() > 0) {
 				typedWord = typedWord.substring(0, typedWord.length() - 2);
 				outputMan.deleteChar(2); // Zwei, weil einmal muss die aktuelle Markierung gelöscht werden und
@@ -89,15 +91,15 @@ public class Controller implements ActionListener {
 			} else {
 				outputMan.deleteChar(1);
 			}
-		} else if ((key.getText() == "\\SPACE\\" || key.getText() == "\\ENTER\\")) {
+		} else if ((key.getName() == "\\SPACE\\" || key.getName() == "\\ENTER\\")) {
 			outputMan.printChar(key);
 			typedWord = "";
 			suggest = "";
-		} else if (key.getType() == Key.CONTROL_KEY) {
+		} else if (key.getType() == Key.CONTROL) {
 			outputMan.printChar(key);
-			if (key.getText() == "\\DELETE\\")
+			if (key.getName() == "\\DELETE\\")
 				suggest = typedWord;
-		} else if (key.getType() == Key.MUTE_KEY) {
+		} else if (key.getType() == Key.MUTE) {
 			// TODO Do something for mute
 		}
 	}
