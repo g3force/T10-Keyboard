@@ -98,8 +98,14 @@ public class KeyboardLayoutLoader {
 		
 		// ########################## read ModeButtons ########################
 		HashMap<Integer, ModeButton> modeButtons = new HashMap<Integer, ModeButton>();
+		ArrayList<ModeButton> modeButtonArray = new ArrayList<ModeButton>();
+		for (ModeButton b : modeButtons.values()) {
+			modeButtonArray.add(b);
+		}
+		kbdLayout.setModeButtons(modeButtonArray);
 		// ########################## read Buttons ############################
 		ArrayList<Button> buttons = getButtons(doc, modeButtons);
+		kbdLayout.setButtons(buttons);
 		// ########################## read MuteButtons ###########################
 		
 		
@@ -191,15 +197,15 @@ public class KeyboardLayoutLoader {
 		
 		// loop through buttons
 		for (int temp = 0; temp < nList.getLength(); temp++) {
-			Node nNode = nList.item(temp);
-
-			if (nNode.getNodeType() != Node.ELEMENT_NODE) {
-				logger.warn("key-node is not an element-node");
-				continue;
-			}
-			Element eElement = (Element) nNode;
-			
 			try {
+				Node nNode = nList.item(temp);
+				
+				if (nNode.getNodeType() != Node.ELEMENT_NODE) {
+					logger.warn("key-node is not an element-node");
+					continue;
+				}
+
+				Element eElement = (Element) nNode;
 				Bounds b = getBounds(nNode);
 				Button button = new Button(b.size_x, b.size_y, b.pos_x, b.pos_y);
 				
@@ -209,7 +215,6 @@ public class KeyboardLayoutLoader {
 					button.setKey(keymap.get(defkey.item(0).getTextContent()));
 				}
 
-				
 				// receive Modes
 				NodeList modes = eElement.getElementsByTagName("mode");
 				for (int i = 0; i < modes.getLength(); i++) {
@@ -235,49 +240,49 @@ public class KeyboardLayoutLoader {
 						key.setAccept(accept);
 						button.addMode(modeButtons.get(iModeName), key);
 					}
-				}
-				buttons.add(button);
-			} catch (NullPointerException e) {
-				System.out.println("In getKey:");
-				e.printStackTrace();
-			}
 
+					buttons.add(button);
+				}
+			} catch (NullPointerException e) {
+				logger.warn("A Button could not be read.");
+			}
 		}
-		return null;
+		return buttons;
 	}
 	
 	
 	private static HashMap<Integer, ModeButton> getModeButtons(Document doc) {
-		ArrayList<Button> buttons = new ArrayList<Button>();
+		HashMap<Integer, ModeButton> modeButtons = new HashMap<Integer, ModeButton>();
 		NodeList nList = doc.getElementsByTagName("modebutton");
 		
 		// loop through buttons
 		for (int temp = 0; temp < nList.getLength(); temp++) {
-			Node nNode = nList.item(temp);
-			
-			if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-				Element eElement = (Element) nNode;
+			try {
+				Node nNode = nList.item(temp);
 				
-				try {
-					Bounds b = getBounds(nNode);
-					Button button = new Button(b.size_x, b.size_y, b.pos_x, b.pos_y);
-					
-					// receive default key
-					NodeList defkey = eElement.getElementsByTagName("key");
-					if (defkey.getLength() == 1) {
-						button.setKey(keymap.get(defkey.item(0).getTextContent()));
-					}
-				} catch (NullPointerException e) {
-					logger.warn("");
-					e.printStackTrace();
+				if (nNode.getNodeType() != Node.ELEMENT_NODE) {
+					logger.warn("key-node is not an element-node");
+					continue;
 				}
 				
-				
-			} else {
-				logger.warn("key-node is not an element-node");
+				Element eElement = (Element) nNode;
+				Key key = null;
+				// receive default key
+				NodeList defkey = eElement.getElementsByTagName("key");
+				if (defkey.getLength() == 1) {
+					// TODO Nicolai catch Exception
+					key = keymap.get(defkey.item(0).getTextContent());
+				}
+				if (key == null)
+					continue;
+				Bounds b = getBounds(nNode);
+				ModeButton button = new ModeButton(key, b.size_x, b.size_y, b.pos_x, b.pos_y);
+				modeButtons.put(key.getId(), button);
+			} catch (NullPointerException e) {
+				logger.warn("A ModeButton could not be read.");
 			}
 		}
-		return null;
+		return modeButtons;
 	}
 
 
