@@ -1,21 +1,16 @@
-/* 
+/*
  * *********************************************************
  * Copyright (c) 2011 - 2011, DHBW Mannheim
  * Project: T10 On-Screen Keyboard
  * Date: Oct 20, 2011
  * Author(s): dirk
- *
+ * 
  * *********************************************************
  */
 package edu.dhbw.t10.type.tree;
 
 import edu.dhbw.t10.manager.profile.ImportExportManager;
 import edu.dhbw.t10.type.profile.Profile;
-
-
-
-
-
 
 
 /**
@@ -108,7 +103,7 @@ public class TestTree {
 		// System.out.println(tree.getSuggest("Pri"));
 		// System.out.println(tree.getSuggest("und"));
 		// System.out.println(tree.getSuggest("Obe"));
-
+		
 		
 		// tree.insert("hallo");
 		// tree.insert("test");
@@ -122,7 +117,7 @@ public class TestTree {
 		// tree.delete("holla");
 		// tree.printTree();
 		// System.out.println(tree.getSuggest("h"));
-
+		
 	}
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------

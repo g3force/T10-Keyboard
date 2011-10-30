@@ -38,7 +38,7 @@ public class ProfileManager {
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
-	private static final Logger	logger	= Logger.getLogger(ProfileManager.class);
+	private static final Logger	logger				= Logger.getLogger(ProfileManager.class);
 	private static ProfileManager	instance				= new ProfileManager();
 	private ArrayList<Profile>		profiles;
 	private ArrayList<String>		profilePath;
@@ -47,8 +47,8 @@ public class ProfileManager {
 	private boolean					autoProfileChange	= true;
 	private boolean					autoCompleting		= true;
 	private boolean					treeExpanding		= true;
-
-
+	
+	
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
@@ -67,18 +67,18 @@ public class ProfileManager {
 		}
 		activeProfile = getProfileByName(activeProfileName); // TODO save active profile
 		// ---------------------DUMMY CODE------------------------------
-
+		
 		// Profile prof = new Profile("Pflichteheft");
 		// setActive(prof);
 		// prof.saveTree();
 		// profiles.add(prof);
-
+		
 		// -------------------ENDE DUMMY CODE---------------------------
 		serializeProfiles();
 		logger.debug("initialized.");
 	}
-
-
+	
+	
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
@@ -90,7 +90,7 @@ public class ProfileManager {
 		return instance;
 	}
 	
-
+	
 	public void resizeWindow(Dimension size) {
 		KeyboardLayout kbdLayout = activeProfile.getKbdLayout();
 		if (kbdLayout != null) {
@@ -152,6 +152,7 @@ public class ProfileManager {
 		}
 	}
 	
+	
 	private String createComment(String comment) {
 		comment = "//" + comment;
 		return comment;
@@ -168,7 +169,7 @@ public class ProfileManager {
 			
 			if (activeProfile != null)
 				bw.write("ActiveProfile=" + activeProfile.getName());
-
+			
 			for (int i = 0; i < profiles.size(); i++) {
 				bw.write("ProfilePath=" + profiles.get(i).getPathToProfile() + "\n");
 			}
@@ -181,7 +182,7 @@ public class ProfileManager {
 			ex.printStackTrace();
 		}
 	}
-
+	
 	
 	/**
 	 * 
@@ -192,7 +193,7 @@ public class ProfileManager {
 	 * @return Handle/Pointer to the new profile.
 	 * @author DerBaschti
 	 */
-
+	
 	public Profile create(String profileName, String pathToNewProfile) {
 		Profile newProfile = new Profile(profileName);
 		profilePath.add(pathToNewProfile);
@@ -223,8 +224,8 @@ public class ProfileManager {
 		}
 		return null;
 	}
-
-
+	
+	
 	/**
 	 * 
 	 * Deletes a profile depending on the ID.<br/>
@@ -267,8 +268,8 @@ public class ProfileManager {
 		activeProfile = newActive;
 		activeProfile.loadTree();
 	}
-
-
+	
+	
 	/**
 	 * 
 	 * TODO ??? implementieren... siehe Kontrollfluss Diagramm
@@ -289,7 +290,7 @@ public class ProfileManager {
 		} else {
 			return givenChars;
 		}
-
+		
 	}
 	
 	
@@ -308,7 +309,7 @@ public class ProfileManager {
 		if (treeExpanding)
 			getActive().getTree().insert(word);
 	}
-
+	
 	
 	/**
 	 * 
@@ -318,7 +319,7 @@ public class ProfileManager {
 	public void serializeProfiles() {
 		for (int i = 0; i < profiles.size(); i++) {
 			Profile cProfile = profiles.get(i);
-			if (cProfile.getPathToProfile()==null || cProfile.getPathToProfile().isEmpty())
+			if (cProfile.getPathToProfile() == null || cProfile.getPathToProfile().isEmpty())
 				continue;
 			try {
 				Serializer.serialize(cProfile, cProfile.getPathToProfile());
@@ -328,7 +329,7 @@ public class ProfileManager {
 			}
 		}
 	}
-
+	
 	
 	public void getSerializedProfiles() {
 		for (int i = 0; i < profilePath.size(); i++) {
@@ -343,19 +344,20 @@ public class ProfileManager {
 		}
 	}
 	
-
-
+	
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
 	public ArrayList<Profile> getProfiles() {
 		return profiles;
 	}
-
+	
+	
 	public Profile getActive() {
 		return activeProfile;
 	}
-
+	
+	
 	public KeyboardLayout getKbdLayout() {
 		return activeProfile.getKbdLayout();
 	}
@@ -377,7 +379,7 @@ public class ProfileManager {
 		else
 			autoProfileChange = true;
 	}
-
+	
 	
 	public boolean isAutoCompleting() {
 		return autoCompleting;
@@ -396,7 +398,7 @@ public class ProfileManager {
 			autoCompleting = true;
 	}
 	
-
+	
 	public boolean isTreeExpanding() {
 		return treeExpanding;
 	}
@@ -413,6 +415,6 @@ public class ProfileManager {
 		else
 			treeExpanding = true;
 	}
-
-
+	
+	
 }

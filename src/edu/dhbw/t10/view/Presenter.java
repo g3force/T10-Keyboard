@@ -33,11 +33,11 @@ public class Presenter extends JFrame {
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
 	private static final Logger	logger				= Logger.getLogger(Presenter.class);
-	private static final long	serialVersionUID	= 6217926957357225677L;
-	private static Presenter	instance;
-	private JPanel					contentPane;
+	private static final long		serialVersionUID	= 6217926957357225677L;
+	private static Presenter		instance;
+	private JPanel						contentPane;
 	private boolean					initilized			= false;
-
+	
 	
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
@@ -54,15 +54,12 @@ public class Presenter extends JFrame {
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("icons/useacc_logo.png"));
 		this.setTitle("T10 On-Screen Keyboard");
 		this.setVisible(true);
-		// this.addComponentListener(this);
-
+		
 		// get a reference to the content pane
 		contentPane = (JPanel) getContentPane();
 		contentPane.add(MainPanel.getInstance());
 		this.setJMenuBar(MenuBar.getInstance());
 		
-
-
 		// build GUI
 		pack();
 		initilized = true;
@@ -79,7 +76,7 @@ public class Presenter extends JFrame {
 		}
 		return instance;
 	}
-
+	
 	
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
@@ -88,8 +85,8 @@ public class Presenter extends JFrame {
 	public boolean isInitilized() {
 		return initilized;
 	}
-
-
+	
+	
 	public void setInitilized(boolean initilized) {
 		this.initilized = initilized;
 	}

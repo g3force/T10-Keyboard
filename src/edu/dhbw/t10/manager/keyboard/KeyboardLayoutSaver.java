@@ -51,20 +51,20 @@ public class KeyboardLayoutSaver {
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
 	private static final Logger	logger	= Logger.getLogger(KeyboardLayoutSaver.class);
-
-
+	
+	
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
 	private KeyboardLayoutSaver() {
 		throw new AssertionError();
 	}
-
-
+	
+	
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
-
+	
 	/**
 	 * Save the keyboardLayout
 	 * 
@@ -83,22 +83,22 @@ public class KeyboardLayoutSaver {
 			// doc.getDocumentElement().normalize();
 			Element layout = doc.createElement("layout");
 			doc.appendChild(layout);
-
+			
 			Element sizex = doc.createElement("sizex");
 			Text text = doc.createTextNode(kbdLayout.getOrigSize_x() + "");
 			sizex.appendChild(text);
 			layout.appendChild(sizex);
-
+			
 			Element sizey = doc.createElement("sizey");
 			text = doc.createTextNode(kbdLayout.getOrigSize_y() + "");
 			sizey.appendChild(text);
 			layout.appendChild(sizey);
-
+			
 			Element scalex = doc.createElement("scalex");
 			text = doc.createTextNode(kbdLayout.getScale_x() + "");
 			scalex.appendChild(text);
 			layout.appendChild(scalex);
-
+			
 			Element scaley = doc.createElement("scaley");
 			text = doc.createTextNode(kbdLayout.getScale_y() + "");
 			scaley.appendChild(text);
@@ -108,7 +108,7 @@ public class KeyboardLayoutSaver {
 			text = doc.createTextNode(kbdLayout.getScale_font() + "");
 			scale_font.appendChild(text);
 			layout.appendChild(scale_font);
-
+			
 			Element font = doc.createElement("font");
 			layout.appendChild(font);
 			
@@ -135,13 +135,13 @@ public class KeyboardLayoutSaver {
 			for (Button button : kbdLayout.getButtons()) {
 				Element buttonEl = doc.createElement("button");
 				setSizeOfPhysicalButton(buttonEl, button);
-
+				
 				Element key = doc.createElement("key");
 				key.setAttribute("modename", "0");
 				text = doc.createTextNode(button.getKey().getId() + "");
 				key.appendChild(text);
 				buttonEl.appendChild(key);
-
+				
 				for (Entry<ModeButton, Key> mode : button.getModes().entrySet()) {
 					Element modeEl = doc.createElement("dropdown");
 					modeEl.setAttribute("modename", mode.getKey().getModeKey().getId() + "");
@@ -151,12 +151,12 @@ public class KeyboardLayoutSaver {
 				}
 				layout.appendChild(buttonEl);
 			}
-
+			
 			for (ModeButton modeButton : kbdLayout.getModeButtons()) {
 				Element modeButtonEl = doc.createElement("modebutton");
 				setSizeOfPhysicalButton(modeButtonEl, modeButton);
 				
-				Element key = doc.createElement("key");		
+				Element key = doc.createElement("key");
 				text = doc.createTextNode(modeButton.getModeKey().getId() + "");
 				key.appendChild(text);
 				modeButtonEl.appendChild(key);
@@ -165,7 +165,7 @@ public class KeyboardLayoutSaver {
 			}
 			String xml = convertDocToString(doc);
 			printToPath(xml, filePath);
-
+			
 		} catch (ParserConfigurationException err) {
 			logger.error("Could not initialize dBuilder");
 			err.printStackTrace();
@@ -225,7 +225,7 @@ public class KeyboardLayoutSaver {
 			err.printStackTrace();
 		}
 	}
-
+	
 	
 	private static void setSizeOfPhysicalButton(Element el, PhysicalButton button) {
 		el.setAttribute("size_x", button.getOrigSize().getWidth() + "");
@@ -233,8 +233,8 @@ public class KeyboardLayoutSaver {
 		el.setAttribute("pos_x", button.getPos_x() + "");
 		el.setAttribute("pos_y", button.getPos_y() + "");
 	}
-
-
+	
+	
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------

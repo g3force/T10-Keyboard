@@ -12,6 +12,8 @@ package edu.dhbw.t10.type.keyboard.key;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.apache.log4j.Logger;
+
 
 /**
  * This class is the body of one key on the keyboard. It contains information
@@ -25,26 +27,24 @@ public class Button extends PhysicalButton {
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
+	private static final Logger		logger				= Logger.getLogger(Button.class);
 	private static final long			serialVersionUID	= 6949715976373962684L;
-
-	
 	private HashMap<ModeButton, Key>	modes					= new HashMap<ModeButton, Key>();
 	private Key								key;
 	// assigns to every modi
 	private ArrayList<ModeButton>		activeModes			= new ArrayList<ModeButton>();
 	
-	
-	// contains the activated control key like shift
-
 
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
+
+
 	public Button(int size_x, int size_y, int pos_x, int pos_y) {
 		super(size_x, size_y, pos_x, pos_y);
 	}
-
-
+	
+	
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
@@ -61,6 +61,7 @@ public class Button extends PhysicalButton {
 	 */
 	public void addMode(ModeButton mode, Key accordingKey) {
 		modes.put(mode, accordingKey);
+		mode.register(this);
 	}
 	
 	
@@ -73,7 +74,35 @@ public class Button extends PhysicalButton {
 	 */
 	public void addCurrentMode(ModeButton mode) {
 		activeModes.add(mode);
-		setText(modes.get(mode).getName());
+		if (activeModes.size() == 1) {
+			if (modes.get(mode) != null) {
+				setText(modes.get(mode).getName());
+			} else {
+				logger.warn("addCurrentMode called with invalid mode!");
+			}
+		} else {
+			// TODO support multi-modes
+			setText(key.getName());
+		}
+		// setBackground(getColorFromString(getColor()));
+	}
+	
+	
+	/**
+	 * 
+	 * TODO NicolaiO, add comment!
+	 * 
+	 * @param mode
+	 * @author NicolaiO
+	 */
+	public void rmCurrentMode(ModeButton mode) {
+		activeModes.remove(mode);
+		if (activeModes.size() == 1) {
+			setText(modes.get(activeModes.get(0)).getName());
+		} else {
+			setText(key.getName());
+		}
+
 		// setBackground(getColorFromString(getColor()));
 	}
 	
@@ -91,6 +120,21 @@ public class Button extends PhysicalButton {
 		}
 		return output;
 	}
+	
+	
+	public void unsetPressedModes() {
+		ArrayList<ModeButton> tactiveModes = new ArrayList<ModeButton>();
+		for (ModeButton b : activeModes) {
+			if (b.getState() == ModeButton.PRESSED) {
+				tactiveModes.add(b);
+			}
+		}
+		for (ModeButton b : tactiveModes) {
+			b.release();
+		}
+	}
+
+
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
@@ -111,7 +155,7 @@ public class Button extends PhysicalButton {
 	}
 	
 	
-	public ArrayList<ModeButton> getActiveMode() {
+	public ArrayList<ModeButton> getActiveModes() {
 		return activeModes;
 	}
 	
@@ -125,6 +169,6 @@ public class Button extends PhysicalButton {
 		this.key = key;
 		setText(key.getName());
 	}
-
-
+	
+	
 }
