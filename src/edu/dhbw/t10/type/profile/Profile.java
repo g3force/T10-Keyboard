@@ -36,15 +36,16 @@ public class Profile implements Serializable {
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
-	private String	name;
-	private String			pathToTree;
-	private String						pathToProfile;
+	private String							name;
+	private String							pathToTree;
+	private String							pathToProfile;
 	private transient PriorityTree	tree;
 	private transient KeyboardLayout	kbdLayout;
 	
 	@SuppressWarnings("unused")
-	private static final Logger	logger	= Logger.getLogger(Profile.class);
-
+	private static final Logger		logger				= Logger.getLogger(Profile.class);
+	
+	
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
@@ -62,14 +63,15 @@ public class Profile implements Serializable {
 			file.mkdir();
 		}
 		pathToTree = "trees/" + name + ".tree";
-
+		
 		tree = new PriorityTree();
 		saveTree();
 		kbdLayout = KeyboardLayoutLoader
 				.load("conf/keyboard_layout_de_default.xml", KeymapLoader.load("conf/keymap.xml"));
 		MainPanel.getInstance().setKbdLayout(kbdLayout);
 	}
-
+	
+	
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
@@ -91,7 +93,8 @@ public class Profile implements Serializable {
 			logger.error("Tree not saved, no folder found");
 		}
 	}
-
+	
+	
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
@@ -148,7 +151,7 @@ public class Profile implements Serializable {
 	public void setTree(PriorityTree tree) {
 		this.tree = tree;
 	}
-
+	
 	
 	public KeyboardLayout getKbdLayout() {
 		return kbdLayout;
@@ -158,6 +161,6 @@ public class Profile implements Serializable {
 	public void setKbdLayout(KeyboardLayout kbdLayout) {
 		this.kbdLayout = kbdLayout;
 	}
-
-
+	
+	
 }

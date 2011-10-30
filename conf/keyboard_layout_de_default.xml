@@ -318,12 +318,12 @@
 	<button size_x="50" size_y="50" pos_x="900" pos_y="280">
 		<key>129</key>
 	</button>
-	
+
 	<!-- End -->
 	<button size_x="50" size_y="50" pos_x="955" pos_y="280">
 		<key>131</key>
 	</button>
-	
+
 	<!-- Spaces -->
 	<button size_x="150" size_y="50" pos_x="240" pos_y="280">
 		<key accept="true">130</key>

@@ -46,7 +46,7 @@ public class KeyboardLayout {
 	private float							scale_font	= 1;
 	private Font							font			= new Font("Dialog", Font.PLAIN, 12);
 	
-
+	
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
@@ -58,7 +58,7 @@ public class KeyboardLayout {
 		this.scale_font = scale_font;
 	}
 	
-
+	
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
@@ -68,7 +68,7 @@ public class KeyboardLayout {
 		ddls.add(ddl);
 	}
 	
-
+	
 	public void rescale() {
 		for (PhysicalButton k : getAllPhysicalButtons()) {
 			Rectangle rect = k.getBounds();
@@ -98,8 +98,8 @@ public class KeyboardLayout {
 		tempb.addAll(muteButtons);
 		return tempb;
 	}
-
-
+	
+	
 	public ArrayList<Button> getButtons() {
 		return buttons;
 	}
@@ -134,7 +134,7 @@ public class KeyboardLayout {
 		return size_x;
 	}
 	
-
+	
 	public void setSize_y(int size_y) {
 		this.size_y = size_y;
 	}
@@ -152,7 +152,7 @@ public class KeyboardLayout {
 		size_y = size.height;
 	}
 	
-
+	
 	public float getScale_x() {
 		return scale_x;
 	}
@@ -186,13 +186,13 @@ public class KeyboardLayout {
 	public int getFontSize() {
 		return font.getSize();
 	}
-
-
+	
+	
 	public Font getFont() {
 		return font;
 	}
-
-
+	
+	
 	public float getScale_font() {
 		return scale_font;
 	}
@@ -201,13 +201,13 @@ public class KeyboardLayout {
 	public void setScale_font(float scale_font) {
 		this.scale_font = scale_font;
 	}
-
-
+	
+	
 	public ArrayList<DropDownList> getDdls() {
 		return ddls;
 	}
-
-
+	
+	
 	public ArrayList<ModeButton> getModeButtons() {
 		return modeButtons;
 	}
@@ -226,6 +226,6 @@ public class KeyboardLayout {
 	public void setMuteButtons(ArrayList<MuteButton> muteButtons) {
 		this.muteButtons = muteButtons;
 	}
-
-
+	
+	
 }

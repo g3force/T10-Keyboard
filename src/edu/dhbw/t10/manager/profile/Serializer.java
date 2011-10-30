@@ -1,10 +1,10 @@
-/* 
+/*
  * *********************************************************
  * Copyright (c) 2011 - 2011, DHBW Mannheim
  * Project: T10 On-Screen Keyboard
  * Date: Oct 24, 2011
  * Author(s): dirk
- *
+ * 
  * *********************************************************
  */
 package edu.dhbw.t10.manager.profile;
@@ -25,7 +25,7 @@ public class Serializer {
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
-
+	
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
@@ -48,7 +48,7 @@ public class Serializer {
 		o.close();
 		return out;
 	}
-
+	
 	
 	public static <T> void serialize(T toS, String pathToFile) throws IOException {
 		FileOutputStream file = new FileOutputStream(pathToFile);

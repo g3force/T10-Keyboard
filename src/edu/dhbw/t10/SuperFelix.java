@@ -38,16 +38,16 @@ public class SuperFelix {
 	// --------------------------------------------------------------------------
 	private static final Logger	logger	= Logger.getLogger(SuperFelix.class);
 	
-
+	
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
 	
-
+	
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
-
+	
 	/**
 	 * @param args
 	 */
@@ -67,7 +67,7 @@ public class SuperFelix {
 			BasicConfigurator.configure();
 			logger.setLevel(Level.ALL);
 		}
-
+		
 		logger.debug("calling Controller first time.");
 		Controller.getInstance();
 		logger.debug("calling Presenter first time.");
