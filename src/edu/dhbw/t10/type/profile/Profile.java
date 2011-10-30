@@ -36,9 +36,10 @@ public class Profile implements Serializable {
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
-	private String	name;
-	private String			pathToTree;
-	private String						pathToProfile;
+	private String							name;
+	private String							pathToTree;
+	private String							pathToProfile;
+	private String							pathToAllowedChars;
 	private transient PriorityTree	tree;
 	private transient KeyboardLayout	kbdLayout;
 	
@@ -62,8 +63,9 @@ public class Profile implements Serializable {
 			file.mkdir();
 		}
 		pathToTree = "trees/" + name + ".tree";
+		pathToAllowedChars = "trees/" + name + ".chars";
 
-		tree = new PriorityTree();
+		tree = new PriorityTree(pathToAllowedChars);
 		saveTree();
 		kbdLayout = KeyboardLayoutLoader
 				.load("conf/keyboard_layout_de_default.xml", KeymapLoader.load("conf/keymap.xml"));
@@ -78,7 +80,7 @@ public class Profile implements Serializable {
 		try {
 			tree = Serializer.deserialize(pathToTree);
 		} catch (IOException io) {
-			tree = new PriorityTree();
+			tree = new PriorityTree(pathToAllowedChars);
 			logger.info("No Tree found for Profile" + name + ", new Tree created");
 		}
 	}
