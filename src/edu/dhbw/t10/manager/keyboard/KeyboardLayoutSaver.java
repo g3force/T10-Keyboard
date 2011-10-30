@@ -125,7 +125,7 @@ public class KeyboardLayoutSaver {
 			
 			for (DropDownList dd : kbdLayout.getDdls()) {
 				Element dropdown = doc.createElement("dropdown");
-				dropdown.setAttribute("type", dd.getName());
+				dropdown.setAttribute("type", dd.getTypeAsString());
 				dropdown.setAttribute("size_x", dd.getOrigSize().getWidth() + "");
 				dropdown.setAttribute("size_y", dd.getOrigSize().getHeight() + "");
 				dropdown.setAttribute("pos_x", dd.getX() + "");
@@ -137,13 +137,12 @@ public class KeyboardLayoutSaver {
 				setSizeOfPhysicalButton(buttonEl, button);
 				
 				Element key = doc.createElement("key");
-				key.setAttribute("modename", "0");
 				text = doc.createTextNode(button.getKey().getId() + "");
 				key.appendChild(text);
 				buttonEl.appendChild(key);
 				
 				for (Entry<ModeButton, Key> mode : button.getModes().entrySet()) {
-					Element modeEl = doc.createElement("dropdown");
+					Element modeEl = doc.createElement("mode");
 					modeEl.setAttribute("modename", mode.getKey().getModeKey().getId() + "");
 					text = doc.createTextNode(mode.getValue().getId() + "");
 					modeEl.appendChild(text);

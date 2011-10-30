@@ -78,6 +78,13 @@ public class DropDownList extends JComboBox {
 	}
 	
 	
+	public String getTypeAsString() {
+		if (type == DropDownList.PROFILE)
+			return "profile";
+		return "";
+	}
+
+	
 	public Dimension getOrigSize() {
 		return origSize;
 	}
