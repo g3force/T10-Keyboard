@@ -41,7 +41,7 @@ public class Output {
 	// --------------------------------------------------------------------------
 	private static final Logger	logger	= Logger.getLogger(Output.class);
 	private static int				os			= 1;											// TODO aktuelles OS herausfinden
-	private static int				delay		= 0;
+	private static int				delay		= 2000;
 
 	private static Output			instance;
 	
@@ -85,6 +85,7 @@ public class Output {
 			logger.info("Control Symbol printed: " + charSequence);
 		} else if (type == Key.UNICODE) {
 			sendUnicode(charSequence);
+			logger.info("Unicode Symbol printed: " + charSequence);
 		} else {
 			ArrayList<Integer> unicodeStart = extractUnicode(charSequence);
 			for (int i = 0; i < length; i++) {
@@ -175,14 +176,17 @@ public class Output {
 	
 	
 	private boolean sendUnicode(String uni) {
-		if (uni.length() != 7 || uni.substring(0, 2) != "\\U+" || uni.substring(6, 7) != "\\")
+		if (uni.length() != 8 || !uni.substring(0, 3).equals("\\U+") || !uni.substring(7, 8).equals("\\")) {
+			logger.error("UNICODE wrong format: length:" + uni.length() + ", Start: " + uni.substring(0, 2) + ", End: "
+					+ uni.substring(7, 8));
 			return false;
+		}
 		if (os == 1) {
 			sendKey(KeyEvent.VK_CONTROL, 0, 1);
 			sendKey(KeyEvent.VK_SHIFT, 0, 1);
 			sendKey(KeyEvent.VK_U, 0);
-			sendKey(KeyEvent.VK_SHIFT, 0, 1);
-			sendKey(KeyEvent.VK_CONTROL, 0, 1);
+			sendKey(KeyEvent.VK_SHIFT, 0, 2);
+			sendKey(KeyEvent.VK_CONTROL, 0, 2);
 			sendKey(getKeyCode(uni.substring(3, 4).toLowerCase()), 0);
 			sendKey(getKeyCode(uni.substring(4, 5).toLowerCase()), 0);
 			sendKey(getKeyCode(uni.substring(5, 6).toLowerCase()), 0);
