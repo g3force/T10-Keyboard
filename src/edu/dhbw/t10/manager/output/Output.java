@@ -50,8 +50,8 @@ public class Output {
 	// --------------------------------------------------------------------------
 	private Output() {
 	}
-
-
+	
+	
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
@@ -61,13 +61,13 @@ public class Output {
 		}
 		return instance;
 	}
-
-
+	
+	
 	public boolean printChar(Key c) {
 		return printString(c.getName(), c.getType());
 	}
-
-
+	
+	
 	/**
 	 * 
 	 * Transoforms a given CodeSequence from OutputManager to KeyEvent-Constants and sends it to the System
@@ -77,7 +77,7 @@ public class Output {
 	 */
 	public boolean printString(String charSequence, int type) {
 		int length = charSequence.length();
-
+		
 		// if (charSequence.charAt(0) == '\\' && charSequence.charAt(length - 1) == '\\'
 		// && !charSequence.substring(0).startsWith("\\U+")) {
 		if (type == Key.CONTROL) {
@@ -103,7 +103,7 @@ public class Output {
 		return true;
 	}
 	
-
+	
 	public boolean markChar(int length) {
 		if (length <= 0)
 			return false;
@@ -118,7 +118,7 @@ public class Output {
 		}
 	}
 	
-
+	
 	/**
 	 * 
 	 * Find a Unicode in a given String and returns a List with the indices
@@ -141,7 +141,7 @@ public class Output {
 		return unicodeStart;
 	}
 	
-
+	
 	/**
 	 * 
 	 * Converts a Stringcode into a Constant of the KeyEvent class via Reflection.
@@ -172,8 +172,8 @@ public class Output {
 		}
 		
 	}
-
-
+	
+	
 	private boolean sendUnicode(String uni) {
 		if (uni.length() != 7 || uni.substring(0, 2) != "\\U+" || uni.substring(6, 7) != "\\")
 			return false;
@@ -200,18 +200,18 @@ public class Output {
 		}
 		return true;
 	}
-
-
+	
+	
 	private boolean sendKey(int key) {
 		return sendKey(key, 0);
 	}
-
-
+	
+	
 	private boolean sendKey(int key, int function) {
 		return sendKey(key, function, 0);
 	}
 	
-
+	
 	// TODO Input argument is a List of Keys not a single one...
 	/**
 	 * 
@@ -299,7 +299,7 @@ public class Output {
 		}
 	}
 	
-
+	
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------

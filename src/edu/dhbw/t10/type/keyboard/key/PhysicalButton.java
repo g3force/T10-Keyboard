@@ -34,7 +34,7 @@ public abstract class PhysicalButton extends JButton {
 	private int						pos_x					= 0;
 	private int						pos_y					= 0;
 	private Dimension				origSize				= new Dimension(10, 10);
-
+	
 	
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
@@ -62,8 +62,8 @@ public abstract class PhysicalButton extends JButton {
 	public PhysicalButton() {
 		setLayout(null);
 	}
-
-
+	
+	
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
@@ -83,7 +83,7 @@ public abstract class PhysicalButton extends JButton {
 		return color;
 	}
 	
-
+	
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------

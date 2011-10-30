@@ -30,15 +30,15 @@ public class OutputManager {
 	Output								out		= Output.getInstance();
 	private static OutputManager	instance	= null;
 	
-
+	
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
 	private OutputManager() {
 		
 	}
-
-
+	
+	
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
@@ -47,7 +47,7 @@ public class OutputManager {
 		return out.printChar(c);
 	}
 	
-
+	
 	public boolean deleteChar(int length) {
 		if (length <= 0)
 			return false;
@@ -58,28 +58,25 @@ public class OutputManager {
 			return true;
 		}
 	}
-
-
 	
 	
-
 	// // TODO printString bentigt ein Argument für den Type!!!!
 	// public boolean printString(String input) {
 	// // TODO Key.UNICODE enterfernen und Type vom function header übernehmen!!!
 	// return out.printString(input, Key.UNICODE);
 	// }
 	
-
+	
 	public boolean mark(int i) {
 		// FIXME Logik von Output hierherkopieren....
 		return out.markChar(i);
 	}
 	
-
+	
 	public void unMark() {
 		out.printString("\\RIGHT\\", Key.CONTROL);
 	}
-
+	
 	
 	/**
 	 * 
@@ -89,11 +86,11 @@ public class OutputManager {
 	public void printSuggest(String newSuggest, String typed) {
 		if (newSuggest.length() > typed.length()) { //
 			out.printString(convertToUnicode(newSuggest.substring(typed.length())), Key.UNICODE);
-		out.markChar(newSuggest.length() - typed.length());
+			out.markChar(newSuggest.length() - typed.length());
 		}
 	}
 	
-
+	
 	/**
 	 * 
 	 * TODO andres, add comment!
@@ -126,8 +123,8 @@ public class OutputManager {
 		}
 		return (new String(ostr)); // Return the stringbuffer cast as a string.
 	}
-
-
+	
+	
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------

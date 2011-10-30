@@ -25,14 +25,14 @@ public class Key {
 	public static final int	CONTROL	= 1;
 	public static final int	UNICODE	= 2;
 	public static final int	CHAR		= 3;
-
-	private int						id			= 0;
-	private String					keycode	= "";
-	private String					name		= "";
-	private int						type		= 0;
+	
+	private int					id			= 0;
+	private String				keycode	= "";
+	private String				name		= "";
+	private int					type		= 0;
 	private boolean			accept	= false;
-
-
+	
+	
 	// the name appearing on the button in the screen keyboard
 	
 	// --------------------------------------------------------------------------
@@ -45,7 +45,7 @@ public class Key {
 		this.type = type;
 	}
 	
-
+	
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
@@ -83,7 +83,7 @@ public class Key {
 		this.name = name;
 	}
 	
-
+	
 	public int getType() {
 		return type;
 	}
@@ -92,7 +92,7 @@ public class Key {
 	public void setType(int type) {
 		this.type = type;
 	}
-
+	
 	
 	public boolean isAccept() {
 		return accept;
@@ -102,6 +102,6 @@ public class Key {
 	public void setAccept(boolean accept) {
 		this.accept = accept;
 	}
-
-
+	
+	
 }
