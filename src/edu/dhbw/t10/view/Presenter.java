@@ -58,7 +58,7 @@ public class Presenter extends JFrame {
 		// get a reference to the content pane
 		contentPane = (JPanel) getContentPane();
 		contentPane.add(MainPanel.getInstance());
-		this.setJMenuBar(MenuBar.getInstance());
+		this.setJMenuBar(new MenuBar());
 		
 		// build GUI
 		pack();

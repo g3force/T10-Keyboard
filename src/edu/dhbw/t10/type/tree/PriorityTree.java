@@ -326,6 +326,7 @@ public class PriorityTree implements Serializable {
 	}
 	
 	
+	@SuppressWarnings("unused")
 	private void saveAllowedChars() {
 		try {
 			File confFile = new File("pathToAllowedChars");
@@ -346,6 +347,7 @@ public class PriorityTree implements Serializable {
 	}
 	
 	
+	@SuppressWarnings("unused")
 	private void loadAllowedChars() {
 		try {
 			File confFile = new File(pathToAllowedChars);
