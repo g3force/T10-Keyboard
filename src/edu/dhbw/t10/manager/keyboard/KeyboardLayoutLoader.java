@@ -320,7 +320,6 @@ public class KeyboardLayoutLoader {
 					logger.warn("Number of key-elements is not 1: " + defkey.getLength());
 					continue;
 				}
-				System.out.println(key.getId());
 				Bounds b = getBounds(nNode);
 				ModeButton button = new ModeButton(key, b.size_x, b.size_y, b.pos_x, b.pos_y);
 				modeButtons.put(key.getId(), button);
