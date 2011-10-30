@@ -84,11 +84,11 @@ public class Controller implements ActionListener {
 					this.KeyIsCHAR(key);
 				else if (key.getType() == Key.UNICODE)
 					this.KeyIsUnicode(key);
-				else if (key.getName() == "\\BACK_SPACE\\")
+				else if (key.getKeycode().equals("\\BACK_SPACE\\"))
 					this.KeyIsBackspace();
-				else if ((key.getName() == "\\SPACE\\" || key.getName() == "\\ENTER\\"))
+				else if ((key.getKeycode().equals("\\SPACE\\") || key.getKeycode().equals("\\ENTER\\")))
 					this.KeyIsSpaceOrEnter(key);
-				else if (key.getName() == "\\DELETE\\") {
+				else if (key.getKeycode().equals("\\DELETE\\")) {
 					outputMan.printChar(key);
 					suggest = typedWord;
 				}
@@ -179,15 +179,19 @@ public class Controller implements ActionListener {
 	
 	private void KeyIsUnicode(Key key) {
 		outputMan.printChar(key);
-		typedWord = typedWord + key.getName();
-		suggest = profileMan.getWordSuggest(typedWord);
-		outputMan.printSuggest(suggest, typedWord);
+		// TODO Wieso sind Umlaute als Unicode Zeichen im Keyboard gespeichert?? Wie soll die Unterscheidung zwischen
+		// Satzzeichen und Buchstaben stattfinden?
+		// typedWord = typedWord + key.getName();
+		// suggest = profileMan.getWordSuggest(typedWord);
+		// outputMan.printSuggest(suggest, typedWord);
+		typedWord = "";
+		suggest = "";
 	}
 	
 	
 	private void KeyIsBackspace() {
 		if (typedWord.length() > 0) {
-			typedWord = typedWord.substring(0, typedWord.length() - 2);
+			typedWord = typedWord.substring(0, typedWord.length() - 1);
 			outputMan.deleteChar(2); // Zwei, weil einmal muss die aktuelle Markierung gelöscht werden und
 			// dann ein Zeichen.
 			suggest = profileMan.getWordSuggest(typedWord);
@@ -197,8 +201,9 @@ public class Controller implements ActionListener {
 		}
 	}
 	
-	
 	private void KeyIsSpaceOrEnter(Key key) {
+		logger.debug("Keycode" + key.getKeycode() + " " + key.getType());
+
 		outputMan.printChar(key);
 		typedWord = "";
 		suggest = "";

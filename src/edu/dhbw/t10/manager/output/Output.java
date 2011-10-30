@@ -41,9 +41,9 @@ public class Output {
 	// --------------------------------------------------------------------------
 	private static final Logger	logger	= Logger.getLogger(Output.class);
 	private static int				os			= 1;											// TODO aktuelles OS herausfinden
-																										
+	private static int				delay		= 0;
+
 	private static Output			instance;
-	
 	
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
@@ -64,7 +64,7 @@ public class Output {
 	
 	
 	public boolean printChar(Key c) {
-		return printString(c.getName(), c.getType());
+		return printString(c.getKeycode(), c.getType());
 	}
 	
 	
@@ -230,7 +230,7 @@ public class Output {
 		try {
 			Robot keyRobot = new Robot();
 			if (hold == 0)
-				keyRobot.delay(200);
+				keyRobot.delay(delay);
 			
 			switch (function) {
 				case 0: {
