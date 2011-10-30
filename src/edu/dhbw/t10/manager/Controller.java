@@ -71,7 +71,6 @@ public class Controller implements ActionListener {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		logger.debug("Action Performed");
 		if (e.getSource() instanceof Button) {
 			Button button = (Button) e.getSource();
 			
@@ -83,6 +82,8 @@ public class Controller implements ActionListener {
 					this.keyIsAccept(key);
 				else if (key.getType() == Key.CHAR)
 					this.KeyIsCHAR(key);
+				else if (key.getType() == Key.UNICODE)
+					this.KeyIsUnicode(key);
 				else if (key.getName() == "\\BACK_SPACE\\")
 					this.KeyIsBackspace();
 				else if ((key.getName() == "\\SPACE\\" || key.getName() == "\\ENTER\\"))
@@ -90,8 +91,6 @@ public class Controller implements ActionListener {
 				else if (key.getName() == "\\DELETE\\") {
 					outputMan.printChar(key);
 					suggest = typedWord;
-				} else {
-					outputMan.printChar(key);
 				}
 			}
 			button.unsetPressedModes();
@@ -180,6 +179,9 @@ public class Controller implements ActionListener {
 	
 	private void KeyIsUnicode(Key key) {
 		outputMan.printChar(key);
+		typedWord = typedWord + key.getName();
+		suggest = profileMan.getWordSuggest(typedWord);
+		outputMan.printSuggest(suggest, typedWord);
 	}
 	
 	

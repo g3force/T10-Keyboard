@@ -95,7 +95,8 @@ public class MainPanel extends JPanel implements ComponentListener {
 	
 	@Override
 	public void componentResized(ComponentEvent e) {
-		if (initilized && Presenter.getInstance().isInitilized()) {// do not delete Presenter if initialized, rescale
+		if (initilized && Presenter.getInstance().isInitilized() && e.getComponent().getSize().height != 0
+				&& e.getComponent().getSize().width != 0) {// do not delete Presenter is initialized, rescale
 																						// before GUI has a size
 			logger.debug("Window resized handler called");
 			ProfileManager.getInstance().resizeWindow(e.getComponent().getSize());
