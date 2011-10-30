@@ -35,7 +35,7 @@ public class TestTree {
 		// BasicConfigurator.configure();
 		
 		
-		PriorityTree tree = new PriorityTree();
+		PriorityTree tree = new PriorityTree("");
 		// tree.importFromHashMap(ImportExportManager.importFromFile("/home/dirk/Desktop/dict"));
 		// tree.printTree();
 		tree.importFromHashMap(ImportExportManager.importFromText("/home/dirk/Desktop/projektarbeiten"));
@@ -58,7 +58,7 @@ public class TestTree {
 		Profile prof = new Profile("Pflichteheft");
 		// System.out.println("2");
 		prof.saveTree();
-		prof.setTree(new PriorityTree());
+		prof.setTree(new PriorityTree(""));
 		System.out.println(prof.getTree().getSuggest("ha"));
 		prof.loadTree();
 		System.out.println(prof.getTree().getSuggest("ha"));
