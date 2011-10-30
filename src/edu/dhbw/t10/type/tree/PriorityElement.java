@@ -37,8 +37,8 @@ public class PriorityElement implements Serializable {
 	private long										lastUse;
 	private Map<Character, PriorityElement>	followers;
 	
-	private static final Logger		logger	= Logger.getLogger(PriorityElement.class);
-
+	private static final Logger					logger				= Logger.getLogger(PriorityElement.class);
+	
 	
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
@@ -48,19 +48,19 @@ public class PriorityElement implements Serializable {
 		logger.debug("PriorityElement created (1)");
 	}
 	
-
+	
 	public PriorityElement(char wo, PriorityElement fa, PriorityElement su, int fr) {
 		initializer(wo, fa, su, fr, new HashMap<Character, PriorityElement>());
 		logger.debug("PriorityElement created (2)");
 	}
 	
-
+	
 	public PriorityElement(char wo, PriorityElement fa, PriorityElement su, int fr, Map<Character, PriorityElement> fo) {
 		initializer(wo, fa, su, fr, fo);
 		logger.debug("PriorityElement created (3)");
 	}
 	
-
+	
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
@@ -79,6 +79,8 @@ public class PriorityElement implements Serializable {
 		Calendar timestamp = new GregorianCalendar();
 		lastUse = timestamp.getTimeInMillis();
 	}
+	
+	
 	/**
 	 * 
 	 * Adds a new Follower to a PriorityElement
@@ -146,8 +148,8 @@ public class PriorityElement implements Serializable {
 		}
 		logger.debug("Suggests (in Fathers) replaced");
 	}
-
-
+	
+	
 	/**
 	 * builds the according word to a node, goes up the tree and puts the char to each other
 	 * 
@@ -219,20 +221,17 @@ public class PriorityElement implements Serializable {
 	 */
 	public void print() {
 		if (father == null) {
-			System.out.print("[root], " + frequency + ", " + lastUse + ", Suggest: " + suggest
- + " (Father: " + father
+			System.out.print("[root], " + frequency + ", " + lastUse + ", Suggest: " + suggest + " (Father: " + father
 					+ ")\n");
 		} else {
 			System.out.print(buildWord() + ", " + frequency + ", " + lastUse // this item
 					+ ", Suggest: " + suggest.buildWord() + "(" + suggest.getFrequency() + ")" // according
-																																				// suggest
+																														// suggest
 					+ " (Father: " + father.buildWord() + ")\n"); // according father
 		}
 	}
 	
 	
-
-
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
@@ -241,47 +240,47 @@ public class PriorityElement implements Serializable {
 		return followers;
 	}
 	
-
+	
 	public void setFollowers(Map<Character, PriorityElement> followers) {
 		this.followers = followers;
 	}
 	
-
+	
 	public char getLetter() {
 		return letter;
 	}
 	
-
+	
 	public void setLetter(char word) {
 		this.letter = word;
 	}
 	
-
+	
 	public PriorityElement getFather() {
 		return father;
 	}
 	
-
+	
 	public void setFather(PriorityElement father) {
 		this.father = father;
 	}
 	
-
+	
 	public PriorityElement getSuggest() {
 		return suggest;
 	}
 	
-
+	
 	public void setSuggest(PriorityElement suggest) {
 		this.suggest = suggest;
 	}
 	
-
+	
 	public int getFrequency() {
 		return frequency;
 	}
 	
-
+	
 	public void setFrequency(int frequency) {
 		this.frequency = frequency;
 	}
@@ -295,6 +294,6 @@ public class PriorityElement implements Serializable {
 	public void setLastUse(long lastUse) {
 		this.lastUse = lastUse;
 	}
-
-
+	
+	
 }

@@ -35,15 +35,15 @@ public class Controller implements ActionListener {
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
 	private static final Logger	logger	= Logger.getLogger(Controller.class);
-	private static Controller	instance;
+	private static Controller		instance;
 	
-	private String					typedWord;
-	private String					suggest;
-
-	private ProfileManager		profileMan;
-	private OutputManager		outputMan;
-
-
+	private String						typedWord;
+	private String						suggest;
+	
+	private ProfileManager			profileMan;
+	private OutputManager			outputMan;
+	
+	
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
@@ -56,8 +56,8 @@ public class Controller implements ActionListener {
 		outputMan = OutputManager.getInstance();
 		logger.debug("initialized.");
 	}
-
-
+	
+	
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
@@ -68,12 +68,11 @@ public class Controller implements ActionListener {
 		return instance;
 	}
 	
-
-
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		logger.debug("Action Performed");
-		if(e.getSource() instanceof Button){
+		if (e.getSource() instanceof Button) {
 			Button button = (Button) e.getSource();
 			
 			if (button.getSingleKey().size() == 1) {
@@ -83,7 +82,7 @@ public class Controller implements ActionListener {
 				if (key.isAccept())
 					this.keyIsAccept(key);
 				else if (key.getType() == Key.CHAR)
-					this.keyIsChar(key);
+					this.KeyIsCHAR(key);
 				else if (key.getType() == Key.UNICODE)
 					this.KeyIsUnicode(key);
 				else if (key.getName() == "\\BACK_SPACE\\")
@@ -95,10 +94,12 @@ public class Controller implements ActionListener {
 					suggest = typedWord;
 				}
 			}
+			button.unsetPressedModes();
 		} // end if instanceof Bbutton
 		
 		if (e.getSource() instanceof ModeButton) {
-
+			ModeButton modeB = (ModeButton) e.getSource();
+			modeB.push();
 		}
 		
 		if (e.getSource() instanceof MuteButton) {
@@ -111,15 +112,15 @@ public class Controller implements ActionListener {
 				profileMan.toggleTreeExpanding();
 			}
 		}
-
-//		if (key.isAccept()) {
-			// if (suggest.length() > typedWord.length())
-			// outputMan.unMark();
-			// outputMan.printChar(key);
-			// profileMan.acceptWord(suggest);
-			// typedWord = "";
-			// suggest = "";
-//		} else 
+		
+		// if (key.isAccept()) {
+		// if (suggest.length() > typedWord.length())
+		// outputMan.unMark();
+		// outputMan.printChar(key);
+		// profileMan.acceptWord(suggest);
+		// typedWord = "";
+		// suggest = "";
+		// } else
 		// if (key.getType() == Key.CHAR) {
 		// outputMan.printChar(key);
 		// typedWord = typedWord + key.getText();
@@ -151,11 +152,11 @@ public class Controller implements ActionListener {
 		// suggest = typedWord;
 		// }
 		// else if (key.getType() == Key.MUTE) {
-//			// TODO Do something for mute
-//		}
+		// // TODO Do something for mute
+		// }
 	}
 	
-
+	
 	private void keyIsAccept(Key key) {
 		if (suggest.length() > typedWord.length())
 			outputMan.unMark();
@@ -166,15 +167,15 @@ public class Controller implements ActionListener {
 		suggest = "";
 	}
 	
-
-	private void keyIsChar(Key key) {
+	
+	private void KeyIsCHAR(Key key) {
 		outputMan.printChar(key);
 		typedWord = typedWord + key.getName();
 		suggest = profileMan.getWordSuggest(typedWord);
 		outputMan.printSuggest(suggest, typedWord);
 	}
-
-
+	
+	
 	private void KeyIsUnicode(Key key) {
 		outputMan.printChar(key);
 		typedWord = typedWord + key.getName();
@@ -182,7 +183,7 @@ public class Controller implements ActionListener {
 		outputMan.printSuggest(suggest, typedWord);
 	}
 	
-
+	
 	private void KeyIsBackspace() {
 		if (typedWord.length() > 0) {
 			typedWord = typedWord.substring(0, typedWord.length() - 2);
@@ -195,13 +196,13 @@ public class Controller implements ActionListener {
 		}
 	}
 	
-
+	
 	private void KeyIsSpaceOrEnter(Key key) {
 		outputMan.printChar(key);
 		typedWord = "";
 		suggest = "";
 	}
-
+	
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------

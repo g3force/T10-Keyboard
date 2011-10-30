@@ -39,11 +39,10 @@ public class MainPanel extends JPanel implements ComponentListener {
 	
 	private static final long		serialVersionUID	= -52892520461804389L;
 	private static MainPanel		instance;
-	@SuppressWarnings("unused")
 	private static final Logger	logger				= Logger.getLogger(MainPanel.class);
 	private boolean					initilized			= false;
 	
-
+	
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
@@ -80,8 +79,8 @@ public class MainPanel extends JPanel implements ComponentListener {
 		initilized = true;
 		logger.debug("Layout added.");
 	}
-
-
+	
+	
 	@Override
 	public void componentHidden(ComponentEvent e) {
 		
@@ -109,7 +108,7 @@ public class MainPanel extends JPanel implements ComponentListener {
 	public void componentShown(ComponentEvent e) {
 		
 	}
-
+	
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------

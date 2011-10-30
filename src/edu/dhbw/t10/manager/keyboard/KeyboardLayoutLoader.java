@@ -48,19 +48,19 @@ public class KeyboardLayoutLoader {
 	private static final Logger				logger	= Logger.getLogger(KeyboardLayoutLoader.class);
 	private static HashMap<Integer, Key>	keymap;
 	
-
+	
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
 	private KeyboardLayoutLoader() {
 		throw new AssertionError();
 	}
-
-
+	
+	
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
-
+	
 	/**
 	 * Load a keyboardLayout
 	 * 
@@ -77,7 +77,7 @@ public class KeyboardLayoutLoader {
 		KeyboardLayout kbdLayout = new KeyboardLayout(0, 0, 1, 1, 1);
 		File layoutFile = new File(filePath);
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-
+		
 		try {
 			dBuilder = dbFactory.newDocumentBuilder();
 			doc = dBuilder.parse(layoutFile);
@@ -113,19 +113,19 @@ public class KeyboardLayoutLoader {
 		// get other infos from layout file
 		int sizex = 0, sizey = 0;
 		float scalex = 1.0f, scaley = 1.0f, scale_font = 1.0f;
-
+		
 		nList = doc.getElementsByTagName("sizex");
 		if (nList.getLength() > 0)
 			sizex = Integer.parseInt(nList.item(0).getTextContent());
-
+		
 		nList = doc.getElementsByTagName("sizey");
 		if (nList.getLength() > 0)
 			sizey = Integer.parseInt(nList.item(0).getTextContent());
-
+		
 		nList = doc.getElementsByTagName("scalex");
 		if (nList.getLength() > 0)
 			scalex = Float.parseFloat(nList.item(0).getTextContent());
-
+		
 		nList = doc.getElementsByTagName("scaley");
 		if (nList.getLength() > 0)
 			scaley = Float.parseFloat(nList.item(0).getTextContent());
@@ -133,7 +133,7 @@ public class KeyboardLayoutLoader {
 		nList = doc.getElementsByTagName("scale_font");
 		if (nList.getLength() > 0)
 			scale_font = Float.parseFloat(nList.item(0).getTextContent());
-
+		
 		kbdLayout = new KeyboardLayout(sizex, sizey, scalex, scaley, scale_font);
 		
 		nList = doc.getElementsByTagName("font");
@@ -182,7 +182,7 @@ public class KeyboardLayoutLoader {
 		kbdLayout.setButtons(buttons);
 		kbdLayout.setFont(new Font(fname, fstyle, fsize));
 		kbdLayout.rescale();
-
+		
 		logger.debug("initialized.");
 		return kbdLayout;
 	}
@@ -207,11 +207,11 @@ public class KeyboardLayoutLoader {
 					logger.warn("key-node is not an element-node");
 					continue;
 				}
-
+				
 				Element eElement = (Element) nNode;
 				Bounds b = getBounds(nNode);
 				Button button = new Button(b.size_x, b.size_y, b.pos_x, b.pos_y);
-
+				
 				// receive default key
 				NodeList defkey = eElement.getElementsByTagName("key");
 				if (defkey.getLength() == 1) {
@@ -229,11 +229,12 @@ public class KeyboardLayoutLoader {
 					
 				} else {
 					logger.warn("Number of key-elements is not 1: " + defkey.getLength());
+					continue;
 				}
 				
 				button.addActionListener(Controller.getInstance()); // use EventCollector as listener
 				buttons.add(button);
-
+				
 				// receive Modes
 				NodeList modes = eElement.getElementsByTagName("mode");
 				for (int i = 0; i < modes.getLength(); i++) {
@@ -249,7 +250,8 @@ public class KeyboardLayoutLoader {
 							try {
 								iModeName = Integer.parseInt(modeName.getTextContent());
 							} catch (NumberFormatException e) {
-								logger.warn("modename could not be parsed to Integer. modename=" + modeName.getTextContent());
+								logger.warn("modename could not be parsed to Integer. modename=" + modeName.getTextContent()
+										+ "i=" + i);
 							}
 						}
 						// if (color != null) {
@@ -264,7 +266,13 @@ public class KeyboardLayoutLoader {
 								logger.warn("key not found in keymap. key content=" + item.getTextContent());
 							}
 							key.setAccept(accept);
-							button.addMode(modeButtons.get(iModeName), key);
+							if (modeButtons.get(iModeName) != null) {
+								button.addMode(modeButtons.get(iModeName), key);
+							} else {
+								logger.warn("A modeButton could not be found in keymap: " + iModeName + " i=" + i
+										+ key.getName());
+							}
+							
 						} catch (NumberFormatException e) {
 							logger.warn("Could not parse key to Integer. i=" + i);
 						}
@@ -272,10 +280,8 @@ public class KeyboardLayoutLoader {
 				}
 			} catch (NullPointerException e) {
 				logger.warn("A Button could not be read: NullPointerException");
-				e.printStackTrace();
 			} catch (NumberFormatException e) {
 				logger.warn("A Button could not be read: NumberFormatException");
-				e.printStackTrace();
 			}
 		}
 		return buttons;
@@ -306,12 +312,17 @@ public class KeyboardLayoutLoader {
 					} catch (NumberFormatException e) {
 						logger.warn("Could not parse key: " + defkey.item(0).getTextContent());
 					}
-					if (key == null)
+					if (key == null) {
+						logger.warn("Could not find key in keymap: " + defkey.item(0).getTextContent());
 						continue;
-				} else
+					}
+				} else {
+					logger.warn("Number of key-elements is not 1: " + defkey.getLength());
 					continue;
+				}
 				Bounds b = getBounds(nNode);
 				ModeButton button = new ModeButton(key, b.size_x, b.size_y, b.pos_x, b.pos_y);
+				button.addActionListener(Controller.getInstance());
 				modeButtons.put(key.getId(), button);
 			} catch (NullPointerException e) {
 				logger.warn("A ModeButton could not be read.");
@@ -319,8 +330,8 @@ public class KeyboardLayoutLoader {
 		}
 		return modeButtons;
 	}
-
-
+	
+	
 	private static Bounds getBounds(Node node) {
 		if (node.getNodeType() == Node.ELEMENT_NODE) {
 			try {
@@ -328,15 +339,15 @@ public class KeyboardLayoutLoader {
 				NamedNodeMap attr = eElement.getAttributes();
 				return new Bounds(getIntAttribute(attr, "size_x"), getIntAttribute(attr, "size_y"), getIntAttribute(attr,
 						"pos_x"), getIntAttribute(attr, "pos_y"));
-
+				
 			} catch (NullPointerException e) {
 				logger.warn("Could not read node as PhysicalButton. Node: " + node);
 			}
 		}
 		return null;
 	}
-
-
+	
+	
 	/**
 	 * Helper function for receiving an attribute by name
 	 * 

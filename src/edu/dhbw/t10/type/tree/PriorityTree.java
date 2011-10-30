@@ -23,7 +23,6 @@ import java.util.Map.Entry;
 import org.apache.log4j.Logger;
 
 
-
 /**
  * data container for the dictionary, the data it self is stored in the PriorityElements, PriorityTree has functions
  * like insert, delete,...
@@ -33,7 +32,7 @@ import org.apache.log4j.Logger;
 public class PriorityTree implements Serializable {
 	/**  */
 	private static final long		serialVersionUID	= 662040913098286336L;
-
+	
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
@@ -43,6 +42,8 @@ public class PriorityTree implements Serializable {
 	private static final Logger	logger	= Logger.getLogger(PriorityTree.class);
 	private transient String				pathToAllowedChars;
 
+	
+	
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
@@ -52,7 +53,7 @@ public class PriorityTree implements Serializable {
 		root = new PriorityElement('\u0000', null, null, 0);
 	}
 	
-
+	
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
@@ -78,8 +79,10 @@ public class PriorityTree implements Serializable {
 			logger.debug("Insertig Word...");
 			PriorityElement node = root;
 			char[] inChar = word.toCharArray(); // put every letter of the word alone in an char array
-			for (int i = 0; i < inChar.length; i++) {
-				if (node.hasFollower(inChar[i])) {
+			for (int i = 0; i < inChar.length; i++) 
+			{
+				if (node.hasFollower(inChar[i])) 
+				{
 					if (i < inChar.length - 1) {
 						node = node.getFollower(inChar[i]);
 					} else {
@@ -98,16 +101,15 @@ public class PriorityTree implements Serializable {
 					}
 					logger.debug("Inserting Node... (New Node Added)");
 				}
+				logger.info("Word Inserted");
 			}
-			logger.info("Word Inserted");
 		} else {
 			logger.info("Word Ignored - not valid");
 			System.out.println("not valid");
 		}
-
 	}
 	
-
+	
 	/**
 	 * takes a String with the beginning of the word, goes to the according node and returns the stored suggest word
 	 * 
@@ -180,7 +182,7 @@ public class PriorityTree implements Serializable {
 		return null;
 	}
 	
-
+	
 	/**
 	 * prints the tree
 	 */
@@ -221,15 +223,12 @@ public class PriorityTree implements Serializable {
 	}
 	
 	
-
-
-	
 	/**
 	 * inserts a list of words to a tree
 	 * @param input HashMap referencing a word (String) to its frequency (int)
 	 */
 	public void importFromHashMap(HashMap<String, Integer> input) {
-		for (Entry<String,Integer> entry:input.entrySet()) {
+		for (Entry<String, Integer> entry : input.entrySet()) {
 			insert(entry.getKey(), entry.getValue(), true);
 		}
 	}
@@ -248,8 +247,8 @@ public class PriorityTree implements Serializable {
 		
 		return exportMap;
 	}
-
-
+	
+	
 	/**
 	 * any PriorityElement with has got a bottomBorder or less frequency is deleted
 	 * @param bottomBorder border to decide if a PriorityElement has to be deleted
@@ -312,7 +311,6 @@ public class PriorityTree implements Serializable {
 	 * @return true if, all chars are in the alphabet
 	 */
 	
-	@SuppressWarnings("unused")
 	private boolean inputValid(String in) {
 		for(char letter: in.toCharArray()) {
 			int counter = 0;
