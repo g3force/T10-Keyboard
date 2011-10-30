@@ -71,7 +71,6 @@ public class Controller implements ActionListener {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		logger.debug("Action Performed");
 		if (e.getSource() instanceof Button) {
 			Button button = (Button) e.getSource();
 			
