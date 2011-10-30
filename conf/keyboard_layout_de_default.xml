@@ -15,10 +15,18 @@
 		pos_y="15"></dropdown>
 
 
-	<!-- <mutebutton size_x="50" size_y="50" pos_x="845" pos_y="115"> <mode 
-		modename="0" buttoncode="" color="yellow">T10</mode> <mode modename="t10_mute_on" 
-		buttoncode="\T10_MUTE_ON\" color="green">T10 </mode> <mode modename="t10_mute_off" 
-		buttoncode="\T10_MUTE_OFF\" color="red">T10 </mode> </mutebutton> -->
+	<mutebutton type="auto_completing" size_x="50" size_y="50" pos_x="845" pos_y="60">
+		<on color="green">T10</on>
+		<off color="red">T10</off>
+	</mutebutton>
+	<mutebutton type="auto_profile_change" size_x="50" size_y="50" pos_x="845" pos_y="115">
+		<on color="green">Auto</on>
+		<off color="red">Auto</off>
+	</mutebutton>
+	<mutebutton type="tree_expanding" size_x="50" size_y="50" pos_x="845" pos_y="170">
+		<on color="green">Save</on>
+		<off color="red">Save</off>
+	</mutebutton>
 
 	<!-- Esc -->
 	<button size_x="50" size_y="50" pos_x="5" pos_y="5">

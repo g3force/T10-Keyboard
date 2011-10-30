@@ -33,6 +33,7 @@ import edu.dhbw.t10.type.keyboard.KeyboardLayout;
 import edu.dhbw.t10.type.keyboard.key.Button;
 import edu.dhbw.t10.type.keyboard.key.Key;
 import edu.dhbw.t10.type.keyboard.key.ModeButton;
+import edu.dhbw.t10.type.keyboard.key.MuteButton;
 
 
 /**
@@ -108,6 +109,8 @@ public class KeyboardLayoutLoader {
 		ArrayList<Button> buttons = getButtons(doc, modeButtons);
 		logger.info("loaded " + buttons.size() + " Buttons.");
 		// ########################## read MuteButtons ###########################
+		ArrayList<MuteButton> muteButtons = getMuteButtons(doc);
+		logger.info("loaded " + muteButtons.size() + " MuteButtons.");
 		
 		
 		// get other infos from layout file
@@ -180,6 +183,7 @@ public class KeyboardLayoutLoader {
 		
 		kbdLayout.setModeButtons(modeButtonArray);
 		kbdLayout.setButtons(buttons);
+		kbdLayout.setMuteButtons(muteButtons);
 		kbdLayout.setFont(new Font(fname, fstyle, fsize));
 		kbdLayout.rescale();
 		
@@ -332,6 +336,90 @@ public class KeyboardLayoutLoader {
 	}
 	
 	
+	private static ArrayList<MuteButton> getMuteButtons(Document doc) {
+		ArrayList<MuteButton> muteButtons = new ArrayList<MuteButton>();
+		NodeList nList = doc.getElementsByTagName("mutebutton");
+		
+		// loop through buttons
+		for (int temp = 0; temp < nList.getLength(); temp++) {
+			try {
+				Node nNode = nList.item(temp);
+				
+				if (nNode.getNodeType() != Node.ELEMENT_NODE) {
+					logger.warn("key-node is not an element-node");
+					continue;
+				}
+				
+				Element eElement = (Element) nNode;
+				NamedNodeMap attr = eElement.getAttributes();
+				int type = MuteButton.UNKNOWN;
+				Bounds b = getBounds(nNode);
+				MuteButton button = new MuteButton(b.size_x, b.size_y, b.pos_x, b.pos_y);
+				
+				try {
+					String ttype = getAttribute(attr, "type");
+					if (ttype.equals("auto_completing")) {
+						type = MuteButton.AUTO_COMPLETING;
+					} else if (ttype.equals("auto_profile_change")) {
+						type = MuteButton.AUTO_PROFILE_CHANGE;
+					} else if (ttype.equals("tree_expanding")) {
+						type = MuteButton.TREE_EXPANDING;
+					} else {
+						type = MuteButton.UNKNOWN;
+					}
+					button.setType(type);
+				} catch (NullPointerException e) {
+					logger.warn("type-attribute not found/invalid in MuteButton. temp=" + temp);
+					continue;
+				}
+
+
+				// very dirty... copied following block twice... Who cares...
+				NodeList on = eElement.getElementsByTagName("on");
+				if (on.getLength() == 1) {
+					String name = on.item(0).getTextContent();
+					if (name != null) {
+						button.setOnName(name);
+					}
+					try {
+						String color = on.item(0).getAttributes().getNamedItem("color").getTextContent();
+						button.setOnColor(color);
+					} catch (NullPointerException e) {
+						logger.info("No color found/specified");
+					}
+				} else {
+					logger.warn("Number of on-elements is not 1: " + on.getLength());
+					continue;
+				}
+				
+				NodeList off = eElement.getElementsByTagName("off");
+				if (off.getLength() == 1) {
+					String name = off.item(0).getTextContent();
+					if (name != null) {
+						button.setOffName(name);
+					}
+					try {
+						String color = off.item(0).getAttributes().getNamedItem("color").getTextContent();
+						button.setOffColor(color);
+					} catch (NullPointerException e) {
+						logger.info("No color found/specified");
+					}
+				} else {
+					logger.warn("Number of on-elements is not 1: " + off.getLength());
+					continue;
+				}
+
+				button.addActionListener(Controller.getInstance());
+				button.release();
+				muteButtons.add(button);
+			} catch (NullPointerException e) {
+				logger.warn("A ModeButton could not be read.");
+			}
+		}
+		return muteButtons;
+	}
+
+
 	private static Bounds getBounds(Node node) {
 		if (node.getNodeType() == Node.ELEMENT_NODE) {
 			try {

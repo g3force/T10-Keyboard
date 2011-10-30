@@ -9,6 +9,11 @@
  */
 package edu.dhbw.t10.type.keyboard.key;
 
+import java.awt.Color;
+
+import org.apache.log4j.Logger;
+
+
 /**
  * button for the mute options
  * @author dirk
@@ -16,22 +21,30 @@ package edu.dhbw.t10.type.keyboard.key;
  */
 public class MuteButton extends PhysicalButton {
 	/**  */
-	private static final long	serialVersionUID		= -4124533718708150504L;
+	private static final long		serialVersionUID		= -4124533718708150504L;
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
-	private int						type;
-	public static final int		AUTO_PROFILE_CHANGE	= 0;
-	public static final int		AUTO_COMPLETING		= 1;
-	public static final int		TREE_EXPANDING			= 2;
+	private static final Logger	logger					= Logger.getLogger(MuteButton.class);
+	public static final int			UNKNOWN					= 0;
+	public static final int			AUTO_PROFILE_CHANGE	= 1;
+	public static final int			AUTO_COMPLETING		= 2;
+	public static final int			TREE_EXPANDING			= 3;
+	private int							type						= UNKNOWN;
+	private Color						onColor;
+	private Color						offColor;
+	private String						onName					= "";
+	private String						offName					= "";
+	private boolean					activated				= false;
 	
 	
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
-	public MuteButton(int type, int size_x, int size_y, int pos_x, int pos_y) {
+	public MuteButton(int size_x, int size_y, int pos_x, int pos_y) {
 		super(size_x, size_y, pos_x, pos_y);
-		this.type = type;
+		onColor = this.getBackground();
+		offColor = this.getBackground();
 	}
 	
 	
@@ -39,7 +52,28 @@ public class MuteButton extends PhysicalButton {
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
 	
+	public void push() {
+		if (activated) {
+			activated = false;
+			setText(offName);
+			setBackground(offColor);
+			logger.debug("MuteButton deactivated");
+		} else {
+			activated = true;
+			setText(onName);
+			setBackground(onColor);
+			logger.debug("MuteButton activated");
+		}
+	}
 	
+	
+	public void release() {
+		activated = false;
+		setText(offName);
+		setBackground(offColor);
+	}
+	
+
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
@@ -51,6 +85,50 @@ public class MuteButton extends PhysicalButton {
 	
 	public void setType(int type) {
 		this.type = type;
+	}
+	
+	
+	public Color getOnColor() {
+		return onColor;
+	}
+	
+	
+	public void setOnColor(String onColor) {
+		Color c = getColorFromString(onColor);
+		if (c != null)
+			this.onColor = c;
+	}
+	
+	
+	public Color getOffColor() {
+		return offColor;
+	}
+	
+	
+	public void setOffColor(String offColor) {
+		Color c = getColorFromString(offColor);
+		if (c != null)
+			this.offColor = c;
+	}
+	
+	
+	public String getOnName() {
+		return onName;
+	}
+	
+	
+	public void setOnName(String onName) {
+		this.onName = onName;
+	}
+	
+	
+	public String getOffName() {
+		return offName;
+	}
+	
+	
+	public void setOffName(String offName) {
+		this.offName = offName;
 	}
 	
 }

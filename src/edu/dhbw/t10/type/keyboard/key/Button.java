@@ -31,7 +31,6 @@ public class Button extends PhysicalButton {
 	private static final long			serialVersionUID	= 6949715976373962684L;
 	private HashMap<ModeButton, Key>	modes					= new HashMap<ModeButton, Key>();
 	private Key								key;
-	// assigns to every modi
 	private ArrayList<ModeButton>		activeModes			= new ArrayList<ModeButton>();
 	
 

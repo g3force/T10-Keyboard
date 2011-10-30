@@ -104,6 +104,7 @@ public class Controller implements ActionListener {
 		
 		if (e.getSource() instanceof MuteButton) {
 			MuteButton muteB = (MuteButton) e.getSource();
+			muteB.push();
 			if (muteB.getType() == MuteButton.AUTO_COMPLETING) {
 				profileMan.toggleAutoCompleting();
 			} else if (muteB.getType() == MuteButton.AUTO_PROFILE_CHANGE) {
@@ -111,6 +112,7 @@ public class Controller implements ActionListener {
 			} else if (muteB.getType() == MuteButton.TREE_EXPANDING) {
 				profileMan.toggleTreeExpanding();
 			}
+			logger.debug("MuteButton pressed");
 		}
 		
 		// if (key.isAccept()) {
