@@ -15,9 +15,7 @@ import javax.swing.JComboBox;
 
 
 /**
- * TODO NicolaiO, add comment!
- * - What should this type do (in one sentence)?
- * - If not intuitive: A simple example how to use this class
+ * Drop down list on the keyboard, especially for profile dropdown
  * 
  * @author NicolaiO
  * 
@@ -37,6 +35,14 @@ public class DropDownList extends JComboBox {
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
+	/**
+	 * 
+	 * @param type
+	 * @param size_x
+	 * @param size_y
+	 * @param pos_x
+	 * @param pos_y
+	 */
 	public DropDownList(int type, int size_x, int size_y, int pos_x, int pos_y) {
 		this.origSize = new Dimension(size_x, size_y);
 		this.pos_x = pos_x;
@@ -47,6 +53,14 @@ public class DropDownList extends JComboBox {
 	}
 	
 	
+	/**
+	 * 
+	 * @param type
+	 * @param size_x
+	 * @param size_y
+	 * @param pos_x
+	 * @param pos_y
+	 */
 	public DropDownList(String type, int size_x, int size_y, int pos_x, int pos_y) {
 		this.origSize = new Dimension(size_x, size_y);
 		this.pos_x = pos_x;

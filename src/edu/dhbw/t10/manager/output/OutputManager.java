@@ -15,7 +15,7 @@ import edu.dhbw.t10.type.keyboard.key.Key;
 
 
 /**
- * TODO NicolaiO, add comment!
+ * TODO Andres, add comment!
  * 
  * 
  * @author Andres

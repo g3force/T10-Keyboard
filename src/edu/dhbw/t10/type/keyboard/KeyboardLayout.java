@@ -23,9 +23,8 @@ import edu.dhbw.t10.type.keyboard.key.PhysicalButton;
 
 
 /**
- * TODO NicolaiO, add comment!
- * - What should this type do (in one sentence)?
- * - If not intuitive: A simple example how to use this class
+ * Representation of the keyboard layout with sizes and scale, as well as with all components (Buttons and
+ * Drop-Down-Lists)
  * 
  * @author NicolaiO
  * 
@@ -50,6 +49,15 @@ public class KeyboardLayout {
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
+	
+	/**
+	 * 
+	 * @param size_x
+	 * @param size_y
+	 * @param scalex
+	 * @param scaley
+	 * @param scale_font
+	 */
 	public KeyboardLayout(int size_x, int size_y, float scalex, float scaley, float scale_font) {
 		this.size_x = size_x;
 		this.size_y = size_y;
@@ -63,12 +71,22 @@ public class KeyboardLayout {
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
 	
-	
+	/**
+	 * Add a drop down list
+	 * 
+	 * @param ddl
+	 * @author NicolaiO
+	 */
 	public void addDdl(DropDownList ddl) {
 		ddls.add(ddl);
 	}
 	
 	
+	/**
+	 * call rescale, if scale factor was changed to resize all buttons to an occording size
+	 * 
+	 * @author NicolaiO
+	 */
 	public void rescale() {
 		for (PhysicalButton k : getAllPhysicalButtons()) {
 			Rectangle rect = k.getBounds();
@@ -91,6 +109,12 @@ public class KeyboardLayout {
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
 	
+	/**
+	 * Returns a list of all Buttons (normal, mute, mode) as PhysicalButtons
+	 * 
+	 * @return
+	 * @author NicolaiO
+	 */
 	public ArrayList<PhysicalButton> getAllPhysicalButtons() {
 		ArrayList<PhysicalButton> tempb = new ArrayList<PhysicalButton>();
 		tempb.addAll(buttons);

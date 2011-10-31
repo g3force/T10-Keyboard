@@ -21,10 +21,7 @@ import edu.dhbw.t10.view.panels.MainPanel;
 
 
 /**
- * TODO NicolaiO, add comment!
- * - What should this type do (in one sentence)?
- * - If not intuitive: A simple example how to use this class
- * 
+ * This is the main Window. This class initializes settings for the window and adds the MainPanel.
  * @author NicolaiO
  * 
  */

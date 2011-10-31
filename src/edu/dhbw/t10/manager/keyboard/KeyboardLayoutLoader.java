@@ -53,6 +53,9 @@ public class KeyboardLayoutLoader {
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
+	/**
+	 * do not call me... I'm a static class...
+	 */
 	private KeyboardLayoutLoader() {
 		throw new AssertionError();
 	}
@@ -64,8 +67,14 @@ public class KeyboardLayoutLoader {
 	
 	/**
 	 * Load a keyboardLayout
+	 * 1. read ModeButtons
+	 * 2. read Buttons
+	 * 3. read MuteButtons
+	 * 4. read default config for layout
+	 * 5. read DropDownLists
+	 * 6. add everythink to keyboardlayout
 	 * 
-	 * @param filePath to an keymap XML file
+	 * @param filePath to an keyboard layout XML file
 	 * @param keymap that was loaded from file
 	 * @return KeyboardLayout
 	 * @author NicolaiO
@@ -79,6 +88,7 @@ public class KeyboardLayoutLoader {
 		File layoutFile = new File(filePath);
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 		
+		// initialize document reader
 		try {
 			dBuilder = dbFactory.newDocumentBuilder();
 			doc = dBuilder.parse(layoutFile);
@@ -100,6 +110,7 @@ public class KeyboardLayoutLoader {
 		
 		// ########################## read ModeButtons ########################
 		HashMap<Integer, ModeButton> modeButtons = getModeButtons(doc);
+		// a list should be returned, by the hashmap is also needed for getButtons()
 		ArrayList<ModeButton> modeButtonArray = new ArrayList<ModeButton>();
 		for (ModeButton b : modeButtons.values()) {
 			modeButtonArray.add(b);
@@ -113,7 +124,7 @@ public class KeyboardLayoutLoader {
 		logger.info("loaded " + muteButtons.size() + " MuteButtons.");
 		
 		
-		// get other infos from layout file
+		// read default sizes and scale of layout
 		int sizex = 0, sizey = 0;
 		float scalex = 1.0f, scaley = 1.0f, scale_font = 1.0f;
 		
@@ -139,6 +150,7 @@ public class KeyboardLayoutLoader {
 		
 		kbdLayout = new KeyboardLayout(sizex, sizey, scalex, scaley, scale_font);
 		
+		// read font (especially for size!)
 		nList = doc.getElementsByTagName("font");
 		String fname = "";
 		int fstyle = 0, fsize = 0;
@@ -162,6 +174,7 @@ public class KeyboardLayoutLoader {
 			}
 		}
 		
+		// read dropdown lists
 		nList = doc.getElementsByTagName("dropdown");
 		for (int temp = 0; temp < nList.getLength(); temp++) {
 			Node nNode = nList.item(temp);
@@ -172,7 +185,7 @@ public class KeyboardLayoutLoader {
 					DropDownList cb = new DropDownList(getAttribute(attr, "type"), getIntAttribute(attr, "size_x"),
 							getIntAttribute(attr, "size_y"), getIntAttribute(attr, "pos_x"), getIntAttribute(attr, "pos_y"));
 					kbdLayout.addDdl(cb);
-					// TODO NicolaiO, Felix listener for dropdown list
+					cb.addActionListener(Controller.getInstance());
 				}
 			} catch (NullPointerException e) {
 				logger.warn("Dropdown-element found, but can not be read correctly! node nr " + temp + ": "
@@ -181,6 +194,7 @@ public class KeyboardLayoutLoader {
 		}
 		
 		
+		// add everything to layout and rescale layout to set buttons sizes correctly (scale!)
 		kbdLayout.setModeButtons(modeButtonArray);
 		kbdLayout.setButtons(buttons);
 		kbdLayout.setMuteButtons(muteButtons);
@@ -193,10 +207,23 @@ public class KeyboardLayoutLoader {
 	
 	
 	/**
-	 * TODO Nicolai add comment...
+	 * Get all Buttons. This are those Buttons on the keyboard, that are neither ModeButtons nor MuteButtons.
+	 * All Buttons are saved in a list that will be returned.
+	 * A button looks like this:
 	 * 
-	 * @param eElement must be a <key> node
-	 * @return Key
+	 * <button size_x="50" size_y="50" pos_x="390" pos_y="60">
+	 * <key>22</key>
+	 * <mode modename="1001">36</mode>
+	 * <mode modename="1007">45</mode>
+	 * </button>
+	 * 
+	 * where key is the default key and mode is a key that is used with the occording mode. The mode numbers are
+	 * references to the mode keys
+	 * 
+	 * @param doc document
+	 * @param modeButtons available modebuttons, which are needed for reference in button-modes
+	 * @return list of all buttons
+	 * @author NicolaiO
 	 */
 	private static ArrayList<Button> getButtons(Document doc, HashMap<Integer, ModeButton> modeButtons) {
 		ArrayList<Button> buttons = new ArrayList<Button>();
@@ -245,10 +272,8 @@ public class KeyboardLayoutLoader {
 					Node item = modes.item(i);
 					if (item != null) {
 						int iModeName = 0;
-						// String sColor = "";
 						boolean accept = false;
 						Node modeName = item.getAttributes().getNamedItem("modename");
-						// Node color = item.getAttributes().getNamedItem("color");
 						Node nAccept = item.getAttributes().getNamedItem("accept");
 						if (modeName != null) {
 							try {
@@ -258,9 +283,6 @@ public class KeyboardLayoutLoader {
 										+ "i=" + i);
 							}
 						}
-						// if (color != null) {
-						// sColor = color.getTextContent();
-						// }
 						if (nAccept != null && nAccept.getTextContent().equals("true")) {
 							accept = true;
 						}
