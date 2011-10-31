@@ -113,48 +113,6 @@ public class Controller implements ActionListener {
 			}
 			logger.debug("MuteButton pressed");
 		}
-		
-		// if (key.isAccept()) {
-		// if (suggest.length() > typedWord.length())
-		// outputMan.unMark();
-		// outputMan.printChar(key);
-		// profileMan.acceptWord(suggest);
-		// typedWord = "";
-		// suggest = "";
-		// } else
-		// if (key.getType() == Key.CHAR) {
-		// outputMan.printChar(key);
-		// typedWord = typedWord + key.getText();
-		// suggest = profileMan.getWordSuggest(typedWord);
-		// outputMan.printSuggest(suggest, typedWord);
-		// } else
-		// if (key.getType() == Key.UNICODE) {
-		// outputMan.printChar(key);
-		// } else
-		// if (key.getName() == "\\BACK_SPACE\\") {
-		// if (typedWord.length() > 0) {
-		// typedWord = typedWord.substring(0, typedWord.length() - 2);
-		// outputMan.deleteChar(2); // Zwei, weil einmal muss die aktuelle Markierung gelöscht werden und
-		// // dann ein Zeichen.
-		// suggest = profileMan.getWordSuggest(typedWord);
-		// outputMan.printSuggest(suggest, typedWord);
-		// } else {
-		// outputMan.deleteChar(1);
-		// }
-		// } else
-		// if ((key.getName() == "\\SPACE\\" || key.getName() == "\\ENTER\\")) {
-		// outputMan.printChar(key);
-		// typedWord = "";
-		// suggest = "";
-		// } else
-		// if (key.getType() == Key.CONTROL) {
-		// outputMan.printChar(key);
-		// if (key.getName() == "\\DELETE\\")
-		// suggest = typedWord;
-		// }
-		// else if (key.getType() == Key.MUTE) {
-		// // TODO Do something for mute
-		// }
 	}
 	
 	
