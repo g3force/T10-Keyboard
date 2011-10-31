@@ -98,7 +98,6 @@ public class Profile {
 		}
 	}
 	
-	
 	public void saveTree() {
 		try {
 			Serializer.serialize(tree, pathToTree);

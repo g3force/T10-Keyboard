@@ -85,6 +85,7 @@ public class ProfileManager {
 		kbdLayout = KeyboardLayoutLoader
 				.load("conf/keyboard_layout_de_default.xml", KeymapLoader.load("conf/keymap.xml"));
 		KeyboardLayoutSaver.save(kbdLayout, "");
+		saveConfig();
 	}
 
 
