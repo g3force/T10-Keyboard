@@ -96,10 +96,11 @@ public class Controller implements ActionListener {
 			button.unsetPressedModes();
 		} // end if instanceof Bbutton
 		
+
 		if (e.getSource() instanceof ModeButton) {
 			ModeButton modeB = (ModeButton) e.getSource();
 			modeB.push();
-		}
+		} // end if instance of ModeButton
 		
 		if (e.getSource() instanceof MuteButton) {
 			MuteButton muteB = (MuteButton) e.getSource();
@@ -112,7 +113,7 @@ public class Controller implements ActionListener {
 				profileMan.toggleTreeExpanding();
 			}
 			logger.debug("MuteButton pressed");
-		}
+		} // end if instance of MuteButton
 	}
 	
 	
