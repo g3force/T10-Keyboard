@@ -87,7 +87,6 @@ public class Profile implements Serializable {
 		}
 	}
 	
-	
 	public void saveTree() {
 		try {
 			Serializer.serialize(tree, pathToTree);
