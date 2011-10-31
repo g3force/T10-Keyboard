@@ -20,9 +20,6 @@ import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
 
-import edu.dhbw.t10.manager.keyboard.KeyboardLayoutLoader;
-import edu.dhbw.t10.manager.keyboard.KeyboardLayoutSaver;
-import edu.dhbw.t10.manager.keyboard.KeymapLoader;
 import edu.dhbw.t10.type.keyboard.KeyboardLayout;
 import edu.dhbw.t10.type.profile.Profile;
 import edu.dhbw.t10.view.Presenter;
@@ -41,18 +38,17 @@ public class ProfileManager {
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
-	private static final Logger	logger	= Logger.getLogger(ProfileManager.class);
-	private static ProfileManager	instance;
+	private static final Logger	logger				= Logger.getLogger(ProfileManager.class);
+	private static ProfileManager	instance				= new ProfileManager();
 	private ArrayList<Profile>		profiles;
 	private ArrayList<String>		profilePath;
 	private Profile					activeProfile;
 	private String						activeProfileName;														// Just for initializing
-	private KeyboardLayout			kbdLayout;
 	private boolean					autoProfileChange	= true;
 	private boolean					autoCompleting		= true;
 	private boolean					treeExpanding		= true;
-
-
+	
+	
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
@@ -61,34 +57,28 @@ public class ProfileManager {
 	 * Constructor as Singleton. This way, we prevent having multiple manager and
 	 */
 	private ProfileManager() {
-		// ....
-		activeProfileName = "";
+		logger.debug("initializing...");
+		activeProfileName = "default";
 		profilePath = new ArrayList<String>();
 		readConfig();
 		getSerializedProfiles();
 		if (profiles.size() == 0) {
-			Profile prof = new Profile(0, "default");
-			prof.saveTree();
-			profiles.add(new Profile());
+			profiles.add(new Profile("default"));
 		}
 		activeProfile = getProfileByName(activeProfileName); // TODO save active profile
 		// ---------------------DUMMY CODE------------------------------
-		Profile prof = new Profile(1, "Pflichteheft");
-		setActive(prof);
-		prof.setPathToTree("conf/trees/" + prof.getName());
-		prof.saveTree();
-		profiles.add(prof);
-
+		
+		// Profile prof = new Profile("Pflichteheft");
+		// setActive(prof);
+		// prof.saveTree();
+		// profiles.add(prof);
+		
 		// -------------------ENDE DUMMY CODE---------------------------
 		serializeProfiles();
-		instance = this;
-		kbdLayout = KeyboardLayoutLoader
-				.load("conf/keyboard_layout_de_default.xml", KeymapLoader.load("conf/keymap.xml"));
-		KeyboardLayoutSaver.save(kbdLayout, "");
-		saveConfig();
+		logger.debug("initialized.");
 	}
-
-
+	
+	
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
@@ -97,14 +87,12 @@ public class ProfileManager {
 	 *         multiple ProfileManager.
 	 */
 	public static ProfileManager getInstance() {
-		if (instance == null) {
-			instance = new ProfileManager();
-		}
 		return instance;
 	}
 	
-
+	
 	public void resizeWindow(Dimension size) {
+		KeyboardLayout kbdLayout = activeProfile.getKbdLayout();
 		if (kbdLayout != null) {
 			float xscale = (float) size.width / (float) kbdLayout.getOrigSize_x();
 			float yscale = (float) size.height / (float) kbdLayout.getOrigSize_y();
@@ -115,6 +103,7 @@ public class ProfileManager {
 			kbdLayout.rescale();
 			MainPanel.getInstance().setPreferredSize(new Dimension(kbdLayout.getSize_x(), kbdLayout.getSize_y()));
 			Presenter.getInstance().pack();
+			logger.debug("Window rescaled");
 		}
 	}
 	
@@ -163,6 +152,7 @@ public class ProfileManager {
 		}
 	}
 	
+	
 	private String createComment(String comment) {
 		comment = "//" + comment;
 		return comment;
@@ -179,7 +169,7 @@ public class ProfileManager {
 			
 			if (activeProfile != null)
 				bw.write("ActiveProfile=" + activeProfile.getName());
-
+			
 			for (int i = 0; i < profiles.size(); i++) {
 				bw.write("ProfilePath=" + profiles.get(i).getPathToProfile() + "\n");
 			}
@@ -192,7 +182,7 @@ public class ProfileManager {
 			ex.printStackTrace();
 		}
 	}
-
+	
 	
 	/**
 	 * 
@@ -203,10 +193,9 @@ public class ProfileManager {
 	 * @return Handle/Pointer to the new profile.
 	 * @author DerBaschti
 	 */
-
+	
 	public Profile create(String profileName, String pathToNewProfile) {
-		Profile newProfile = new Profile();
-		newProfile.setName(profileName);
+		Profile newProfile = new Profile(profileName);
 		profilePath.add(pathToNewProfile);
 		profiles.add(newProfile);
 		if (activeProfile == null) {
@@ -235,8 +224,8 @@ public class ProfileManager {
 		}
 		return null;
 	}
-
-
+	
+	
 	/**
 	 * 
 	 * Deletes a profile depending on the ID.<br/>
@@ -279,8 +268,8 @@ public class ProfileManager {
 		activeProfile = newActive;
 		activeProfile.loadTree();
 	}
-
-
+	
+	
 	/**
 	 * 
 	 * TODO ??? implementieren... siehe Kontrollfluss Diagramm
@@ -301,7 +290,7 @@ public class ProfileManager {
 		} else {
 			return givenChars;
 		}
-
+		
 	}
 	
 	
@@ -320,7 +309,7 @@ public class ProfileManager {
 		if (treeExpanding)
 			getActive().getTree().insert(word);
 	}
-
+	
 	
 	/**
 	 * 
@@ -330,23 +319,24 @@ public class ProfileManager {
 	public void serializeProfiles() {
 		for (int i = 0; i < profiles.size(); i++) {
 			Profile cProfile = profiles.get(i);
-			if (cProfile.getPathToProfile()==null || cProfile.getPathToProfile().isEmpty())
+			if (cProfile.getPathToProfile() == null || cProfile.getPathToProfile().isEmpty())
 				continue;
 			try {
 				Serializer.serialize(cProfile, cProfile.getPathToProfile());
 			} catch (IOException io) {
-				logger.error("IOException: " + io.toString());
+				logger.error("Not able to serialize Profiles, IOException: ");
+				io.printStackTrace();
 			}
 		}
 	}
-
+	
 	
 	public void getSerializedProfiles() {
 		for (int i = 0; i < profilePath.size(); i++) {
 			try {
 				profiles.add((Profile) Serializer.deserialize(profilePath.get(i)));
 			} catch (IOException io) {
-				logger.error("IOException: " + io.toString());
+				logger.error("Not able to deserialize Profile from file" + profilePath.get(i));
 			}
 		}
 		if (profiles == null) {
@@ -355,23 +345,21 @@ public class ProfileManager {
 	}
 	
 	
-	private boolean toogle(boolean tt) {
-		return !tt;
-	}
-
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
 	public ArrayList<Profile> getProfiles() {
 		return profiles;
 	}
-
+	
+	
 	public Profile getActive() {
 		return activeProfile;
 	}
-
+	
+	
 	public KeyboardLayout getKbdLayout() {
-		return kbdLayout;
+		return activeProfile.getKbdLayout();
 	}
 	
 	
@@ -391,7 +379,7 @@ public class ProfileManager {
 		else
 			autoProfileChange = true;
 	}
-
+	
 	
 	public boolean isAutoCompleting() {
 		return autoCompleting;
@@ -410,7 +398,7 @@ public class ProfileManager {
 			autoCompleting = true;
 	}
 	
-
+	
 	public boolean isTreeExpanding() {
 		return treeExpanding;
 	}
@@ -427,6 +415,6 @@ public class ProfileManager {
 		else
 			treeExpanding = true;
 	}
-
-
+	
+	
 }

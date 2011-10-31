@@ -39,7 +39,7 @@ public class KeymapLoader {
 	// --------------------------------------------------------------------------
 	private static final Logger	logger	= Logger.getLogger(KeymapLoader.class);
 	
-
+	
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
@@ -47,7 +47,7 @@ public class KeymapLoader {
 		throw new AssertionError();
 	}
 	
-
+	
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
@@ -59,6 +59,7 @@ public class KeymapLoader {
 	 * @author NicolaiO
 	 */
 	public static HashMap<Integer, Key> load(String filePath) {
+		logger.debug("initializing...");
 		File layoutFile = new File(filePath);
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 		try {
@@ -95,6 +96,7 @@ public class KeymapLoader {
 				}
 			}
 			logger.info("loaded " + keymap.size() + " keys.");
+			logger.debug("initialized.");
 			return keymap;
 		} catch (ParserConfigurationException err) {
 			logger.error("Could not initialize dBuilder");
@@ -106,6 +108,7 @@ public class KeymapLoader {
 			logger.error("Could not parse document");
 			err.printStackTrace();
 		}
+		logger.warn("Keymap not finished.");
 		return new HashMap<Integer, Key>();
 	}
 	
@@ -119,7 +122,7 @@ public class KeymapLoader {
 			return Key.UNICODE;
 		return Key.UNKNOWN;
 	}
-
+	
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------

@@ -9,13 +9,18 @@
  */
 package edu.dhbw.t10.type.tree;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
-
 
 
 /**
@@ -27,23 +32,28 @@ import org.apache.log4j.Logger;
 public class PriorityTree implements Serializable {
 	/**  */
 	private static final long		serialVersionUID	= 662040913098286336L;
-
+	
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
 	private PriorityElement			root;
+	private transient LinkedList<int[]>	allowedChars;
 	
 	private static final Logger	logger	= Logger.getLogger(PriorityTree.class);
+	private transient String				pathToAllowedChars;
 
-
+	
+	
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
-	public PriorityTree() {
+	public PriorityTree(String chars) {
+		pathToAllowedChars = chars;
+		allowedChars = new LinkedList<int[]>();
 		root = new PriorityElement('\u0000', null, null, 0);
 	}
 	
-
+	
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
@@ -65,12 +75,14 @@ public class PriorityTree implements Serializable {
 	 * @param frequency the start frequency of the inserting word
 	 */
 	private void insert(String word, int frequency, boolean setFreq) {
-		// if (inputValid(word)) {
+		if (inputValid(word)) {
 			logger.debug("Insertig Word...");
 			PriorityElement node = root;
 			char[] inChar = word.toCharArray(); // put every letter of the word alone in an char array
-			for (int i = 0; i < inChar.length; i++) {
-				if (node.hasFollower(inChar[i])) {
+			for (int i = 0; i < inChar.length; i++) 
+			{
+				if (node.hasFollower(inChar[i])) 
+				{
 					if (i < inChar.length - 1) {
 						node = node.getFollower(inChar[i]);
 					} else {
@@ -89,17 +101,15 @@ public class PriorityTree implements Serializable {
 					}
 					logger.debug("Inserting Node... (New Node Added)");
 				}
+				logger.info("Word Inserted");
 			}
-			logger.info("Word Inserted");
-		/*
-		 * } else {
-		 * logger.info("Word Ignored - not valid");
-		 * System.out.println("not valid");
-		 * }
-		 */
+		} else {
+			logger.info("Word Ignored - not valid");
+			System.out.println("not valid");
+		}
 	}
 	
-
+	
 	/**
 	 * takes a String with the beginning of the word, goes to the according node and returns the stored suggest word
 	 * 
@@ -107,7 +117,7 @@ public class PriorityTree implements Serializable {
 	 * @return suggested Word
 	 */
 	public String getSuggest(String wordPart) {
-		logger.debug("Creating suggest...");
+		logger.debug("Creating suggest for " + wordPart + "...");
 		PriorityElement suggest = getElement(wordPart);
 		if (suggest == null) {
 			logger.info("Suggest created (same as wordPart)");
@@ -172,7 +182,7 @@ public class PriorityTree implements Serializable {
 		return null;
 	}
 	
-
+	
 	/**
 	 * prints the tree
 	 */
@@ -213,15 +223,12 @@ public class PriorityTree implements Serializable {
 	}
 	
 	
-
-
-	
 	/**
 	 * inserts a list of words to a tree
 	 * @param input HashMap referencing a word (String) to its frequency (int)
 	 */
 	public void importFromHashMap(HashMap<String, Integer> input) {
-		for (Entry<String,Integer> entry:input.entrySet()) {
+		for (Entry<String, Integer> entry : input.entrySet()) {
 			insert(entry.getKey(), entry.getValue(), true);
 		}
 	}
@@ -240,8 +247,8 @@ public class PriorityTree implements Serializable {
 		
 		return exportMap;
 	}
-
-
+	
+	
 	/**
 	 * any PriorityElement with has got a bottomBorder or less frequency is deleted
 	 * @param bottomBorder border to decide if a PriorityElement has to be deleted
@@ -275,6 +282,7 @@ public class PriorityTree implements Serializable {
 	}
 	
 	
+
 	/**
 	 * prints out the dictionary, beginning with the word with the highest frequency
 	 * bad in performance
@@ -303,16 +311,68 @@ public class PriorityTree implements Serializable {
 	 * @return true if, all chars are in the alphabet
 	 */
 	
-	@SuppressWarnings("unused")
 	private boolean inputValid(String in) {
 		for(char letter: in.toCharArray()) {
-			if ((int) letter < 65 || ((int) letter > 90 && (int) letter < 97) || (int) letter > 122) {
-				return false;
+			int counter = 0;
+			for (int[] range : allowedChars) {
+				if ((int) letter >= range[0] && (int) letter <= range[1])
+					counter++;
 			}
+			if (counter == 0)
+				return false;
 		}
 		return true;
-	}
 
+	}
+	
+	
+	@SuppressWarnings("unused")
+	private void saveAllowedChars() {
+		try {
+			File confFile = new File("pathToAllowedChars");
+			FileWriter fw = new FileWriter(confFile);
+			BufferedWriter bw = new BufferedWriter(fw);
+			
+			for (int i = 0; i < allowedChars.size(); i++) {
+				bw.write(allowedChars.get(i)[0] + "-" + allowedChars.get(i)[1] + "\n");
+			}
+			bw.close();
+		} catch (IOException io) {
+			logger.debug("IOException in readConfig()");
+			io.printStackTrace();
+		} catch (Exception ex) {
+			logger.debug("Exception in readConfig(): " + ex.toString());
+			ex.printStackTrace();
+		}
+	}
+	
+	
+	@SuppressWarnings("unused")
+	private void loadAllowedChars() {
+		try {
+			File confFile = new File(pathToAllowedChars);
+			if (confFile.exists()) {
+				FileReader fr = new FileReader(confFile);
+				BufferedReader br = new BufferedReader(fr);
+				String entry = "";
+				while ((entry = br.readLine()) != null) {
+					String[] entries = entry.split("-");
+					int[] newi = { Integer.parseInt(entries[0]), Integer.parseInt(entries[1]) };
+					allowedChars.add(newi);
+				}
+			} else {
+				logger.error("No allowed chars");
+				int[] newi = { 0, 255 };
+				allowedChars.add(newi);
+			}
+		} catch (IOException io) {
+			logger.debug("IOException in loadAllowedChars()");
+			io.printStackTrace();
+		} catch (Exception ex) {
+			logger.debug("Exception in loadAllowedChars(): " + ex.toString());
+			ex.printStackTrace();
+		}
+	}
 
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------

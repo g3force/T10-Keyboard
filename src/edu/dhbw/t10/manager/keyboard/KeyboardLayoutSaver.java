@@ -51,20 +51,20 @@ public class KeyboardLayoutSaver {
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
 	private static final Logger	logger	= Logger.getLogger(KeyboardLayoutSaver.class);
-
-
+	
+	
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
 	private KeyboardLayoutSaver() {
 		throw new AssertionError();
 	}
-
-
+	
+	
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
-
+	
 	/**
 	 * Save the keyboardLayout
 	 * 
@@ -83,22 +83,22 @@ public class KeyboardLayoutSaver {
 			// doc.getDocumentElement().normalize();
 			Element layout = doc.createElement("layout");
 			doc.appendChild(layout);
-
+			
 			Element sizex = doc.createElement("sizex");
-			Text text = doc.createTextNode(kbdLayout.getSize_x() + "");
+			Text text = doc.createTextNode(kbdLayout.getOrigSize_x() + "");
 			sizex.appendChild(text);
 			layout.appendChild(sizex);
-
+			
 			Element sizey = doc.createElement("sizey");
-			text = doc.createTextNode(kbdLayout.getSize_y() + "");
+			text = doc.createTextNode(kbdLayout.getOrigSize_y() + "");
 			sizey.appendChild(text);
 			layout.appendChild(sizey);
-
+			
 			Element scalex = doc.createElement("scalex");
 			text = doc.createTextNode(kbdLayout.getScale_x() + "");
 			scalex.appendChild(text);
 			layout.appendChild(scalex);
-
+			
 			Element scaley = doc.createElement("scaley");
 			text = doc.createTextNode(kbdLayout.getScale_y() + "");
 			scaley.appendChild(text);
@@ -108,7 +108,7 @@ public class KeyboardLayoutSaver {
 			text = doc.createTextNode(kbdLayout.getScale_font() + "");
 			scale_font.appendChild(text);
 			layout.appendChild(scale_font);
-
+			
 			Element font = doc.createElement("font");
 			layout.appendChild(font);
 			
@@ -125,26 +125,24 @@ public class KeyboardLayoutSaver {
 			
 			for (DropDownList dd : kbdLayout.getDdls()) {
 				Element dropdown = doc.createElement("dropdown");
-				dropdown.setAttribute("type", dd.getName());
-				dropdown.setAttribute("size_x", dd.getWidth() + "");
-				dropdown.setAttribute("size_y", dd.getHeight() + "");
+				dropdown.setAttribute("type", dd.getTypeAsString());
+				dropdown.setAttribute("size_x", dd.getOrigSize().getWidth() + "");
+				dropdown.setAttribute("size_y", dd.getOrigSize().getHeight() + "");
 				dropdown.setAttribute("pos_x", dd.getX() + "");
-				dropdown.setAttribute("pos_y", dd.getX() + "");
-				System.out.println("Dropdown");
+				dropdown.setAttribute("pos_y", dd.getY() + "");
 				layout.appendChild(dropdown);
 			}
 			for (Button button : kbdLayout.getButtons()) {
 				Element buttonEl = doc.createElement("button");
 				setSizeOfPhysicalButton(buttonEl, button);
-
+				
 				Element key = doc.createElement("key");
-				key.setAttribute("modename", "0");
 				text = doc.createTextNode(button.getKey().getId() + "");
 				key.appendChild(text);
 				buttonEl.appendChild(key);
-
+				
 				for (Entry<ModeButton, Key> mode : button.getModes().entrySet()) {
-					Element modeEl = doc.createElement("dropdown");
+					Element modeEl = doc.createElement("mode");
 					modeEl.setAttribute("modename", mode.getKey().getModeKey().getId() + "");
 					text = doc.createTextNode(mode.getValue().getId() + "");
 					modeEl.appendChild(text);
@@ -152,12 +150,12 @@ public class KeyboardLayoutSaver {
 				}
 				layout.appendChild(buttonEl);
 			}
-
+			
 			for (ModeButton modeButton : kbdLayout.getModeButtons()) {
 				Element modeButtonEl = doc.createElement("modebutton");
 				setSizeOfPhysicalButton(modeButtonEl, modeButton);
 				
-				Element key = doc.createElement("key");		
+				Element key = doc.createElement("key");
 				text = doc.createTextNode(modeButton.getModeKey().getId() + "");
 				key.appendChild(text);
 				modeButtonEl.appendChild(key);
@@ -165,7 +163,8 @@ public class KeyboardLayoutSaver {
 				layout.appendChild(modeButtonEl);
 			}
 			String xml = convertDocToString(doc);
-
+			printToPath(xml, filePath);
+			
 		} catch (ParserConfigurationException err) {
 			logger.error("Could not initialize dBuilder");
 			err.printStackTrace();
@@ -201,13 +200,11 @@ public class KeyboardLayoutSaver {
 		}
 		String xmlString = sw.toString();
 		
-		// print xml
-		System.out.println("Here's the xml:\n\n" + xmlString);
 		return xmlString;
 	}
 	
 	
-	private void printToPath(String xmlString, String file) {
+	private static void printToPath(String xmlString, String file) {
 		File confFile = new File(file);
 		FileWriter fw;
 		try {
@@ -218,15 +215,16 @@ public class KeyboardLayoutSaver {
 			err1.printStackTrace();
 		}
 		BufferedWriter bw = new BufferedWriter(fw);
-		
 		try {
 			bw.write(xmlString);
+			bw.close();
+			logger.debug("XML written to file " + file);
 		} catch (IOException err) {
 			logger.error("Failed to write the keyboard xml string to file (2)");
 			err.printStackTrace();
 		}
 	}
-
+	
 	
 	private static void setSizeOfPhysicalButton(Element el, PhysicalButton button) {
 		el.setAttribute("size_x", button.getOrigSize().getWidth() + "");
@@ -234,11 +232,8 @@ public class KeyboardLayoutSaver {
 		el.setAttribute("pos_x", button.getPos_x() + "");
 		el.setAttribute("pos_y", button.getPos_y() + "");
 	}
-
-
 	
 	
-
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------

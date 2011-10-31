@@ -1,21 +1,16 @@
-/* 
+/*
  * *********************************************************
  * Copyright (c) 2011 - 2011, DHBW Mannheim
  * Project: T10 On-Screen Keyboard
  * Date: Oct 20, 2011
  * Author(s): dirk
- *
+ * 
  * *********************************************************
  */
 package edu.dhbw.t10.type.tree;
 
 import edu.dhbw.t10.manager.profile.ImportExportManager;
 import edu.dhbw.t10.type.profile.Profile;
-
-
-
-
-
 
 
 /**
@@ -35,7 +30,7 @@ public class TestTree {
 		// BasicConfigurator.configure();
 		
 		
-		PriorityTree tree = new PriorityTree();
+		PriorityTree tree = new PriorityTree("");
 		// tree.importFromHashMap(ImportExportManager.importFromFile("/home/dirk/Desktop/dict"));
 		// tree.printTree();
 		tree.importFromHashMap(ImportExportManager.importFromText("/home/dirk/Desktop/projektarbeiten"));
@@ -55,10 +50,10 @@ public class TestTree {
 		ImportExportManager.exportToFile(tree.exportToHashMap(), "/home/dirk/Desktop/dict");
 		// System.out.println("finished");
 		// System.out.println("1");
-		Profile prof = new Profile(1, "Pflichteheft", "/home/dirk/Desktop/PFL", tree);
+		Profile prof = new Profile("Pflichteheft");
 		// System.out.println("2");
 		prof.saveTree();
-		prof.setTree(new PriorityTree());
+		prof.setTree(new PriorityTree(""));
 		System.out.println(prof.getTree().getSuggest("ha"));
 		prof.loadTree();
 		System.out.println(prof.getTree().getSuggest("ha"));
@@ -108,7 +103,7 @@ public class TestTree {
 		// System.out.println(tree.getSuggest("Pri"));
 		// System.out.println(tree.getSuggest("und"));
 		// System.out.println(tree.getSuggest("Obe"));
-
+		
 		
 		// tree.insert("hallo");
 		// tree.insert("test");
@@ -122,7 +117,7 @@ public class TestTree {
 		// tree.delete("holla");
 		// tree.printTree();
 		// System.out.println(tree.getSuggest("h"));
-
+		
 	}
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------

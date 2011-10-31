@@ -14,6 +14,8 @@ import java.awt.Toolkit;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import org.apache.log4j.Logger;
+
 import edu.dhbw.t10.view.menus.MenuBar;
 import edu.dhbw.t10.view.panels.MainPanel;
 
@@ -30,11 +32,12 @@ public class Presenter extends JFrame {
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
+	private static final Logger	logger				= Logger.getLogger(Presenter.class);
+	private static final long		serialVersionUID	= 6217926957357225677L;
+	private static Presenter		instance;
+	private JPanel						contentPane;
+	private boolean					initilized			= false;
 	
-	private static final long	serialVersionUID	= 6217926957357225677L;
-	private static Presenter	instance;
-	private JPanel					contentPane;
-
 	
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
@@ -44,22 +47,24 @@ public class Presenter extends JFrame {
 	  * 
 	  */
 	private Presenter() {
+		instance = this; // VERRRRRY IMPORTANT, IF YOU DONT WANT TO HAVE MULTIPLE KEYBOARDS
+		logger.debug("Initializing...");
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setLocationByPlatform(true);
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("icons/useacc_logo.png"));
 		this.setTitle("T10 On-Screen Keyboard");
+		this.setAlwaysOnTop(true);
 		this.setVisible(true);
-		// this.addComponentListener(this);
-
+		
 		// get a reference to the content pane
 		contentPane = (JPanel) getContentPane();
 		contentPane.add(MainPanel.getInstance());
-		this.setJMenuBar(MenuBar.getInstance());
+		this.setJMenuBar(new MenuBar());
 		
-
-
 		// build GUI
 		pack();
+		initilized = true;
+		logger.debug("Initialized.");
 	}
 	
 	
@@ -77,6 +82,13 @@ public class Presenter extends JFrame {
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
-
 	
+	public boolean isInitilized() {
+		return initilized;
+	}
+	
+	
+	public void setInitilized(boolean initilized) {
+		this.initilized = initilized;
+	}
 }

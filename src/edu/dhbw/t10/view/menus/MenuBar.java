@@ -1,10 +1,10 @@
-/* 
+/*
  * *********************************************************
  * Copyright (c) 2011 - 2011, DHBW Mannheim
  * Project: T10 On-Screen Keyboard
  * Date: Oct 21, 2011
  * Author(s): NicolaiO
- *
+ * 
  * *********************************************************
  */
 package edu.dhbw.t10.view.menus;
@@ -20,51 +20,89 @@ import javax.swing.JOptionPane;
 
 
 /**
- * TODO NicolaiO, add comment!
- * - What should this type do (in one sentence)?
- * - If not intuitive: A simple example how to use this class
+ * As class name says: This class represents the MenuBar and all the included menus
+ * The ActionListeners are also directly implemented here...
  * 
  * @author NicolaiO
- * 
  */
 public class MenuBar extends JMenuBar {
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
-	private static final long	serialVersionUID	= -2903181098465204289L;
+	private static final long			serialVersionUID	= -2903181098465204289L;
 	protected static final Object[]	eventCache			= null;
-	private static MenuBar		instance;
+	
+	
+	// private static MenuBar instance;
+	
 	
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
-	private MenuBar() {
-		// sample for creating a Menu and a menu item.
-		// ActionListener might be outsourced ;) e.g. by implementing it or by creating a new class
+	public MenuBar() {
+		// File Menu
 		JMenu mFile = new JMenu("File");
+		JMenuItem iNewProfile = new JMenuItem("New Profile");
+		JMenuItem iImport = new JMenuItem("Import Profile");
+		JMenuItem iExport = new JMenuItem("Export Profile");
 		JMenuItem iClose = new JMenuItem("Close");
+		
+		// ProfileMenu
 		JMenu mProfile = new JMenu("Profile");
-		final JMenuItem iChange = new JMenuItem("Change Name");
+		JMenuItem iChange = new JMenuItem("Modify");
 		JMenuItem iT2D = new JMenuItem("Extend Dictionary By Text");
 		JMenuItem iF2D = new JMenuItem("Extend Dictionary From File");
 		JMenuItem iD2F = new JMenuItem("Export Dictionary To File");
+		JMenuItem iClean = new JMenuItem("Clean Dictionary");
+		JMenuItem iDelete = new JMenuItem("Delete");
 		
-		mProfile.add(iChange);
+		// add menus to GUI
+		add(mFile);
 		add(mProfile);
-		 ActionListener profile = new ActionListener() {
-		 public void actionPerformed(ActionEvent e) {
-			 //switch () {
-			 //	case 0:
-			 if(e.getSource().equals(iChange)) {
-			 		Component source = (Component) e.getSource();
-			 		 Object response = JOptionPane.showInputDialog(source,
-			             "Where would you like to go to lunch?",
-							"Select a Destination", ABORT, null, eventCache, JOptionPane.PLAIN_MESSAGE);
-			 	//	 break;
-		 		}
-		 	}
-		};
-		iChange.addActionListener(profile);
+		mFile.add(iNewProfile);
+		mFile.add(iImport);
+		mFile.add(iExport);
+		mFile.add(iClose);
+		mProfile.add(iChange);
+		mProfile.add(iT2D);
+		mProfile.add(iF2D);
+		mProfile.add(iD2F);
+		mProfile.add(iClean);
+		mProfile.add(iDelete);
+		
+		// Action Listener for menu items
+		iChange.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Object response = JOptionPane.showInputDialog((Component) e.getSource(),
+						"Where would you like to go to lunch?", "Select a Destination", JOptionPane.PLAIN_MESSAGE, null,
+						eventCache, "");
+			}
+		});
+		
+		iNewProfile.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO ALL Menu erstellen (eingabe: Name und Pfad)
+			}
+		});
+		
+		iImport.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO ALL Menu
+			}
+		});
+		
+		iExport.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO ALL Menu
+			}
+		});
+
 		iClose.addActionListener(new ActionListener() {
 			
 			@Override
@@ -72,23 +110,68 @@ public class MenuBar extends JMenuBar {
 				System.exit(0);
 			}
 		});
-
-		mFile.add(iClose);
-		add(mFile);
+		
+		iChange.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO ALL Menu bearbeiten(eingabe: Name und Pfad, vor ausgefüllt)
+			}
+		});
+		
+		iT2D.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO ALL Menu
+			}
+		});
+		
+		iF2D.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO ALL Menu
+			}
+		});
+		
+		iD2F.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO ALL Menu
+			}
+		});
+		
+		iClean.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO ALL Menu autoLöschen (profilliste, Datum, Wortanzahl
+			}
+		});
+		
+		iDelete.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO ALL Menu löschen (profilliste)
+			}
+		});
 	}
+	
 	
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
-	public static MenuBar getInstance() {
-		if (instance == null) {
-			instance = new MenuBar();
-		}
-		return instance;
-	}
+	// public static MenuBar getInstance() {
+	// if (instance == null) {
+	// instance = new MenuBar();
+	// }
+	// return instance;
+	// }
 	
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
 }
-

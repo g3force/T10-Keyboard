@@ -1,9 +1,9 @@
 <layout>
 	<sizex>1010</sizex>
 	<sizey>335</sizey>
-	<scalex>0.8</scalex>
-	<scaley>0.8</scaley>
-	<scale_font>0.8</scale_font>
+	<scalex>1</scalex>
+	<scaley>1</scaley>
+	<scale_font>1</scale_font>
 	<font>
 		<!-- For description, see javadoc of Font-class -->
 		<name></name>
@@ -15,6 +15,18 @@
 		pos_y="15"></dropdown>
 
 
+	<mutebutton type="auto_completing" size_x="50" size_y="50" pos_x="845" pos_y="60">
+		<on color="green">T10</on>
+		<off color="red">T10</off>
+	</mutebutton>
+	<mutebutton type="auto_profile_change" size_x="50" size_y="50" pos_x="845" pos_y="115">
+		<on color="green">Auto</on>
+		<off color="red">Auto</off>
+	</mutebutton>
+	<mutebutton type="tree_expanding" size_x="50" size_y="50" pos_x="845" pos_y="170">
+		<on color="green">Save</on>
+		<off color="red">Save</off>
+	</mutebutton>
 
 	<!-- Esc -->
 	<button size_x="50" size_y="50" pos_x="5" pos_y="5">
@@ -67,13 +79,13 @@
 	</button>
 
 
-	<!-- 2nd row buttons in order-->
+	<!-- 2nd row buttons in order -->
 	<button size_x="50" size_y="50" pos_x="5" pos_y="60">
 		<key>15</key>
 		<mode modename="1001">29</mode>
 	</button>
 	<button size_x="50" size_y="50" pos_x="60" pos_y="60">
-		<key >16</key>
+		<key>16</key>
 		<mode modename="1001">30</mode>
 		<mode modename="1007">42</mode>
 	</button>
@@ -128,14 +140,207 @@
 		<key>27</key>
 		<mode modename="1001">41</mode>
 	</button>
-	
+
 	<!-- Backspace -->
 	<button size_x="120" size_y="50" pos_x="720" pos_y="60">
 		<key>28</key>
 	</button>
-	
-	
-	
+
+
+
+
+
+	<!-- tab -->
+	<button size_x="75" size_y="50" pos_x="5" pos_y="115">
+		<key>50</key>
+	</button>
+
+	<!-- q to p -->
+	<button size_x="50" size_y="50" pos_x="85" pos_y="115">
+		<key>51</key>
+		<mode modename="1001">64</mode>
+		<mode modename="1007">76</mode>
+	</button>
+	<button size_x="50" size_y="50" pos_x="140" pos_y="115">
+		<key>52</key>
+		<mode modename="1001">65</mode>
+	</button>
+	<button size_x="50" size_y="50" pos_x="195" pos_y="115">
+		<key>53</key>
+		<mode modename="1001">66</mode>
+		<mode modename="1007">77</mode>
+	</button>
+	<button size_x="50" size_y="50" pos_x="250" pos_y="115">
+		<key>54</key>
+		<mode modename="1001">67</mode>
+	</button>
+	<button size_x="50" size_y="50" pos_x="305" pos_y="115">
+		<key>55</key>
+		<mode modename="1001">68</mode>
+	</button>
+	<button size_x="50" size_y="50" pos_x="360" pos_y="115">
+		<key>56</key>
+		<mode modename="1001">69</mode>
+	</button>
+	<button size_x="50" size_y="50" pos_x="415" pos_y="115">
+		<key>57</key>
+		<mode modename="1001">70</mode>
+	</button>
+	<button size_x="50" size_y="50" pos_x="470" pos_y="115">
+		<key>58</key>
+		<mode modename="1001">71</mode>
+	</button>
+	<button size_x="50" size_y="50" pos_x="525" pos_y="115">
+		<key>59</key>
+		<mode modename="1001">72</mode>
+	</button>
+	<button size_x="50" size_y="50" pos_x="580" pos_y="115">
+		<key>60</key>
+		<mode modename="1001">73</mode>
+		<mode modename="1007">78</mode>
+	</button>
+
+	<!-- ü and * -->
+	<button size_x="50" size_y="50" pos_x="635" pos_y="115">
+		<key>61</key>
+		<mode modename="1001">74</mode>
+	</button>
+	<button size_x="50" size_y="50" pos_x="690" pos_y="115">
+		<key>62</key>
+		<mode modename="1001">75</mode>
+	</button>
+
+	<!-- Enter -->
+	<button size_x="95" size_y="50" pos_x="745" pos_y="115">
+		<key>63</key>
+	</button>
+
+	<!-- a to ' -->
+	<button size_x="50" size_y="50" pos_x="95" pos_y="170">
+		<key>79</key>
+		<mode modename="1001">91</mode>
+	</button>
+	<button size_x="50" size_y="50" pos_x="150" pos_y="170">
+		<key>80</key>
+		<mode modename="1001">92</mode>
+	</button>
+	<button size_x="50" size_y="50" pos_x="205" pos_y="170">
+		<key>81</key>
+		<mode modename="1001">93</mode>
+	</button>
+	<button size_x="50" size_y="50" pos_x="260" pos_y="170">
+		<key>82</key>
+		<mode modename="1001">94</mode>
+	</button>
+	<button size_x="50" size_y="50" pos_x="315" pos_y="170">
+		<key>83</key>
+		<mode modename="1001">95</mode>
+	</button>
+	<button size_x="50" size_y="50" pos_x="370" pos_y="170">
+		<key>84</key>
+		<mode modename="1001">96</mode>
+	</button>
+	<button size_x="50" size_y="50" pos_x="425" pos_y="170">
+		<key>85</key>
+		<mode modename="1001">97</mode>
+	</button>
+	<button size_x="50" size_y="50" pos_x="480" pos_y="170">
+		<key>86</key>
+		<mode modename="1001">98</mode>
+	</button>
+	<button size_x="50" size_y="50" pos_x="535" pos_y="170">
+		<key>87</key>
+		<mode modename="1001">99</mode>
+	</button>
+	<button size_x="50" size_y="50" pos_x="590" pos_y="170">
+		<key>88</key>
+		<mode modename="1001">100</mode>
+	</button>
+	<button size_x="50" size_y="50" pos_x="645" pos_y="170">
+		<key>89</key>
+		<mode modename="1001">101</mode>
+	</button>
+	<button size_x="50" size_y="50" pos_x="700" pos_y="170">
+		<key>90</key>
+		<mode modename="1001">102</mode>
+	</button>
+
+	<!-- < to _ -->
+	<button size_x="50" size_y="50" pos_x="80" pos_y="225">
+		<key>103</key>
+		<mode modename="1001">114</mode>
+		<mode modename="1007">125</mode>
+	</button>
+	<button size_x="50" size_y="50" pos_x="135" pos_y="225">
+		<key>104</key>
+		<mode modename="1001">115</mode>
+	</button>
+	<button size_x="50" size_y="50" pos_x="190" pos_y="225">
+		<key>105</key>
+		<mode modename="1001">116</mode>
+	</button>
+	<button size_x="50" size_y="50" pos_x="245" pos_y="225">
+		<key>106</key>
+		<mode modename="1001">117</mode>
+	</button>
+	<button size_x="50" size_y="50" pos_x="300" pos_y="225">
+		<key>107</key>
+		<mode modename="1001">118</mode>
+	</button>
+	<button size_x="50" size_y="50" pos_x="355" pos_y="225">
+		<key>108</key>
+		<mode modename="1001">119</mode>
+	</button>
+	<button size_x="50" size_y="50" pos_x="410" pos_y="225">
+		<key>109</key>
+		<mode modename="1001">120</mode>
+	</button>
+	<button size_x="50" size_y="50" pos_x="465" pos_y="225">
+		<key>110</key>
+		<mode modename="1001">121</mode>
+	</button>
+	<button size_x="50" size_y="50" pos_x="520" pos_y="225">
+		<key>111</key>
+		<mode modename="1001">122</mode>
+	</button>
+	<button size_x="50" size_y="50" pos_x="575" pos_y="225">
+		<key>112</key>
+		<mode modename="1001">123</mode>
+	</button>
+	<button size_x="50" size_y="50" pos_x="630" pos_y="225">
+		<key>113</key>
+		<mode modename="1001">124</mode>
+	</button>
+
+
+	<!-- arrow keys -->
+	<button size_x="50" size_y="50" pos_x="845" pos_y="225">
+		<key>126</key>
+	</button>
+	<button size_x="50" size_y="50" pos_x="790" pos_y="280">
+		<key>127</key>
+	</button>
+	<button size_x="50" size_y="50" pos_x="845" pos_y="280">
+		<key>128</key>
+	</button>
+	<button size_x="50" size_y="50" pos_x="900" pos_y="280">
+		<key>129</key>
+	</button>
+
+	<!-- End -->
+	<button size_x="50" size_y="50" pos_x="955" pos_y="280">
+		<key>131</key>
+	</button>
+
+	<!-- Spaces -->
+	<button size_x="150" size_y="50" pos_x="240" pos_y="280">
+		<key accept="true">130</key>
+	</button>
+	<button size_x="150" size_y="50" pos_x="395" pos_y="280">
+		<key>130</key>
+	</button>
+
+
 	<!-- mode buttons -->
 	<modebutton size_x="90" size_y="50" pos_x="5" pos_y="170">
 		<key>1000</key>
@@ -155,12 +360,6 @@
 	<modebutton size_x="80" size_y="50" pos_x="155" pos_y="280">
 		<key>1004</key>
 	</modebutton>
-	<modebutton size_x="150" size_y="50" pos_x="240" pos_y="280">
-		<key>1005</key>
-	</modebutton>
-	<modebutton size_x="150" size_y="50" pos_x="395" pos_y="280">
-		<key>1006</key>
-	</modebutton>
 	<modebutton size_x="50" size_y="50" pos_x="550" pos_y="280">
 		<key>1007</key>
 	</modebutton>
@@ -170,200 +369,4 @@
 	<modebutton size_x="50" size_y="50" pos_x="660" pos_y="280">
 		<key>1009</key>
 	</modebutton>
-
-
-<!-- up to here correct -->
-<!-- 
-	<button size_x="75" size_y="50" pos_x="5" pos_y="115">
-		<mode modename="0" buttoncode="\TAB\">TAB</mode>
-	</button>
-	<button size_x="50" size_y="50" pos_x="85" pos_y="115">
-		<mode modename="0" buttoncode="q">q</mode>
-		<mode modename="1001" buttoncode="Q">Q</mode>
-		<mode modename="1007" buttoncode="\U+0040\">@</mode>
-	</button>
-	<button size_x="50" size_y="50" pos_x="140" pos_y="115">
-		<mode modename="0" buttoncode="w">w</mode>
-		<mode modename="1001" buttoncode="W">W</mode>
-	</button>
-	<button size_x="50" size_y="50" pos_x="195" pos_y="115">
-		<mode modename="0" buttoncode="e">e</mode>
-		<mode modename="1001" buttoncode="E">E</mode>
-		<mode modename="1007" buttoncode="\U+20AC\">€</mode>
-	</button>
-	<button size_x="50" size_y="50" pos_x="250" pos_y="115">
-		<mode modename="0" buttoncode="r">r</mode>
-		<mode modename="1001" buttoncode="R">R</mode>
-	</button>
-	<button size_x="50" size_y="50" pos_x="305" pos_y="115">
-		<mode modename="0" buttoncode="t">t</mode>
-		<mode modename="1001" buttoncode="T">T</mode>
-	</button>
-	<button size_x="50" size_y="50" pos_x="360" pos_y="115">
-		<mode modename="0" buttoncode="z">z</mode>
-		<mode modename="1001" buttoncode="Z">Z</mode>
-	</button>
-	<button size_x="50" size_y="50" pos_x="415" pos_y="115">
-		<mode modename="0" buttoncode="u">u</mode>
-		<mode modename="1001" buttoncode="U">U</mode>
-	</button>
-	<button size_x="50" size_y="50" pos_x="470" pos_y="115">
-		<mode modename="0" buttoncode="i">i</mode>
-		<mode modename="1001" buttoncode="I">I</mode>
-	</button>
-	<button size_x="50" size_y="50" pos_x="525" pos_y="115">
-		<mode modename="0" buttoncode="o">o</mode>
-		<mode modename="1001" buttoncode="O">O</mode>
-	</button>
-	<button size_x="50" size_y="50" pos_x="580" pos_y="115">
-		<mode modename="0" buttoncode="p">p</mode>
-		<mode modename="1001" buttoncode="P">P</mode>
-	</button>
-	<button size_x="50" size_y="50" pos_x="635" pos_y="115">
-		<mode modename="0" buttoncode="\U+00DC\">ü</mode>
-		<mode modename="1001" buttoncode="\U+00FC\">Ü</mode>
-	</button>
-	<button size_x="50" size_y="50" pos_x="690" pos_y="115">
-		<mode modename="0" buttoncode="\U+002B\">+</mode>
-		<mode modename="1001" buttoncode="\U+002A\">*</mode>
-		<mode modename="1007" buttoncode="\U+007E\">~</mode>
-	</button>
-	<button size_x="95" size_y="50" pos_x="745" pos_y="115">
-		<mode modename="0" buttoncode="\ENTER\">Enter</mode>
-	</button>
-	<button size_x="50" size_y="50" pos_x="845" pos_y="115">
-		<mode modename="0" buttoncode="" color="yellow">T10</mode>
-		<mode modename="t10_mute_on" buttoncode="\T10_MUTE_ON\" color="green">T10</mode>
-		<mode modename="t10_mute_off" buttoncode="\T10_MUTE_OFF\" color="red">T10
-		</mode>
-	</button>
-
-
-
-	
-	<button size_x="50" size_y="50" pos_x="95" pos_y="170">
-		<mode modename="0" buttoncode="a">a</mode>
-		<mode modename="1001" buttoncode="A">A</mode>
-	</button>
-	<button size_x="50" size_y="50" pos_x="150" pos_y="170">
-		<mode modename="0" buttoncode="s">s</mode>
-		<mode modename="1001" buttoncode="S">S</mode>
-	</button>
-	<button size_x="50" size_y="50" pos_x="205" pos_y="170">
-		<mode modename="0" buttoncode="d">d</mode>
-		<mode modename="1001" buttoncode="D">D</mode>
-	</button>
-	<button size_x="50" size_y="50" pos_x="260" pos_y="170">
-		<mode modename="0" buttoncode="f">f</mode>
-		<mode modename="1001" buttoncode="F">F</mode>
-	</button>
-	<button size_x="50" size_y="50" pos_x="315" pos_y="170">
-		<mode modename="0" buttoncode="g">g</mode>
-		<mode modename="1001" buttoncode="G">G</mode>
-	</button>
-	<button size_x="50" size_y="50" pos_x="370" pos_y="170">
-		<mode modename="0" buttoncode="h">h</mode>
-		<mode modename="1001" buttoncode="H">H</mode>
-	</button>
-	<button size_x="50" size_y="50" pos_x="425" pos_y="170">
-		<mode modename="0" buttoncode="j">j</mode>
-		<mode modename="1001" buttoncode="J">J</mode>
-	</button>
-	<button size_x="50" size_y="50" pos_x="480" pos_y="170">
-		<mode modename="0" buttoncode="k">k</mode>
-		<mode modename="1001" buttoncode="K">K</mode>
-	</button>
-	<button size_x="50" size_y="50" pos_x="535" pos_y="170">
-		<mode modename="0" buttoncode="l">l</mode>
-		<mode modename="1001" buttoncode="L">L</mode>
-	</button>
-	<button size_x="50" size_y="50" pos_x="590" pos_y="170">
-		<mode modename="0" buttoncode="\U+00F6\">ö</mode>
-		<mode modename="1001" buttoncode="\U+00D6\">Ö</mode>
-	</button>
-	<button size_x="50" size_y="50" pos_x="645" pos_y="170">
-		<mode modename="0" buttoncode="\U+00E4\">ä</mode>
-		<mode modename="1001" buttoncode="\U+00C4\">Ä</mode>
-	</button>
-	<button size_x="50" size_y="50" pos_x="700" pos_y="170">
-		<mode modename="0" buttoncode="\U+0023\">#</mode>
-		<mode modename="1001" buttoncode="\U+0027\">'</mode>
-	</button>
-
-
-
-	
-	<button size_x="50" size_y="50" pos_x="80" pos_y="225">
-		<mode modename="0" buttoncode="\U+003C\">&lt;</mode>
-		<mode modename="1001" buttoncode="\U+003E\">&gt;</mode>
-		<mode modename="1007" buttoncode="\U+007C\">|</mode>
-	</button>
-	<button size_x="50" size_y="50" pos_x="135" pos_y="225">
-		<mode modename="0" buttoncode="y">y</mode>
-		<mode modename="1001" buttoncode="Y">Y</mode>
-	</button>
-	<button size_x="50" size_y="50" pos_x="190" pos_y="225">
-		<mode modename="0" buttoncode="x">x</mode>
-		<mode modename="1001" buttoncode="X">X</mode>
-	</button>
-	<button size_x="50" size_y="50" pos_x="245" pos_y="225">
-		<mode modename="0" buttoncode="c">c</mode>
-		<mode modename="1001" buttoncode="C">C</mode>
-	</button>
-	<button size_x="50" size_y="50" pos_x="300" pos_y="225">
-		<mode modename="0" buttoncode="v">v</mode>
-		<mode modename="1001" buttoncode="V">V</mode>
-	</button>
-	<button size_x="50" size_y="50" pos_x="355" pos_y="225">
-		<mode modename="0" buttoncode="b">b</mode>
-		<mode modename="1001" buttoncode="B">B</mode>
-	</button>
-	<button size_x="50" size_y="50" pos_x="410" pos_y="225">
-		<mode modename="0" buttoncode="n">n</mode>
-		<mode modename="1001" buttoncode="N">N</mode>
-	</button>
-	<button size_x="50" size_y="50" pos_x="465" pos_y="225">
-		<mode modename="0" buttoncode="m">m</mode>
-		<mode modename="1001" buttoncode="M">M</mode>
-	</button>
-	<button size_x="50" size_y="50" pos_x="520" pos_y="225">
-		<mode modename="0" buttoncode="\U+002C\">,</mode>
-		<mode modename="1001" buttoncode="\U+003B\">;</mode>
-	</button>
-	<button size_x="50" size_y="50" pos_x="575" pos_y="225">
-		<mode modename="0" buttoncode="\U+002E\">.</mode>
-		<mode modename="1001" buttoncode="\U+003A\">:</mode>
-	</button>
-	<button size_x="50" size_y="50" pos_x="630" pos_y="225">
-		<mode modename="0" buttoncode="\U+002D\">-</mode>
-		<mode modename="1001" buttoncode="\U+005F\">_</mode>
-	</button>
-
-
-
-	-->
-	<!-- 
-	<button size_x="50" size_y="50" pos_x="845" pos_y="225">
-		<mode modename="0">1009</mode>
-		<mode modename="0" buttoncode="\UP\">^</mode>
-	</button>
-	<button size_x="50" size_y="50" pos_x="790" pos_y="280">
-		<mode modename="0">19</mode>
-		<mode modename="0" buttoncode="\LEFT\">&lt;-</mode>
-	</button>
-	<button size_x="50" size_y="50" pos_x="845" pos_y="280">
-		<mode modename="0">19</mode>
-		<mode modename="0" buttoncode="\DOWN\">v</mode>
-	</button>
-	<button size_x="50" size_y="50" pos_x="900" pos_y="280">
-		<mode modename="0">19</mode>
-		<mode modename="0" buttoncode="\RIGHT\">-&gt;</mode>
-	</button>
-	
-	
-	<button size_x="50" size_y="50" pos_x="955" pos_y="280">
-		<mode modename="0">19</mode>
-		<mode modename="0" buttoncode="\END\">Ende</mode>
-	</button>
-	 -->
 </layout>
