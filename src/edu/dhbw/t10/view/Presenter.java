@@ -50,6 +50,7 @@ public class Presenter extends JFrame {
 		this.setLocationByPlatform(true);
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("icons/useacc_logo.png"));
 		this.setTitle("T10 On-Screen Keyboard");
+		this.setAlwaysOnTop(true);
 		this.setVisible(true);
 		
 		// get a reference to the content pane
