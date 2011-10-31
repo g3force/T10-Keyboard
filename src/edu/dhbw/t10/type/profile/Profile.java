@@ -24,10 +24,11 @@ import edu.dhbw.t10.view.panels.MainPanel;
 
 
 /**
- * - What should this type do (in one sentence)?
- * - If not intuitive: A simple example how to use this class
  * 
- * @author NicolaiO
+ * Profile-Handle. It includes the name, the paths to its PriorityTree-/Profile-file,
+ * as well as the PriorityTree itself.
+ * 
+ * @author DerBaschti
  * 
  */
 public class Profile implements Serializable {
@@ -78,6 +79,12 @@ public class Profile implements Serializable {
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
 	
+	/**
+	 * 
+	 * Loads the (serialized) PriorityTree.
+	 * 
+	 * @author Dirk
+	 */
 	public void loadTree() {
 		try {
 			tree = Serializer.deserialize(pathToTree);
@@ -87,6 +94,13 @@ public class Profile implements Serializable {
 		}
 	}
 	
+	
+	/**
+	 * 
+	 * Saves the PriorityTree as serialized object
+	 * 
+	 * @author Dirk
+	 */
 	public void saveTree() {
 		try {
 			Serializer.serialize(tree, pathToTree);
