@@ -1,10 +1,10 @@
-/* 
+/*
  * *********************************************************
  * Copyright (c) 2011 - 2011, DHBW Mannheim
  * Project: T10 On-Screen Keyboard
  * Date: Oct 20, 2011
  * Author(s): hpadmin
- *
+ * 
  * *********************************************************
  */
 package edu.dhbw.t10.manager.profile;
@@ -29,6 +29,8 @@ public class ImportExportManager {
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
 	private static final Logger	logger	= Logger.getLogger(ImportExportManager.class);
+	
+	
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
@@ -51,12 +53,12 @@ public class ImportExportManager {
 			File fh = new File(fileName);
 			FileReader fr = new FileReader(fileName);
 			BufferedReader x = new BufferedReader(fr);
-
+			
 			int offset = 0;
 			while (offset <= fh.length()) {
 				String res = x.readLine();
 				// System.out.println("Tmpbuf: " + res);
-
+				
 				if (res.indexOf(" ") >= 0) {
 					int divider = res.indexOf(" ");
 					fileContent.put(res.substring(0, divider),
@@ -66,7 +68,7 @@ public class ImportExportManager {
 				}
 				offset += res.length() + 2;
 			}
-		} catch( Exception ex ) {
+		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 		return fileContent;
@@ -161,7 +163,7 @@ public class ImportExportManager {
 		}
 		return importMap;
 	}
-
+	
 	
 	/**
 	 * inserts word to the HashMap importMap
@@ -179,8 +181,8 @@ public class ImportExportManager {
 			importMap.put(word, 1);
 		}
 	}
-
-
+	
+	
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------

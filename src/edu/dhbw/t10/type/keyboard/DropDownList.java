@@ -33,7 +33,7 @@ public class DropDownList extends JComboBox {
 	private int						pos_x					= 0;
 	private int						pos_y					= 0;
 	
-
+	
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
@@ -57,9 +57,8 @@ public class DropDownList extends JComboBox {
 			this.type = PROFILE;
 		}
 	}
-
 	
-
+	
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
@@ -78,6 +77,13 @@ public class DropDownList extends JComboBox {
 		this.type = type;
 	}
 	
+	
+	public String getTypeAsString() {
+		if (type == DropDownList.PROFILE)
+			return "profile";
+		return "";
+	}
+
 	
 	public Dimension getOrigSize() {
 		return origSize;

@@ -22,10 +22,24 @@
 		<key id="1002" keycode="\CONTROL\">Strg</key>
 		<key id="1003" keycode="\WINDOWS\">Super</key>
 		<key id="1004" keycode="\ALT\">Alt</key>
-		<key id="1006" keycode="\SPACE\"></key>
 		<key id="1007" keycode="\ALT_GRAPH\">Altgr</key>
 		<key id="1008" keycode="\CONTEXT_MENU\">Menu</key>
 		<key id="1009" keycode="\CONTROL\">Strg</key>
+		
+		<key id="50" keycode="\TAB\">TAB</key>
+		<key id="63" keycode="\ENTER\">Enter</key>
+		
+		<key id="126" keycode="\UP\">Up</key>
+		<key id="127" keycode="\LEFT\">Left</key>
+		<key id="128" keycode="\DOWN\">Down</key>
+		<key id="129" keycode="\RIGHT\">Right</key>
+		
+		<key id="130" keycode="\SPACE\"> </key>
+		<key id="131" keycode="\END\">End</key>
+		<key id="132" keycode="\END\">Pos1</key>
+		<key id="133" keycode="\END\">BiHo</key>
+		<key id="134" keycode="\END\">BiRu</key>
+		<key id="135" keycode="\END\">Entf</key>
 	</keytype>
 	
 	<keytype name="unicode">
@@ -55,6 +69,33 @@
 		<key id="47" keycode="\U+005D\">]</key>
 		<key id="48" keycode="\U+007D\">}</key>
 		<key id="49" keycode="\U+005C\">\</key>
+		
+		<key id="61" keycode="\U+00DC\">ü</key>
+		<key id="62" keycode="\U+002B\">+</key>
+		<key id="74" keycode="\U+00FC\">Ü</key>
+		<key id="75" keycode="\U+002A\">*</key>
+		
+		<key id="76" keycode="\U+0040\">@</key>
+		<key id="77" keycode="\U+20AC\">€</key>
+		<key id="78" keycode="\U+007E\">~</key>
+		
+		<key id="88" keycode="\U+00F6\">ö</key>
+		<key id="89" keycode="\U+00E4\">ä</key>
+		<key id="90" keycode="\U+0023\">#</key>
+		
+		<key id="100" keycode="\U+00D6\">Ö</key>
+		<key id="101" keycode="\U+00C4\">Ä</key>
+		<key id="102" keycode="\U+0027\">'</key>
+		
+		<key id="103" keycode="\U+003C\">&lt;</key>
+		<key id="111" keycode="\U+002C\">,</key>
+		<key id="112" keycode="\U+002E\">.</key>
+		<key id="113" keycode="\U+002D\">-</key>
+		<key id="114" keycode="\U+003E\">&gt;</key>
+		<key id="122" keycode="\U+003B\">;</key>
+		<key id="123" keycode="\U+003A\">:</key>
+		<key id="124" keycode="\U+005F\">_</key>
+		<key id="125" keycode="\U+007C\">|</key>
 	</keytype>
 	
 	<keytype name="char">
@@ -68,14 +109,63 @@
 		<key id="23" keycode="8">8</key>
 		<key id="24" keycode="9">9</key>
 		<key id="25" keycode="0">0</key>
+		
+		<key id="51" keycode="q">q</key>
+		<key id="52" keycode="w">w</key>
+		<key id="53" keycode="e">e</key>
+		<key id="54" keycode="r">r</key>
+		<key id="55" keycode="t">t</key>
+		<key id="56" keycode="z">z</key>
+		<key id="57" keycode="u">u</key>
+		<key id="58" keycode="i">i</key>
+		<key id="59" keycode="o">o</key>
+		<key id="60" keycode="p">p</key>
+		
+		<key id="64" keycode="Q">Q</key>
+		<key id="65" keycode="W">W</key>
+		<key id="66" keycode="E">E</key>
+		<key id="67" keycode="R">R</key>
+		<key id="68" keycode="T">T</key>
+		<key id="69" keycode="Z">Z</key>
+		<key id="70" keycode="U">U</key>
+		<key id="71" keycode="I">I</key>
+		<key id="72" keycode="O">O</key>
+		<key id="73" keycode="P">P</key>
+		
+		<key id="79" keycode="a">a</key>
+		<key id="80" keycode="s">s</key>
+		<key id="81" keycode="d">d</key>
+		<key id="82" keycode="f">f</key>
+		<key id="83" keycode="g">g</key>
+		<key id="84" keycode="h">h</key>
+		<key id="85" keycode="j">j</key>
+		<key id="86" keycode="k">k</key>
+		<key id="87" keycode="l">l</key>
+		
+		<key id="91" keycode="A">A</key>
+		<key id="92" keycode="S">S</key>
+		<key id="93" keycode="D">D</key>
+		<key id="94" keycode="F">F</key>
+		<key id="95" keycode="G">G</key>
+		<key id="96" keycode="H">H</key>
+		<key id="97" keycode="J">J</key>
+		<key id="98" keycode="K">K</key>
+		<key id="99" keycode="L">L</key>
+		
+		<key id="104" keycode="y">y</key>
+		<key id="105" keycode="x">x</key>
+		<key id="106" keycode="c">c</key>
+		<key id="107" keycode="v">v</key>
+		<key id="108" keycode="b">b</key>
+		<key id="109" keycode="n">n</key>
+		<key id="110" keycode="m">m</key>
+		
+		<key id="115" keycode="Y">Y</key>
+		<key id="116" keycode="X">X</key>
+		<key id="117" keycode="C">C</key>
+		<key id="118" keycode="V">V</key>
+		<key id="119" keycode="B">B</key>
+		<key id="120" keycode="N">N</key>
+		<key id="121" keycode="M">M</key>
 	</keytype>
 </keymap>
-
-
-
-<!-- 
-<key id="1010" keycode="\LEFT\">&lt;-</key>
-<key id="1011" keycode="\DOWN\">v</key>
-<key id="1012" keycode="\RIGHT\">-&gt;</key>
-<key id="1013" keycode="\END\">Ende</key>
-	 -->	

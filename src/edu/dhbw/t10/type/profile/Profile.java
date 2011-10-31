@@ -9,12 +9,18 @@
  */
 package edu.dhbw.t10.type.profile;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 
 import org.apache.log4j.Logger;
 
+import edu.dhbw.t10.manager.keyboard.KeyboardLayoutLoader;
+import edu.dhbw.t10.manager.keyboard.KeymapLoader;
 import edu.dhbw.t10.manager.profile.Serializer;
+import edu.dhbw.t10.type.keyboard.KeyboardLayout;
 import edu.dhbw.t10.type.tree.PriorityTree;
+import edu.dhbw.t10.view.panels.MainPanel;
 
 
 /**
@@ -24,68 +30,50 @@ import edu.dhbw.t10.type.tree.PriorityTree;
  * @author NicolaiO
  * 
  */
-public class Profile {
+public class Profile implements Serializable {
+	/**  */
+	private static final long			serialVersionUID	= 5085464540715301874L;
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
-	private int		profileID;
-	private String	name;
-	private String			pathToTree;
-	private String						pathToProfile;
-	private PriorityTree				tree;
+	private String							name;
+	private String							pathToTree;
+	private String							pathToProfile;
+	private String							pathToAllowedChars;
+	private transient PriorityTree	tree;
+	private transient KeyboardLayout	kbdLayout;
 	
 	@SuppressWarnings("unused")
-	private static final Logger	logger	= Logger.getLogger(Profile.class);
-
+	private static final Logger		logger				= Logger.getLogger(Profile.class);
+	
+	
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
-	public Profile() {
-		profileID = -1;
-		name = "";
-		pathToTree = "";
-		pathToProfile = "";
-		tree = null;
-		// tree = new PriorityTree();
-	}
+	
+	
+	public Profile(String pName) {
+		name = pName;
+		File file = new File("profiles");
+		if (!file.isDirectory()) {
+			file.mkdir();
+		}
+		pathToProfile = "profiles/" + name + ".profile";
+		file = new File("trees");
+		if (!file.isDirectory()) {
+			file.mkdir();
+		}
+		pathToTree = "trees/" + name + ".tree";
+		pathToAllowedChars = "trees/" + name + ".chars";
 
-	
-	public Profile(int pID, String pName, String pPath, PriorityTree ptree, String pFile) {
-		profileID = pID;
-		name = pName;
-		pathToTree = pPath;
-		tree = ptree;
-		pathToProfile = pFile;
-		// tree = new PriorityTree();
-	}
-	
-	public Profile(int pID, String pName, String pPath, PriorityTree ptree) {
-		profileID = pID;
-		name = pName;
-		pathToTree = pPath;
-		tree = ptree;
-		pathToProfile = "";
-		// tree = new PriorityTree();
+		tree = new PriorityTree(pathToAllowedChars);
+		saveTree();
+		kbdLayout = KeyboardLayoutLoader
+				.load("conf/keyboard_layout_de_default.xml", KeymapLoader.load("conf/keymap.xml"));
+		MainPanel.getInstance().setKbdLayout(kbdLayout);
 	}
 	
 	
-	public Profile(int pID, String pName, String pPath) {
-		profileID = pID;
-		name = pName;
-		pathToTree = pPath;
-		tree = new PriorityTree();
-		pathToProfile = "";
-	}
-	
-	
-	public Profile(int pID, String pName) {
-		profileID = pID;
-		name = pName;
-		pathToTree = "conf/trees/" + name;
-		tree = new PriorityTree();
-		pathToProfile = "";
-	}
-
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
@@ -94,7 +82,8 @@ public class Profile {
 		try {
 			tree = Serializer.deserialize(pathToTree);
 		} catch (IOException io) {
-			logger.error("IOException: " + io.toString());
+			tree = new PriorityTree(pathToAllowedChars);
+			logger.info("No Tree found for Profile" + name + ", new Tree created");
 		}
 	}
 	
@@ -102,34 +91,14 @@ public class Profile {
 		try {
 			Serializer.serialize(tree, pathToTree);
 		} catch (IOException io) {
-			logger.error("IOException: " + io.toString());
+			logger.error("Tree not saved, no folder found");
 		}
 	}
-
+	
+	
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
-	/**
-	 * 
-	 * Gets the profile-ID
-	 * 
-	 * @return profileID
-	 */
-	public int getID() {
-		return profileID;
-	}
-	
-	
-	/**
-	 * 
-	 * Sets the profile-ID
-	 * 
-	 * @param id - int
-	 */
-	
-	public void setID(int id) {
-		profileID = id;
-	}
 	
 	
 	/**
@@ -163,16 +132,6 @@ public class Profile {
 	public void setPathToProfile(String path) {
 		pathToProfile = path;
 	}
-
-	
-	public int getProfileID() {
-		return profileID;
-	}
-	
-	
-	public void setProfileID(int profileID) {
-		this.profileID = profileID;
-	}
 	
 	
 	public String getPathToTree() {
@@ -193,6 +152,16 @@ public class Profile {
 	public void setTree(PriorityTree tree) {
 		this.tree = tree;
 	}
-
-
+	
+	
+	public KeyboardLayout getKbdLayout() {
+		return kbdLayout;
+	}
+	
+	
+	public void setKbdLayout(KeyboardLayout kbdLayout) {
+		this.kbdLayout = kbdLayout;
+	}
+	
+	
 }
