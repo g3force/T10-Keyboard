@@ -27,11 +27,9 @@ import edu.dhbw.t10.view.panels.MainPanel;
 
 
 /**
- * TODO NicolaiO, add comment!
- * - What should this type do (in one sentence)?
- * - If not intuitive: A simple example how to use this class
+ * The profile-manager handles all profiles, including the path to its profile-file.
  * 
- * @author NicolaiO
+ * @author DerBaschti
  * 
  */
 public class ProfileManager {
@@ -54,7 +52,7 @@ public class ProfileManager {
 	// --------------------------------------------------------------------------
 	// Singleton
 	/**
-	 * Constructor as Singleton. This way, we prevent having multiple manager and
+	 * Constructor as Singleton. This way, we prevent having multiple manager
 	 */
 	private ProfileManager() {
 		logger.debug("initializing...");
@@ -108,6 +106,13 @@ public class ProfileManager {
 	}
 	
 	
+	/**
+	 * 
+	 * Reads the config-file with all entrys and assigns
+	 * the read values.
+	 * 
+	 * @author DerBaschti
+	 */
 	public void readConfig() {
 		try {
 			File confFile = new File("./config.db");
@@ -121,24 +126,31 @@ public class ProfileManager {
 					if (entry.indexOf("//") >= 0)
 						entry = entry.substring(0, entry.indexOf("//"));
 					
-					if (entry.isEmpty())
+					if (entry.isEmpty()) // In case an entry was just a comment.
 						continue;
 					
-					// Indicators deleted.
-					// Format:
+					// Comment-Indicators deleted.
+					// Regular Format:
 					// ActiveProfile=NAMEOFPROFILE
 					// ProfilePath=config.cfg
 					// ProfilePath=C:\lol.cfg
 					int posOfEql = entry.indexOf("=");
-					String valName = entry.substring(0, posOfEql);
-					String value = entry.substring(posOfEql + 1, entry.length());
-					if (valName.equals("ProfilePath")) {
-						profilePath.add(value);
-					} else if (valName.equals("XMLPath")) {
-						// XMLPath.add(value);
-						logger.debug("XMLPath: " + value);
-					} else if (valName.equals("ActiveProfile")) {
-						activeProfileName = value;
+					
+					// Split and afterwards assign values.
+					try {
+						String valName = entry.substring(0, posOfEql);
+						String value = entry.substring(posOfEql + 1, entry.length());
+						if (valName.equals("ProfilePath")) {
+							profilePath.add(value);
+						} else if (valName.equals("XMLPath")) {
+							// XMLPath.add(value);
+							logger.debug("XMLPath: " + value);
+						} else if (valName.equals("ActiveProfile")) {
+							activeProfileName = value;
+						}
+					} catch (Exception ex) {
+						ex.printStackTrace();
+						logger.error("Exception in readConfig().assignValues: " + ex.toString());
 					}
 				}
 				br.close();
@@ -153,12 +165,26 @@ public class ProfileManager {
 	}
 	
 	
+	/**
+	 * 
+	 * Creates a comment for config-files.
+	 * 
+	 * @param comment - String. Comment you want to add.
+	 * @return Changed comment as String.
+	 * @author DerBaschti
+	 */
 	private String createComment(String comment) {
 		comment = "//" + comment;
 		return comment;
 	}
 	
 	
+	/**
+	 * 
+	 * Saves the name of the active profile and the path to all profile-files.
+	 * 
+	 * @author DerBaschti
+	 */
 	public void saveConfig() {
 		try {
 			File confFile = new File("./config");
@@ -263,6 +289,13 @@ public class ProfileManager {
 	}
 	
 	
+	/**
+	 * 
+	 * Marks a profile as 'active'.
+	 * 
+	 * @param newActive - Handle of the to-be activated profile
+	 * @author DerBaschti
+	 */
 	public void setActive(Profile newActive) {
 		activeProfile.saveTree();
 		activeProfile = newActive;
@@ -331,6 +364,13 @@ public class ProfileManager {
 	}
 	
 	
+	/**
+	 * 
+	 * If available, getSerializedProfiles gets serialized profiles from file.
+	 * In case all files couldn't be read, a new profile-list is allocated.
+	 * 
+	 * @author DerBaschti
+	 */
 	public void getSerializedProfiles() {
 		for (int i = 0; i < profilePath.size(); i++) {
 			try {
