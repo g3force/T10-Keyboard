@@ -1,2 +1,4 @@
-//Configfile for T10ActiveProfile=PflichteheftProfilePath=
+//Configfile for T10
+ActiveProfile=Pflichteheft
+ProfilePath=
 ProfilePath=
