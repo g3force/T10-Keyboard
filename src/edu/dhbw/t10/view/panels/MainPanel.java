@@ -25,9 +25,8 @@ import edu.dhbw.t10.view.Presenter;
 
 
 /**
- * TODO NicolaiO, add comment!
- * - What should this type do (in one sentence)?
- * - If not intuitive: A simple example how to use this class
+ * This is the main Panel for the GUI where the keyboard layout is placed on.
+ * It adds all PhysicalButtons and DropDownLists to itself and reacts on window resizing
  * 
  * @author NicolaiO
  * 
@@ -67,6 +66,12 @@ public class MainPanel extends JPanel implements ComponentListener {
 	}
 	
 	
+	/**
+	 * set KeyboardLayout for this Panel and add everything in the layout to itself
+	 * 
+	 * @param kbd
+	 * @author NicolaiO
+	 */
 	public void setKbdLayout(KeyboardLayout kbd) {
 		logger.debug("adding Layout...");
 		this.setPreferredSize(new Dimension(kbd.getSize_x(), kbd.getSize_y()));
@@ -97,7 +102,7 @@ public class MainPanel extends JPanel implements ComponentListener {
 	public void componentResized(ComponentEvent e) {
 		if (initilized && Presenter.getInstance().isInitilized() && e.getComponent().getSize().height != 0
 				&& e.getComponent().getSize().width != 0) {// do not delete Presenter is initialized, rescale
-																						// before GUI has a size
+																			// before GUI has a size
 			logger.debug("Window resized handler called");
 			ProfileManager.getInstance().resizeWindow(e.getComponent().getSize());
 		}

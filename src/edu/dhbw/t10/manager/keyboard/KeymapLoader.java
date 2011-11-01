@@ -43,16 +43,25 @@ public class KeymapLoader {
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
+	/**
+	 * do not call me... I'm a static class...
+	 */
 	private KeymapLoader() {
 		throw new AssertionError();
 	}
 	
-	
+
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
 	/**
 	 * Load a keymap file.
+	 * 1. initialize the builder and open XML file
+	 * 2. loop over all keytypes (control, unicode, char)
+	 * 2.1. read keytype name
+	 * 3. for each keytype loop over all keys
+	 * 3.1. read id and keycode from key
+	 * 3.2 save key in keymap
 	 * 
 	 * @param filePath to an keymap XML file
 	 * @return HashMap with id->SingleKey
@@ -60,25 +69,32 @@ public class KeymapLoader {
 	 */
 	public static HashMap<Integer, Key> load(String filePath) {
 		logger.debug("initializing...");
-		File layoutFile = new File(filePath);
-		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+		// do everything in a try and return only empty keymap, if XML could not be loaded
 		try {
+			// load file and initialize document builder factory for XML parsing
+			File layoutFile = new File(filePath);
+			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 			Document doc = dBuilder.parse(layoutFile);
 			doc.getDocumentElement().normalize();
 			
+			// create keymap that will be returned
 			HashMap<Integer, Key> keymap = new HashMap<Integer, Key>();
 			NodeList keytypes = doc.getElementsByTagName("keytype");
 			int type = Key.UNKNOWN;
+			
+			// loop over all keytype like "control", "char", "unicode"
 			for (int i = 0; i < keytypes.getLength(); i++) {
 				NodeList keys = keytypes.item(i).getChildNodes();
 				try {
+					// get name of keytype
 					String stype = keytypes.item(i).getAttributes().getNamedItem("name").getTextContent();
 					type = convertType(stype);
 				} catch (NullPointerException e) {
 					logger.warn("A keytype could not be read. i=" + i);
 					type = Key.UNKNOWN;
 				}
+				// loop over all keys in keytype
 				for (int j = 0; j < keys.getLength(); j++) {
 					Node key = keys.item(j);
 					try {
@@ -86,6 +102,7 @@ public class KeymapLoader {
 							int id = Integer.parseInt(key.getAttributes().getNamedItem("id").getTextContent());
 							String keycode = key.getAttributes().getNamedItem("keycode").getTextContent();
 							String name = key.getTextContent();
+							// save key in keymap
 							keymap.put(id, new Key(id, name, keycode, type));
 						}
 					} catch (NullPointerException e) {
@@ -113,6 +130,13 @@ public class KeymapLoader {
 	}
 	
 	
+	/**
+	 * Convert type from String to occording int
+	 * 
+	 * @param stype like "control", "char", "unicode"
+	 * @return keytype like Key.CONTROL etc.
+	 * @author NicolaiO
+	 */
 	private static int convertType(String stype) {
 		if (stype.equals("control"))
 			return Key.CONTROL;

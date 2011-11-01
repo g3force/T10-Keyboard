@@ -76,18 +76,17 @@ public class Controller implements ActionListener {
 			
 			if (button.getSingleKey().size() == 1) {
 				Key key = (Key) button.getSingleKey().get(0);
-				logger.debug("Key pressed (Name:" + key.getName() + ", Type: " + key.getType() + ", Keycode: "
-						+ key.getKeycode() + ")");
+				logger.debug("Key pressed: " + key.toString());
 				if (key.isAccept())
 					this.keyIsAccept(key);
 				else if (key.getType() == Key.CHAR)
-					this.KeyIsCHAR(key);
+					this.keyIsCHAR(key);
 				else if (key.getType() == Key.UNICODE)
-					this.KeyIsUnicode(key);
+					this.keyIsUnicode(key);
 				else if (key.getKeycode().equals("\\BACK_SPACE\\"))
-					this.KeyIsBackspace();
+					this.keyIsBackspace();
 				else if ((key.getKeycode().equals("\\SPACE\\") || key.getKeycode().equals("\\ENTER\\")))
-					this.KeyIsSpaceOrEnter(key);
+					this.keyIsSpaceOrEnter(key);
 				else if (key.getKeycode().equals("\\DELETE\\")) {
 					outputMan.printChar(key);
 					suggest = typedWord;
@@ -96,10 +95,11 @@ public class Controller implements ActionListener {
 			button.unsetPressedModes();
 		} // end if instanceof Bbutton
 		
+
 		if (e.getSource() instanceof ModeButton) {
 			ModeButton modeB = (ModeButton) e.getSource();
 			modeB.push();
-		}
+		} // end if instance of ModeButton
 		
 		if (e.getSource() instanceof MuteButton) {
 			MuteButton muteB = (MuteButton) e.getSource();
@@ -112,49 +112,7 @@ public class Controller implements ActionListener {
 				profileMan.toggleTreeExpanding();
 			}
 			logger.debug("MuteButton pressed");
-		}
-		
-		// if (key.isAccept()) {
-		// if (suggest.length() > typedWord.length())
-		// outputMan.unMark();
-		// outputMan.printChar(key);
-		// profileMan.acceptWord(suggest);
-		// typedWord = "";
-		// suggest = "";
-		// } else
-		// if (key.getType() == Key.CHAR) {
-		// outputMan.printChar(key);
-		// typedWord = typedWord + key.getText();
-		// suggest = profileMan.getWordSuggest(typedWord);
-		// outputMan.printSuggest(suggest, typedWord);
-		// } else
-		// if (key.getType() == Key.UNICODE) {
-		// outputMan.printChar(key);
-		// } else
-		// if (key.getName() == "\\BACK_SPACE\\") {
-		// if (typedWord.length() > 0) {
-		// typedWord = typedWord.substring(0, typedWord.length() - 2);
-		// outputMan.deleteChar(2); // Zwei, weil einmal muss die aktuelle Markierung gelöscht werden und
-		// // dann ein Zeichen.
-		// suggest = profileMan.getWordSuggest(typedWord);
-		// outputMan.printSuggest(suggest, typedWord);
-		// } else {
-		// outputMan.deleteChar(1);
-		// }
-		// } else
-		// if ((key.getName() == "\\SPACE\\" || key.getName() == "\\ENTER\\")) {
-		// outputMan.printChar(key);
-		// typedWord = "";
-		// suggest = "";
-		// } else
-		// if (key.getType() == Key.CONTROL) {
-		// outputMan.printChar(key);
-		// if (key.getName() == "\\DELETE\\")
-		// suggest = typedWord;
-		// }
-		// else if (key.getType() == Key.MUTE) {
-		// // TODO Do something for mute
-		// }
+		} // end if instance of MuteButton
 	}
 	
 	
@@ -169,7 +127,7 @@ public class Controller implements ActionListener {
 	}
 	
 	
-	private void KeyIsCHAR(Key key) {
+	private void keyIsCHAR(Key key) {
 		outputMan.printChar(key);
 		typedWord = typedWord + key.getName();
 		suggest = profileMan.getWordSuggest(typedWord);
@@ -177,7 +135,7 @@ public class Controller implements ActionListener {
 	}
 	
 	
-	private void KeyIsUnicode(Key key) {
+	private void keyIsUnicode(Key key) {
 		outputMan.printChar(key);
 		// TODO Wieso sind Umlaute als Unicode Zeichen im Keyboard gespeichert?? Wie soll die Unterscheidung zwischen
 		// Satzzeichen und Buchstaben stattfinden?
@@ -189,8 +147,13 @@ public class Controller implements ActionListener {
 	}
 	
 	
-	private void KeyIsBackspace() {
-		if (typedWord.length() > 0) {
+	private void keyIsBackspace() {
+		if (typedWord.length() > 0 && typedWord.equals(suggest)) {
+			typedWord = typedWord.substring(0, typedWord.length() - 1);
+			outputMan.deleteChar(1); // Eins, weil es keinen Vorschlag gibt...
+			suggest = profileMan.getWordSuggest(typedWord);
+			outputMan.printSuggest(suggest, typedWord);
+		} else if (typedWord.length() > 0) {
 			typedWord = typedWord.substring(0, typedWord.length() - 1);
 			outputMan.deleteChar(2); // Zwei, weil einmal muss die aktuelle Markierung gelöscht werden und
 			// dann ein Zeichen.
@@ -201,7 +164,8 @@ public class Controller implements ActionListener {
 		}
 	}
 	
-	private void KeyIsSpaceOrEnter(Key key) {
+
+	private void keyIsSpaceOrEnter(Key key) {
 		logger.debug("Keycode" + key.getKeycode() + " " + key.getType());
 
 		outputMan.printChar(key);

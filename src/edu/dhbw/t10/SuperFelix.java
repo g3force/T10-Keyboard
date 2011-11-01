@@ -21,13 +21,14 @@ import edu.dhbw.t10.view.Presenter;
 
 
 /**
- * TODOs
+ * This is the main class of the t10 keyboard. It only initializes the first important classes.
  * 
  * TODO ALL graphical buttons (keys) e.g. pause- and arrow keys
- * 
- */
-/**
- * This is the main class of the t10 keyboard. It only initializes the first important classes.
+ * TODO ALL right click on button activates shift mode
+ * TODO ALL save layout size
+ * TODO Basti profile configuration
+ * TODO ALL menus
+ * TODO Nicolai 2 shift buttons
  * 
  * @author NicolaiO
  * 

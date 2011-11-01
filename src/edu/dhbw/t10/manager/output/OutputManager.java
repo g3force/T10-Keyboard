@@ -15,7 +15,7 @@ import edu.dhbw.t10.type.keyboard.key.Key;
 
 
 /**
- * TODO NicolaiO, add comment!
+ * TODO Andres, add comment!
  * 
  * 
  * @author Andres
@@ -35,7 +35,7 @@ public class OutputManager {
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
 	private OutputManager() {
-		
+
 	}
 	
 	
@@ -85,7 +85,7 @@ public class OutputManager {
 	 */
 	public void printSuggest(String newSuggest, String typed) {
 		if (newSuggest.length() > typed.length()) { //
-			out.printString(convertToUnicode(newSuggest.substring(typed.length())), Key.UNICODE);
+			out.printString(convertToUnicode(newSuggest.substring(typed.length())), 0);
 			out.markChar(newSuggest.length() - typed.length());
 		}
 	}
