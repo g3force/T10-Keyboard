@@ -148,7 +148,12 @@ public class Controller implements ActionListener {
 	
 	
 	private void keyIsBackspace() {
-		if (typedWord.length() > 0) {
+		if (typedWord.length() > 0 && typedWord.equals(suggest)) {
+			typedWord = typedWord.substring(0, typedWord.length() - 1);
+			outputMan.deleteChar(1); // Eins, weil es keinen Vorschlag gibt...
+			suggest = profileMan.getWordSuggest(typedWord);
+			outputMan.printSuggest(suggest, typedWord);
+		} else if (typedWord.length() > 0) {
 			typedWord = typedWord.substring(0, typedWord.length() - 1);
 			outputMan.deleteChar(2); // Zwei, weil einmal muss die aktuelle Markierung gelöscht werden und
 			// dann ein Zeichen.
