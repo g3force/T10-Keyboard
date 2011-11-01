@@ -20,6 +20,8 @@ import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 
+import edu.dhbw.t10.helper.StringHelper;
+
 
 /**
  * Handles the import/export of a file.
@@ -89,20 +91,7 @@ public class ImportExportManager {
 			String res = x.readLine();
 			while (res != null) {
 				// System.out.println("Tmpbuf: " + res);
-				res = res.replace("\"", "");
-				res = res.replace("'", "");
-				res = res.replace(".", "");
-				res = res.replace(",", "");
-				res = res.replace(";", "");
-				res = res.replace(":", "");
-				res = res.replace("(", "");
-				res = res.replace(")", "");
-				res = res.replace("[", "");
-				res = res.replace("]", "");
-				res = res.replace("/", "");
-				res = res.replace("\\", "");
-				res = res.replace("?", "");
-				res = res.replace("!", "");
+				res = StringHelper.removePunctuation(res);
 				String[] words = res.split(" ");
 				for (String word : words)
 					if (word.length() > 1)
