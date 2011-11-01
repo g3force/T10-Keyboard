@@ -41,9 +41,16 @@ public class Output {
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
 	private static final Logger	logger	= Logger.getLogger(Output.class);
+	// OS Constants
 	public static final int			UNKNOWN	= 0;
 	public static final int			LINUX		= 1;
 	public static final int			WINDOWS	= 2;
+	// SendKey Function Constants
+	public static final int			TYPE		= 0;
+	public static final int			PRESS		= 1;
+	public static final int			RELEASE	= 2;
+	public static final int			COMBI		= 3;
+	public static final int			SHIFT		= 10;
 
 
 	private static int				os;
@@ -66,7 +73,6 @@ public class Output {
 			throw new UnknownOSException("Unknown Operating System: " + osName);
 		}
 		logger.info("OS: " + osName);
-
 	}
 	
 
@@ -106,9 +112,9 @@ public class Output {
 					sendUnicode(charSequence.substring(i, i + 7));
 					unicodeStart.remove(0);
 				} else if (Character.isUpperCase(charSequence.charAt(i)) == true) { // Big Letters
-					sendKey(getKeyCode(charSequence.substring(i, i + 1)), 1);
+					sendKey(getKeyCode(charSequence.substring(i, i + 1)), SHIFT);
 				} else { // Small letters
-					sendKey(getKeyCode(charSequence.substring(i, i + 1)));
+					sendKey(getKeyCode(charSequence.substring(i, i + 1)), TYPE);
 				}
 			}
 			logger.info("String printed: " + charSequence);
@@ -121,12 +127,12 @@ public class Output {
 		if (length <= 0)
 			return false;
 		else {
-			sendKey(KeyEvent.VK_SHIFT, 0, 1);
+			sendKey(KeyEvent.VK_SHIFT, PRESS);
 			
 			for (int i = 0; i < length; i++) {
-				sendKey(KeyEvent.VK_LEFT);
+				sendKey(KeyEvent.VK_LEFT, TYPE);
 			}
-			sendKey(KeyEvent.VK_SHIFT, 0, 1);
+			sendKey(KeyEvent.VK_SHIFT, RELEASE);
 			return true;
 		}
 	}
@@ -194,16 +200,16 @@ public class Output {
 			return false;
 		}
 		if (os == 1) {
-			sendKey(KeyEvent.VK_CONTROL, 0, 1);
-			sendKey(KeyEvent.VK_SHIFT, 0, 1);
-			sendKey(KeyEvent.VK_U, 0);
-			sendKey(KeyEvent.VK_SHIFT, 0, 2);
-			sendKey(KeyEvent.VK_CONTROL, 0, 2);
-			sendKey(getKeyCode(uni.substring(3, 4).toLowerCase()), 0);
-			sendKey(getKeyCode(uni.substring(4, 5).toLowerCase()), 0);
-			sendKey(getKeyCode(uni.substring(5, 6).toLowerCase()), 0);
-			sendKey(getKeyCode(uni.substring(6, 7).toLowerCase()), 0);
-			sendKey(KeyEvent.VK_ENTER, 0);
+			sendKey(KeyEvent.VK_CONTROL, PRESS);
+			sendKey(KeyEvent.VK_SHIFT, PRESS);
+			sendKey(KeyEvent.VK_U, TYPE);
+			sendKey(KeyEvent.VK_SHIFT, RELEASE);
+			sendKey(KeyEvent.VK_CONTROL, RELEASE);
+			sendKey(getKeyCode(uni.substring(3, 4).toLowerCase()), TYPE);
+			sendKey(getKeyCode(uni.substring(4, 5).toLowerCase()), TYPE);
+			sendKey(getKeyCode(uni.substring(5, 6).toLowerCase()), TYPE);
+			sendKey(getKeyCode(uni.substring(6, 7).toLowerCase()), TYPE);
+			sendKey(KeyEvent.VK_ENTER, TYPE);
 		} else if (os == 2) {
 			try {
 				// Convertion from HexaNumber as String to Decimal Number as String (without leading zeros)
@@ -219,18 +225,18 @@ public class Output {
 				num_lock = tool.getLockingKeyState(KeyEvent.VK_NUM_LOCK);
 				logger.info((num_lock ? "Num Lock is on" : "Num Lock is off"));
 				if (!num_lock) { // If Num_Lock is off, turn it on
-					sendKey(KeyEvent.VK_NUM_LOCK, 0);
+					sendKey(KeyEvent.VK_NUM_LOCK, TYPE);
 				}
 
 				// Sending KeyCombination for Unicode input to Windows...
-				sendKey(KeyEvent.VK_ALT, 0, 1);
+				sendKey(KeyEvent.VK_ALT, PRESS);
 				// Sends leading zeros to the system. Windows interpret only 5 digit long values correct.
 				for (int i = 5; i > uniDecimal.length(); i--)
-					sendKey(KeyEvent.VK_0, 0);
+					sendKey(KeyEvent.VK_0, TYPE);
 				for (int i = 0; i < uniDecimal.length(); i++) {
-					sendKey(getKeyCode(uniDecimal.substring(i, i + 1)), 0);
+					sendKey(getKeyCode(uniDecimal.substring(i, i + 1)), TYPE);
 				}
-				sendKey(KeyEvent.VK_ALT, 0, 2);
+				sendKey(KeyEvent.VK_ALT, RELEASE);
 
 
 			} catch (UnsupportedOperationException err) {
@@ -246,14 +252,11 @@ public class Output {
 	
 
 	private boolean sendKey(int key) {
-		return sendKey(key, 0);
+		return sendKey(key, TYPE);
 	}
 	
 
-	private boolean sendKey(int key, int function) {
-		return sendKey(key, function, 0);
-	}
-	
+
 
 	// TODO Input argument is a List of Keys not a single one...
 	/**
@@ -261,34 +264,52 @@ public class Output {
 	 * Send Key Codes to the System with a Robot and ava.awt.event.KeyEvent constants
 	 * 
 	 * Use function to use Shift, ... functionality
-	 * 0: without; 1: Shift; 2: Control; 3: Alt; 4: Alt Gr; 5: Super
+	 * for function definitions look at constants...
 	 * 
-	 * @param key, function, hold
+	 * Hint: keyPress('ö') tested and it don't work
+	 * 
+	 * @param key, function
 	 * @return
 	 */
-	private boolean sendKey(int key, int function, int hold) {
-		if (key == 0 && function != 6) {
+	private boolean sendKey(int key, int function) {
+		if (key == 0) {
+			logger.error("sendKey: UNKNOWN Key");
 			return false;
 		}
 		try {
 			Robot keyRobot = new Robot();
-			if (hold == 0)
-				keyRobot.delay(delay);
-			
+			keyRobot.delay(delay);
+			// requestFocus();
 			switch (function) {
-				case 0: {
-					if (hold == 0 || hold == 1)
-						keyRobot.keyPress(key);
-					if (hold == 0 || hold == 2)
-						keyRobot.keyRelease(key);
-				}
+				case TYPE:
+					keyRobot.keyPress(key);
+					keyRobot.keyRelease(key);
 					break;
-				case 1: { // Shift function
+				case PRESS:
+					keyRobot.keyPress(key);
+					break;
+				case RELEASE:
+					keyRobot.keyRelease(key);
+					break;
+				case COMBI: // Kombination
+					Stack<Integer> combi = new Stack<Integer>();
+					// Input ist Liste... von vorne nach hinten wird diese abgearbeitet und das aktuelle Element ausgegeben,
+					// in den Stack gespeichert und gelöscht... Wenn die Liste leer ist wird das oberste Element des STacks
+					// ausgegeben und gelöscht bis der Stack leer ist...
+					for (Integer i : new Integer[] { 0, 0, 0 }) {
+						keyRobot.keyPress((int) i);
+						combi.push(i);
+					}
+					while (!combi.isEmpty()) {
+						Integer i = combi.pop();
+						keyRobot.keyRelease((int) i);
+					}
+					break;
+				case SHIFT: // Shift function
 					keyRobot.keyPress(KeyEvent.VK_SHIFT);
 					keyRobot.keyPress(key);
 					keyRobot.keyRelease(key);
 					keyRobot.keyRelease(KeyEvent.VK_SHIFT);
-				}
 					break;
 				// case 2: { // Crtl function
 				// keyRobot.keyPress(KeyEvent.VK_CONTROL);
@@ -318,21 +339,7 @@ public class Output {
 				// keyRobot.keyRelease(KeyEvent.VK_WINDOWS);
 				// }
 				// break;
-				case 6: { // Kombination
-					Stack<Integer> combi = new Stack<Integer>();
-					// Input ist Liste... von vorne nach hinten wird diese abgearbeitet und das aktuelle Element ausgegeben,
-					// in den Stack gespeichert und gelöscht... Wenn die Liste leer ist wird das oberste Element des STacks
-					// ausgegeben und gelöscht bis der Stack leer ist...
-					for (Integer i : new Integer[] { 0, 0, 0 }) {
-						keyRobot.keyPress((int) i);
-						combi.push(i);
-					}
-					while (!combi.isEmpty()) {
-						Integer i = combi.pop();
-						keyRobot.keyRelease((int) i);
-					}
-				}
-					break;
+
 			}
 			logger.debug("sendKey: Key sent: " + key);
 			return true;
