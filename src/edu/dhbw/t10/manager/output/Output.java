@@ -95,16 +95,19 @@ public class Output {
 	 */
 	public boolean printString(String charSequence, int type) {
 		int length = charSequence.length();
+		if (length <= 0)
+			return false;
 		
-		// if (charSequence.charAt(0) == '\\' && charSequence.charAt(length - 1) == '\\'
-		// && !charSequence.substring(0).startsWith("\\U+")) {
 		if (type == Key.CONTROL) {
 			sendKey(getKeyCode(charSequence.substring(1, length - 1)));
 			logger.info("Control Symbol printed: " + charSequence);
+			return true;
 		} else if (type == Key.UNICODE) {
 			sendUnicode(charSequence);
 			logger.info("Unicode Symbol printed: " + charSequence);
-		} else {
+			return true;
+		} else if (type == Key.UNKNOWN || type == Key.CHAR) { // print String... first convert Unicodes and then print all
+																				// chars and unicodes...
 			ArrayList<Integer> unicodeStart = extractUnicode(charSequence);
 			for (int i = 0; i < length; i++) {
 				// Unterscheidung zwischen Buchstaben (und Zahlen) und Unicode Zeichen
@@ -118,8 +121,11 @@ public class Output {
 				}
 			}
 			logger.info("String printed: " + charSequence);
+			return true;
+		} else {
+			logger.info("Undefined type for printing:" + type);
+			return false;
 		}
-		return true;
 	}
 	
 
@@ -195,8 +201,7 @@ public class Output {
 
 	private boolean sendUnicode(String uni) {
 		if (uni.length() != 8 || !uni.substring(0, 3).equals("\\U+") || !uni.substring(7, 8).equals("\\")) {
-			logger.error("UNICODE wrong format: length:" + uni.length() + ", Start: " + uni.substring(0, 2) + ", End: "
-					+ uni.substring(7, 8));
+			logger.error("UNICODE wrong format; length: " + uni.length());
 			return false;
 		}
 		if (os == 1) {
