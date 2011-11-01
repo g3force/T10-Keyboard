@@ -253,6 +253,10 @@ public class KeyboardLayoutLoader {
 							logger.warn("key not found in keymap. temp=" + temp + " id=" + id);
 							continue;
 						}
+						Node nAccept = defkey.item(0).getAttributes().getNamedItem("accept");
+						if (nAccept != null && nAccept.getTextContent().equals("true")) {
+							key.setAccept(true);
+						}
 						button.setKey(key);
 					} catch (NumberFormatException e) {
 						logger.warn("key id could not be parsed to Integer. id=" + defkey.item(0).getTextContent());

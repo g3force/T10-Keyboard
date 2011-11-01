@@ -76,18 +76,17 @@ public class Controller implements ActionListener {
 			
 			if (button.getSingleKey().size() == 1) {
 				Key key = (Key) button.getSingleKey().get(0);
-				logger.debug("Key pressed (Name:" + key.getName() + ", Type: " + key.getType() + ", Keycode: "
-						+ key.getKeycode() + ")");
+				logger.debug("Key pressed: " + key.toString());
 				if (key.isAccept())
 					this.keyIsAccept(key);
 				else if (key.getType() == Key.CHAR)
-					this.KeyIsCHAR(key);
+					this.keyIsCHAR(key);
 				else if (key.getType() == Key.UNICODE)
-					this.KeyIsUnicode(key);
+					this.keyIsUnicode(key);
 				else if (key.getKeycode().equals("\\BACK_SPACE\\"))
-					this.KeyIsBackspace();
+					this.keyIsBackspace();
 				else if ((key.getKeycode().equals("\\SPACE\\") || key.getKeycode().equals("\\ENTER\\")))
-					this.KeyIsSpaceOrEnter(key);
+					this.keyIsSpaceOrEnter(key);
 				else if (key.getKeycode().equals("\\DELETE\\")) {
 					outputMan.printChar(key);
 					suggest = typedWord;
@@ -128,7 +127,7 @@ public class Controller implements ActionListener {
 	}
 	
 	
-	private void KeyIsCHAR(Key key) {
+	private void keyIsCHAR(Key key) {
 		outputMan.printChar(key);
 		typedWord = typedWord + key.getName();
 		suggest = profileMan.getWordSuggest(typedWord);
@@ -136,7 +135,7 @@ public class Controller implements ActionListener {
 	}
 	
 	
-	private void KeyIsUnicode(Key key) {
+	private void keyIsUnicode(Key key) {
 		outputMan.printChar(key);
 		// TODO Wieso sind Umlaute als Unicode Zeichen im Keyboard gespeichert?? Wie soll die Unterscheidung zwischen
 		// Satzzeichen und Buchstaben stattfinden?
@@ -148,7 +147,7 @@ public class Controller implements ActionListener {
 	}
 	
 	
-	private void KeyIsBackspace() {
+	private void keyIsBackspace() {
 		if (typedWord.length() > 0) {
 			typedWord = typedWord.substring(0, typedWord.length() - 1);
 			outputMan.deleteChar(2); // Zwei, weil einmal muss die aktuelle Markierung gelöscht werden und
@@ -160,7 +159,8 @@ public class Controller implements ActionListener {
 		}
 	}
 	
-	private void KeyIsSpaceOrEnter(Key key) {
+
+	private void keyIsSpaceOrEnter(Key key) {
 		logger.debug("Keycode" + key.getKeycode() + " " + key.getType());
 
 		outputMan.printChar(key);
