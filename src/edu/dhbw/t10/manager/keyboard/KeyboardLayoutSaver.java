@@ -37,6 +37,7 @@ import edu.dhbw.t10.type.keyboard.KeyboardLayout;
 import edu.dhbw.t10.type.keyboard.key.Button;
 import edu.dhbw.t10.type.keyboard.key.Key;
 import edu.dhbw.t10.type.keyboard.key.ModeButton;
+import edu.dhbw.t10.type.keyboard.key.MuteButton;
 import edu.dhbw.t10.type.keyboard.key.PhysicalButton;
 
 
@@ -75,15 +76,13 @@ public class KeyboardLayoutSaver {
 	 */
 	public static void save(KeyboardLayout kbdLayout, String filePath) {
 		logger.info("Starting to save the KeyboardLayout to XML");
-		File layoutFile = new File(filePath);
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 		try {
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-			Document doc = dBuilder.newDocument();// dBuilder.parse(layoutFile);
-			// doc.getDocumentElement().normalize();
+			Document doc = dBuilder.newDocument();
 			Element layout = doc.createElement("layout");
 			doc.appendChild(layout);
-			
+			// ---------------HEADER-----------------
 			Element sizex = doc.createElement("sizex");
 			Text text = doc.createTextNode(kbdLayout.getOrigSize_x() + "");
 			sizex.appendChild(text);
@@ -122,7 +121,7 @@ public class KeyboardLayoutSaver {
 			text = doc.createTextNode(kbdLayout.getFontSize() + "");
 			size.appendChild(text);
 			font.appendChild(size);
-			
+			// ---------------DROPDOWN-----------------
 			for (DropDownList dd : kbdLayout.getDdls()) {
 				Element dropdown = doc.createElement("dropdown");
 				dropdown.setAttribute("type", dd.getTypeAsString());
@@ -132,6 +131,27 @@ public class KeyboardLayoutSaver {
 				dropdown.setAttribute("pos_y", dd.getY() + "");
 				layout.appendChild(dropdown);
 			}
+			// ---------------MUTEBUTTONS-----------------
+			for (MuteButton muteButton : kbdLayout.getMuteButtons()) {
+				Element muteButtonEl = doc.createElement("mutebutton");
+				setSizeOfPhysicalButton(muteButtonEl, muteButton);
+				// muteButtonEl.setAttribute("type", muteButton.getType());
+				// ON
+				Element on = doc.createElement("on");
+				on.setAttribute("color", muteButton.getStringFromColor(muteButton.getOnColor()));
+				text = doc.createTextNode("Save");
+				on.appendChild(text);
+				muteButtonEl.appendChild(on);
+				// OFF
+				Element off = doc.createElement("off");
+				off.setAttribute("color", muteButton.getStringFromColor(muteButton.getOffColor()));
+				text = doc.createTextNode("Save");
+				off.appendChild(text);
+				muteButtonEl.appendChild(off);
+				
+				layout.appendChild(muteButtonEl);
+			}
+			// ---------------BUTTONS-----------------
 			for (Button button : kbdLayout.getButtons()) {
 				Element buttonEl = doc.createElement("button");
 				setSizeOfPhysicalButton(buttonEl, button);
@@ -150,7 +170,7 @@ public class KeyboardLayoutSaver {
 				}
 				layout.appendChild(buttonEl);
 			}
-			
+			// ---------------MODEBUTTONS-----------------
 			for (ModeButton modeButton : kbdLayout.getModeButtons()) {
 				Element modeButtonEl = doc.createElement("modebutton");
 				setSizeOfPhysicalButton(modeButtonEl, modeButton);
@@ -162,6 +182,7 @@ public class KeyboardLayoutSaver {
 				
 				layout.appendChild(modeButtonEl);
 			}
+
 			String xml = convertDocToString(doc);
 			printToPath(xml, filePath);
 			

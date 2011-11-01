@@ -50,17 +50,15 @@ public class PriorityElement implements Serializable {
 	
 	
 	public PriorityElement(char wo, PriorityElement fa, PriorityElement su, int fr) {
+		// constructor only for root element, suggest shall not be this, but null
 		initializer(wo, fa, su, fr, new HashMap<Character, PriorityElement>());
 		logger.debug("PriorityElement created (2)");
 	}
 	
 	
-	public PriorityElement(char wo, PriorityElement fa, PriorityElement su, int fr, Map<Character, PriorityElement> fo) {
-		initializer(wo, fa, su, fr, fo);
-		logger.debug("PriorityElement created (3)");
-	}
 	
 	
+
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
@@ -70,11 +68,16 @@ public class PriorityElement implements Serializable {
 		suggest = su;
 		frequency = fr;
 		followers = fo;
-		Calendar timestamp = new GregorianCalendar();
-		lastUse = timestamp.getTimeInMillis();
+		updateLastUse();
 	}
 	
 	
+	/**
+	 * updates the timestamp in this node
+	 * should be called, whenever the node is changed
+	 * 
+	 * @author dirk
+	 */
 	private void updateLastUse() {
 		Calendar timestamp = new GregorianCalendar();
 		lastUse = timestamp.getTimeInMillis();
@@ -129,18 +132,21 @@ public class PriorityElement implements Serializable {
 	public void increase() {
 		updateLastUse();
 		frequency++;
-		ReplaceSuggestsInFathers();
+		replaceSuggestsInFathers();
 	}
 	
 	
 	/**
-	 * local method to replace the suggests in the fathers of this node
+	 * local method to replace the suggests in the fathers of this node after an increase
 	 */
-	private void ReplaceSuggestsInFathers() {
+	private void replaceSuggestsInFathers() {
 		logger.debug("Replacing suggests (in Fathers)...");
 		PriorityElement node = this.getFather();
 		PriorityElement increasedNode = this;
 		// if the father is null, the node is the root element
+		// if the word in the suggest is the same, as the word in this node -> nothing to do, but shall not abort while
+		// loop
+		// the frequency in this node is lower then the frequency in the increased node -> replace suggest
 		while (node.getFather() != null
 				&& (node.getSuggest().buildWord().equals(increasedNode.buildWord()) || node.getSuggest().getFrequency() < frequency)) {
 			node.setSuggest(increasedNode);

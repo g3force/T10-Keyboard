@@ -84,6 +84,17 @@ public abstract class PhysicalButton extends JButton {
 	}
 	
 	
+	public String getStringFromColor(Color bgColor) {
+		String color;
+		try {
+			color = bgColor.toString();
+		} catch (Exception e) {
+			color = null;
+		}
+		return color;
+	}
+
+	
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------

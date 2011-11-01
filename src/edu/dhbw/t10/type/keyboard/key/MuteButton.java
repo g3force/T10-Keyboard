@@ -51,6 +51,10 @@ public class MuteButton extends PhysicalButton {
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
+	// public String getTypeAsString() {
+	// MuteButton.class.getDeclaredField("THIS_IS_MY_CONST").get(String.class)
+	// }
+
 	
 	public void push() {
 		if (activated) {
