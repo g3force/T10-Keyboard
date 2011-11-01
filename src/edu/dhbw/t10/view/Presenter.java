@@ -51,8 +51,10 @@ public class Presenter extends JFrame {
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("icons/useacc_logo.png"));
 		this.setTitle("T10 On-Screen Keyboard");
 		this.setAlwaysOnTop(true);
+		this.setFocusableWindowState(false); // Window can't be focussed, so you can type at your current position with
+															// the On-Screen Keyboard
 		this.setVisible(true);
-		
+
 		// get a reference to the content pane
 		contentPane = (JPanel) getContentPane();
 		contentPane.add(MainPanel.getInstance());
@@ -60,6 +62,7 @@ public class Presenter extends JFrame {
 		
 		// build GUI
 		pack();
+
 		initilized = true;
 		logger.debug("Initialized.");
 	}
