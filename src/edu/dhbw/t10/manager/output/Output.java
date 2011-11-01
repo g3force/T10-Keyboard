@@ -11,6 +11,7 @@ package edu.dhbw.t10.manager.output;
 
 import java.awt.AWTException;
 import java.awt.Robot;
+import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ import edu.dhbw.t10.type.keyboard.key.Key;
  * This class provides the functionallity of printing Strings via sending Key Strokes to the system.
  * Letters, big letters and numbers are converted directly to their own java.awt.event.KeyEvent constant, which is sent.
  * All other symbols are written via their Unicode.
- * FIXME only Linux Support at this moment
+ * FIXME WIndows support untested
  * 
  * Control symbols are sent via their java.awt.event.KeyEvent constant
  * 
@@ -40,34 +41,45 @@ public class Output {
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
 	private static final Logger	logger	= Logger.getLogger(Output.class);
-	private static int				os			= 1;											// TODO aktuelles OS herausfinden
-	private static int				delay		= 2000;
+	public static final int			UNKNOWN	= 0;
+	public static final int			LINUX		= 1;
+	public static final int			WINDOWS	= 2;
+
+
+	private static int				os;
+	private static int				delay		= 0;
 
 	private static Output			instance;
 	
+
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
-	private Output() {
+	private Output() throws UnknownOSException {
+		String osName = System.getProperty("os.name");
+		if (osName.equals("Linux"))
+			os = LINUX;
+		else if (osName.equals("Windows"))
+			os = WINDOWS;
+		else {
+			os = UNKNOWN;
+			throw new UnknownOSException("Unknown Operating System: " + osName);
+		}
+		logger.info("OS: " + osName);
+
 	}
 	
-	
+
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
-	public static Output getInstance() {
-		if (instance == null) {
-			instance = new Output();
-		}
-		return instance;
-	}
 	
-	
+
 	public boolean printChar(Key c) {
 		return printString(c.getKeycode(), c.getType());
 	}
 	
-	
+
 	/**
 	 * 
 	 * Transoforms a given CodeSequence from OutputManager to KeyEvent-Constants and sends it to the System
@@ -104,7 +116,7 @@ public class Output {
 		return true;
 	}
 	
-	
+
 	public boolean markChar(int length) {
 		if (length <= 0)
 			return false;
@@ -119,7 +131,7 @@ public class Output {
 		}
 	}
 	
-	
+
 	/**
 	 * 
 	 * Find a Unicode in a given String and returns a List with the indices
@@ -142,7 +154,7 @@ public class Output {
 		return unicodeStart;
 	}
 	
-	
+
 	/**
 	 * 
 	 * Converts a Stringcode into a Constant of the KeyEvent class via Reflection.
@@ -174,7 +186,7 @@ public class Output {
 		
 	}
 	
-	
+
 	private boolean sendUnicode(String uni) {
 		if (uni.length() != 8 || !uni.substring(0, 3).equals("\\U+") || !uni.substring(7, 8).equals("\\")) {
 			logger.error("UNICODE wrong format: length:" + uni.length() + ", Start: " + uni.substring(0, 2) + ", End: "
@@ -193,29 +205,56 @@ public class Output {
 			sendKey(getKeyCode(uni.substring(6, 7).toLowerCase()), 0);
 			sendKey(KeyEvent.VK_ENTER, 0);
 		} else if (os == 2) {
-			int[] uniArr = { 0, 0, 0, 0, 0 };
-			// FIXME check if Num_lock is on and activate it
-			// FIXME Convertion from Unicode HexaString to Decimal
-			sendKey(KeyEvent.VK_ALT, 0, 1);
-			for (int i : uniArr)
-				sendKey(i, 7, 2);
-			sendKey(KeyEvent.VK_ALT, 0, 2);
-			
+			try {
+				// Convertion from HexaNumber as String to Decimal Number as String (without leading zeros)
+				String uniDecimal;
+				
+				Integer uninumber = Integer.decode("0x" + uni.substring(3, 7));
+				uniDecimal = Integer.toString(uninumber, 10);
+
+				boolean num_lock;
+
+				// Chekcs if Num_Lock is on an turns it on, if necessary
+				Toolkit tool = Toolkit.getDefaultToolkit();
+				num_lock = tool.getLockingKeyState(KeyEvent.VK_NUM_LOCK);
+				logger.info((num_lock ? "Num Lock is on" : "Num Lock is off"));
+				if (!num_lock) { // If Num_Lock is off, turn it on
+					sendKey(KeyEvent.VK_NUM_LOCK, 0);
+				}
+
+				// Sending KeyCombination for Unicode input to Windows...
+				sendKey(KeyEvent.VK_ALT, 0, 1);
+				// Sends leading zeros to the system. Windows interpret only 5 digit long values correct.
+				for (int i = 5; i > uniDecimal.length(); i--)
+					sendKey(KeyEvent.VK_0, 0);
+				for (int i = 0; i < uniDecimal.length(); i++) {
+					sendKey(getKeyCode(uniDecimal.substring(i, i + 1)), 0);
+				}
+				sendKey(KeyEvent.VK_ALT, 0, 2);
+
+
+			} catch (UnsupportedOperationException err) {
+				logger.error("Unsopported Operation: Check Num_Lock state");
+				// In Linux it throws always this Exception, but here it isn't needed
+				// TODO test it in Windows, where it is needed
+			} catch (NumberFormatException err) {
+				logger.error("Wrong number format:" + uni.substring(3, 7));
+			}
 		}
 		return true;
 	}
 	
-	
+
 	private boolean sendKey(int key) {
 		return sendKey(key, 0);
 	}
 	
-	
+
 	private boolean sendKey(int key, int function) {
 		return sendKey(key, function, 0);
 	}
 	
-	
+
 	// TODO Input argument is a List of Keys not a single one...
 	/**
 	 * 
@@ -303,8 +342,20 @@ public class Output {
 		}
 	}
 	
-	
+
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
+	
+	public static Output getInstance() {
+		if (instance == null) {
+			try {
+				instance = new Output();
+			} catch (UnknownOSException err) {
+				logger.error(err.getMessage());
+				// TODO was passiert dann???
+			}
+		}
+		return instance;
+	}
 }
