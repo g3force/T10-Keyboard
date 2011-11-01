@@ -10,9 +10,10 @@
 package edu.dhbw.t10.type.keyboard.key;
 
 /**
- * TODO NicolaiO, add comment!
- * - What should this type do (in one sentence)?
- * - If not intuitive: A simple example how to use this class
+ * A key represents a combination of a keycode and a name together with some meta information.
+ * e.g. 'a' is a key, but the a-Button on the keyboard is a Button, because it also includes an 'A'
+ * 
+ * A key can have a type and it can be an accept key (for accepting the currently suggested word)
  * 
  * @author NicolaiO
  * 
@@ -33,11 +34,16 @@ public class Key {
 	private boolean			accept	= false;
 	
 	
-	// the name appearing on the button in the screen keyboard
-	
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
+	/**
+	 * 
+	 * @param id
+	 * @param name
+	 * @param keycode
+	 * @param type see constants
+	 */
 	public Key(int id, String name, String keycode, int type) {
 		this.id = id;
 		this.name = name;
@@ -50,6 +56,9 @@ public class Key {
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
 	
+	public String toString() {
+		return "id:" + id + " n:" + name + " kc:" + keycode + " t:" + type + " a:" + accept;
+	}
 	
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------

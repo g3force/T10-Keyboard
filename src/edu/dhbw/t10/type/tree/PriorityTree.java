@@ -75,7 +75,7 @@ public class PriorityTree implements Serializable {
 	 * @param frequency the start frequency of the inserting word
 	 */
 	private void insert(String word, int frequency, boolean setFreq) {
-		//if (inputValid(word)) {
+		// if (inputValid(word)) {
 			logger.debug("Insertig Word...");
 			PriorityElement node = root;
 			char[] inChar = word.toCharArray(); // put every letter of the word alone in an char array

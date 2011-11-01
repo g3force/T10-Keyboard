@@ -16,9 +16,8 @@ import org.apache.log4j.Logger;
 
 
 /**
- * This class is the body of one key on the keyboard. It contains information
- * about size and position as well as for the names and keycodes for the several
- * modes like default, shift and alt_gr
+ * This class is the body of one Button on the keyboard. It contains information
+ * about the names and keycodes for the several modes like default, shift and alt_gr
  * 
  * @author NicolaiO
  * 
@@ -49,13 +48,11 @@ public class Button extends PhysicalButton {
 	// --------------------------------------------------------------------------
 	
 	/**
+	 * Add a ModeButton to this Button. This saves the ModeButton in a mode-list and registers as an observer to change
+	 * its mode when ModeButton is pressed.
 	 * 
-	 * TODO NicolaiO, add comment!
-	 * 
-	 * @param mode
-	 * @param name
-	 * @param keycode
-	 * @param color
+	 * @param mode ModeButton that this Button should be bind to
+	 * @param accordingKey Key, that should be pressed, when ModeButton is active and Button is pressed
 	 * @author NicolaiO
 	 */
 	public void addMode(ModeButton mode, Key accordingKey) {
@@ -65,10 +62,10 @@ public class Button extends PhysicalButton {
 	
 	
 	/**
+	 * activate a mode. If the button is pressed after this, it will react according to mode preferences.
+	 * If more than one mode is active afterwards, currently the Button text is set to default!
 	 * 
-	 * TODO NicolaiO, add comment!
-	 * 
-	 * @param currentMode
+	 * @param mode ModeButton, that should be activated
 	 * @author NicolaiO
 	 */
 	public void addCurrentMode(ModeButton mode) {
@@ -80,18 +77,17 @@ public class Button extends PhysicalButton {
 				logger.warn("addCurrentMode called with invalid mode!");
 			}
 		} else {
-			// TODO support multi-modes
+			// If no mode or more than one mode is active, just set ButtonText to default...
+			// TODO ALL support multi-modes
 			setText(key.getName());
 		}
-		// setBackground(getColorFromString(getColor()));
 	}
 	
 	
 	/**
+	 * Remove a Mode again, if Mode is not longer active.
 	 * 
-	 * TODO NicolaiO, add comment!
-	 * 
-	 * @param mode
+	 * @param mode ModeButton, that should be deactivated
 	 * @author NicolaiO
 	 */
 	public void rmCurrentMode(ModeButton mode) {
@@ -101,11 +97,15 @@ public class Button extends PhysicalButton {
 		} else {
 			setText(key.getName());
 		}
-
-		// setBackground(getColorFromString(getColor()));
 	}
 	
 	
+	/**
+	 * Return all keys, that are currently pressed, including mode keys!
+	 * 
+	 * @return
+	 * @author Dirk
+	 */
 	public ArrayList<Key> getSingleKey() {
 		ArrayList<Key> output = new ArrayList<Key>();
 		if (activeModes.size() == 0) {
@@ -121,6 +121,11 @@ public class Button extends PhysicalButton {
 	}
 	
 	
+	/**
+	 * Unset/release all currently active ModeButtons
+	 * 
+	 * @author NicolaiO
+	 */
 	public void unsetPressedModes() {
 		ArrayList<ModeButton> tactiveModes = new ArrayList<ModeButton>();
 		for (ModeButton b : activeModes) {
@@ -137,11 +142,6 @@ public class Button extends PhysicalButton {
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
-	
-	
-	// public Set<String> getAllModes() {
-	// return modes.keySet();
-	// }
 	
 	
 	public HashMap<ModeButton, Key> getModes() {

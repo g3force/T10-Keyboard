@@ -21,11 +21,8 @@ import edu.dhbw.t10.view.panels.MainPanel;
 
 
 /**
- * TODO NicolaiO, add comment!
- * - What should this type do (in one sentence)?
- * - If not intuitive: A simple example how to use this class
- * 
- * @author NicolaiO
+ * This is the main Window. This class initializes settings for the window and adds the MainPanel.
+ * @author NicolaiO, andres
  * 
  */
 public class Presenter extends JFrame {
@@ -53,8 +50,11 @@ public class Presenter extends JFrame {
 		this.setLocationByPlatform(true);
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("icons/useacc_logo.png"));
 		this.setTitle("T10 On-Screen Keyboard");
+		this.setAlwaysOnTop(true);
+		this.setFocusableWindowState(false); // Window can't be focussed, so you can type at your current position with
+															// the On-Screen Keyboard
 		this.setVisible(true);
-		
+
 		// get a reference to the content pane
 		contentPane = (JPanel) getContentPane();
 		contentPane.add(MainPanel.getInstance());
@@ -62,6 +62,7 @@ public class Presenter extends JFrame {
 		
 		// build GUI
 		pack();
+
 		initilized = true;
 		logger.debug("Initialized.");
 	}
