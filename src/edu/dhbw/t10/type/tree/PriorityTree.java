@@ -241,6 +241,7 @@ public class PriorityTree implements Serializable {
 		for (Entry<String, Integer> entry : input.entrySet()) {
 			insert(entry.getKey(), entry.getValue(), true);
 		}
+		logger.debug("imported from HashMap");
 	}
 	
 	
@@ -254,7 +255,7 @@ public class PriorityTree implements Serializable {
 			if (pe.getFrequency() != 0)
 				exportMap.put(pe.buildWord(), pe.getFrequency());
 		}
-		
+		logger.debug("exported to HashMap");
 		return exportMap;
 	}
 	
