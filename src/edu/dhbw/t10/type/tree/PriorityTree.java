@@ -184,11 +184,11 @@ public class PriorityTree implements Serializable {
 				}
 			} else {
 				// child not found -> element is not in the tree
-				logger.error("Node not found (getElement)");
+				logger.debug("Node not found (getElement)");
 				return null;
 			}
 		}
-		logger.error("Node not found (getElement)");
+		logger.debug("Node not found (getElement)");
 		return null;
 	}
 	
