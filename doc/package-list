@@ -1,0 +1,14 @@
+edu.dhbw.t10
+edu.dhbw.t10.helper
+edu.dhbw.t10.manager
+edu.dhbw.t10.manager.keyboard
+edu.dhbw.t10.manager.output
+edu.dhbw.t10.manager.profile
+edu.dhbw.t10.type
+edu.dhbw.t10.type.keyboard
+edu.dhbw.t10.type.keyboard.key
+edu.dhbw.t10.type.profile
+edu.dhbw.t10.type.tree
+edu.dhbw.t10.view
+edu.dhbw.t10.view.menus
+edu.dhbw.t10.view.panels
