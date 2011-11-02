@@ -1,4 +1,1 @@
-//Configfile for T10
-ActiveProfile=Pflichteheft
-ProfilePath=
-ProfilePath=
+//Configfile for T10ActiveProfile=defaultProfilePath=data/profiles/default.profile
