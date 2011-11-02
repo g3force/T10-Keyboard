@@ -174,6 +174,21 @@ public class ProfileManager {
 	
 	/**
 	 * 
+	 * Add an entry to the config file.
+	 * 
+	 * @param bw - Handle/Reference to a BufferedWriter
+	 * @param entry - String containing what you want to write.
+	 * @author SebastianN
+	 */
+	public void addEntry(BufferedWriter bw, String entry) {
+		try {
+			bw.write(entry + "\n");
+		} catch (IOException io) {
+			io.printStackTrace();
+		}
+	}
+	/**
+	 * 
 	 * Saves the name of the active profile and the path to all profile-files.
 	 * 
 	 * @author SebastianN
@@ -184,13 +199,17 @@ public class ProfileManager {
 			FileWriter fw = new FileWriter(confFile);
 			BufferedWriter bw = new BufferedWriter(fw);
 			
-			bw.write(createComment("Configfile for T10"));
+			addEntry(bw, createComment("Configfile for T10"));
 			
 			if (activeProfile != null)
-				bw.write("ActiveProfile=" + activeProfile.getName());
+				addEntry(bw, "ActiveProfile=" + activeProfile.getName());
 			
 			for (int i = 0; i < profiles.size(); i++) {
-				bw.write("ProfilePath=" + profiles.get(i).getPathToProfile() + "\n");
+				if (profiles.get(i).getPathToProfile().isEmpty()) {
+					logger.error("Profile " + profiles.get(i).getName() + " has no path to profile");
+					continue;
+				}
+				addEntry(bw, "ProfilePath=" + profiles.get(i).getPathToProfile());
 			}
 			bw.close();
 		} catch (IOException io) {
