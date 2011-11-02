@@ -79,10 +79,10 @@ public class TestTree {
 		tree.insert("declation");
 		logger.error("finished insert in tree");
 		logger.error("saving the tree");
-		prof.saveTree();
+		prof.save();
 		logger.error("saved the tree");
 		logger.error("loading the tree");
-		prof.loadTree();
+		prof.load();
 		logger.error("load the tree");
 		logger.error("saving the orderd tree");
 		prof.saveOrderedTree();
