@@ -11,6 +11,8 @@ package edu.dhbw.t10.manager;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 import org.apache.log4j.Logger;
 
@@ -31,7 +33,7 @@ import edu.dhbw.t10.type.keyboard.key.MuteButton;
  * @author FelixP, DanielAl
  * 
  */
-public class Controller implements ActionListener {
+public class Controller implements ActionListener, WindowListener {
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
@@ -173,6 +175,48 @@ public class Controller implements ActionListener {
 		outputMan.printChar(key);
 		typedWord = "";
 		suggest = "";
+	}
+	
+	
+	@Override
+	public void windowActivated(WindowEvent arg0) {
+		
+	}
+	
+	
+	@Override
+	public void windowClosed(WindowEvent arg0) {
+		
+	}
+	
+	
+	@Override
+	public void windowClosing(WindowEvent arg0) {
+		
+	}
+	
+	
+	@Override
+	public void windowDeactivated(WindowEvent arg0) {
+		
+	}
+	
+	
+	@Override
+	public void windowDeiconified(WindowEvent arg0) {
+		
+	}
+	
+	
+	@Override
+	public void windowIconified(WindowEvent arg0) {
+		
+	}
+	
+	
+	@Override
+	public void windowOpened(WindowEvent arg0) {
+		
 	}
 	
 	// --------------------------------------------------------------------------
