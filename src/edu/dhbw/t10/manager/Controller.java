@@ -219,6 +219,12 @@ public class Controller implements ActionListener, WindowListener {
 		
 	}
 	
+	private void closeSuperFelix() {
+		profileMan.getActive().saveTree();
+		profileMan.saveConfig();
+		profileMan.serializeProfiles();
+	}
+
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
