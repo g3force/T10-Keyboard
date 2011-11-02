@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
 
+import edu.dhbw.t10.manager.Controller;
 import edu.dhbw.t10.view.menus.MenuBar;
 import edu.dhbw.t10.view.panels.MainPanel;
 
@@ -54,6 +55,7 @@ public class Presenter extends JFrame {
 		this.setFocusableWindowState(false); // Window can't be focussed, so you can type at your current position with
 															// the On-Screen Keyboard
 		this.setVisible(true);
+		this.addWindowListener(Controller.getInstance());
 
 		// get a reference to the content pane
 		contentPane = (JPanel) getContentPane();
