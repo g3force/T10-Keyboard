@@ -192,7 +192,7 @@ public class Controller implements ActionListener, WindowListener {
 	
 	@Override
 	public void windowClosing(WindowEvent arg0) {
-		
+		closeSuperFelix();
 	}
 	
 	
