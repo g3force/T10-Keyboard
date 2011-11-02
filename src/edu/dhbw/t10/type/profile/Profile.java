@@ -148,11 +148,11 @@ public class Profile implements Serializable {
 	 * @author DirkK
 	 */
 	private void saveTree() {
-		// try {
-		// Serializer.serialize(tree, pathToTree);
-		// } catch (IOException io) {
-		// logger.error("Tree not saved, no folder found");
-		// }
+		try {
+			Serializer.serialize(tree, pathToTree);
+		} catch (IOException io) {
+			logger.error("Tree not saved, IOException.");
+		}
 		if (tree != null) {
 			ImportExportManager.exportToFile(tree.exportToHashMap(), pathToTree);
 		}
