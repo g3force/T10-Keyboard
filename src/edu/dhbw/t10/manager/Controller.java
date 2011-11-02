@@ -227,7 +227,7 @@ public class Controller implements ActionListener, WindowListener {
 		profileMan.getActive().save();
 		logger.debug("closing - saving the config");
 		profileMan.saveConfig();
-		logger.debug("closing - serializing the profilest");
+		logger.debug("closing - serializing the profiles");
 		profileMan.serializeProfiles();
 		logger.debug("closed - good buy");
 	}

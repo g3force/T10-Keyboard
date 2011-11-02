@@ -16,13 +16,11 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 
 import edu.dhbw.t10.helper.StringHelper;
-import edu.dhbw.t10.type.tree.PriorityElement;
 
 
 /**
@@ -115,62 +113,21 @@ public class ImportExportManager {
 	 * @param fileName the path inclusive file name
 	 */
 	public static void exportToFile(HashMap<String, Integer> exportMap, String fileName) {
-		logger.error("saving to file");
+		logger.debug("saving to file");
+		int counter = 0;
 		try {
 			FileWriter file = new FileWriter(fileName);
 			BufferedWriter o = new BufferedWriter(file);
 			for (Entry<String, Integer> entry : exportMap.entrySet()) {
 				o.write(entry.getKey() + " " + entry.getValue() + "\n");
+				counter++;
 			}
 			o.close();
 		} catch (IOException err) {
 			logger.error(err.getMessage());
 		}
-		logger.error("saved to file");
+		logger.debug("saved to file (" + counter + " words written)");
 	}
-	
-	
-	public static void exportToSortedFile(HashMap<String, Integer> exportMap, String fileName) {
-		logger.error("saving to file");
-		try {
-			FileWriter file = new FileWriter(fileName);
-			BufferedWriter o = new BufferedWriter(file);
-			while (exportMap.size() != 0) {
-				String word = "";
-				int freq = 0;
-				for (Entry<String, Integer> entry : exportMap.entrySet()) {
-					if(entry.getValue()>freq) {
-						word=entry.getKey();
-						freq = entry.getValue();
-					}
-				}
-				exportMap.remove(word);
-				o.write(word + " " + freq + "\n");
-			}
-
-			o.close();
-		} catch (IOException err) {
-			logger.error(err.getMessage());
-		}
-		logger.error("saved to file");
-	}
-	
-	
-	public static void exportToFileFromSortedlist(LinkedList<PriorityElement> ll, String fileName) {
-		logger.error("saving to file");
-		try {
-			FileWriter file = new FileWriter(fileName);
-			BufferedWriter o = new BufferedWriter(file);
-			for (PriorityElement entry : ll) {
-				o.write(entry.buildWord() + " " + entry.getFrequency() + "\n");
-			}
-			o.close();
-		} catch (IOException err) {
-			logger.error(err.getMessage());
-		}
-		logger.error("saved to file");
-	}
-
 	
 	/**
 	 * imports a dictionary from a file
@@ -222,6 +179,58 @@ public class ImportExportManager {
 	}
 	
 	
+	// --------------------------------------------------------------------------
+	// --- unused methods --------------------------------------------------------
+	// --------------------------------------------------------------------------
+	
+	//
+	// /**
+	// * unused
+	// * @param exportMap
+	// * @param fileName
+	// * @author dirk
+	// */
+	// public static void exportToSortedFile(HashMap<String, Integer> exportMap, String fileName) {
+	// logger.error("saving to file");
+	// try {
+	// FileWriter file = new FileWriter(fileName);
+	// BufferedWriter o = new BufferedWriter(file);
+	// while (exportMap.size() != 0) {
+	// String word = "";
+	// int freq = 0;
+	// for (Entry<String, Integer> entry : exportMap.entrySet()) {
+	// if (entry.getValue() > freq) {
+	// word = entry.getKey();
+	// freq = entry.getValue();
+	// }
+	// }
+	// exportMap.remove(word);
+	// o.write(word + " " + freq + "\n");
+	// }
+	//
+	// o.close();
+	// } catch (IOException err) {
+	// logger.error(err.getMessage());
+	// }
+	// logger.error("saved to file");
+	// }
+	//
+	//
+	// public static void exportToFileFromSortedlist(LinkedList<PriorityElement> ll, String fileName) {
+	// logger.error("saving to file");
+	// try {
+	// FileWriter file = new FileWriter(fileName);
+	// BufferedWriter o = new BufferedWriter(file);
+	// for (PriorityElement entry : ll) {
+	// o.write(entry.buildWord() + " " + entry.getFrequency() + "\n");
+	// }
+	// o.close();
+	// } catch (IOException err) {
+	// logger.error(err.getMessage());
+	// }
+	// logger.error("saved to file");
+	// }
+
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------

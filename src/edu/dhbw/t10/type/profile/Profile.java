@@ -10,7 +10,6 @@
 package edu.dhbw.t10.type.profile;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.Serializable;
 
 import org.apache.log4j.Logger;
@@ -19,7 +18,6 @@ import edu.dhbw.t10.manager.keyboard.KeyboardLayoutLoader;
 import edu.dhbw.t10.manager.keyboard.KeyboardLayoutSaver;
 import edu.dhbw.t10.manager.keyboard.KeymapLoader;
 import edu.dhbw.t10.manager.profile.ImportExportManager;
-import edu.dhbw.t10.manager.profile.Serializer;
 import edu.dhbw.t10.type.keyboard.KeyboardLayout;
 import edu.dhbw.t10.type.tree.PriorityTree;
 import edu.dhbw.t10.view.panels.MainPanel;
@@ -87,6 +85,7 @@ public class Profile implements Serializable {
 	 */
 	public void load() {
 		loadLayout();
+		tree = new PriorityTree(pathToAllowedChars);
 		loadTree();
 	}
 	
@@ -131,13 +130,7 @@ public class Profile implements Serializable {
 	 * @author DirkK
 	 */
 	private void loadTree() {
-		try {
-			tree = Serializer.deserialize(pathToTree);
-			tree.importFromHashMap(ImportExportManager.importFromFile(pathToTree, true));
-		} catch (IOException io) {
-			tree = new PriorityTree(pathToAllowedChars);
-			logger.warn("No Tree found for Profile" + name + ", new Tree created");
-		}
+		tree.importFromHashMap(ImportExportManager.importFromFile(pathToTree, true));
 	}
 	
 	
@@ -148,11 +141,6 @@ public class Profile implements Serializable {
 	 * @author DirkK
 	 */
 	private void saveTree() {
-		try {
-			Serializer.serialize(tree, pathToTree);
-		} catch (IOException io) {
-			logger.error("Tree not saved, IOException.");
-		}
 		if (tree != null) {
 			ImportExportManager.exportToFile(tree.exportToHashMap(), pathToTree);
 		}
@@ -160,16 +148,15 @@ public class Profile implements Serializable {
 	
 	
 	/**
-	 * 
-	 * TODO DirkK, add comment!
-	 * 
+	 * unused
+	 * TODO dirk, delete
 	 * @author DirkK
 	 */
-	public void saveOrderedTree() {
-		if (tree != null) {
-			ImportExportManager.exportToSortedFile(tree.exportToHashMap(), pathToTree);
-		}
-	}
+	// public void saveOrderedTree() {
+	// if (tree != null) {
+	// ImportExportManager.exportToSortedFile(tree.exportToHashMap(), pathToTree);
+	// }
+	// }
 	
 
 	// --------------------------------------------------------------------------
