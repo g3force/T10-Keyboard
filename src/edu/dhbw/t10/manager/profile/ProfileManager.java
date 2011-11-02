@@ -57,11 +57,13 @@ public class ProfileManager {
 	private ProfileManager() {
 		logger.debug("initializing...");
 		profilePathes = new ArrayList<String>();
-		logger.debug("initializing... reading the config");
 		readConfig(); // fills activeProfileName and profilePathes with the data from the config file
-		logger.debug("initializing... deserializing the profiles");
+		logger.debug("initializing... configfile: activeProfileName=" + activeProfileName + " profiles="
+				+ profilePathes.size());
 		getSerializedProfiles(); // deserializes all profiles, fills profiles
+		logger.debug("initializing... deserializing the profiles");
 		if (profiles.size() == 0) {
+			logger.debug("dummy profile will be created");
 			activeProfileName = "default";
 			profiles.add(new Profile("default"));
 		}
@@ -184,10 +186,10 @@ public class ProfileManager {
 			FileWriter fw = new FileWriter(confFile);
 			BufferedWriter bw = new BufferedWriter(fw);
 			
-			bw.write(createComment("Configfile for T10"));
+			bw.write(createComment("Configfile for T10\n"));
 			
 			if (activeProfile != null)
-				bw.write("ActiveProfile=" + activeProfile.getName());
+				bw.write("ActiveProfile=" + activeProfile.getName() + "\n");
 			
 			for (int i = 0; i < profiles.size(); i++) {
 				bw.write("ProfilePath=" + profiles.get(i).getPathToProfile() + "\n");

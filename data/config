@@ -1,1 +1,3 @@
-//Configfile for T10ActiveProfile=defaultProfilePath=data/profiles/default.profile
+//Configfile for T10
+ActiveProfile=default
+ProfilePath=data/profiles/default.profile
