@@ -94,7 +94,10 @@ public class Controller implements ActionListener, WindowListener {
 					outputMan.printChar(key);
 					suggest = typedWord;
 				}
-			}
+			} else if (button.getSingleKey().size() > 1) {
+				// TODO
+			} else
+				logger.error("No Key List");
 			button.unsetPressedModes();
 		} // end if instanceof Bbutton
 		
@@ -141,7 +144,7 @@ public class Controller implements ActionListener, WindowListener {
 	
 	private void keyIsUnicode(Key key) {
 		outputMan.printChar(key);
-		// TODO Wieso sind Umlaute als Unicode Zeichen im Keyboard gespeichert?? Wie soll die Unterscheidung zwischen
+		// FIXME Wieso sind Umlaute als Unicode Zeichen im Keyboard gespeichert?? Wie soll die Unterscheidung zwischen
 		// Satzzeichen und Buchstaben stattfinden?
 		// typedWord = typedWord + key.getName();
 		// suggest = profileMan.getWordSuggest(typedWord);
