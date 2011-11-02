@@ -60,7 +60,7 @@ public class SuperFelix {
 		 * 
 		 * configuration is stored in a config file. If it does not exist, use basic config
 		 */
-		File logConfFile = new File("conf/log4j.conf");
+		File logConfFile = new File("data/conf/log4j.conf");
 		if (logConfFile.exists()) {
 			PropertyConfigurator.configure(logConfFile.getPath());
 		} else {

@@ -29,7 +29,7 @@ import edu.dhbw.t10.view.panels.MainPanel;
 /**
  * The profile-manager handles all profiles, including the path to its profile-file.
  * 
- * @author DerBaschti
+ * @author SebastianN
  * 
  */
 public class ProfileManager {
@@ -111,11 +111,11 @@ public class ProfileManager {
 	 * Reads the config-file with all entrys and assigns
 	 * the read values.
 	 * 
-	 * @author DerBaschti
+	 * @author SebastianN
 	 */
 	public void readConfig() {
 		try {
-			File confFile = new File("./config.db");
+			File confFile = new File("data/config.db");
 			if (confFile.exists()) {
 				FileReader fr = new FileReader(confFile);
 				BufferedReader br = new BufferedReader(fr);
@@ -171,7 +171,7 @@ public class ProfileManager {
 	 * 
 	 * @param comment - String. Comment you want to add.
 	 * @return Changed comment as String.
-	 * @author DerBaschti
+	 * @author SebastianN
 	 */
 	private String createComment(String comment) {
 		comment = "//" + comment;
@@ -183,11 +183,11 @@ public class ProfileManager {
 	 * 
 	 * Saves the name of the active profile and the path to all profile-files.
 	 * 
-	 * @author DerBaschti
+	 * @author SebastianN
 	 */
 	public void saveConfig() {
 		try {
-			File confFile = new File("./config");
+			File confFile = new File("data/config");
 			FileWriter fw = new FileWriter(confFile);
 			BufferedWriter bw = new BufferedWriter(fw);
 			
@@ -217,7 +217,7 @@ public class ProfileManager {
 	 * @param profileName - String. Name of the profile.
 	 * @param pathToNewProfile - String. Path to the new profile.
 	 * @return Handle/Pointer to the new profile.
-	 * @author DerBaschti
+	 * @author SebastianN
 	 */
 	
 	public Profile create(String profileName, String pathToNewProfile) {
@@ -238,7 +238,7 @@ public class ProfileManager {
 	 * 
 	 * @param name - String. Name of the profile.
 	 * @return If found, handle/reference to said profile. Otherwise NULL
-	 * @author DerBaschti
+	 * @author SebastianN
 	 */
 	
 	public Profile getProfileByName(String name) {
@@ -294,7 +294,7 @@ public class ProfileManager {
 	 * Marks a profile as 'active'.
 	 * 
 	 * @param newActive - Handle of the to-be activated profile
-	 * @author DerBaschti
+	 * @author SebastianN
 	 */
 	public void setActive(Profile newActive) {
 		activeProfile.saveTree();
@@ -369,7 +369,7 @@ public class ProfileManager {
 	 * If available, getSerializedProfiles gets serialized profiles from file.
 	 * In case all files couldn't be read, a new profile-list is allocated.
 	 * 
-	 * @author DerBaschti
+	 * @author SebastianN
 	 */
 	public void getSerializedProfiles() {
 		for (int i = 0; i < profilePath.size(); i++) {
