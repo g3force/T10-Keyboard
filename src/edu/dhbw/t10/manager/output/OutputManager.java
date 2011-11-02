@@ -11,6 +11,7 @@ package edu.dhbw.t10.manager.output;
 
 import org.apache.log4j.Logger;
 
+import edu.dhbw.t10.type.keyboard.key.Button;
 import edu.dhbw.t10.type.keyboard.key.Key;
 
 
@@ -91,6 +92,11 @@ public class OutputManager {
 		}
 	}
 	
+
+	public void printCombi(Button b) {
+		
+	}
+
 	
 	/**
 	 * 
