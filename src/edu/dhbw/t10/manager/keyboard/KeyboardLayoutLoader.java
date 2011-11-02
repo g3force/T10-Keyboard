@@ -48,6 +48,7 @@ public class KeyboardLayoutLoader {
 	// --------------------------------------------------------------------------
 	private static final Logger				logger	= Logger.getLogger(KeyboardLayoutLoader.class);
 	private static HashMap<Integer, Key>	keymap;
+	private static Document						doc;
 	
 	
 	// --------------------------------------------------------------------------
@@ -72,7 +73,7 @@ public class KeyboardLayoutLoader {
 	 * 3. read MuteButtons
 	 * 4. read default config for layout
 	 * 5. read DropDownLists
-	 * 6. add everythink to keyboardlayout
+	 * 6. add everything to keyboardlayout
 	 * 
 	 * @param filePath to an keyboard layout XML file
 	 * @param keymap that was loaded from file
@@ -82,7 +83,6 @@ public class KeyboardLayoutLoader {
 	public static KeyboardLayout load(String filePath, HashMap<Integer, Key> _keymap) {
 		logger.debug("initializing...");
 		DocumentBuilder dBuilder;
-		Document doc;
 		keymap = _keymap;
 		KeyboardLayout kbdLayout = new KeyboardLayout(0, 0, 1, 1, 1);
 		File layoutFile = new File(filePath);
@@ -109,7 +109,7 @@ public class KeyboardLayoutLoader {
 		NodeList nList;
 		
 		// ########################## read ModeButtons ########################
-		HashMap<Integer, ModeButton> modeButtons = getModeButtons(doc);
+		HashMap<Integer, ModeButton> modeButtons = getModeButtons();
 		// a list should be returned, by the hashmap is also needed for getButtons()
 		ArrayList<ModeButton> modeButtonArray = new ArrayList<ModeButton>();
 		for (ModeButton b : modeButtons.values()) {
@@ -117,10 +117,10 @@ public class KeyboardLayoutLoader {
 		}
 		logger.info("loaded " + modeButtonArray.size() + " ModeButtons.");
 		// ########################## read Buttons ############################
-		ArrayList<Button> buttons = getButtons(doc, modeButtons);
+		ArrayList<Button> buttons = getButtons(modeButtons);
 		logger.info("loaded " + buttons.size() + " Buttons.");
 		// ########################## read MuteButtons ###########################
-		ArrayList<MuteButton> muteButtons = getMuteButtons(doc);
+		ArrayList<MuteButton> muteButtons = getMuteButtons();
 		logger.info("loaded " + muteButtons.size() + " MuteButtons.");
 		
 		
@@ -128,25 +128,11 @@ public class KeyboardLayoutLoader {
 		int sizex = 0, sizey = 0;
 		float scalex = 1.0f, scaley = 1.0f, scale_font = 1.0f;
 		
-		nList = doc.getElementsByTagName("sizex");
-		if (nList.getLength() > 0)
-			sizex = Integer.parseInt(nList.item(0).getTextContent());
-		
-		nList = doc.getElementsByTagName("sizey");
-		if (nList.getLength() > 0)
-			sizey = Integer.parseInt(nList.item(0).getTextContent());
-		
-		nList = doc.getElementsByTagName("scalex");
-		if (nList.getLength() > 0)
-			scalex = Float.parseFloat(nList.item(0).getTextContent());
-		
-		nList = doc.getElementsByTagName("scaley");
-		if (nList.getLength() > 0)
-			scaley = Float.parseFloat(nList.item(0).getTextContent());
-		
-		nList = doc.getElementsByTagName("scale_font");
-		if (nList.getLength() > 0)
-			scale_font = Float.parseFloat(nList.item(0).getTextContent());
+		sizex = getValueFromNode("sizex", 1010);
+		sizey = getValueFromNode("sizey", 335);
+		scalex = getValueFromNode("scalex", 1);
+		scaley = getValueFromNode("scaley", 1);
+		scale_font = getValueFromNode("scale_font", 1);
 		
 		kbdLayout = new KeyboardLayout(sizex, sizey, scalex, scaley, scale_font);
 		
@@ -225,7 +211,7 @@ public class KeyboardLayoutLoader {
 	 * @return list of all buttons
 	 * @author NicolaiO
 	 */
-	private static ArrayList<Button> getButtons(Document doc, HashMap<Integer, ModeButton> modeButtons) {
+	private static ArrayList<Button> getButtons(HashMap<Integer, ModeButton> modeButtons) {
 		ArrayList<Button> buttons = new ArrayList<Button>();
 		NodeList nList = doc.getElementsByTagName("button");
 		
@@ -318,7 +304,7 @@ public class KeyboardLayoutLoader {
 	}
 	
 	
-	private static HashMap<Integer, ModeButton> getModeButtons(Document doc) {
+	private static HashMap<Integer, ModeButton> getModeButtons() {
 		HashMap<Integer, ModeButton> modeButtons = new HashMap<Integer, ModeButton>();
 		NodeList nList = doc.getElementsByTagName("modebutton");
 		
@@ -362,7 +348,7 @@ public class KeyboardLayoutLoader {
 	}
 	
 	
-	private static ArrayList<MuteButton> getMuteButtons(Document doc) {
+	private static ArrayList<MuteButton> getMuteButtons() {
 		ArrayList<MuteButton> muteButtons = new ArrayList<MuteButton>();
 		NodeList nList = doc.getElementsByTagName("mutebutton");
 		
@@ -499,6 +485,26 @@ public class KeyboardLayoutLoader {
 	}
 	
 	
+	/**
+	 * 
+	 * TODO NicolaiO, add comment!
+	 * 
+	 * @param nodename
+	 * @return
+	 * @author NicolaiO
+	 */
+	private static int getValueFromNode(String nodename, int defaultValue) {
+		NodeList nList = doc.getElementsByTagName(nodename);
+		try {
+			if (nList.getLength() > 0) {
+				return Integer.parseInt(nList.item(0).getTextContent());
+			}
+		} catch (NumberFormatException e) {
+			logger.warn("The number value of \"" + nodename + "\" could not be parsed.");
+		}
+		return defaultValue;
+	}
+
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
