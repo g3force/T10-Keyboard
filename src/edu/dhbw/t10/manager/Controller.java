@@ -11,6 +11,8 @@ package edu.dhbw.t10.manager;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 import org.apache.log4j.Logger;
 
@@ -31,7 +33,7 @@ import edu.dhbw.t10.type.keyboard.key.MuteButton;
  * @author FelixP, DanielAl
  * 
  */
-public class Controller implements ActionListener {
+public class Controller implements ActionListener, WindowListener {
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
@@ -92,7 +94,10 @@ public class Controller implements ActionListener {
 					outputMan.printChar(key);
 					suggest = typedWord;
 				}
-			}
+			} else if (button.getSingleKey().size() > 1) {
+				// TODO
+			} else
+				logger.error("No Key List");
 			button.unsetPressedModes();
 		} // end if instanceof Bbutton
 		
@@ -139,7 +144,7 @@ public class Controller implements ActionListener {
 	
 	private void keyIsUnicode(Key key) {
 		outputMan.printChar(key);
-		// TODO Wieso sind Umlaute als Unicode Zeichen im Keyboard gespeichert?? Wie soll die Unterscheidung zwischen
+		// FIXME Wieso sind Umlaute als Unicode Zeichen im Keyboard gespeichert?? Wie soll die Unterscheidung zwischen
 		// Satzzeichen und Buchstaben stattfinden?
 		// typedWord = typedWord + key.getName();
 		// suggest = profileMan.getWordSuggest(typedWord);
@@ -175,6 +180,58 @@ public class Controller implements ActionListener {
 		suggest = "";
 	}
 	
+	
+	@Override
+	public void windowActivated(WindowEvent arg0) {
+		
+	}
+	
+	
+	@Override
+	public void windowClosed(WindowEvent arg0) {
+		
+	}
+	
+	
+	@Override
+	public void windowClosing(WindowEvent arg0) {
+		closeSuperFelix();
+	}
+	
+	
+	@Override
+	public void windowDeactivated(WindowEvent arg0) {
+		
+	}
+	
+	
+	@Override
+	public void windowDeiconified(WindowEvent arg0) {
+		
+	}
+	
+	
+	@Override
+	public void windowIconified(WindowEvent arg0) {
+		
+	}
+	
+	
+	@Override
+	public void windowOpened(WindowEvent arg0) {
+		
+	}
+	
+	private void closeSuperFelix() {
+		logger.debug("closing - saving the tree");
+		profileMan.getActive().saveTree();
+		logger.debug("closing - saving the config");
+		profileMan.saveConfig();
+		logger.debug("closing - serializing the profilest");
+		profileMan.serializeProfiles();
+		logger.debug("closed - good buy");
+	}
+
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------

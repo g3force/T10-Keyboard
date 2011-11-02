@@ -50,6 +50,7 @@ public class PriorityTree implements Serializable {
 	public PriorityTree(String chars) {
 		pathToAllowedChars = chars;
 		allowedChars = new LinkedList<int[]>();
+		loadAllowedChars();
 		root = new PriorityElement('\u0000', null, null, 0);
 	}
 	
@@ -75,7 +76,7 @@ public class PriorityTree implements Serializable {
 	 * @param frequency the start frequency of the inserting word
 	 */
 	private void insert(String word, int frequency, boolean setFreq) {
-		// if (inputValid(word)) {
+		if (inputValid(word)) {
 			logger.debug("Insertig Word...");
 			PriorityElement node = root;
 			char[] inChar = word.toCharArray(); // put every letter of the word alone in an char array
@@ -105,10 +106,10 @@ public class PriorityTree implements Serializable {
 				}
 				logger.info("Word Inserted");
 			}
-		// } else {
-		// logger.info("Word Ignored - not valid");
-		// System.out.println("not valid");
-		// }
+		} else {
+			logger.info("Word Ignored - not valid");
+			System.out.println("not valid");
+		}
 	}
 	
 	
@@ -380,6 +381,7 @@ public class PriorityTree implements Serializable {
 	 * not used yet
 	 * @author DirkK
 	 */
+	
 	@SuppressWarnings("unused")
 	private void saveAllowedChars() {
 		try {
@@ -407,7 +409,6 @@ public class PriorityTree implements Serializable {
 	 * Not used yet
 	 * @author DirkK
 	 */
-	@SuppressWarnings("unused")
 	private void loadAllowedChars() {
 		try {
 			File confFile = new File(pathToAllowedChars);
