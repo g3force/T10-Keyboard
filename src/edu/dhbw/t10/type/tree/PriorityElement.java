@@ -3,7 +3,7 @@
  * Copyright (c) 2011 - 2011, DHBW Mannheim
  * Project: T10 On-Screen Keyboard
  * Date: Oct 19, 2011
- * Author(s): dirk
+ * Author(s): DirkK
  * 
  * *********************************************************
  */
@@ -21,7 +21,7 @@ import org.apache.log4j.Logger;
 
 /**
  * elements in the PriorityTree
- * @author dirk
+ * @author DirkK
  * 
  */
 public class PriorityElement implements Serializable {
@@ -76,7 +76,7 @@ public class PriorityElement implements Serializable {
 	 * updates the timestamp in this node
 	 * should be called, whenever the node is changed
 	 * 
-	 * @author dirk
+	 * @author DirkK
 	 */
 	private void updateLastUse() {
 		Calendar timestamp = new GregorianCalendar();
@@ -194,10 +194,10 @@ public class PriorityElement implements Serializable {
 	
 	/**
 	 * 
-	 * TODO dirk, add comment!
+	 * TODO DirkK, add comment!
 	 * 
 	 * @return
-	 * @author dirk
+	 * @author DirkK
 	 */
 	public HashMap<String, Integer> getHashMapOfFollowers() {
 		logger.debug("Fetching followers...");

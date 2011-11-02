@@ -3,7 +3,7 @@
  * Copyright (c) 2011 - 2011, DHBW Mannheim
  * Project: T10 On-Screen Keyboard
  * Date: Oct 29, 2011
- * Author(s): dirk
+ * Author(s): DirkK
  * 
  * *********************************************************
  */
@@ -72,7 +72,7 @@ public class KeyboardLayoutSaver {
 	 * @param kbdLayout the layout which shall be converted to a xml file
 	 * @param filePath to an keymap XML file
 	 * 
-	 * @author dirk
+	 * @author DirkK
 	 */
 	public static void save(KeyboardLayout kbdLayout, String filePath) {
 		logger.info("Starting to save the KeyboardLayout to XML");

@@ -3,7 +3,7 @@
  * Copyright (c) 2011 - 2011, DHBW Mannheim
  * Project: T10 On-Screen Keyboard
  * Date: Oct 24, 2011
- * Author(s): dirk
+ * Author(s): DirkK
  * 
  * *********************************************************
  */
@@ -18,7 +18,7 @@ import java.io.ObjectOutputStream;
 
 /**
  * Serializes an arbitrary Object
- * * @author dirk
+ * * @author DirkK
  * 
  */
 public class Serializer {

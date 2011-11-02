@@ -3,7 +3,7 @@
  * Copyright (c) 2011 - 2011, DHBW Mannheim
  * Project: T10 On-Screen Keyboard
  * Date: Oct 28, 2011
- * Author(s): dirk
+ * Author(s): DirkK
  * 
  * *********************************************************
  */
@@ -22,7 +22,7 @@ import javax.swing.JButton;
  * extends JButton and consists position and such stuff
  * is never created itself, only extended
  * 
- * @author dirk
+ * @author DirkK
  * 
  */
 public abstract class PhysicalButton extends JButton {

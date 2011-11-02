@@ -3,7 +3,7 @@
  * Copyright (c) 2011 - 2011, DHBW Mannheim
  * Project: T10 On-Screen Keyboard
  * Date: Oct 15, 2011
- * Author(s): Andres
+ * Author(s): DanielAl
  * 
  * *********************************************************
  */
@@ -31,9 +31,9 @@ import edu.dhbw.t10.type.keyboard.key.Key;
  * 
  * Control symbols are sent via their java.awt.event.KeyEvent constant
  * 
- * TODO Daniel Get several Control symbols and combine them to a key combination
- * TODO Daniel Get last active window and write there
- * @author Andres
+ * TODO DanielAl Get several Control symbols and combine them to a key combination
+ * TODO DanielAl Get last active window and write there
+ * @author DanielAl
  * 
  */
 public class Output {
@@ -154,7 +154,7 @@ public class Output {
 	private ArrayList<Integer> extractUnicode(String sequence) {
 		ArrayList<Integer> unicodeStart = new ArrayList<Integer>();
 		int help = 0;
-		// TODO Daniel erkenne Sonderzeichen und Konvertiere das in Unicode
+		// TODO DanielAl erkenne Sonderzeichen und Konvertiere das in Unicode
 		while (help < sequence.length()) {
 			if (sequence.substring(help).startsWith("\\U+")) {
 				help = sequence.indexOf("\\U+", help);

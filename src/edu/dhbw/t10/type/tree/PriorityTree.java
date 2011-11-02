@@ -3,7 +3,7 @@
  * Copyright (c) 2011 - 2011, DHBW Mannheim
  * Project: T10 On-Screen Keyboard
  * Date: Oct 15, 2011
- * Author(s): dirk
+ * Author(s): DirkK
  * 
  * *********************************************************
  */
@@ -26,7 +26,7 @@ import org.apache.log4j.Logger;
 /**
  * data container for the dictionary, the data it self is stored in the PriorityElements, PriorityTree has functions
  * like insert, delete,...
- * @author dirk
+ * @author DirkK
  * 
  */
 public class PriorityTree implements Serializable {
@@ -378,7 +378,7 @@ public class PriorityTree implements Serializable {
 	/**
 	 * save the rules which chars are allowed
 	 * not used yet
-	 * @author dirk
+	 * @author DirkK
 	 */
 	@SuppressWarnings("unused")
 	private void saveAllowedChars() {
@@ -405,7 +405,7 @@ public class PriorityTree implements Serializable {
 	 * reads form a config file which chars are allowed to be added to the tree
 	 * avoids to insert UNICODE into the tree
 	 * Not used yet
-	 * @author dirk
+	 * @author DirkK
 	 */
 	@SuppressWarnings("unused")
 	private void loadAllowedChars() {

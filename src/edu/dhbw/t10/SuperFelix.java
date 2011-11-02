@@ -26,9 +26,9 @@ import edu.dhbw.t10.view.Presenter;
  * TODO ALL graphical buttons (keys) e.g. pause- and arrow keys
  * TODO ALL right click on button activates shift mode
  * TODO ALL save layout size
- * TODO Basti profile configuration
+ * TODO SebastianN profile configuration
  * TODO ALL menus
- * TODO Nicolai 2 shift buttons
+ * TODO NicolaiO 2 shift buttons
  * 
  * @author NicolaiO
  * 

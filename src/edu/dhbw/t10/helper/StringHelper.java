@@ -3,18 +3,18 @@
  * Copyright (c) 2011 - 2011, DHBW Mannheim
  * Project: T10 On-Screen Keyboard
  * Date: Nov 1, 2011
- * Author(s): dirk
+ * Author(s): DirkK
  *
  * *********************************************************
  */
 package edu.dhbw.t10.helper;
 
 /**
- * TODO dirk, add comment!
+ * TODO DirkK, add comment!
  * - What should this type do (in one sentence)?
  * - If not intuitive: A simple example how to use this class
  * 
- * @author dirk
+ * @author DirkK
  * 
  */
 public class StringHelper {

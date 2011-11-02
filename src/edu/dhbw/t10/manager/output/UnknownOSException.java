@@ -3,7 +3,7 @@
  * Copyright (c) 2011 - 2011, DHBW Mannheim
  * Project: T10 On-Screen Keyboard
  * Date: 01.11.2011
- * Author(s): andres
+ * Author(s): DanielAl
  *
  * *********************************************************
  */
@@ -12,7 +12,7 @@ package edu.dhbw.t10.manager.output;
 /**
  * Exception class if the application is running on a unsupported Operating System (only Windows and Linux works)
  * 
- * @author andres
+ * @author DanielAl
  * 
  */
 public class UnknownOSException extends RuntimeException {
