@@ -220,9 +220,13 @@ public class Controller implements ActionListener, WindowListener {
 	}
 	
 	private void closeSuperFelix() {
+		logger.debug("closing - saving the tree");
 		profileMan.getActive().saveTree();
+		logger.debug("closing - saving the config");
 		profileMan.saveConfig();
+		logger.debug("closing - serializing the profilest");
 		profileMan.serializeProfiles();
+		logger.debug("closed - good buy");
 	}
 
 	// --------------------------------------------------------------------------
