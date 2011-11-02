@@ -16,11 +16,13 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 
 import edu.dhbw.t10.helper.StringHelper;
+import edu.dhbw.t10.type.tree.PriorityElement;
 
 
 /**
@@ -84,6 +86,7 @@ public class ImportExportManager {
 	 */
 	public static HashMap<String, Integer> importFromText(String fileName) {
 		HashMap<String, Integer> importMap = new HashMap<String, Integer>();
+		logger.error("reading form file");
 		try {
 			FileReader fr = new FileReader(fileName);
 			BufferedReader x = new BufferedReader(fr);
@@ -101,6 +104,7 @@ public class ImportExportManager {
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
+		logger.error("read form file");
 		return importMap;
 	}
 	
@@ -111,6 +115,7 @@ public class ImportExportManager {
 	 * @param fileName the path inclusive file name
 	 */
 	public static void exportToFile(HashMap<String, Integer> exportMap, String fileName) {
+		logger.error("saving to file");
 		try {
 			FileWriter file = new FileWriter(fileName);
 			BufferedWriter o = new BufferedWriter(file);
@@ -121,8 +126,51 @@ public class ImportExportManager {
 		} catch (IOException err) {
 			logger.error(err.getMessage());
 		}
+		logger.error("saved to file");
 	}
 	
+	
+	public static void exportToSortedFile(HashMap<String, Integer> exportMap, String fileName) {
+		logger.error("saving to file");
+		try {
+			FileWriter file = new FileWriter(fileName);
+			BufferedWriter o = new BufferedWriter(file);
+			while (exportMap.size() != 0) {
+				String word = "";
+				int freq = 0;
+				for (Entry<String, Integer> entry : exportMap.entrySet()) {
+					if(entry.getValue()>freq) {
+						word=entry.getKey();
+						freq = entry.getValue();
+					}
+				}
+				exportMap.remove(word);
+				o.write(word + " " + freq + "\n");
+			}
+
+			o.close();
+		} catch (IOException err) {
+			logger.error(err.getMessage());
+		}
+		logger.error("saved to file");
+	}
+	
+	
+	public static void exportToFileFromSortedlist(LinkedList<PriorityElement> ll, String fileName) {
+		logger.error("saving to file");
+		try {
+			FileWriter file = new FileWriter(fileName);
+			BufferedWriter o = new BufferedWriter(file);
+			for (PriorityElement entry : ll) {
+				o.write(entry.buildWord() + " " + entry.getFrequency() + "\n");
+			}
+			o.close();
+		} catch (IOException err) {
+			logger.error(err.getMessage());
+		}
+		logger.error("saved to file");
+	}
+
 	
 	/**
 	 * imports a dictionary from a file
@@ -132,6 +180,7 @@ public class ImportExportManager {
 	 */
 	public static HashMap<String, Integer> importFromFile(String fileName, boolean withFreq) {
 		HashMap<String, Integer> importMap = new HashMap<String, Integer>();
+		logger.error("reading form file");
 		try {
 			FileReader fr = new FileReader(fileName);
 			BufferedReader x = new BufferedReader(fr);
@@ -150,6 +199,7 @@ public class ImportExportManager {
 		} catch (IOException err) {
 			logger.error(err.getMessage());
 		}
+		logger.error("read form file");
 		return importMap;
 	}
 	

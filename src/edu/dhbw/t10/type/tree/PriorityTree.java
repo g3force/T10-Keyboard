@@ -241,7 +241,7 @@ public class PriorityTree implements Serializable {
 		for (Entry<String, Integer> entry : input.entrySet()) {
 			insert(entry.getKey(), entry.getValue(), true);
 		}
-		logger.debug("imported from HashMap");
+		logger.error("imported from HashMap");
 	}
 	
 	
@@ -250,13 +250,14 @@ public class PriorityTree implements Serializable {
 	 * @return the dictionary tree as a HashMap
 	 */
 	public HashMap<String, Integer> exportToHashMap() {
-		HashMap<String, Integer> exportMap = new HashMap<String, Integer>();
-		for (PriorityElement pe : root.getListOfFollowers()) {
-			if (pe.getFrequency() != 0)
-				exportMap.put(pe.buildWord(), pe.getFrequency());
-		}
-		logger.debug("exported to HashMap");
-		return exportMap;
+		return root.getHashMapOfFollowers();
+		// HashMap<String, Integer> exportMap = new HashMap<String, Integer>();
+		// for (PriorityElement pe : root.getListOfFollowers()) {
+		// if (pe.getFrequency() != 0)
+		// exportMap.put(pe.buildWord(), pe.getFrequency());
+		// }
+		// logger.error("exported to HashMap");
+		// return exportMap;
 	}
 	
 	
@@ -312,18 +313,42 @@ public class PriorityTree implements Serializable {
 	 * bad in performance
 	 */
 	public LinkedList<PriorityElement> getFreqSortedList() {
+		logger.error("fetching ordered list");
 		LinkedList<PriorityElement> ll = new LinkedList<PriorityElement>();
 		for (PriorityElement pe : root.getListOfFollowers()) {
-			boolean sorted = false;
+			// boolean sorted = false;
 			if (ll.isEmpty())
 				ll.add(pe);
-			for (int i = 0; i < ll.size() && !sorted; i++) {
-				if (ll.get(i).getFrequency() < pe.getFrequency()) {
-					ll.add(i, pe);
-					sorted = true;
-				}
+			if(ll.size()==1) {
+				if (ll.get(0).getFrequency() < pe.getFrequency())
+					ll.push(pe);
+				else
+					ll.add(0, pe);
 			}
+			if (ll.size() == 2) {
+				if (ll.get(0).getFrequency() < pe.getFrequency())
+					ll.push(pe);
+				else
+					ll.add(0, pe);
+			}
+			
+			int index = 1;
+			while (ll.get(index).getFrequency() >= pe.getFrequency()
+					&& ll.get(index + 1).getFrequency() <= pe.getFrequency()) {
+				if (ll.get(index).getFrequency() > pe.getFrequency())
+					index = index / 2;
+				else
+					index = index + index / 2;
+			}
+			ll.add(index, pe);
+			// for (int i = 0; i < ll.size() && !sorted; i++) {
+			// if (ll.get(i).getFrequency() < pe.getFrequency()) {
+			// ll.add(i, pe);
+			// sorted = true;
+			// }
+			// }
 		}
+		logger.error("fetched ordered list");
 		return ll;
 	}
 	

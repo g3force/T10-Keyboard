@@ -62,7 +62,7 @@ public class TestTree {
 		tree.importFromHashMap(map);
 		tree.setWords(map);
 		String string = "no";
-		int times = 1000000;
+		int times = 1;
 		logger.error(tree.getSuggest(string));
 		logger.error("start " + times + " times getSuggest");
 		for (int i = 0; i < times; i++) {
@@ -84,6 +84,9 @@ public class TestTree {
 		logger.error("loading the tree");
 		prof.loadTree();
 		logger.error("load the tree");
+		logger.error("saving the orderd tree");
+		prof.saveOrderedTree();
+		logger.error("saved the orderd tree");
 		
 		File confFile = new File("/home/dirk/Desktop/list");
 		FileWriter fw = new FileWriter(confFile);
