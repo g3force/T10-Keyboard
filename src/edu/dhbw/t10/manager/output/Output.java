@@ -183,17 +183,17 @@ public class Output {
 			return (Integer) f.get(null);
 		} catch (SecurityException err) {
 			logger.error("getKeyCode: Security: " + code);
-			return 0;
+			return KeyEvent.VK_UNDEFINED;
 		} catch (NoSuchFieldException err) {
 			logger.error("getKeyCode: No Such Field: " + code);
 			// TODO Umlaute und andere Zeichen in Unicode Konvertieren
-			return 0;
+			return KeyEvent.VK_UNDEFINED;
 		} catch (IllegalArgumentException err) {
 			logger.error("getKeyCode: Illegal Argument: " + code);
-			return 0;
+			return KeyEvent.VK_UNDEFINED;
 		} catch (IllegalAccessException err) {
 			logger.error("getKeyCode: Illegal Access: " + code);
-			return 0;
+			return KeyEvent.VK_UNDEFINED;
 		}
 		
 	}
@@ -204,7 +204,7 @@ public class Output {
 			logger.error("UNICODE wrong format; length: " + uni.length());
 			return false;
 		}
-		if (os == 1) {
+		if (os == LINUX) {
 			sendKey(KeyEvent.VK_CONTROL, PRESS);
 			sendKey(KeyEvent.VK_SHIFT, PRESS);
 			sendKey(KeyEvent.VK_U, TYPE);
@@ -215,7 +215,7 @@ public class Output {
 			sendKey(getKeyCode(uni.substring(5, 6).toLowerCase()), TYPE);
 			sendKey(getKeyCode(uni.substring(6, 7).toLowerCase()), TYPE);
 			sendKey(KeyEvent.VK_ENTER, TYPE);
-		} else if (os == 2) {
+		} else if (os == WINDOWS) {
 			try {
 				// Convertion from HexaNumber as String to Decimal Number as String (without leading zeros)
 				String uniDecimal;
@@ -243,14 +243,16 @@ public class Output {
 				}
 				sendKey(KeyEvent.VK_ALT, RELEASE);
 
-
 			} catch (UnsupportedOperationException err) {
-				logger.error("Unsopported Operation: Check Num_Lock state");
+				logger.error("Unsupported Operation: Check Num_Lock state");
 				// In Linux it throws always this Exception, but here it isn't needed
 				// TODO test it in Windows, where it is needed
 			} catch (NumberFormatException err) {
 				logger.error("Wrong number format:" + uni.substring(3, 7));
 			}
+		} else {
+			logger.error("OS not supported: Unicode");
+			return false;
 		}
 		return true;
 	}
@@ -364,8 +366,8 @@ public class Output {
 			try {
 				instance = new Output();
 			} catch (UnknownOSException err) {
-				logger.error(err.getMessage());
-				// TODO was passiert dann???
+				logger.fatal(err.getMessage());
+				System.exit(-1);
 			}
 		}
 		return instance;
