@@ -57,7 +57,9 @@ public class ProfileManager {
 	private ProfileManager() {
 		logger.debug("initializing...");
 		profilePathes = new ArrayList<String>();
+		logger.debug("initializing... reading the config");
 		readConfig(); // fills activeProfileName and profilePathes with the data from the config file
+		logger.debug("initializing... deserializing the profiles");
 		getSerializedProfiles(); // deserializes all profiles, fills profiles
 		if (profiles.size() == 0) {
 			activeProfileName = "default";
