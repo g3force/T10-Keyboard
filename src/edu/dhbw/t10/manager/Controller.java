@@ -175,6 +175,13 @@ public class Controller implements ActionListener {
 		suggest = "";
 	}
 	
+	
+	private void closeSuperFelix() {
+		profileMan.getActive().saveTree();
+		profileMan.saveConfig();
+		profileMan.serializeProfiles();
+	}
+
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
