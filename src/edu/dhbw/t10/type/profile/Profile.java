@@ -27,7 +27,7 @@ import edu.dhbw.t10.view.panels.MainPanel;
  * Profile-Handle. It includes the name, the paths to its PriorityTree-/Profile-file,
  * as well as the PriorityTree itself.
  * 
- * @author DerBaschti
+ * @author SebastianN
  * 
  */
 public class Profile implements Serializable {
@@ -58,18 +58,18 @@ public class Profile implements Serializable {
 		if (!file.isDirectory()) {
 			file.mkdir();
 		}
-		pathToProfile = "profiles/" + name + ".profile";
+		pathToProfile = "data/profiles/" + name + ".profile";
 		file = new File("trees");
 		if (!file.isDirectory()) {
 			file.mkdir();
 		}
-		pathToTree = "trees/" + name + ".tree";
-		pathToAllowedChars = "trees/" + name + ".chars";
+		pathToTree = "data/trees/" + name + ".tree";
+		pathToAllowedChars = "data/trees/" + name + ".chars";
 
 		tree = new PriorityTree(pathToAllowedChars);
 		saveTree();
 		kbdLayout = KeyboardLayoutLoader
-				.load("conf/keyboard_layout_de_default.xml", KeymapLoader.load("conf/keymap.xml"));
+				.load("data/conf/keyboard_layout_de_default.xml", KeymapLoader.load("data/conf/keymap.xml"));
 		// KeyboardLayoutSaver.save(kbdLayout, "/home/dirk/Desktop/xml.xml");
 		MainPanel.getInstance().setKbdLayout(kbdLayout);
 	}

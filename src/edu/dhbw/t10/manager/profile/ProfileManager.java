@@ -29,7 +29,7 @@ import edu.dhbw.t10.view.panels.MainPanel;
 /**
  * The profile-manager handles all profiles, including the path to its profile-file.
  * 
- * @author DerBaschti
+ * @author SebastianN
  * 
  */
 public class ProfileManager {
@@ -39,7 +39,7 @@ public class ProfileManager {
 	private static final Logger	logger				= Logger.getLogger(ProfileManager.class);
 	private static ProfileManager	instance				= new ProfileManager();
 	private ArrayList<Profile>		profiles;
-	private ArrayList<String>		profilePath;
+	private ArrayList<String>		profilePathes;
 	private Profile					activeProfile;
 	private String						activeProfileName;														// Just for initializing
 	private boolean					autoProfileChange	= true;
@@ -56,23 +56,14 @@ public class ProfileManager {
 	 */
 	private ProfileManager() {
 		logger.debug("initializing...");
-		activeProfileName = "default";
-		profilePath = new ArrayList<String>();
-		readConfig();
-		getSerializedProfiles();
+		profilePathes = new ArrayList<String>();
+		readConfig(); // fills activeProfileName and profilePathes with the data from the config file
+		getSerializedProfiles(); // deserializes all profiles, fills profiles
 		if (profiles.size() == 0) {
+			activeProfileName = "default";
 			profiles.add(new Profile("default"));
 		}
 		activeProfile = getProfileByName(activeProfileName); // TODO save active profile
-		// ---------------------DUMMY CODE------------------------------
-		
-		// Profile prof = new Profile("Pflichteheft");
-		// setActive(prof);
-		// prof.saveTree();
-		// profiles.add(prof);
-		
-		// -------------------ENDE DUMMY CODE---------------------------
-		serializeProfiles();
 		logger.debug("initialized.");
 	}
 	
@@ -111,11 +102,11 @@ public class ProfileManager {
 	 * Reads the config-file with all entrys and assigns
 	 * the read values.
 	 * 
-	 * @author DerBaschti
+	 * @author SebastianN
 	 */
 	public void readConfig() {
 		try {
-			File confFile = new File("./config.db");
+			File confFile = new File("data/config.db");
 			if (confFile.exists()) {
 				FileReader fr = new FileReader(confFile);
 				BufferedReader br = new BufferedReader(fr);
@@ -141,7 +132,7 @@ public class ProfileManager {
 						String valName = entry.substring(0, posOfEql);
 						String value = entry.substring(posOfEql + 1, entry.length());
 						if (valName.equals("ProfilePath")) {
-							profilePath.add(value);
+							profilePathes.add(value);
 						} else if (valName.equals("XMLPath")) {
 							// XMLPath.add(value);
 							logger.debug("XMLPath: " + value);
@@ -171,7 +162,7 @@ public class ProfileManager {
 	 * 
 	 * @param comment - String. Comment you want to add.
 	 * @return Changed comment as String.
-	 * @author DerBaschti
+	 * @author SebastianN
 	 */
 	private String createComment(String comment) {
 		comment = "//" + comment;
@@ -183,11 +174,11 @@ public class ProfileManager {
 	 * 
 	 * Saves the name of the active profile and the path to all profile-files.
 	 * 
-	 * @author DerBaschti
+	 * @author SebastianN
 	 */
 	public void saveConfig() {
 		try {
-			File confFile = new File("./config");
+			File confFile = new File("data/config");
 			FileWriter fw = new FileWriter(confFile);
 			BufferedWriter bw = new BufferedWriter(fw);
 			
@@ -217,12 +208,12 @@ public class ProfileManager {
 	 * @param profileName - String. Name of the profile.
 	 * @param pathToNewProfile - String. Path to the new profile.
 	 * @return Handle/Pointer to the new profile.
-	 * @author DerBaschti
+	 * @author SebastianN
 	 */
 	
 	public Profile create(String profileName, String pathToNewProfile) {
 		Profile newProfile = new Profile(profileName);
-		profilePath.add(pathToNewProfile);
+		profilePathes.add(pathToNewProfile);
 		profiles.add(newProfile);
 		if (activeProfile == null) {
 			logger.info("Active profile was set to newProfile");
@@ -238,7 +229,7 @@ public class ProfileManager {
 	 * 
 	 * @param name - String. Name of the profile.
 	 * @return If found, handle/reference to said profile. Otherwise NULL
-	 * @author DerBaschti
+	 * @author SebastianN
 	 */
 	
 	public Profile getProfileByName(String name) {
@@ -294,7 +285,7 @@ public class ProfileManager {
 	 * Marks a profile as 'active'.
 	 * 
 	 * @param newActive - Handle of the to-be activated profile
-	 * @author DerBaschti
+	 * @author SebastianN
 	 */
 	public void setActive(Profile newActive) {
 		activeProfile.saveTree();
@@ -369,14 +360,14 @@ public class ProfileManager {
 	 * If available, getSerializedProfiles gets serialized profiles from file.
 	 * In case all files couldn't be read, a new profile-list is allocated.
 	 * 
-	 * @author DerBaschti
+	 * @author SebastianN
 	 */
 	public void getSerializedProfiles() {
-		for (int i = 0; i < profilePath.size(); i++) {
+		for (int i = 0; i < profilePathes.size(); i++) {
 			try {
-				profiles.add((Profile) Serializer.deserialize(profilePath.get(i)));
+				profiles.add((Profile) Serializer.deserialize(profilePathes.get(i)));
 			} catch (IOException io) {
-				logger.error("Not able to deserialize Profile from file" + profilePath.get(i));
+				logger.error("Not able to deserialize Profile from file" + profilePathes.get(i));
 			}
 		}
 		if (profiles == null) {
