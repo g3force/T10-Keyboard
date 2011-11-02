@@ -224,7 +224,7 @@ public class Controller implements ActionListener, WindowListener {
 	
 	private void closeSuperFelix() {
 		logger.debug("closing - saving the tree");
-		profileMan.getActive().saveTree();
+		profileMan.getActive().save();
 		logger.debug("closing - saving the config");
 		profileMan.saveConfig();
 		logger.debug("closing - serializing the profilest");

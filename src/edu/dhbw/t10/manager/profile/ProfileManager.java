@@ -58,16 +58,17 @@ public class ProfileManager {
 		logger.debug("initializing...");
 		profilePathes = new ArrayList<String>();
 		readConfig(); // fills activeProfileName and profilePathes with the data from the config file
-		logger.debug("initializing... configfile: activeProfileName=" + activeProfileName + " profiles="
+		logger.debug("configfile: activeProfileName=" + activeProfileName + " profiles="
 				+ profilePathes.size());
 		getSerializedProfiles(); // deserializes all profiles, fills profiles
-		logger.debug("initializing... deserializing the profiles");
+		logger.debug("deserializing the profiles");
 		if (profiles.size() == 0) {
 			logger.debug("dummy profile will be created");
 			activeProfileName = "default";
 			profiles.add(new Profile("default"));
 		}
 		activeProfile = getProfileByName(activeProfileName);
+		activeProfile.load();
 		logger.debug("initialized.");
 	}
 	
@@ -312,9 +313,9 @@ public class ProfileManager {
 	 * @author SebastianN
 	 */
 	public void setActive(Profile newActive) {
-		activeProfile.saveTree();
+		activeProfile.save();
 		activeProfile = newActive;
-		activeProfile.loadTree();
+		activeProfile.load();
 	}
 	
 	
