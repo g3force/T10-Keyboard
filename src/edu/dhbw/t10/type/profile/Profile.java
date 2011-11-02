@@ -10,13 +10,16 @@
 package edu.dhbw.t10.type.profile;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 
 import org.apache.log4j.Logger;
 
 import edu.dhbw.t10.manager.keyboard.KeyboardLayoutLoader;
+import edu.dhbw.t10.manager.keyboard.KeyboardLayoutSaver;
 import edu.dhbw.t10.manager.keyboard.KeymapLoader;
 import edu.dhbw.t10.manager.profile.ImportExportManager;
+import edu.dhbw.t10.manager.profile.Serializer;
 import edu.dhbw.t10.type.keyboard.KeyboardLayout;
 import edu.dhbw.t10.type.tree.PriorityTree;
 import edu.dhbw.t10.view.panels.MainPanel;
@@ -68,10 +71,8 @@ public class Profile implements Serializable {
 
 		tree = new PriorityTree(pathToAllowedChars);
 		saveTree();
-		kbdLayout = KeyboardLayoutLoader
-				.load("data/conf/keyboard_layout_de_default.xml", KeymapLoader.load("data/conf/keymap.xml"));
-		// KeyboardLayoutSaver.save(kbdLayout, "/home/dirk/Desktop/xml.xml");
-		MainPanel.getInstance().setKbdLayout(kbdLayout);
+
+		load();
 	}
 	
 	
@@ -80,19 +81,63 @@ public class Profile implements Serializable {
 	// --------------------------------------------------------------------------
 	
 	/**
+	 * Load layout and tree from file
+	 * 
+	 * @author NicolaiO
+	 */
+	public void load() {
+		loadLayout();
+		loadTree();
+	}
+	
+	
+	/**
+	 * Save profile (layout and tree)
+	 * 
+	 * @author NicolaiO
+	 */
+	public void save() {
+		saveLayout();
+		saveTree();
+	}
+	
+	
+	/**
+	 * Save layout to file
+	 * 
+	 * @author NicolaiO
+	 */
+	private void saveLayout() {
+		KeyboardLayoutSaver.save(kbdLayout, "data/conf/keyboard_layout_de_default.out.xml");
+	}
+	
+	
+	/**
+	 * load layout from layout file
+	 * 
+	 * @author NicolaiO
+	 */
+	private void loadLayout() {
+		kbdLayout = KeyboardLayoutLoader.load("data/conf/keyboard_layout_de_default.xml",
+				KeymapLoader.load("data/conf/keymap.xml"));
+		MainPanel.getInstance().setKbdLayout(kbdLayout);
+	}
+
+	
+	/**
 	 * 
 	 * Loads the (serialized) PriorityTree.
 	 * 
-	 * @author Dirk
+	 * @author DirkK
 	 */
-	public void loadTree() {
-		// try {
-		// tree = Serializer.deserialize(pathToTree);
-		// } catch (IOException io) {
-		// tree = new PriorityTree(pathToAllowedChars);
-		// logger.info("No Tree found for Profile" + name + ", new Tree created");
-		// }
-		tree.importFromHashMap(ImportExportManager.importFromFile(pathToTree, true));
+	private void loadTree() {
+		try {
+			tree = Serializer.deserialize(pathToTree);
+			tree.importFromHashMap(ImportExportManager.importFromFile(pathToTree, true));
+		} catch (IOException io) {
+			tree = new PriorityTree(pathToAllowedChars);
+			logger.warn("No Tree found for Profile" + name + ", new Tree created");
+		}
 	}
 	
 	
@@ -100,23 +145,33 @@ public class Profile implements Serializable {
 	 * 
 	 * Saves the PriorityTree as serialized object
 	 * 
-	 * @author Dirk
+	 * @author DirkK
 	 */
-	public void saveTree() {
-		// try {
-		// Serializer.serialize(tree, pathToTree);
-		// } catch (IOException io) {
-		// logger.error("Tree not saved, no folder found");
-		// }
-		ImportExportManager.exportToFile(tree.exportToHashMap(), pathToTree);
+	private void saveTree() {
+		try {
+			Serializer.serialize(tree, pathToTree);
+		} catch (IOException io) {
+			logger.error("Tree not saved, IOException.");
+		}
+		if (tree != null) {
+			ImportExportManager.exportToFile(tree.exportToHashMap(), pathToTree);
+		}
 	}
 	
 	
+	/**
+	 * 
+	 * TODO DirkK, add comment!
+	 * 
+	 * @author DirkK
+	 */
 	public void saveOrderedTree() {
-		ImportExportManager.exportToSortedFile(tree.exportToHashMap(), pathToTree);
+		if (tree != null) {
+			ImportExportManager.exportToSortedFile(tree.exportToHashMap(), pathToTree);
+		}
 	}
-
 	
+
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
