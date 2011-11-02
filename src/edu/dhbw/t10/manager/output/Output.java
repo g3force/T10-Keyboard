@@ -64,9 +64,15 @@ public class Output {
 	// --------------------------------------------------------------------------
 	private Output() throws UnknownOSException {
 		String osName = System.getProperty("os.name");
+		/*
+		 * Possible Names:
+		 * Windows XP ??
+		 * Windows 7
+		 * Linux
+		 */
 		if (osName.equals("Linux"))
 			os = LINUX;
-		else if (osName.equals("Windows"))
+		else if (osName.startsWith("Windows"))
 			os = WINDOWS;
 		else {
 			os = UNKNOWN;
