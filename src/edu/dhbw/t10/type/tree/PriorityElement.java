@@ -193,6 +193,25 @@ public class PriorityElement implements Serializable {
 	
 	
 	/**
+	 * 
+	 * TODO dirk, add comment!
+	 * 
+	 * @return
+	 * @author dirk
+	 */
+	public HashMap<String, Integer> getHashMapOfFollowers() {
+		logger.debug("Fetching followers...");
+		HashMap<String, Integer> ll = new HashMap<String, Integer>();
+		for (PriorityElement pe : followers.values()) {
+			ll.put(pe.buildWord(), pe.getFrequency());
+			ll.putAll(pe.getHashMapOfFollowers());
+		}
+		logger.debug("Followers fetched");
+		return ll;
+	}
+	
+	
+	/**
 	 * deletes the Follower of this node according to the word given
 	 * takes the needed char of word by its own
 	 * 

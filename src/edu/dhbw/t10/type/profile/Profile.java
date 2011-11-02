@@ -112,6 +112,11 @@ public class Profile implements Serializable {
 	}
 	
 	
+	public void saveOrderedTree() {
+		ImportExportManager.exportToSortedFile(tree.exportToHashMap(), pathToTree);
+	}
+
+	
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
