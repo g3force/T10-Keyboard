@@ -64,11 +64,11 @@ public class TestTree {
 		String string = "no";
 		int times = 1;
 		logger.error(tree.getSuggest(string));
-		logger.error("start " + times + " times getSuggest");
+		logger.error("start " + times + " times getSuggest (tree)");
 		for (int i = 0; i < times; i++) {
 			tree.getSuggest(string);
 		}
-		logger.error("finished " + times + " times getSuggest");
+		logger.error("finished " + times + " times getSuggest(tree)");
 		logger.error(tree.suggestInHashMap(string));
 		logger.error("start " + times + " times suggestInHashMap");
 		for (int i = 0; i < times; i++) {
@@ -84,11 +84,8 @@ public class TestTree {
 		logger.error("loading the tree");
 		prof.load();
 		logger.error("load the tree");
-		logger.error("saving the orderd tree");
-		prof.saveOrderedTree();
-		logger.error("saved the orderd tree");
 		
-		File confFile = new File("/home/DirkK/Desktop/list");
+		File confFile = new File("/home/dirk/Desktop/list");
 		FileWriter fw = new FileWriter(confFile);
 		BufferedWriter bw = new BufferedWriter(fw);
 		logger.error("saving the list");

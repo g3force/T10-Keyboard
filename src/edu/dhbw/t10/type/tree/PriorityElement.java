@@ -202,13 +202,16 @@ public class PriorityElement implements Serializable {
 	public HashMap<String, Integer> getHashMapOfFollowers() {
 		logger.debug("Fetching followers...");
 		HashMap<String, Integer> ll = new HashMap<String, Integer>();
+		int counter = 0;
 		for (PriorityElement pe : followers.values()) {
+			logger.error("ELEMENT WITH FREQ " + pe.getFrequency()); // TODO DirkKhallo DELETE
 			if (pe.getFrequency() > 0) {
 				ll.put(pe.buildWord(), pe.getFrequency());
-				ll.putAll(pe.getHashMapOfFollowers());
+				counter++;
 			}
+			ll.putAll(pe.getHashMapOfFollowers());
 		}
-		logger.debug("Followers fetched");
+		logger.debug("Followers fetched (" + counter + " Elements fetched)");
 		return ll;
 	}
 	
