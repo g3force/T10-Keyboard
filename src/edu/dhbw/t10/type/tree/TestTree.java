@@ -43,7 +43,7 @@ public class TestTree {
 
 	public static void main(String[] args) throws IOException {
 		// BasicConfigurator.configure();
-		File logConfFile = new File("conf/log4j.conf");
+		File logConfFile = new File("data/conf/log4j.conf");
 		logger.error("start");
 		if (logConfFile.exists()) {
 			PropertyConfigurator.configure(logConfFile.getPath());

@@ -48,7 +48,7 @@ public class Presenter extends JFrame {
 		logger.debug("Initializing...");
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setLocationByPlatform(true);
-		this.setIconImage(Toolkit.getDefaultToolkit().getImage("icons/useacc_logo.png"));
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage("data/icons/useacc_logo.png"));
 		this.setTitle("T10 On-Screen Keyboard");
 		this.setAlwaysOnTop(true);
 		this.setFocusableWindowState(false); // Window can't be focussed, so you can type at your current position with
