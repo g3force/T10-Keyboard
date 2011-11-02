@@ -3,7 +3,7 @@
  * Copyright (c) 2011 - 2011, DHBW Mannheim
  * Project: T10 On-Screen Keyboard
  * Date: Oct 20, 2011
- * Author(s): dirk
+ * Author(s): DirkK
  * 
  * *********************************************************
  */
@@ -27,7 +27,7 @@ import edu.dhbw.t10.type.profile.Profile;
 
 /**
  * TODO DELETE
- * @author dirk
+ * @author DirkK
  * 
  */
 public class TestTree {
@@ -54,9 +54,9 @@ public class TestTree {
 		}
 		Profile prof = new Profile("projektarbeiten");
 		PriorityTree tree = prof.getTree();
-		// tree.importFromHashMap(ImportExportManager.importFromFile("/home/dirk/Desktop/dict"));
+		// tree.importFromHashMap(ImportExportManager.importFromFile("/home/DirkK/Desktop/dict"));
 		// tree.printTree();
-		HashMap<String, Integer> map = ImportExportManager.importFromText("/home/dirk/Desktop/projektarbeiten");
+		HashMap<String, Integer> map = ImportExportManager.importFromText("/home/DirkK/Desktop/projektarbeiten");
 		logger.error("10 rfc standards, 2 reports, law of copyright (usa) and the bible");
 		logger.error("amount of words " + map.size());
 		tree.importFromHashMap(map);
@@ -88,7 +88,7 @@ public class TestTree {
 		prof.saveOrderedTree();
 		logger.error("saved the orderd tree");
 		
-		File confFile = new File("/home/dirk/Desktop/list");
+		File confFile = new File("/home/DirkK/Desktop/list");
 		FileWriter fw = new FileWriter(confFile);
 		BufferedWriter bw = new BufferedWriter(fw);
 		logger.error("saving the list");
@@ -100,11 +100,11 @@ public class TestTree {
 
 
 		// System.out.println("Import completed");
-		// Profile prof = new Profile(1, "Pflichteheft", "/home/dirk/Desktop/PFL", tree);
+		// Profile prof = new Profile(1, "Pflichteheft", "/home/DirkK/Desktop/PFL", tree);
 		// System.out.println("starting serializsation");
 		// prof.saveTree();
 		// System.out.println("finished - exporting");
-		// tree.importFromHashMap(ImportExportManager.importFromText("/home/dirk/Desktop/projektarbeiten"));
+		// tree.importFromHashMap(ImportExportManager.importFromText("/home/DirkK/Desktop/projektarbeiten"));
 		// tree.autoCleaning(1, 20000000000000L, 3);
 		// tree.printTree();
 		// for (PriorityElement pe : tree.getFreqSortedList())
@@ -112,7 +112,7 @@ public class TestTree {
 		// tree.autoCleaning(1, new Long(20000000 * 10000000), 0);
 		// System.out.println(tree.getSuggest("ha"));
 		// tree.printTree();
-		// ImportExportManager.exportToFile(tree.exportToHashMap(), "/home/dirk/Desktop/dict");
+		// ImportExportManager.exportToFile(tree.exportToHashMap(), "/home/DirkK/Desktop/dict");
 		// System.out.println("finished");
 		// System.out.println("1");
 		// Profile prof = new Profile("Pflichteheft");
@@ -138,7 +138,7 @@ public class TestTree {
 		// }
 		// System.out.println("100 times load/saveTree");
 		// ImportManager imp = new ImportManager();
-		// imp.readFile("/home/dirk/Desktop/test");
+		// imp.readFile("/home/DirkK/Desktop/test");
 		// tree.importFromHashMap(imp.getImportedInfos());
 		// tree.printTree();
 		// System.out.println(tree.getSuggest("No"));

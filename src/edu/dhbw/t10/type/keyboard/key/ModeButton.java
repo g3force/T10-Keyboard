@@ -3,7 +3,7 @@
  * Copyright (c) 2011 - 2011, DHBW Mannheim
  * Project: T10 On-Screen Keyboard
  * Date: Oct 28, 2011
- * Author(s): dirk
+ * Author(s): DirkK
  * 
  * *********************************************************
  */
@@ -17,7 +17,7 @@ import org.apache.log4j.Logger;
 /**
  * button for the different modes like shift, strg pressed
  * 
- * @author dirk
+ * @author DirkK
  * 
  */
 public class ModeButton extends PhysicalButton {

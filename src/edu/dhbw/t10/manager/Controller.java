@@ -3,7 +3,7 @@
  * Copyright (c) 2011 - 2011, DHBW Mannheim
  * Project: T10 On-Screen Keyboard
  * Date: Oct 24, 2011
- * Author(s): felix
+ * Author(s): FelixP
  * 
  * *********************************************************
  */
@@ -24,11 +24,11 @@ import edu.dhbw.t10.type.keyboard.key.MuteButton;
 
 
 /**
- * TODO felix, add comment!
+ * TODO FelixP, add comment!
  * - What should this type do (in one sentence)?
  * - If not intuitive: A simple example how to use this class
  * 
- * @author felix, Andres
+ * @author FelixP, DanielAl
  * 
  */
 public class Controller implements ActionListener {

@@ -15,16 +15,17 @@ import edu.dhbw.t10.type.keyboard.key.Key;
 
 
 /**
- * TODO Andres, add comment!
+ * TODO DanielAl, add comment!
  * 
  * 
- * @author Andres
+ * @author DanielAl
  * 
  */
 public class OutputManager {
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
+	@SuppressWarnings("unused")
 	private static final Logger	logger	= Logger.getLogger(OutputManager.class);
 	
 	Output								out		= Output.getInstance();
@@ -93,7 +94,7 @@ public class OutputManager {
 	
 	/**
 	 * 
-	 * TODO andres, add comment!
+	 * TODO DanielAl, add comment!
 	 * Quelle: http://www.daniweb.com/software-development/java/threads/147397
 	 * modified
 	 * 
@@ -101,7 +102,7 @@ public class OutputManager {
 	 * 
 	 * @param input
 	 * @return
-	 * @author andres
+	 * @author DanielAl
 	 */
 	private String convertToUnicode(String input) {
 		StringBuffer ostr = new StringBuffer();

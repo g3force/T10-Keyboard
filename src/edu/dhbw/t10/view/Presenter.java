@@ -22,7 +22,7 @@ import edu.dhbw.t10.view.panels.MainPanel;
 
 /**
  * This is the main Window. This class initializes settings for the window and adds the MainPanel.
- * @author NicolaiO, andres
+ * @author NicolaiO, DanielAl
  * 
  */
 public class Presenter extends JFrame {
