@@ -19,6 +19,7 @@ import java.util.Stack;
 
 import org.apache.log4j.Logger;
 
+import edu.dhbw.t10.helper.StringHelper;
 import edu.dhbw.t10.type.keyboard.key.Key;
 
 
@@ -114,7 +115,7 @@ public class Output {
 			return true;
 		} else if (type == Key.UNKNOWN || type == Key.CHAR) { // print String... first convert Unicodes and then print all
 																				// chars and unicodes...
-			ArrayList<Integer> unicodeStart = extractUnicode(charSequence);
+			ArrayList<Integer> unicodeStart = StringHelper.extractUnicode(charSequence);
 			for (int i = 0; i < length; i++) {
 				// Unterscheidung zwischen Buchstaben (und Zahlen) und Unicode Zeichen
 				if (!unicodeStart.isEmpty() && unicodeStart.get(0) == i) { // Unicode Aufruf unter Linux
@@ -150,27 +151,7 @@ public class Output {
 	}
 	
 
-	/**
-	 * 
-	 * Find a Unicode in a given String and returns a List with the indices
-	 * 
-	 * @param sequence
-	 * @return
-	 */
-	private ArrayList<Integer> extractUnicode(String sequence) {
-		ArrayList<Integer> unicodeStart = new ArrayList<Integer>();
-		int help = 0;
-		// TODO DanielAl erkenne Sonderzeichen und Konvertiere das in Unicode
-		while (help < sequence.length()) {
-			if (sequence.substring(help).startsWith("\\U+")) {
-				help = sequence.indexOf("\\U+", help);
-				unicodeStart.add(help);
-				help += 7;
-			} else
-				help++;
-		}
-		return unicodeStart;
-	}
+
 	
 
 	/**
