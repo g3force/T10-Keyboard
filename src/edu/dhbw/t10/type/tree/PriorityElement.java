@@ -203,8 +203,10 @@ public class PriorityElement implements Serializable {
 		logger.debug("Fetching followers...");
 		HashMap<String, Integer> ll = new HashMap<String, Integer>();
 		for (PriorityElement pe : followers.values()) {
-			ll.put(pe.buildWord(), pe.getFrequency());
-			ll.putAll(pe.getHashMapOfFollowers());
+			if (pe.getFrequency() > 0) {
+				ll.put(pe.buildWord(), pe.getFrequency());
+				ll.putAll(pe.getHashMapOfFollowers());
+			}
 		}
 		logger.debug("Followers fetched");
 		return ll;
