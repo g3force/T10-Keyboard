@@ -55,20 +55,17 @@ public class Profile implements Serializable {
 	
 	public Profile(String pName) {
 		name = pName;
-		File file = new File("profiles");
+		File file = new File("data/profiles");
 		if (!file.isDirectory()) {
 			file.mkdir();
 		}
 		pathToProfile = "data/profiles/" + name + ".profile";
-		file = new File("trees");
+		file = new File("data/trees");
 		if (!file.isDirectory()) {
 			file.mkdir();
 		}
 		pathToTree = "data/trees/" + name + ".tree";
 		pathToAllowedChars = "data/trees/" + name + ".chars";
-
-		tree = new PriorityTree(pathToAllowedChars);
-		saveTree();
 
 		load();
 	}
@@ -84,7 +81,9 @@ public class Profile implements Serializable {
 	 * @author NicolaiO
 	 */
 	public void load() {
+		logger.error("loadLayout");
 		loadLayout();
+		logger.error("loadedLayout");
 		tree = new PriorityTree(pathToAllowedChars);
 		loadTree();
 	}
