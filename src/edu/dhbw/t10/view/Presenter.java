@@ -32,7 +32,6 @@ public class Presenter extends JFrame {
 	// --------------------------------------------------------------------------
 	private static final Logger	logger				= Logger.getLogger(Presenter.class);
 	private static final long		serialVersionUID	= 6217926957357225677L;
-	private static Presenter		instance;
 	private JPanel						contentPane;
 	private boolean					initilized			= false;
 	
@@ -44,8 +43,7 @@ public class Presenter extends JFrame {
 	/**
 	  * 
 	  */
-	private Presenter() {
-		instance = this; // VERRRRRY IMPORTANT, IF YOU DONT WANT TO HAVE MULTIPLE KEYBOARDS
+	public Presenter(MainPanel mainPanel) {
 		logger.debug("Initializing...");
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setLocationByPlatform(true);
@@ -59,7 +57,7 @@ public class Presenter extends JFrame {
 
 		// get a reference to the content pane
 		contentPane = (JPanel) getContentPane();
-		contentPane.add(MainPanel.getInstance());
+		contentPane.add(mainPanel);
 		this.setJMenuBar(new MenuBar());
 		
 		// build GUI
@@ -73,12 +71,6 @@ public class Presenter extends JFrame {
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
-	public static Presenter getInstance() {
-		if (instance == null) {
-			instance = new Presenter();
-		}
-		return instance;
-	}
 	
 	
 	// --------------------------------------------------------------------------

@@ -20,7 +20,6 @@ import edu.dhbw.t10.manager.keyboard.KeymapLoader;
 import edu.dhbw.t10.manager.profile.ImportExportManager;
 import edu.dhbw.t10.type.keyboard.KeyboardLayout;
 import edu.dhbw.t10.type.tree.PriorityTree;
-import edu.dhbw.t10.view.panels.MainPanel;
 
 
 /**
@@ -81,10 +80,9 @@ public class Profile implements Serializable {
 	 * @author NicolaiO
 	 */
 	public void load() {
-		logger.error("loadLayout");
+		logger.debug("loadLayout");
 		loadLayout();
-		logger.error("loadedLayout");
-		tree = new PriorityTree(pathToAllowedChars);
+		logger.debug("loadedLayout");
 		loadTree();
 	}
 	
@@ -118,7 +116,6 @@ public class Profile implements Serializable {
 	private void loadLayout() {
 		kbdLayout = KeyboardLayoutLoader.load("data/conf/keyboard_layout_de_default.xml",
 				KeymapLoader.load("data/conf/keymap.xml"));
-		MainPanel.getInstance().setKbdLayout(kbdLayout);
 	}
 
 	
@@ -129,6 +126,7 @@ public class Profile implements Serializable {
 	 * @author DirkK
 	 */
 	private void loadTree() {
+		tree = new PriorityTree(pathToAllowedChars);
 		tree.importFromHashMap(ImportExportManager.importFromFile(pathToTree, true));
 	}
 	
