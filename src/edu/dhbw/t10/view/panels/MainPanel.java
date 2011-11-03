@@ -17,11 +17,10 @@ import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
 
-import edu.dhbw.t10.manager.profile.ProfileManager;
+import edu.dhbw.t10.manager.Controller;
 import edu.dhbw.t10.type.keyboard.DropDownList;
 import edu.dhbw.t10.type.keyboard.KeyboardLayout;
 import edu.dhbw.t10.type.keyboard.key.PhysicalButton;
-import edu.dhbw.t10.view.Presenter;
 
 
 /**
@@ -37,19 +36,16 @@ public class MainPanel extends JPanel implements ComponentListener {
 	// --------------------------------------------------------------------------
 	
 	private static final long		serialVersionUID	= -52892520461804389L;
-	private static MainPanel		instance;
 	private static final Logger	logger				= Logger.getLogger(MainPanel.class);
-	private boolean					initilized			= false;
 	
 	
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
 	
-	private MainPanel() {
+	public MainPanel() {
 		logger.debug("Initializing...");
 		this.setLayout(null);
-		this.addComponentListener(this);
 		logger.debug("Initializied.");
 	}
 	
@@ -57,14 +53,6 @@ public class MainPanel extends JPanel implements ComponentListener {
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
-	
-	public static MainPanel getInstance() {
-		if (instance == null) {
-			instance = new MainPanel();
-		}
-		return instance;
-	}
-	
 	
 	/**
 	 * set KeyboardLayout for this Panel and add everything in the layout to itself
@@ -81,7 +69,6 @@ public class MainPanel extends JPanel implements ComponentListener {
 		for (DropDownList ddl : kbd.getDdls()) {
 			this.add(ddl);
 		}
-		initilized = true;
 		logger.debug("Layout added.");
 	}
 	
@@ -100,11 +87,11 @@ public class MainPanel extends JPanel implements ComponentListener {
 	
 	@Override
 	public void componentResized(ComponentEvent e) {
-		if (initilized && Presenter.getInstance().isInitilized() && e.getComponent().getSize().height != 0
-				&& e.getComponent().getSize().width != 0) {// do not delete Presenter is initialized, rescale
-																			// before GUI has a size
+		// do not resize if (0,0)
+		if (e.getComponent().getSize().height != 0 && e.getComponent().getSize().width != 0) {
 			logger.debug("Window resized handler called");
-			ProfileManager.getInstance().resizeWindow(e.getComponent().getSize());
+			// FIXME Controller access?!
+			Controller.getInstance().resizeWindow(e.getComponent().getSize());
 		}
 	}
 	
