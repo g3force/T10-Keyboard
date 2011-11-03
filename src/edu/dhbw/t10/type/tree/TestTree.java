@@ -53,10 +53,11 @@ public class TestTree {
 			logger.setLevel(Level.ALL);
 		}
 		Profile prof = new Profile("projektarbeiten");
+		logger.error("Profile created");
 		PriorityTree tree = prof.getTree();
 		// tree.importFromHashMap(ImportExportManager.importFromFile("/home/DirkK/Desktop/dict"));
 		// tree.printTree();
-		HashMap<String, Integer> map = ImportExportManager.importFromText("/home/DirkK/Desktop/projektarbeiten");
+		HashMap<String, Integer> map = ImportExportManager.importFromText("/home/dirk/Desktop/projektarbeiten");
 		logger.error("10 rfc standards, 2 reports, law of copyright (usa) and the bible");
 		logger.error("amount of words " + map.size());
 		tree.importFromHashMap(map);
@@ -94,6 +95,9 @@ public class TestTree {
 		}
 		bw.close();
 		logger.error("saved the list");
+		logger.error("loading the list");
+		map = ImportExportManager.importFromFile("/home/dirk/Desktop/list", true);
+		logger.error("load the list");
 
 
 		// System.out.println("Import completed");
