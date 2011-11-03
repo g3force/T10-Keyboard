@@ -381,8 +381,7 @@ public class PriorityTree implements Serializable {
 	 * @author DirkK
 	 */
 	
-	@SuppressWarnings("unused")
-	private void saveAllowedChars() {
+	public void saveAllowedChars() {
 		try {
 			File confFile = new File("pathToAllowedChars");
 			FileWriter fw = new FileWriter(confFile);
