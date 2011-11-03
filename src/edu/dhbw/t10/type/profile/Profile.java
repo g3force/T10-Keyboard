@@ -65,7 +65,7 @@ public class Profile implements Serializable {
 		}
 		pathToTree = "data/trees/" + name + ".tree";
 		pathToAllowedChars = "data/trees/" + name + ".chars";
-
+		logger.debug("Profile " + pName + " created");
 		load();
 	}
 	
@@ -82,7 +82,8 @@ public class Profile implements Serializable {
 	public void load() {
 		logger.debug("loadLayout");
 		loadLayout();
-		logger.debug("loadedLayout");
+		logger.debug("loaded Layout");
+		tree = new PriorityTree(pathToAllowedChars);
 		loadTree();
 	}
 	
@@ -93,7 +94,9 @@ public class Profile implements Serializable {
 	 * @author NicolaiO
 	 */
 	public void save() {
+		logger.error("save Layout");
 		saveLayout();
+		logger.error("saved Layout");
 		saveTree();
 	}
 	
@@ -128,6 +131,7 @@ public class Profile implements Serializable {
 	private void loadTree() {
 		tree = new PriorityTree(pathToAllowedChars);
 		tree.importFromHashMap(ImportExportManager.importFromFile(pathToTree, true));
+		logger.error("load: " + pathToTree + " Tree Size: " + tree.exportToHashMap().size());
 	}
 	
 	
@@ -141,6 +145,9 @@ public class Profile implements Serializable {
 		if (tree != null) {
 			ImportExportManager.exportToFile(tree.exportToHashMap(), pathToTree);
 		}
+		logger.error("save: " + pathToTree);
+		tree.saveAllowedChars();
+		logger.error("save Chars: " + pathToAllowedChars);
 	}
 	
 	
