@@ -57,13 +57,10 @@ public class Output {
 	private static int				os;
 	private static int				delay		= 0;
 
-	private static Output			instance;
-	
-
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
-	private Output() throws UnknownOSException {
+	public Output() throws UnknownOSException {
 		String osName = System.getProperty("os.name");
 		/*
 		 * Possible Names:
@@ -355,15 +352,5 @@ public class Output {
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
 	
-	public static Output getInstance() {
-		if (instance == null) {
-			try {
-				instance = new Output();
-			} catch (UnknownOSException err) {
-				logger.fatal(err.getMessage());
-				System.exit(-1);
-			}
-		}
-		return instance;
-	}
+
 }
