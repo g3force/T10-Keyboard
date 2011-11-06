@@ -104,7 +104,12 @@ public class Controller implements ActionListener, WindowListener {
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() instanceof Button) {
 			Button button = (Button) e.getSource();
+			// TODO useful hint: e.getModifiers()
 			
+			if (e.getModifiers() == ActionEvent.SHIFT_MASK) {
+				// TODO reference to Shift Mode Button??
+			}
+
 			if (button.getSingleKey().size() == 1) {
 				Key key = (Key) button.getSingleKey().get(0);
 				logger.debug("Key pressed: " + key.toString());
@@ -127,7 +132,7 @@ public class Controller implements ActionListener, WindowListener {
 			} else
 				logger.error("No Key List");
 			button.unsetPressedModes();
-		} // end if instanceof Bbutton
+		}
 		
 
 		if (e.getSource() instanceof ModeButton) {
@@ -250,6 +255,7 @@ public class Controller implements ActionListener, WindowListener {
 		
 	}
 	
+
 	private void closeSuperFelix() {
 		logger.debug("closing - saving the tree");
 		profileMan.getActive().save();
