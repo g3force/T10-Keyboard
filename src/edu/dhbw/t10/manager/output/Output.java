@@ -99,6 +99,7 @@ public class Output {
 	 * 
 	 * @param c
 	 * @return
+	 * @author DanielAl
 	 */
 	public boolean printString(String charSequence, int type) {
 		int length = charSequence.length();
@@ -151,9 +152,6 @@ public class Output {
 	}
 	
 
-
-	
-
 	/**
 	 * 
 	 * Converts a Stringcode into a Constant of the KeyEvent class via Reflection.
@@ -186,6 +184,14 @@ public class Output {
 	}
 	
 
+	/**
+	 * 
+	 * TODO DanielAl, add comment!
+	 * 
+	 * @param uni
+	 * @return
+	 * @author DanielAl
+	 */
 	private boolean sendUnicode(String uni) {
 		if (uni.length() != 8 || !uni.substring(0, 3).equals("\\U+") || !uni.substring(7, 8).equals("\\")) {
 			logger.error("UNICODE wrong format; length: " + uni.length());
@@ -222,6 +228,7 @@ public class Output {
 
 				// Sending KeyCombination for Unicode input to Windows...
 				sendKey(KeyEvent.VK_ALT, PRESS);
+				sendKey(KeyEvent.VK_ADD, TYPE);
 				// Sends leading zeros to the system. Windows interpret only 5 digit long values correct.
 				for (int i = 5; i > uniDecimal.length(); i--)
 					sendKey(KeyEvent.VK_0, TYPE);
