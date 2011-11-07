@@ -353,15 +353,15 @@ public class Output {
 			case TYPE:
 				keyRobot.keyPress(key);
 				keyRobot.keyRelease(key);
-				logger.debug("sendKey: Key sent: " + key);
+				logger.trace("sendKey: Key sent: " + key);
 				break;
 			case PRESS:
 				keyRobot.keyPress(key);
-				logger.debug("sendKey: Key pressed: " + key);
+				logger.trace("sendKey: Key pressed: " + key);
 				break;
 			case RELEASE:
 				keyRobot.keyRelease(key);
-				logger.debug("sendKey: Key released: " + key);
+				logger.trace("sendKey: Key released: " + key);
 				break;
 			case COMBI: // Combination
 				// Input are keys from the printCombi method...
@@ -385,7 +385,7 @@ public class Output {
 				keyRobot.keyPress(key);
 				keyRobot.keyRelease(key);
 				keyRobot.keyRelease(KeyEvent.VK_SHIFT);
-				logger.debug("sendKey: Key sent with SHIFT: " + key);
+				logger.trace("sendKey: Key sent with SHIFT: " + key);
 				break;
 		}
 		return true;
