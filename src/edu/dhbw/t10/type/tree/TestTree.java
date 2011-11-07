@@ -53,10 +53,11 @@ public class TestTree {
 			logger.setLevel(Level.ALL);
 		}
 		Profile prof = new Profile("projektarbeiten");
+		logger.error("Profile created");
 		PriorityTree tree = prof.getTree();
 		// tree.importFromHashMap(ImportExportManager.importFromFile("/home/DirkK/Desktop/dict"));
 		// tree.printTree();
-		HashMap<String, Integer> map = ImportExportManager.importFromText("/home/DirkK/Desktop/projektarbeiten");
+		HashMap<String, Integer> map = ImportExportManager.importFromText("/home/dirk/Desktop/projektarbeiten");
 		logger.error("10 rfc standards, 2 reports, law of copyright (usa) and the bible");
 		logger.error("amount of words " + map.size());
 		tree.importFromHashMap(map);
@@ -64,11 +65,11 @@ public class TestTree {
 		String string = "no";
 		int times = 1;
 		logger.error(tree.getSuggest(string));
-		logger.error("start " + times + " times getSuggest");
+		logger.error("start " + times + " times getSuggest (tree)");
 		for (int i = 0; i < times; i++) {
 			tree.getSuggest(string);
 		}
-		logger.error("finished " + times + " times getSuggest");
+		logger.error("finished " + times + " times getSuggest(tree)");
 		logger.error(tree.suggestInHashMap(string));
 		logger.error("start " + times + " times suggestInHashMap");
 		for (int i = 0; i < times; i++) {
@@ -79,16 +80,13 @@ public class TestTree {
 		tree.insert("declation");
 		logger.error("finished insert in tree");
 		logger.error("saving the tree");
-		prof.saveTree();
+		prof.save();
 		logger.error("saved the tree");
 		logger.error("loading the tree");
-		prof.loadTree();
+		prof.load();
 		logger.error("load the tree");
-		logger.error("saving the orderd tree");
-		prof.saveOrderedTree();
-		logger.error("saved the orderd tree");
 		
-		File confFile = new File("/home/DirkK/Desktop/list");
+		File confFile = new File("/home/dirk/Desktop/list");
 		FileWriter fw = new FileWriter(confFile);
 		BufferedWriter bw = new BufferedWriter(fw);
 		logger.error("saving the list");
@@ -97,6 +95,9 @@ public class TestTree {
 		}
 		bw.close();
 		logger.error("saved the list");
+		logger.error("loading the list");
+		map = ImportExportManager.importFromFile("/home/dirk/Desktop/list", true);
+		logger.error("load the list");
 
 
 		// System.out.println("Import completed");

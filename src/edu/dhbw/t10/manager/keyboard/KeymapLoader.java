@@ -68,7 +68,7 @@ public class KeymapLoader {
 	 * @author NicolaiO
 	 */
 	public static HashMap<Integer, Key> load(String filePath) {
-		logger.debug("initializing...");
+		logger.debug("Loadung keymap...");
 		// do everything in a try and return only empty keymap, if XML could not be loaded
 		try {
 			// load file and initialize document builder factory for XML parsing
@@ -113,7 +113,7 @@ public class KeymapLoader {
 				}
 			}
 			logger.info("loaded " + keymap.size() + " keys.");
-			logger.debug("initialized.");
+			logger.debug("Keymap loaded.");
 			return keymap;
 		} catch (ParserConfigurationException err) {
 			logger.error("Could not initialize dBuilder");
@@ -125,7 +125,7 @@ public class KeymapLoader {
 			logger.error("Could not parse document");
 			err.printStackTrace();
 		}
-		logger.warn("Keymap not finished.");
+		logger.warn("Loading Keymap not finished.");
 		return new HashMap<Integer, Key>();
 	}
 	

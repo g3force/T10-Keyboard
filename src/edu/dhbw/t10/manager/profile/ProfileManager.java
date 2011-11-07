@@ -9,7 +9,6 @@
  */
 package edu.dhbw.t10.manager.profile;
 
-import java.awt.Dimension;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -22,8 +21,6 @@ import org.apache.log4j.Logger;
 
 import edu.dhbw.t10.type.keyboard.KeyboardLayout;
 import edu.dhbw.t10.type.profile.Profile;
-import edu.dhbw.t10.view.Presenter;
-import edu.dhbw.t10.view.panels.MainPanel;
 
 
 /**
@@ -37,7 +34,7 @@ public class ProfileManager {
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
 	private static final Logger	logger				= Logger.getLogger(ProfileManager.class);
-	private static ProfileManager	instance				= new ProfileManager();
+	// private static ProfileManager instance = new ProfileManager();
 	private ArrayList<Profile>		profiles;
 	private ArrayList<String>		profilePathes;
 	private Profile					activeProfile;
@@ -54,18 +51,20 @@ public class ProfileManager {
 	/**
 	 * Constructor as Singleton. This way, we prevent having multiple manager
 	 */
-	private ProfileManager() {
+	public ProfileManager() {
 		logger.debug("initializing...");
 		profilePathes = new ArrayList<String>();
-		logger.debug("initializing... reading the config");
 		readConfig(); // fills activeProfileName and profilePathes with the data from the config file
-		logger.debug("initializing... deserializing the profiles");
+		logger.debug("configfile: activeProfileName=" + activeProfileName + " profiles="
+				+ profilePathes.size());
 		getSerializedProfiles(); // deserializes all profiles, fills profiles
+		logger.debug("deserializing the profiles");
 		if (profiles.size() == 0) {
-			activeProfileName = "default";
-			profiles.add(new Profile("default"));
+			logger.debug("default profile will be created");
+			createProfile("default");
 		}
-		activeProfile = getProfileByName(activeProfileName); // TODO save active profile
+		activeProfile = getProfileByName(activeProfileName);
+		activeProfile.load();
 		logger.debug("initialized.");
 	}
 	
@@ -73,30 +72,13 @@ public class ProfileManager {
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
-	/**
-	 * @return Return of an instance of the Singleton "ProfileManager", thus preventing
-	 *         multiple ProfileManager.
-	 */
-	public static ProfileManager getInstance() {
-		return instance;
-	}
-	
-	
-	public void resizeWindow(Dimension size) {
-		KeyboardLayout kbdLayout = activeProfile.getKbdLayout();
-		if (kbdLayout != null) {
-			float xscale = (float) size.width / (float) kbdLayout.getOrigSize_x();
-			float yscale = (float) size.height / (float) kbdLayout.getOrigSize_y();
-			float fontScale = xscale + yscale / 2;
-			kbdLayout.setScale_x(xscale);
-			kbdLayout.setScale_y(yscale);
-			kbdLayout.setScale_font(fontScale);
-			kbdLayout.rescale();
-			MainPanel.getInstance().setPreferredSize(new Dimension(kbdLayout.getSize_x(), kbdLayout.getSize_y()));
-			Presenter.getInstance().pack();
-			logger.debug("Window rescaled");
-		}
-	}
+	// /**
+	// * @return Return of an instance of the Singleton "ProfileManager", thus preventing
+	// * multiple ProfileManager.
+	// */
+	// public static ProfileManager getInstance() {
+	// return instance;
+	// }
 	
 	
 	/**
@@ -108,7 +90,7 @@ public class ProfileManager {
 	 */
 	public void readConfig() {
 		try {
-			File confFile = new File("data/config.db");
+			File confFile = new File("data/config");
 			if (confFile.exists()) {
 				FileReader fr = new FileReader(confFile);
 				BufferedReader br = new BufferedReader(fr);
@@ -200,6 +182,7 @@ public class ProfileManager {
 			BufferedWriter bw = new BufferedWriter(fw);
 			
 			addEntry(bw, createComment("Configfile for T10"));
+
 			
 			if (activeProfile != null)
 				addEntry(bw, "ActiveProfile=" + activeProfile.getName());
@@ -232,9 +215,8 @@ public class ProfileManager {
 	 * @author SebastianN
 	 */
 	
-	public Profile create(String profileName, String pathToNewProfile) {
+	public Profile createProfile(String profileName) {
 		Profile newProfile = new Profile(profileName);
-		profilePathes.add(pathToNewProfile);
 		profiles.add(newProfile);
 		if (activeProfile == null) {
 			logger.info("Active profile was set to newProfile");
@@ -272,7 +254,7 @@ public class ProfileManager {
 	 * 
 	 * @param id - int. ID of the profile you want to delete.
 	 */
-	public void delete(Profile toDelete) {
+	public void deleteProfile(Profile toDelete) {
 		Profile curProfile = null;
 		if (profiles.size() <= 0) {
 			logger.debug("profiles.size()==0 at delete");
@@ -305,13 +287,15 @@ public class ProfileManager {
 	 * 
 	 * Marks a profile as 'active'.
 	 * 
+	 * TODO SebastianN use me
+	 * 
 	 * @param newActive - Handle of the to-be activated profile
 	 * @author SebastianN
 	 */
 	public void setActive(Profile newActive) {
-		activeProfile.saveTree();
+		activeProfile.save();
 		activeProfile = newActive;
-		activeProfile.loadTree();
+		activeProfile.load();
 	}
 	
 	
@@ -384,15 +368,15 @@ public class ProfileManager {
 	 * @author SebastianN
 	 */
 	public void getSerializedProfiles() {
+		if (profiles == null) {
+			profiles = new ArrayList<Profile>();
+		}
 		for (int i = 0; i < profilePathes.size(); i++) {
 			try {
 				profiles.add((Profile) Serializer.deserialize(profilePathes.get(i)));
 			} catch (IOException io) {
 				logger.error("Not able to deserialize Profile from file" + profilePathes.get(i));
 			}
-		}
-		if (profiles == null) {
-			profiles = new ArrayList<Profile>();
 		}
 	}
 	

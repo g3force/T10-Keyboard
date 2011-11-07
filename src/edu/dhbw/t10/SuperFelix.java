@@ -17,7 +17,6 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
 import edu.dhbw.t10.manager.Controller;
-import edu.dhbw.t10.view.Presenter;
 
 
 /**
@@ -29,6 +28,7 @@ import edu.dhbw.t10.view.Presenter;
  * TODO SebastianN profile configuration
  * TODO ALL menus
  * TODO NicolaiO 2 shift buttons
+ * TODO ALL insert tooltips for mute buttons
  * 
  * @author NicolaiO
  * 
@@ -69,10 +69,7 @@ public class SuperFelix {
 			logger.setLevel(Level.ALL);
 		}
 		
-		logger.debug("calling Controller first time.");
 		Controller.getInstance();
-		logger.debug("calling Presenter first time.");
-		Presenter.getInstance();
 		logger.info("Keyboard started.");
 	}
 	

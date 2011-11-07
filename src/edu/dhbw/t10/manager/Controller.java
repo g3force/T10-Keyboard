@@ -9,6 +9,7 @@
  */
 package edu.dhbw.t10.manager;
 
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
@@ -19,10 +20,13 @@ import org.apache.log4j.Logger;
 import edu.dhbw.t10.helper.StringHelper;
 import edu.dhbw.t10.manager.output.OutputManager;
 import edu.dhbw.t10.manager.profile.ProfileManager;
+import edu.dhbw.t10.type.keyboard.KeyboardLayout;
 import edu.dhbw.t10.type.keyboard.key.Button;
 import edu.dhbw.t10.type.keyboard.key.Key;
 import edu.dhbw.t10.type.keyboard.key.ModeButton;
 import edu.dhbw.t10.type.keyboard.key.MuteButton;
+import edu.dhbw.t10.view.Presenter;
+import edu.dhbw.t10.view.panels.MainPanel;
 
 
 /**
@@ -45,6 +49,8 @@ public class Controller implements ActionListener, WindowListener {
 	
 	private ProfileManager			profileMan;
 	private OutputManager			outputMan;
+	private MainPanel					mainPanel;
+	private Presenter					presenter;
 	
 	
 	// --------------------------------------------------------------------------
@@ -53,10 +59,15 @@ public class Controller implements ActionListener, WindowListener {
 	private Controller() {
 		instance = this;
 		logger.debug("initializing...");
+		outputMan = new OutputManager();
+		mainPanel = new MainPanel();
+		presenter = new Presenter(mainPanel);
 		typedWord = "";
 		suggest = "";
-		profileMan = ProfileManager.getInstance();
-		outputMan = OutputManager.getInstance();
+		profileMan = new ProfileManager();
+		mainPanel.setKbdLayout(profileMan.getActive().getKbdLayout());
+		mainPanel.addComponentListener(mainPanel);
+		resizeWindow(profileMan.getActive().getKbdLayout().getSize());
 		logger.debug("initialized.");
 	}
 	
@@ -72,11 +83,33 @@ public class Controller implements ActionListener, WindowListener {
 	}
 	
 	
+	public void resizeWindow(Dimension size) {
+		KeyboardLayout kbdLayout = profileMan.getActive().getKbdLayout();
+		if (kbdLayout != null) {
+			float xscale = (float) size.width / (float) kbdLayout.getOrigSize_x();
+			float yscale = (float) size.height / (float) kbdLayout.getOrigSize_y();
+			float fontScale = xscale + yscale / 2;
+			kbdLayout.setScale_x(xscale);
+			kbdLayout.setScale_y(yscale);
+			kbdLayout.setScale_font(fontScale);
+			kbdLayout.rescale();
+			mainPanel.setPreferredSize(new Dimension(kbdLayout.getSize_x(), kbdLayout.getSize_y()));
+			presenter.pack();
+			logger.debug("Window rescaled");
+		}
+	}
+
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() instanceof Button) {
 			Button button = (Button) e.getSource();
+			// TODO useful hint: e.getModifiers()
 			
+			if (e.getModifiers() == ActionEvent.SHIFT_MASK) {
+				// TODO reference to Shift Mode Button??
+			}
+
 			if (button.getSingleKey().size() == 1) {
 				Key key = (Key) button.getSingleKey().get(0);
 				logger.debug("Key pressed: " + key.toString());
@@ -99,7 +132,7 @@ public class Controller implements ActionListener, WindowListener {
 			} else
 				logger.error("No Key List");
 			button.unsetPressedModes();
-		} // end if instanceof Bbutton
+		}
 		
 
 		if (e.getSource() instanceof ModeButton) {
@@ -222,12 +255,13 @@ public class Controller implements ActionListener, WindowListener {
 		
 	}
 	
+
 	private void closeSuperFelix() {
 		logger.debug("closing - saving the tree");
-		profileMan.getActive().saveTree();
+		profileMan.getActive().save();
 		logger.debug("closing - saving the config");
 		profileMan.saveConfig();
-		logger.debug("closing - serializing the profilest");
+		logger.debug("closing - serializing the profiles");
 		profileMan.serializeProfiles();
 		logger.debug("closed - good buy");
 	}

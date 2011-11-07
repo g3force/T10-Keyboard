@@ -134,6 +134,10 @@ public class KeyboardLayout {
 	}
 	
 	
+	public Dimension getSize() {
+		return new Dimension(getSize_x(), getSize_y());
+	}
+	
 	public int getSize_x() {
 		return (int) (size_x * scale_x);
 	}
