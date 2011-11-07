@@ -9,6 +9,7 @@
  */
 package edu.dhbw.t10.view.menus;
 
+
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,6 +18,8 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+
+import edu.dhbw.t10.manager.Controller;
 
 
 /**
@@ -31,6 +34,7 @@ public class MenuBar extends JMenuBar {
 	// --------------------------------------------------------------------------
 	private static final long			serialVersionUID	= -2903181098465204289L;
 	protected static final Object[]	eventCache			= null;
+	private static int					inc					= 1;
 	
 	
 	// --------------------------------------------------------------------------
@@ -80,6 +84,7 @@ public class MenuBar extends JMenuBar {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				Controller.getInstance().createProfile("Profile" + (++inc));
 				// TODO ALL Menu erstellen (eingabe: Name und Pfad)
 			}
 		});
@@ -152,7 +157,7 @@ public class MenuBar extends JMenuBar {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO ALL Menu löschen (profilliste)
+				// Controller.getInstance().deleteProfile("Profile3");
 			}
 		});
 	}
