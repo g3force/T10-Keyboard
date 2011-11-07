@@ -99,7 +99,7 @@ public class OutputManager {
 	
 
 	public void printCombi(Button b) {
-		
+		out.printCombi(b);
 	}
 	
 	

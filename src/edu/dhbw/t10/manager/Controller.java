@@ -121,7 +121,8 @@ public class Controller implements ActionListener, WindowListener {
 					suggest = typedWord;
 				}
 			} else if (button.getSingleKey().size() > 1) {
-				// TODO
+				// FIXME not working...
+				outputMan.printCombi(button);
 			} else
 				logger.error("No Key List");
 			button.unsetPressedModes();
