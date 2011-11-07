@@ -3,7 +3,7 @@
  * Copyright (c) 2011 - 2011, DHBW Mannheim
  * Project: T10 On-Screen Keyboard
  * Date: Oct 24, 2011
- * Author(s): FelixP
+ * Author(s): FelixP, DanielAl, NicolaiO
  * 
  * *********************************************************
  */
@@ -37,7 +37,7 @@ import edu.dhbw.t10.view.panels.MainPanel;
  * Here all Managers and the view is initialized...<br>
  * It provides overwritten methods to handles actionEvents...<br>
  * 
- * @author FelixP, DanielAl
+ * @author FelixP, DanielAl, NicolaiO
  * 
  */
 public class Controller implements ActionListener, WindowListener {
@@ -112,6 +112,12 @@ public class Controller implements ActionListener, WindowListener {
 
 
 	@Override
+	/**
+	 * Starts the right activities for a specific event...
+	 * 
+	 * @param e
+	 * @author //FIXME
+	 */
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() instanceof Button) {
 			eIsButton((Button) e.getSource());
@@ -132,6 +138,12 @@ public class Controller implements ActionListener, WindowListener {
 	}
 	
 
+	/**
+	 * Do the logic for a button event. Switch between different types, specific Keys and a Key Combination...
+	 * 
+	 * @param button
+	 * @author DanielAl, //FIXME
+	 */
 	private void eIsButton(Button button) {
 		// TODO useful hint: e.getModifiers()
 		
@@ -142,7 +154,7 @@ public class Controller implements ActionListener, WindowListener {
 		
 		if (button.getSingleKey().size() == 1) {
 			Key key = (Key) button.getSingleKey().get(0);
-			logger.debug("Key pressed: " + key.toString());
+
 			if (key.isAccept())
 				this.keyIsAccept(key);
 			else if (key.getType() == Key.CHAR)
@@ -157,14 +169,24 @@ public class Controller implements ActionListener, WindowListener {
 				outputMan.printChar(key);
 				suggest = typedWord;
 			}
+			logger.debug("Key pressed: " + key.toString());
 		} else if (button.getSingleKey().size() > 1) {
 			// FIXME not working...
 			outputMan.printCombi(button);
 		} else
 			logger.error("No Key List");
+
 		button.unsetPressedModes();
 	}
 	
+
+	/**
+	 * 
+	 * TODO DanielAl, add comment!
+	 * 
+	 * @param currentList
+	 * @author DanielAl
+	 */
 
 	private void eIsMuteButton(MuteButton muteB) {
 		muteB.push();
@@ -184,6 +206,13 @@ public class Controller implements ActionListener, WindowListener {
 	}
 	
 
+	/**
+	 * 
+	 * TODO DanielAl, add comment!
+	 * 
+	 * @param currentList
+	 * @author DanielAl
+	 */
 	private void eIsDropDownList(DropDownList currentList) {
 
 		if (currentList.getType() == DropDownList.PROFILE) {
@@ -194,6 +223,13 @@ public class Controller implements ActionListener, WindowListener {
 	}
 
 
+	/**
+	 * 
+	 * TODO DanielAl, add comment!
+	 * 
+	 * @param currentList
+	 * @author DanielAl
+	 */
 	private void keyIsAccept(Key key) {
 		if (suggest.length() > typedWord.length())
 			outputMan.unMark();
@@ -206,6 +242,13 @@ public class Controller implements ActionListener, WindowListener {
 	}
 	
 
+	/**
+	 * 
+	 * TODO DanielAl, add comment!
+	 * 
+	 * @param currentList
+	 * @author DanielAl
+	 */
 	private void keyIsCHAR(Key key) {
 		outputMan.printChar(key);
 		typedWord = typedWord + key.getName();
@@ -214,6 +257,13 @@ public class Controller implements ActionListener, WindowListener {
 	}
 	
 
+	/**
+	 * 
+	 * TODO DanielAl, add comment!
+	 * 
+	 * @param currentList
+	 * @author DanielAl
+	 */
 	private void keyIsUnicode(Key key) {
 		outputMan.printChar(key);
 		// FIXME Wieso sind Umlaute als Unicode Zeichen im Keyboard gespeichert?? Wie soll die Unterscheidung zwischen
@@ -226,6 +276,13 @@ public class Controller implements ActionListener, WindowListener {
 	}
 	
 
+	/**
+	 * 
+	 * TODO DanielAl, add comment!
+	 * 
+	 * @param currentList
+	 * @author DanielAl
+	 */
 	private void keyIsBackspace() {
 		if (typedWord.length() > 0 && typedWord.equals(suggest)) {
 			typedWord = typedWord.substring(0, typedWord.length() - 1);
@@ -244,6 +301,13 @@ public class Controller implements ActionListener, WindowListener {
 	}
 	
 
+	/**
+	 * 
+	 * TODO DanielAl, add comment!
+	 * 
+	 * @param currentList
+	 * @author DanielAl
+	 */
 	private void keyIsSpaceOrEnter(Key key) {
 		logger.debug("Keycode " + key.getKeycode() + " " + key.getType());
 		profileMan.acceptWord(typedWord);
@@ -255,6 +319,13 @@ public class Controller implements ActionListener, WindowListener {
 
 	// Window ----------------------------
 	
+	/**
+	 * 
+	 * TODO DanielAl, add comment!
+	 * 
+	 * @param currentList
+	 * @author DanielAl
+	 */
 	public void resizeWindow(Dimension size) {
 		KeyboardLayout kbdLayout = profileMan.getActive().getKbdLayout();
 		if (kbdLayout != null) {
@@ -314,6 +385,13 @@ public class Controller implements ActionListener, WindowListener {
 	}
 	
 
+	/**
+	 * 
+	 * TODO DanielAl, add comment!
+	 * 
+	 * @param currentList
+	 * @author DanielAl
+	 */
 	private void closeSuperFelix() {
 		try {
 			logger.debug("closing - saving the tree");
@@ -333,6 +411,13 @@ public class Controller implements ActionListener, WindowListener {
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
+	/**
+	 * 
+	 * TODO DanielAl, add comment!
+	 * 
+	 * @param currentList
+	 * @author DanielAl
+	 */
 	
 	public static Controller getInstance() {
 		if (instance == null) {
