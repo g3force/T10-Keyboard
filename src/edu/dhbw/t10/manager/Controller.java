@@ -108,6 +108,7 @@ public class Controller implements ActionListener, WindowListener {
 			
 			if (e.getModifiers() == ActionEvent.SHIFT_MASK) {
 				// TODO reference to Shift Mode Button??
+				logger.debug("shift modifier is pressed.");
 			}
 
 			if (button.getSingleKey().size() == 1) {
