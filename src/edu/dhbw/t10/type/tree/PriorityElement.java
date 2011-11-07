@@ -45,14 +45,14 @@ public class PriorityElement implements Serializable {
 	// --------------------------------------------------------------------------
 	public PriorityElement(char wo, PriorityElement fa, int fr) {
 		initializer(wo, fa, this, fr, new HashMap<Character, PriorityElement>());
-		logger.debug("PriorityElement created (1)");
+		// logger.trace("PriorityElement created (1)");
 	}
 	
 	
 	public PriorityElement(char wo, PriorityElement fa, PriorityElement su, int fr) {
 		// constructor only for root element, suggest shall not be this, but null
 		initializer(wo, fa, su, fr, new HashMap<Character, PriorityElement>());
-		logger.debug("PriorityElement created (2)");
+		// logger.trace("PriorityElement created (2)");
 	}
 	
 	
@@ -93,10 +93,10 @@ public class PriorityElement implements Serializable {
 	 * @return the new Follower Element
 	 */
 	public PriorityElement addFollower(char c) {
-		logger.debug("Adding follower...");
+		// logger.trace("Adding follower...");
 		PriorityElement newFollower = new PriorityElement(c, this, 0);
 		followers.put(c, newFollower);
-		logger.debug("Follower added");
+		// logger.trace("Follower added");
 		return newFollower;
 	}
 	
@@ -163,14 +163,14 @@ public class PriorityElement implements Serializable {
 	 * @return the according word to the node
 	 */
 	public String buildWord() {
-		logger.debug("Building Word...");
+		// logger.trace("Building Word...");
 		String word = "";
 		PriorityElement node = this;
 		while (node.getFather() != null) {
 			word = node.getLetter() + word;
 			node = node.getFather();
 		}
-		logger.debug("Word built");
+		// logger.trace("Word built");
 		return word;
 	}
 	
@@ -200,17 +200,17 @@ public class PriorityElement implements Serializable {
 	 * @author DirkK
 	 */
 	public HashMap<String, Integer> getHashMapOfFollowers() {
-		logger.debug("Fetching followers...");
+		// logger.trace("Fetching followers...");
 		HashMap<String, Integer> ll = new HashMap<String, Integer>();
-		int counter = 0;
+		// int counter = 0;
 		for (PriorityElement pe : followers.values()) {
 			if (pe.getFrequency() > 0) {
 				ll.put(pe.buildWord(), pe.getFrequency());
-				counter++;
+				// counter++;
 			}
 			ll.putAll(pe.getHashMapOfFollowers());
 		}
-		logger.debug("Followers fetched (" + counter + " Elements fetched)");
+		// logger.trace("Followers fetched (" + counter + " Elements fetched)");
 		return ll;
 	}
 	
