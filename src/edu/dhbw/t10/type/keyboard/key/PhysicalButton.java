@@ -145,8 +145,7 @@ public abstract class PhysicalButton extends JButton implements MouseListener {
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		this.actionListener.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, this.getActionCommand(),
-				ActionEvent.SHIFT_MASK));
+
 	}
 	
 	
@@ -183,6 +182,8 @@ public abstract class PhysicalButton extends JButton implements MouseListener {
 		 */
 		if (e.getButton() == MouseEvent.BUTTON3) {
 			if (e.getSource() instanceof JButton) {
+				this.actionListener.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, this
+						.getActionCommand(), ActionEvent.SHIFT_MASK));
 				JButton b = (JButton) e.getSource();
 				b.getModel().setPressed(false);
 			}
