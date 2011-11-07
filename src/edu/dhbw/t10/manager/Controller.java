@@ -20,11 +20,13 @@ import org.apache.log4j.Logger;
 import edu.dhbw.t10.helper.StringHelper;
 import edu.dhbw.t10.manager.output.OutputManager;
 import edu.dhbw.t10.manager.profile.ProfileManager;
+import edu.dhbw.t10.type.keyboard.DropDownList;
 import edu.dhbw.t10.type.keyboard.KeyboardLayout;
 import edu.dhbw.t10.type.keyboard.key.Button;
 import edu.dhbw.t10.type.keyboard.key.Key;
 import edu.dhbw.t10.type.keyboard.key.ModeButton;
 import edu.dhbw.t10.type.keyboard.key.MuteButton;
+import edu.dhbw.t10.type.profile.Profile;
 import edu.dhbw.t10.view.Presenter;
 import edu.dhbw.t10.view.panels.MainPanel;
 
@@ -65,7 +67,10 @@ public class Controller implements ActionListener, WindowListener {
 		typedWord = "";
 		suggest = "";
 		profileMan = new ProfileManager();
+
 		mainPanel.setKbdLayout(profileMan.getActive().getKbdLayout());
+		profileMan.addAllProfilesToDDL();
+
 		mainPanel.addComponentListener(mainPanel);
 		resizeWindow(profileMan.getActive().getKbdLayout().getSize());
 		logger.debug("initialized.");
@@ -82,6 +87,16 @@ public class Controller implements ActionListener, WindowListener {
 		return instance;
 	}
 	
+	
+	public void createProfile(String name) {
+		profileMan.createProfile(name);
+	}
+	
+	
+	public void deleteProfile(String name) {
+		profileMan.deleteProfile(name);
+	}
+
 	
 	public void resizeWindow(Dimension size) {
 		KeyboardLayout kbdLayout = profileMan.getActive().getKbdLayout();
@@ -153,6 +168,17 @@ public class Controller implements ActionListener, WindowListener {
 			}
 			logger.debug("MuteButton pressed");
 		} // end if instance of MuteButton
+		
+		if (e.getSource() instanceof DropDownList) {
+			
+			DropDownList currentList = (DropDownList) e.getSource();
+			
+			if (currentList.getType() == DropDownList.PROFILE) {
+				Profile selectedProfile = profileMan.getProfiles().get(currentList.getSelectedIndex());
+				logger.debug("Profilename: " + selectedProfile.getName());
+				profileMan.setActive(selectedProfile);
+			}
+		}
 	}
 	
 	
