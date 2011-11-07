@@ -80,12 +80,7 @@ public class Controller implements ActionListener, WindowListener {
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
-	public static Controller getInstance() {
-		if (instance == null) {
-			instance = new Controller();
-		}
-		return instance;
-	}
+	// Data ----------------------------
 	
 	
 	public void createProfile(String name) {
@@ -96,24 +91,6 @@ public class Controller implements ActionListener, WindowListener {
 	public void deleteProfile(String name) {
 		profileMan.deleteProfile(name);
 	}
-
-	
-	public void resizeWindow(Dimension size) {
-		KeyboardLayout kbdLayout = profileMan.getActive().getKbdLayout();
-		if (kbdLayout != null) {
-			float xscale = (float) size.width / (float) kbdLayout.getOrigSize_x();
-			float yscale = (float) size.height / (float) kbdLayout.getOrigSize_y();
-			float fontScale = xscale + yscale / 2;
-			kbdLayout.setScale_x(xscale);
-			kbdLayout.setScale_y(yscale);
-			kbdLayout.setScale_font(fontScale);
-			kbdLayout.rescale();
-			mainPanel.setPreferredSize(new Dimension(kbdLayout.getSize_x(), kbdLayout.getSize_y()));
-			presenter.pack();
-			logger.debug("Window rescaled");
-		}
-	}
-
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -240,6 +217,24 @@ public class Controller implements ActionListener, WindowListener {
 		suggest = "";
 	}
 	
+
+	// Window ----------------------------
+	
+	public void resizeWindow(Dimension size) {
+		KeyboardLayout kbdLayout = profileMan.getActive().getKbdLayout();
+		if (kbdLayout != null) {
+			float xscale = (float) size.width / (float) kbdLayout.getOrigSize_x();
+			float yscale = (float) size.height / (float) kbdLayout.getOrigSize_y();
+			float fontScale = xscale + yscale / 2;
+			kbdLayout.setScale_x(xscale);
+			kbdLayout.setScale_y(yscale);
+			kbdLayout.setScale_font(fontScale);
+			kbdLayout.rescale();
+			mainPanel.setPreferredSize(new Dimension(kbdLayout.getSize_x(), kbdLayout.getSize_y()));
+			presenter.pack();
+			logger.debug("Window rescaled");
+		}
+	}
 	
 	@Override
 	public void windowActivated(WindowEvent arg0) {
@@ -300,4 +295,11 @@ public class Controller implements ActionListener, WindowListener {
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
+	
+	public static Controller getInstance() {
+		if (instance == null) {
+			instance = new Controller();
+		}
+		return instance;
+	}
 }
