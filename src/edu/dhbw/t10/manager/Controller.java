@@ -210,14 +210,13 @@ public class Controller implements ActionListener, WindowListener {
 	
 
 	private void keyIsSpaceOrEnter(Key key) {
-		logger.debug("Keycode" + key.getKeycode() + " " + key.getType());
-
+		logger.debug("Keycode " + key.getKeycode() + " " + key.getType());
+		profileMan.acceptWord(typedWord);
 		outputMan.printChar(key);
 		typedWord = "";
 		suggest = "";
 	}
 	
-
 	// Window ----------------------------
 	
 	public void resizeWindow(Dimension size) {

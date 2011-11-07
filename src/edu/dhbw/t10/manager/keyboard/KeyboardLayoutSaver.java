@@ -140,13 +140,13 @@ public class KeyboardLayoutSaver {
 				// ON
 				Element on = doc.createElement("on");
 				on.setAttribute("color", muteButton.getStringFromColor(muteButton.getOnColor()));
-				text = doc.createTextNode("Save");
+				text = doc.createTextNode(muteButton.getOnName());
 				on.appendChild(text);
 				muteButtonEl.appendChild(on);
 				// OFF
 				Element off = doc.createElement("off");
 				off.setAttribute("color", muteButton.getStringFromColor(muteButton.getOffColor()));
-				text = doc.createTextNode("Save");
+				text = doc.createTextNode(muteButton.getOffName());
 				off.appendChild(text);
 				muteButtonEl.appendChild(off);
 				
