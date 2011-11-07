@@ -107,8 +107,7 @@ public class PriorityTree implements Serializable {
 				logger.info("Word Inserted");
 			}
 		} else {
-			logger.info("Word Ignored - not valid");
-			System.out.println("not valid");
+			logger.warn("Word (" + word + ") Ignored - not valid");
 		}
 	}
 	
@@ -382,8 +381,7 @@ public class PriorityTree implements Serializable {
 	 * @author DirkK
 	 */
 	
-	@SuppressWarnings("unused")
-	private void saveAllowedChars() {
+	public void saveAllowedChars() {
 		try {
 			File confFile = new File("pathToAllowedChars");
 			FileWriter fw = new FileWriter(confFile);
@@ -422,7 +420,7 @@ public class PriorityTree implements Serializable {
 					allowedChars.add(newi);
 				}
 			} else {
-				logger.error("No allowed chars");
+				logger.error("No allowed chars file found at " + pathToAllowedChars);
 				int[] newi = { 0, 255 };
 				allowedChars.add(newi);
 			}

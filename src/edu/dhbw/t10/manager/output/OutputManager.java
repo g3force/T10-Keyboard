@@ -11,6 +11,7 @@ package edu.dhbw.t10.manager.output;
 
 import org.apache.log4j.Logger;
 
+import edu.dhbw.t10.helper.StringHelper;
 import edu.dhbw.t10.type.keyboard.key.Button;
 import edu.dhbw.t10.type.keyboard.key.Key;
 
@@ -26,18 +27,22 @@ public class OutputManager {
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
-	@SuppressWarnings("unused")
 	private static final Logger	logger	= Logger.getLogger(OutputManager.class);
 	
-	Output								out		= Output.getInstance();
-	private static OutputManager	instance	= null;
-	
+	Output								out;
+
 	
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
-	private OutputManager() {
-
+	public OutputManager() {
+		try {
+			out = new Output();
+		} catch (UnknownOSException err) {
+			logger.fatal(err.getMessage());
+			// If no Output could be instanciated close the Application
+			System.exit(-1);
+		}
 	}
 	
 	
@@ -87,7 +92,7 @@ public class OutputManager {
 	 */
 	public void printSuggest(String newSuggest, String typed) {
 		if (newSuggest.length() > typed.length()) { //
-			out.printString(convertToUnicode(newSuggest.substring(typed.length())), 0);
+			out.printString(StringHelper.convertToUnicode(newSuggest.substring(typed.length())), 0);
 			out.markChar(newSuggest.length() - typed.length());
 		}
 	}
@@ -96,50 +101,10 @@ public class OutputManager {
 	public void printCombi(Button b) {
 		
 	}
-
-	
-	/**
-	 * 
-	 * TODO DanielAl, add comment!
-	 * Quelle: http://www.daniweb.com/software-development/java/threads/147397
-	 * modified
-	 * 
-	 * FIXME evtl. diese Funktion in Output.class und mit extractUnicode kombinieren
-	 * 
-	 * @param input
-	 * @return
-	 * @author DanielAl
-	 */
-	private String convertToUnicode(String input) {
-		StringBuffer ostr = new StringBuffer();
-		
-		for (int i = 0; i < input.length(); i++) {
-			char ch = input.charAt(i);
-			
-			if ((ch >= 0x0020) && (ch <= 0x007e)) { // Does the char need to be converted to unicode?
-				ostr.append(ch); // No.
-			} else { // Yes.
-				ostr.append("\\u+"); // own unicode format
-				String hex = Integer.toHexString(input.charAt(i) & 0xFFFF); // Get hex value of the char.
-				for (int j = 0; j < 4 - hex.length(); j++)
-					// Prepend zeros because unicode requires 4 digits
-					ostr.append("0");
-				ostr.append(hex.toLowerCase()); // standard unicode format.
-				ostr.append("\\"); // own unicode format
-			}
-		}
-		return (new String(ostr)); // Return the stringbuffer cast as a string.
-	}
 	
 	
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
 	
-	public static OutputManager getInstance() {
-		if (instance == null) {
-			instance = new OutputManager();
-		}
-		return instance;
-	}
 }

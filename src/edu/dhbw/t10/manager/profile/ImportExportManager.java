@@ -16,13 +16,11 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 
 import edu.dhbw.t10.helper.StringHelper;
-import edu.dhbw.t10.type.tree.PriorityElement;
 
 
 /**
@@ -115,62 +113,21 @@ public class ImportExportManager {
 	 * @param fileName the path inclusive file name
 	 */
 	public static void exportToFile(HashMap<String, Integer> exportMap, String fileName) {
-		logger.error("saving to file");
+		logger.debug("saving to file");
+		int counter = 0;
 		try {
 			FileWriter file = new FileWriter(fileName);
 			BufferedWriter o = new BufferedWriter(file);
 			for (Entry<String, Integer> entry : exportMap.entrySet()) {
 				o.write(entry.getKey() + " " + entry.getValue() + "\n");
+				counter++;
 			}
 			o.close();
 		} catch (IOException err) {
 			logger.error(err.getMessage());
 		}
-		logger.error("saved to file");
+		logger.debug("saved to file (" + counter + " words written)");
 	}
-	
-	
-	public static void exportToSortedFile(HashMap<String, Integer> exportMap, String fileName) {
-		logger.error("saving to file");
-		try {
-			FileWriter file = new FileWriter(fileName);
-			BufferedWriter o = new BufferedWriter(file);
-			while (exportMap.size() != 0) {
-				String word = "";
-				int freq = 0;
-				for (Entry<String, Integer> entry : exportMap.entrySet()) {
-					if(entry.getValue()>freq) {
-						word=entry.getKey();
-						freq = entry.getValue();
-					}
-				}
-				exportMap.remove(word);
-				o.write(word + " " + freq + "\n");
-			}
-
-			o.close();
-		} catch (IOException err) {
-			logger.error(err.getMessage());
-		}
-		logger.error("saved to file");
-	}
-	
-	
-	public static void exportToFileFromSortedlist(LinkedList<PriorityElement> ll, String fileName) {
-		logger.error("saving to file");
-		try {
-			FileWriter file = new FileWriter(fileName);
-			BufferedWriter o = new BufferedWriter(file);
-			for (PriorityElement entry : ll) {
-				o.write(entry.buildWord() + " " + entry.getFrequency() + "\n");
-			}
-			o.close();
-		} catch (IOException err) {
-			logger.error(err.getMessage());
-		}
-		logger.error("saved to file");
-	}
-
 	
 	/**
 	 * imports a dictionary from a file
@@ -181,6 +138,7 @@ public class ImportExportManager {
 	public static HashMap<String, Integer> importFromFile(String fileName, boolean withFreq) {
 		HashMap<String, Integer> importMap = new HashMap<String, Integer>();
 		logger.error("reading form file");
+		int amount = 0;
 		try {
 			FileReader fr = new FileReader(fileName);
 			BufferedReader x = new BufferedReader(fr);
@@ -190,6 +148,7 @@ public class ImportExportManager {
 					String[] entries = res.split(" ");
 					if (entries.length == 2 && entries[0].length() > 1 && entries[1].length() > 0) {
 						importMap.put(entries[0], Integer.parseInt(entries[1]));
+						amount++;
 					}
 				} else {
 					increase(importMap, res);
@@ -199,7 +158,7 @@ public class ImportExportManager {
 		} catch (IOException err) {
 			logger.error(err.getMessage());
 		}
-		logger.error("read form file");
+		logger.error("read form file (" + amount + ")");
 		return importMap;
 	}
 	
@@ -222,6 +181,58 @@ public class ImportExportManager {
 	}
 	
 	
+	// --------------------------------------------------------------------------
+	// --- unused methods --------------------------------------------------------
+	// --------------------------------------------------------------------------
+	
+	//
+	// /**
+	// * unused
+	// * @param exportMap
+	// * @param fileName
+	// * @author dirk
+	// */
+	// public static void exportToSortedFile(HashMap<String, Integer> exportMap, String fileName) {
+	// logger.error("saving to file");
+	// try {
+	// FileWriter file = new FileWriter(fileName);
+	// BufferedWriter o = new BufferedWriter(file);
+	// while (exportMap.size() != 0) {
+	// String word = "";
+	// int freq = 0;
+	// for (Entry<String, Integer> entry : exportMap.entrySet()) {
+	// if (entry.getValue() > freq) {
+	// word = entry.getKey();
+	// freq = entry.getValue();
+	// }
+	// }
+	// exportMap.remove(word);
+	// o.write(word + " " + freq + "\n");
+	// }
+	//
+	// o.close();
+	// } catch (IOException err) {
+	// logger.error(err.getMessage());
+	// }
+	// logger.error("saved to file");
+	// }
+	//
+	//
+	// public static void exportToFileFromSortedlist(LinkedList<PriorityElement> ll, String fileName) {
+	// logger.error("saving to file");
+	// try {
+	// FileWriter file = new FileWriter(fileName);
+	// BufferedWriter o = new BufferedWriter(file);
+	// for (PriorityElement entry : ll) {
+	// o.write(entry.buildWord() + " " + entry.getFrequency() + "\n");
+	// }
+	// o.close();
+	// } catch (IOException err) {
+	// logger.error(err.getMessage());
+	// }
+	// logger.error("saved to file");
+	// }
+
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------

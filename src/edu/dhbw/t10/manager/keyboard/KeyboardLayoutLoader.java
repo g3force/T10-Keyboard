@@ -81,7 +81,7 @@ public class KeyboardLayoutLoader {
 	 * @author NicolaiO
 	 */
 	public static KeyboardLayout load(String filePath, HashMap<Integer, Key> _keymap) {
-		logger.debug("initializing...");
+		logger.debug("Loading KeyboardLayout...");
 		DocumentBuilder dBuilder;
 		keymap = _keymap;
 		KeyboardLayout kbdLayout = new KeyboardLayout(0, 0, 1, 1, 1);
@@ -128,11 +128,11 @@ public class KeyboardLayoutLoader {
 		int sizex = 0, sizey = 0;
 		float scalex = 1.0f, scaley = 1.0f, scale_font = 1.0f;
 		
-		sizex = getValueFromNode("sizex", 1010);
-		sizey = getValueFromNode("sizey", 335);
-		scalex = getValueFromNode("scalex", 1);
-		scaley = getValueFromNode("scaley", 1);
-		scale_font = getValueFromNode("scale_font", 1);
+		sizex = getIntFromNode("sizex", 1010);
+		sizey = getIntFromNode("sizey", 335);
+		scalex = getFloatFromNode("scalex", 1f);
+		scaley = getFloatFromNode("scaley", 1f);
+		scale_font = getFloatFromNode("scale_font", 1f);
 		
 		kbdLayout = new KeyboardLayout(sizex, sizey, scalex, scaley, scale_font);
 		
@@ -180,14 +180,14 @@ public class KeyboardLayoutLoader {
 		}
 		
 		
-		// add everything to layout and rescale layout to set buttons sizes correctly (scale!)
+		// add everything to layout and rescale layout to set button sizes correctly (scale!)
 		kbdLayout.setModeButtons(modeButtonArray);
 		kbdLayout.setButtons(buttons);
 		kbdLayout.setMuteButtons(muteButtons);
 		kbdLayout.setFont(new Font(fname, fstyle, fsize));
 		kbdLayout.rescale();
 		
-		logger.debug("initialized.");
+		logger.debug("keyboard Layout loaded.");
 		return kbdLayout;
 	}
 	
@@ -493,11 +493,32 @@ public class KeyboardLayoutLoader {
 	 * @return
 	 * @author NicolaiO
 	 */
-	private static int getValueFromNode(String nodename, int defaultValue) {
+	private static int getIntFromNode(String nodename, int defaultValue) {
 		NodeList nList = doc.getElementsByTagName(nodename);
 		try {
 			if (nList.getLength() > 0) {
 				return Integer.parseInt(nList.item(0).getTextContent());
+			}
+		} catch (NumberFormatException e) {
+			logger.warn("The number value of \"" + nodename + "\" could not be parsed.");
+		}
+		return defaultValue;
+	}
+	
+	
+	/**
+	 * 
+	 * TODO NicolaiO, add comment!
+	 * 
+	 * @param nodename
+	 * @return
+	 * @author NicolaiO
+	 */
+	private static float getFloatFromNode(String nodename, float defaultValue) {
+		NodeList nList = doc.getElementsByTagName(nodename);
+		try {
+			if (nList.getLength() > 0) {
+				return Float.parseFloat(nList.item(0).getTextContent());
 			}
 		} catch (NumberFormatException e) {
 			logger.warn("The number value of \"" + nodename + "\" could not be parsed.");
