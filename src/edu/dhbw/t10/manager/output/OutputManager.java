@@ -27,18 +27,22 @@ public class OutputManager {
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
-	@SuppressWarnings("unused")
 	private static final Logger	logger	= Logger.getLogger(OutputManager.class);
 	
-	Output								out		= Output.getInstance();
-	private static OutputManager	instance	= null;
-	
+	Output								out;
+
 	
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
-	private OutputManager() {
-
+	public OutputManager() {
+		try {
+			out = new Output();
+		} catch (UnknownOSException err) {
+			logger.fatal(err.getMessage());
+			// If no Output could be instanciated close the Application
+			System.exit(-1);
+		}
 	}
 	
 	
@@ -97,19 +101,10 @@ public class OutputManager {
 	public void printCombi(Button b) {
 		
 	}
-
-	
-
 	
 	
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
 	
-	public static OutputManager getInstance() {
-		if (instance == null) {
-			instance = new OutputManager();
-		}
-		return instance;
-	}
 }
