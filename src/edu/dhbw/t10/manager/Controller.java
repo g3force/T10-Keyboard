@@ -32,9 +32,10 @@ import edu.dhbw.t10.view.panels.MainPanel;
 
 
 /**
- * TODO FelixP, add comment!
- * - What should this type do (in one sentence)?
- * - If not intuitive: A simple example how to use this class
+ * The Controller Class provides the central interface to combine the functionallity of the porgramm. the data flows
+ * through it. <br>
+ * Here all Managers and the view is initialized...<br>
+ * It provides overwritten methods to handles actionEvents...<br>
  * 
  * @author FelixP, DanielAl
  * 
@@ -58,6 +59,12 @@ public class Controller implements ActionListener, WindowListener {
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
+	/**
+	 * This Constructor instanciate all other objects... The Application is loaded...<br>
+	 * The Controller is implemented as a Singleton<br>
+	 * 
+	 * @author NicolaiO, DirkK, FelixP, SebastianN, DanielAl
+	 */
 	private Controller() {
 		instance = this;
 		logger.debug("initializing...");
@@ -76,18 +83,29 @@ public class Controller implements ActionListener, WindowListener {
 		logger.debug("initialized.");
 	}
 	
-	
+
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
 	// Data ----------------------------
 	
-	
+	/**
+	 * Creates a profile by name.
+	 * 
+	 * @param String name
+	 * @author //FIXME
+	 */
 	public void createProfile(String name) {
 		profileMan.createProfile(name);
 	}
 	
-	
+
+	/**
+	 * Deletes a profile by name.
+	 * 
+	 * @param String name
+	 * @author //FIXME
+	 */
 	public void deleteProfile(String name) {
 		profileMan.deleteProfile(name);
 	}
@@ -96,71 +114,86 @@ public class Controller implements ActionListener, WindowListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() instanceof Button) {
-			Button button = (Button) e.getSource();
-			// TODO useful hint: e.getModifiers()
-			
-			if (e.getModifiers() == ActionEvent.SHIFT_MASK) {
-				// TODO reference to Shift Mode Button??
-				logger.debug("shift modifier is pressed.");
-			}
-
-			if (button.getSingleKey().size() == 1) {
-				Key key = (Key) button.getSingleKey().get(0);
-				logger.debug("Key pressed: " + key.toString());
-				if (key.isAccept())
-					this.keyIsAccept(key);
-				else if (key.getType() == Key.CHAR)
-					this.keyIsCHAR(key);
-				else if (key.getType() == Key.UNICODE)
-					this.keyIsUnicode(key);
-				else if (key.getKeycode().equals("\\BACK_SPACE\\"))
-					this.keyIsBackspace();
-				else if ((key.getKeycode().equals("\\SPACE\\") || key.getKeycode().equals("\\ENTER\\")))
-					this.keyIsSpaceOrEnter(key);
-				else if (key.getKeycode().equals("\\DELETE\\")) {
-					outputMan.printChar(key);
-					suggest = typedWord;
-				}
-			} else if (button.getSingleKey().size() > 1) {
-				// FIXME not working...
-				outputMan.printCombi(button);
-			} else
-				logger.error("No Key List");
-			button.unsetPressedModes();
-		}
-		
+			eIsButton((Button) e.getSource());
+		} // end if instance of Button
 
 		if (e.getSource() instanceof ModeButton) {
 			ModeButton modeB = (ModeButton) e.getSource();
 			modeB.push();
 		} // end if instance of ModeButton
-		
+
 		if (e.getSource() instanceof MuteButton) {
-			MuteButton muteB = (MuteButton) e.getSource();
-			muteB.push();
-			if (muteB.getType() == MuteButton.AUTO_COMPLETING) {
-				profileMan.toggleAutoCompleting();
-			} else if (muteB.getType() == MuteButton.AUTO_PROFILE_CHANGE) {
-				profileMan.toggleAutoProfileChange();
-			} else if (muteB.getType() == MuteButton.TREE_EXPANDING) {
-				profileMan.toggleTreeExpanding();
-			}
-			logger.debug("MuteButton pressed");
+			eIsMuteButton((MuteButton) e.getSource());
 		} // end if instance of MuteButton
 		
 		if (e.getSource() instanceof DropDownList) {
-			
-			DropDownList currentList = (DropDownList) e.getSource();
-			
-			if (currentList.getType() == DropDownList.PROFILE) {
-				Profile selectedProfile = profileMan.getProfiles().get(currentList.getSelectedIndex());
-				logger.debug("Profilename: " + selectedProfile.getName());
-				profileMan.setActive(selectedProfile);
-			}
-		}
+			eIsDropDownList((DropDownList) e.getSource());
+		} // end if instance of DropDownList
 	}
 	
+
+	private void eIsButton(Button button) {
+		// TODO useful hint: e.getModifiers()
+		
+		// TODO reference to Shift Mode Button??
+		// if (e.getModifiers() == ActionEvent.SHIFT_MASK) {
+		// logger.debug("shift modifier is pressed.");
+		// }
+		
+		if (button.getSingleKey().size() == 1) {
+			Key key = (Key) button.getSingleKey().get(0);
+			logger.debug("Key pressed: " + key.toString());
+			if (key.isAccept())
+				this.keyIsAccept(key);
+			else if (key.getType() == Key.CHAR)
+				this.keyIsCHAR(key);
+			else if (key.getType() == Key.UNICODE)
+				this.keyIsUnicode(key);
+			else if (key.getKeycode().equals("\\BACK_SPACE\\"))
+				this.keyIsBackspace();
+			else if ((key.getKeycode().equals("\\SPACE\\") || key.getKeycode().equals("\\ENTER\\")))
+				this.keyIsSpaceOrEnter(key);
+			else if (key.getKeycode().equals("\\DELETE\\")) {
+				outputMan.printChar(key);
+				suggest = typedWord;
+			}
+		} else if (button.getSingleKey().size() > 1) {
+			// FIXME not working...
+			outputMan.printCombi(button);
+		} else
+			logger.error("No Key List");
+		button.unsetPressedModes();
+	}
 	
+
+	private void eIsMuteButton(MuteButton muteB) {
+		muteB.push();
+		int type = muteB.getType();
+		switch (type) {
+			case MuteButton.AUTO_COMPLETING:
+				profileMan.toggleAutoCompleting();
+				break;
+			case MuteButton.AUTO_PROFILE_CHANGE:
+				profileMan.toggleAutoProfileChange();
+				break;
+			case MuteButton.TREE_EXPANDING:
+				profileMan.toggleTreeExpanding();
+				break;
+		}
+		logger.debug("MuteButton pressed");
+	}
+	
+
+	private void eIsDropDownList(DropDownList currentList) {
+
+		if (currentList.getType() == DropDownList.PROFILE) {
+			Profile selectedProfile = profileMan.getProfiles().get(currentList.getSelectedIndex());
+			logger.debug("Profilename: " + selectedProfile.getName());
+			profileMan.setActive(selectedProfile);
+		}
+	}
+
+
 	private void keyIsAccept(Key key) {
 		if (suggest.length() > typedWord.length())
 			outputMan.unMark();
@@ -172,7 +205,7 @@ public class Controller implements ActionListener, WindowListener {
 		suggest = "";
 	}
 	
-	
+
 	private void keyIsCHAR(Key key) {
 		outputMan.printChar(key);
 		typedWord = typedWord + key.getName();
@@ -180,7 +213,7 @@ public class Controller implements ActionListener, WindowListener {
 		outputMan.printSuggest(suggest, typedWord);
 	}
 	
-	
+
 	private void keyIsUnicode(Key key) {
 		outputMan.printChar(key);
 		// FIXME Wieso sind Umlaute als Unicode Zeichen im Keyboard gespeichert?? Wie soll die Unterscheidung zwischen
@@ -192,7 +225,7 @@ public class Controller implements ActionListener, WindowListener {
 		suggest = "";
 	}
 	
-	
+
 	private void keyIsBackspace() {
 		if (typedWord.length() > 0 && typedWord.equals(suggest)) {
 			typedWord = typedWord.substring(0, typedWord.length() - 1);
@@ -244,37 +277,37 @@ public class Controller implements ActionListener, WindowListener {
 		
 	}
 	
-	
+
 	@Override
 	public void windowClosed(WindowEvent arg0) {
 		
 	}
 	
-	
+
 	@Override
 	public void windowClosing(WindowEvent arg0) {
 		closeSuperFelix();
 	}
 	
-	
+
 	@Override
 	public void windowDeactivated(WindowEvent arg0) {
 		
 	}
 	
-	
+
 	@Override
 	public void windowDeiconified(WindowEvent arg0) {
 		
 	}
 	
-	
+
 	@Override
 	public void windowIconified(WindowEvent arg0) {
 		
 	}
 	
-	
+
 	@Override
 	public void windowOpened(WindowEvent arg0) {
 		
@@ -290,6 +323,7 @@ public class Controller implements ActionListener, WindowListener {
 			logger.debug("closing - serializing the profiles");
 			profileMan.serializeProfiles();
 			logger.debug("closed - good BUY");
+			logger.trace("(c) FIT 42");
 		} catch (Exception e) {
 			logger.error("closing routine produced an error: " + e.toString());
 		}
