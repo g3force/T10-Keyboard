@@ -33,7 +33,6 @@ import edu.dhbw.t10.type.keyboard.key.Key;
  * Control symbols are sent via their java.awt.event.KeyEvent constant
  * 
  * TODO DanielAl Get several Control symbols and combine them to a key combination
- * TODO DanielAl Get last active window and write there
  * @author DanielAl
  * 
  */
@@ -56,6 +55,7 @@ public class Output {
 
 	private static int				os;
 	private static int				delay		= 0;
+
 
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
@@ -149,20 +149,33 @@ public class Output {
 	}
 	
 
+	private Integer getKeyCode(String code) {
+		return getKeyCode(code, 0);
+	}
+
+
 	/**
 	 * 
 	 * Converts a Stringcode into a Constant of the KeyEvent class via Reflection.
 	 * These constants could be used for sending Keys.
 	 * 
 	 * @param code
+	 * @param i
 	 * @return
 	 */
-	private Integer getKeyCode(String code) {
+	private Integer getKeyCode(String code, int type) {
 		Field f;
 		try {
-			f = KeyEvent.class.getField("VK_" + code.toUpperCase());
-			f.setAccessible(true);
-			return (Integer) f.get(null);
+			if (type == 0) {
+				f = KeyEvent.class.getField("VK_" + code.toUpperCase());
+				f.setAccessible(true);
+				return (Integer) f.get(null);
+			} else if (type == 1) {
+				f = KeyEvent.class.getField("VK_NUMPAD" + code.toUpperCase());
+				f.setAccessible(true);
+				return (Integer) f.get(null);
+			} else
+				return KeyEvent.VK_UNDEFINED;
 		} catch (SecurityException err) {
 			logger.error("getKeyCode: Security: " + code);
 			return KeyEvent.VK_UNDEFINED;
@@ -194,45 +207,52 @@ public class Output {
 			logger.error("UNICODE wrong format; length: " + uni.length());
 			return false;
 		}
+		
+		char[] uniArr = uni.substring(3, 7).toLowerCase().toCharArray();
+
 		if (os == LINUX) {
 			sendKey(KeyEvent.VK_CONTROL, PRESS);
 			sendKey(KeyEvent.VK_SHIFT, PRESS);
 			sendKey(KeyEvent.VK_U, TYPE);
 			sendKey(KeyEvent.VK_SHIFT, RELEASE);
 			sendKey(KeyEvent.VK_CONTROL, RELEASE);
-			sendKey(getKeyCode(uni.substring(3, 4).toLowerCase()), TYPE);
-			sendKey(getKeyCode(uni.substring(4, 5).toLowerCase()), TYPE);
-			sendKey(getKeyCode(uni.substring(5, 6).toLowerCase()), TYPE);
-			sendKey(getKeyCode(uni.substring(6, 7).toLowerCase()), TYPE);
+			sendKey(getKeyCode(uniArr[0] + ""), TYPE);
+			sendKey(getKeyCode(uniArr[1] + ""), TYPE);
+			sendKey(getKeyCode(uniArr[2] + ""), TYPE);
+			sendKey(getKeyCode(uniArr[3] + ""), TYPE);
 			sendKey(KeyEvent.VK_ENTER, TYPE);
 		} else if (os == WINDOWS) {
-			try {
-				// Convertion from HexaNumber as String to Decimal Number as String (without leading zeros)
-				String uniDecimal;
-				
-				Integer uninumber = Integer.decode("0x" + uni.substring(3, 7));
-				uniDecimal = Integer.toString(uninumber, 10);
+			// for the Windows Unicode Hexadecimal Input the following Registry data is needed, to install use install.reg
+			//[HKEY_CURRENT_USER\Control Panel\Input Method]:	"EnableHexNumpad"="1"
 
+			try {
 				boolean num_lock;
 
-				// Chekcs if Num_Lock is on an turns it on, if necessary
+				// Checks the status of Num_Lock
 				Toolkit tool = Toolkit.getDefaultToolkit();
 				num_lock = tool.getLockingKeyState(KeyEvent.VK_NUM_LOCK);
 				logger.info((num_lock ? "Num Lock is on" : "Num Lock is off"));
-				if (!num_lock) { // If Num_Lock is off, turn it on
+				// If Num_Lock is off, turn it on
+				if (!num_lock) {
 					sendKey(KeyEvent.VK_NUM_LOCK, TYPE);
 				}
 
 				// Sending KeyCombination for Unicode input to Windows...
 				sendKey(KeyEvent.VK_ALT, PRESS);
+				// FIXME ADD Symbol really needed??
 				sendKey(KeyEvent.VK_ADD, TYPE);
-				// Sends leading zeros to the system. Windows interpret only 5 digit long values correct.
-				for (int i = 5; i > uniDecimal.length(); i--)
-					sendKey(KeyEvent.VK_0, TYPE);
-				for (int i = 0; i < uniDecimal.length(); i++) {
-					sendKey(getKeyCode(uniDecimal.substring(i, i + 1)), TYPE);
-				}
+				// send the Hexa Decimal number with digits as a numpad key and the chars from the normal keyboard...
+				sendKey(Character.isDigit(uniArr[0]) ? getKeyCode(uniArr[0] + "", 1) : getKeyCode(uniArr[0] + "", 0), TYPE);
+				sendKey(Character.isDigit(uniArr[1]) ? getKeyCode(uniArr[1] + "", 1) : getKeyCode(uniArr[1] + "", 0), TYPE);
+				sendKey(Character.isDigit(uniArr[2]) ? getKeyCode(uniArr[2] + "", 1) : getKeyCode(uniArr[2] + "", 0), TYPE);
+				sendKey(Character.isDigit(uniArr[3]) ? getKeyCode(uniArr[3] + "", 1) : getKeyCode(uniArr[3] + "", 0), TYPE);
+				
 				sendKey(KeyEvent.VK_ALT, RELEASE);
+				
+				// If Num_Lock was off, turn it off again, so that you have the same status as before...
+				if (!num_lock) {
+					sendKey(KeyEvent.VK_NUM_LOCK, TYPE);
+				}
 
 			} catch (UnsupportedOperationException err) {
 				logger.error("Unsupported Operation: Check Num_Lock state");
@@ -253,8 +273,6 @@ public class Output {
 		return sendKey(key, TYPE);
 	}
 	
-
-
 
 	// TODO Input argument is a List of Keys not a single one...
 	/**
@@ -309,35 +327,6 @@ public class Output {
 					keyRobot.keyRelease(key);
 					keyRobot.keyRelease(KeyEvent.VK_SHIFT);
 					break;
-				// case 2: { // Crtl function
-				// keyRobot.keyPress(KeyEvent.VK_CONTROL);
-				// keyRobot.keyPress(key);
-				// keyRobot.keyRelease(key);
-				// keyRobot.keyRelease(KeyEvent.VK_CONTROL);
-				// }
-				// break;
-				// case 3: { // Alt function
-				// keyRobot.keyPress(KeyEvent.VK_ALT);
-				// keyRobot.keyPress(key);
-				// keyRobot.keyRelease(key);
-				// keyRobot.keyRelease(KeyEvent.VK_ALT);
-				// }
-				// break;
-				// case 4: { // Alt Gr function
-				// keyRobot.keyPress(KeyEvent.VK_ALT_GRAPH);
-				// keyRobot.keyPress(key);
-				// keyRobot.keyRelease(key);
-				// keyRobot.keyRelease(KeyEvent.VK_ALT_GRAPH);
-				// }
-				// break;
-				// case 5: { // Super function
-				// keyRobot.keyPress(KeyEvent.VK_WINDOWS);
-				// keyRobot.keyPress(key);
-				// keyRobot.keyRelease(key);
-				// keyRobot.keyRelease(KeyEvent.VK_WINDOWS);
-				// }
-				// break;
-
 			}
 			logger.debug("sendKey: Key sent: " + key);
 			return true;
