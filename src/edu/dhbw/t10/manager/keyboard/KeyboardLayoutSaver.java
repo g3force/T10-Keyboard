@@ -248,8 +248,8 @@ public class KeyboardLayoutSaver {
 	
 	
 	private static void setSizeOfPhysicalButton(Element el, PhysicalButton button) {
-		el.setAttribute("size_x", button.getOrigSize().getWidth() + "");
-		el.setAttribute("size_y", button.getOrigSize().getHeight() + "");
+		el.setAttribute("size_x", ((int) button.getOrigSize().getWidth()) + "");
+		el.setAttribute("size_y", ((int) button.getOrigSize().getHeight()) + "");
 		el.setAttribute("pos_x", button.getPos_x() + "");
 		el.setAttribute("pos_y", button.getPos_y() + "");
 	}

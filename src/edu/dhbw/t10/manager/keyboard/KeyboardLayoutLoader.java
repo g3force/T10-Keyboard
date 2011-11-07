@@ -302,7 +302,6 @@ public class KeyboardLayoutLoader {
 							for (ModeButton mb : modeButtons) {
 								if (mb.getModeKey().getId() == iModeName) {
 									button.addMode(mb, key);
-									logger.trace("ModeButton added to Button");
 								}
 							}
 							if (button.getModes().size() == 0) {

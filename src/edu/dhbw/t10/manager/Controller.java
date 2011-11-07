@@ -258,6 +258,7 @@ public class Controller implements ActionListener, WindowListener {
 	
 
 	private void closeSuperFelix() {
+		try {
 		logger.debug("closing - saving the tree");
 		profileMan.getActive().save();
 		logger.debug("closing - saving the config");
@@ -265,6 +266,9 @@ public class Controller implements ActionListener, WindowListener {
 		logger.debug("closing - serializing the profiles");
 		profileMan.serializeProfiles();
 		logger.debug("closed - good buy");
+		} catch (Exception e) {
+			logger.error("closing route produced an error: " + e.toString());
+		}
 	}
 
 	// --------------------------------------------------------------------------
