@@ -26,14 +26,14 @@ import edu.dhbw.t10.type.keyboard.key.Key;
 
 /**
  * 
- * This class provides the functionallity of printing Strings via sending Key Strokes to the system.
- * Letters, big letters and numbers are converted directly to their own java.awt.event.KeyEvent constant, which is sent.
- * All other symbols are written via their Unicode.
- * FIXME WIndows support untested
+ * This class provides the functionallity of printing Strings via sending Key Strokes to the system.<br>
+ * Letters, big letters and numbers are converted directly to their own java.awt.event.KeyEvent constant, which is sent.<br>
+ * All other symbols are written via their Unicode.<br>
  * 
- * Control symbols are sent via their java.awt.event.KeyEvent constant
+ * Control symbols are sent via their java.awt.event.KeyEvent constant<br>
+ * FIXME Windows support untested
  * 
- * TODO DanielAl Get several Control symbols and combine them to a key combination
+ * 
  * @author DanielAl
  * 
  */
@@ -53,32 +53,45 @@ public class Output {
 	public static final int			COMBI		= 3;
 	public static final int			SHIFT		= 10;
 
-
-	private static int				os;
 	private static int				delay		= 0;
+	// 0 represents UNKNOWN OS, 1 Linux, 2 any Windows
+	private static int				os;
+	// Stack for Key combination. See Method: printCombi(Button b)
 	Stack<Integer>						combi		= new Stack<Integer>();
+	// Robot for sending Keys to the system - used in sendKey()
+	private Robot						keyRobot;
 
 
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
+	/**
+	 * Constructor for this class with no parameters<br>
+	 * The Operating System is set. This is important for the sendUnicode(String) method, because the input of Unicode
+	 * Symbols differs in the OS. <br>
+	 * Possible OS Names: Windows XP (?), Windows 7, Linux<br>
+	 * 
+	 * @throws UnknownOSException
+	 * @author DanielAl
+	 * 
+	 */
 	public Output() throws UnknownOSException {
 		String osName = System.getProperty("os.name");
-		/*
-		 * Possible Names:
-		 * Windows XP ??
-		 * Windows 7
-		 * Linux
-		 */
+		logger.info("OS: " + osName);
 		if (osName.equals("Linux"))
 			os = LINUX;
 		else if (osName.startsWith("Windows"))
 			os = WINDOWS;
 		else {
 			os = UNKNOWN;
-			throw new UnknownOSException("Unknown Operating System: " + osName);
+			throw new UnknownOSException("Unsupported Operating System: " + osName);
 		}
-		logger.info("OS: " + osName);
+		try {
+			keyRobot = new Robot();
+			logger.debug("Output: Robot initialized");
+		} catch (AWTException err) {
+			logger.error("sendKey: AWTException: " + err.getMessage());
+		}
 	}
 	
 
@@ -86,7 +99,13 @@ public class Output {
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
 	
-
+	/**
+	 * Calls the printString method with the Keycode and the Type of c.<br>
+	 * 
+	 * @param Key c
+	 * @return booelan
+	 * @author DanielAl
+	 */
 	public boolean printChar(Key c) {
 		return printString(c.getKeycode(), c.getType());
 	}
@@ -94,10 +113,16 @@ public class Output {
 
 	/**
 	 * 
-	 * Transoforms a given CodeSequence from OutputManager to KeyEvent-Constants and sends it to the System
+	 * Switch with type over different sendKey calls. <br>
+	 * - Key.CONTROL is used for Control Symbols like Enter or Space. <br>
+	 * - Key.UNICODE is used for a Unicode Sequence. <br>
+	 * - Key.CHAR is sed for normal chars. <br>
+	 * - Key.UNKNOWN //TODO for what is this used? <br>
+	 * The Key.CHAR type differntiate between Big, Small an Unicode Letters...<br>
+	 * Converts a char with getKeyCode to a Key.Constant
 	 * 
-	 * @param c
-	 * @return
+	 * @param String charSequence, int type
+	 * @return boolean
 	 * @author DanielAl
 	 */
 	public boolean printString(String charSequence, int type) {
@@ -105,37 +130,53 @@ public class Output {
 		if (length <= 0)
 			return false;
 		
-		if (type == Key.CONTROL) {
-			sendKey(getKeyCode(charSequence.substring(1, length - 1)));
-			logger.info("Control Symbol printed: " + charSequence);
-			return true;
-		} else if (type == Key.UNICODE) {
-			sendUnicode(charSequence);
-			logger.info("Unicode Symbol printed: " + charSequence);
-			return true;
-		} else if (type == Key.UNKNOWN || type == Key.CHAR) { // print String... first convert Unicodes and then print all
-																				// chars and unicodes...
-			ArrayList<Integer> unicodeStart = StringHelper.extractUnicode(charSequence);
-			for (int i = 0; i < length; i++) {
-				// Unterscheidung zwischen Buchstaben (und Zahlen) und Unicode Zeichen
-				if (!unicodeStart.isEmpty() && unicodeStart.get(0) == i) { // Unicode Aufruf unter Linux
-					sendUnicode(charSequence.substring(i, i + 7));
-					unicodeStart.remove(0);
-				} else if (Character.isUpperCase(charSequence.charAt(i)) == true) { // Big Letters
-					sendKey(getKeyCode(charSequence.substring(i, i + 1)), SHIFT);
-				} else { // Small letters
-					sendKey(getKeyCode(charSequence.substring(i, i + 1)), TYPE);
+		switch(type){
+			// Print Control Symbol, like ENTER or SPACEm,,,höll hlööp ho
+			case Key.CONTROL: 
+				sendKey(getKeyCode(charSequence.substring(1, length - 1)));
+				logger.info("Control Symbol printed: " + charSequence);
+				break;
+			case Key.UNICODE:
+				sendUnicode(charSequence);
+				logger.info("Unicode Symbol printed: " + charSequence);
+				break;
+			case Key.UNKNOWN: // FIXME
+			case Key.CHAR:
+			// Get the starter Positions of Unicodes in a String...
+				ArrayList<Integer> unicodeStart = StringHelper.extractUnicode(charSequence);
+				
+				for (int i = 0; i < length; i++) {
+					// Unicode Zeichen
+					if (!unicodeStart.isEmpty() && unicodeStart.get(0) == i) { 
+						sendUnicode(charSequence.substring(i, i + 7));
+						unicodeStart.remove(0);
+						// Big Letters
+					} else if (Character.isUpperCase(charSequence.charAt(i)) == true) {
+						sendKey(getKeyCode(charSequence.substring(i, i + 1)), SHIFT);
+						// Small letters
+					} else {
+						sendKey(getKeyCode(charSequence.substring(i, i + 1)), TYPE);
+					}
 				}
-			}
-			logger.info("String printed: " + charSequence);
-			return true;
-		} else {
-			logger.info("Undefined type for printing:" + type);
-			return false;
+				logger.info("String printed: " + charSequence);
+					break;
+			// No correct type can't be handeld...
+			default: 
+				logger.info("Undefined type for printing:" + type);
+				return false;
 		}
+		return true;
 	}
 	
 
+	/**
+	 * 
+	 * TODO DanielAl, add comment!
+	 * 
+	 * @param Button b
+	 * @return boolean
+	 * @author DanielAl
+	 */
 	public boolean printCombi(Button b) {
 		for (Key key : b.getSingleKey()) {
 			sendKey(getKeyCode(key.getKeycode(), COMBI));
@@ -144,6 +185,7 @@ public class Output {
 		logger.info("Key Combi printed");
 		return true;
 	}
+
 
 	public boolean markChar(int length) {
 		if (length <= 0)
@@ -177,16 +219,19 @@ public class Output {
 	private Integer getKeyCode(String code, int type) {
 		Field f;
 		try {
-			if (type == 0) {
-				f = KeyEvent.class.getField("VK_" + code.toUpperCase());
-				f.setAccessible(true);
-				return (Integer) f.get(null);
-			} else if (type == 1) {
-				f = KeyEvent.class.getField("VK_NUMPAD" + code.toUpperCase());
-				f.setAccessible(true);
-				return (Integer) f.get(null);
-			} else
-				return KeyEvent.VK_UNDEFINED;
+			switch (type){
+				case 0:
+					f = KeyEvent.class.getField("VK_" + code.toUpperCase());
+					f.setAccessible(true);
+					return (Integer) f.get(null);
+				case 1: 
+					f = KeyEvent.class.getField("VK_NUMPAD" + code.toUpperCase());
+					f.setAccessible(true);
+					return (Integer) f.get(null);
+				default:		
+					return KeyEvent.VK_UNDEFINED;
+			}
+
 		} catch (SecurityException err) {
 			logger.error("getKeyCode: Security: " + code);
 			return KeyEvent.VK_UNDEFINED;
@@ -268,9 +313,6 @@ public class Output {
 			} catch (UnsupportedOperationException err) {
 				logger.error("Unsupported Operation: Check Num_Lock state");
 				// In Linux it throws always this Exception, but here it isn't needed
-				// TODO test it in Windows, where it is needed
-			} catch (NumberFormatException err) {
-				logger.error("Wrong number format:" + uni.substring(3, 7));
 			}
 		} else {
 			logger.error("OS not supported: Unicode");
@@ -285,7 +327,6 @@ public class Output {
 	}
 	
 
-	// TODO Input argument is a List of Keys not a single one...
 	/**
 	 * 
 	 * Send Key Codes to the System with a Robot and ava.awt.event.KeyEvent constants
@@ -303,48 +344,44 @@ public class Output {
 			logger.error("sendKey: UNKNOWN Key");
 			return false;
 		}
-		try {
-			Robot keyRobot = new Robot();
-			keyRobot.delay(delay);
-			// requestFocus();
-			switch (function) {
-				case TYPE:
-					keyRobot.keyPress(key);
-					keyRobot.keyRelease(key);
-					break;
-				case PRESS:
-					keyRobot.keyPress(key);
-					break;
-				case RELEASE:
-					keyRobot.keyRelease(key);
-					break;
-				case COMBI: // Kombination
-					// Input are keys from the printCombi method...
-					// each Key is pressed and pushed to the stack combi
-					// if Key is 0, the Stack elements are released...
-					if (key != 0) {
-						sendKey((int) key, PRESS);
-						combi.push(key);
-					} else if (key == 0) {
-						while (!combi.isEmpty()) {
-							Integer i = combi.pop();
-							sendKey((int) i, RELEASE);
-						}
+		keyRobot.delay(delay);
+		switch (function) {
+			case TYPE:
+				keyRobot.keyPress(key);
+				keyRobot.keyRelease(key);
+				logger.debug("sendKey: Key sent: " + key);
+				break;
+			case PRESS:
+				keyRobot.keyPress(key);
+				logger.debug("sendKey: Key pressed: " + key);
+				break;
+			case RELEASE:
+				keyRobot.keyRelease(key);
+				logger.debug("sendKey: Key released: " + key);
+				break;
+			case COMBI: // Combination
+				// Input are keys from the printCombi method...
+				// each Key is pressed and pushed to the stack combi
+				// if Key is 0, the Stack elements are released...
+				if (key != 0) {
+					sendKey((int) key, PRESS);
+					combi.push(key);
+				} else if (key == 0) {
+					while (!combi.isEmpty()) {
+						Integer i = combi.pop();
+						sendKey((int) i, RELEASE);
 					}
-					break;
-				case SHIFT: // Shift function
-					keyRobot.keyPress(KeyEvent.VK_SHIFT);
-					keyRobot.keyPress(key);
-					keyRobot.keyRelease(key);
-					keyRobot.keyRelease(KeyEvent.VK_SHIFT);
-					break;
-			}
-			logger.debug("sendKey: Key sent: " + key);
-			return true;
-		} catch (AWTException e) {
-			logger.error("sendKey: AWT: " + key);
-			return false;
+				}
+				break;
+			case SHIFT: // Shift function
+				keyRobot.keyPress(KeyEvent.VK_SHIFT);
+				keyRobot.keyPress(key);
+				keyRobot.keyRelease(key);
+				keyRobot.keyRelease(KeyEvent.VK_SHIFT);
+				logger.debug("sendKey: Key sent with SHIFT: " + key);
+				break;
 		}
+		return true;
 	}
 	
 
