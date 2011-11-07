@@ -3,7 +3,7 @@
  * Copyright (c) 2011 - 2011, DHBW Mannheim
  * Project: T10 On-Screen Keyboard
  * Date: Oct 15, 2011
- * Author(s): NicolaiO
+ * Author(s): NicolaiO, DanielAl, DirkK, SebastianN, FelixP
  * 
  * *********************************************************
  */
@@ -24,13 +24,13 @@ import edu.dhbw.t10.manager.Controller;
  * 
  * TODO ALL graphical buttons (keys) e.g. pause- and arrow keys
  * TODO ALL right click on button activates shift mode
- * TODO ALL save layout size
  * TODO SebastianN profile configuration
  * TODO ALL menus
  * TODO ALL insert tooltips for mute buttons
  * TODO ALL StatusBar
- * TODO ALL DropDown List
  * TODO ALL color in saveLayout
+ * TODO NicolaiO shift button synchronized states => general Design problem
+ * TODO ALL visualize Button state
  * 
  * @author NicolaiO
  * 
