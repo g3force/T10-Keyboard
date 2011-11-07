@@ -27,8 +27,9 @@ import edu.dhbw.t10.manager.Controller;
  * TODO ALL save layout size
  * TODO SebastianN profile configuration
  * TODO ALL menus
- * TODO NicolaiO 2 shift buttons
  * TODO ALL insert tooltips for mute buttons
+ * TODO ALL StatusBar
+ * TODO ALL DropDown List
  * 
  * @author NicolaiO
  * 
