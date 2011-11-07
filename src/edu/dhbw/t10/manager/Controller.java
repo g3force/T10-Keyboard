@@ -92,6 +92,7 @@ public class Controller implements ActionListener, WindowListener {
 		profileMan.deleteProfile(name);
 	}
 
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() instanceof Button) {
@@ -218,6 +219,7 @@ public class Controller implements ActionListener, WindowListener {
 		suggest = "";
 	}
 	
+
 	// Window ----------------------------
 	
 	public void resizeWindow(Dimension size) {
@@ -236,6 +238,7 @@ public class Controller implements ActionListener, WindowListener {
 		}
 	}
 	
+
 	@Override
 	public void windowActivated(WindowEvent arg0) {
 		
@@ -280,17 +283,18 @@ public class Controller implements ActionListener, WindowListener {
 
 	private void closeSuperFelix() {
 		try {
-		logger.debug("closing - saving the tree");
-		profileMan.getActive().save();
-		logger.debug("closing - saving the config");
-		profileMan.saveConfig();
-		logger.debug("closing - serializing the profiles");
-		profileMan.serializeProfiles();
-		logger.debug("closed - good buy");
+			logger.debug("closing - saving the tree");
+			profileMan.getActive().save();
+			logger.debug("closing - saving the config");
+			profileMan.saveConfig();
+			logger.debug("closing - serializing the profiles");
+			profileMan.serializeProfiles();
+			logger.debug("closed - good BUY");
 		} catch (Exception e) {
-			logger.error("closing route produced an error: " + e.toString());
+			logger.error("closing routine produced an error: " + e.toString());
 		}
 	}
+
 
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
