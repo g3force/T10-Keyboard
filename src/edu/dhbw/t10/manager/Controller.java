@@ -59,7 +59,7 @@ public class Controller implements ActionListener, WindowListener {
 	private Controller() {
 		instance = this;
 		logger.debug("initializing...");
-		outputMan = OutputManager.getInstance();
+		outputMan = new OutputManager();
 		mainPanel = new MainPanel();
 		presenter = new Presenter(mainPanel);
 		typedWord = "";
