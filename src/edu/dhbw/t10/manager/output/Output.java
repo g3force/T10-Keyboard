@@ -20,7 +20,6 @@ import java.util.Stack;
 import org.apache.log4j.Logger;
 
 import edu.dhbw.t10.helper.StringHelper;
-import edu.dhbw.t10.type.keyboard.key.Button;
 import edu.dhbw.t10.type.keyboard.key.Key;
 
 
@@ -57,7 +56,7 @@ public class Output {
 	// 0 represents UNKNOWN OS, 1 Linux, 2 any Windows
 	private static int				os;
 	// Stack for Key combination. See Method: printCombi(Button b)
-	Stack<Integer>						combi		= new Stack<Integer>();
+	private Stack<Integer>			combi;
 	// Robot for sending Keys to the system - used in sendKey()
 	private Robot						keyRobot;
 
@@ -75,7 +74,7 @@ public class Output {
 	 * @author DanielAl
 	 * 
 	 */
-	public Output() throws UnknownOSException {
+	protected Output() throws UnknownOSException {
 		String osName = System.getProperty("os.name");
 		logger.info("OS: " + osName);
 		if (osName.equals("Linux"))
@@ -92,6 +91,7 @@ public class Output {
 		} catch (AWTException err) {
 			logger.error("sendKey: AWTException: " + err.getMessage());
 		}
+		combi = new Stack<Integer>();
 	}
 	
 
@@ -106,7 +106,7 @@ public class Output {
 	 * @return booelan
 	 * @author DanielAl
 	 */
-	public boolean printChar(Key c) {
+	protected boolean printChar(Key c) {
 		return printString(c.getKeycode(), c.getType());
 	}
 	
@@ -125,7 +125,7 @@ public class Output {
 	 * @return boolean
 	 * @author DanielAl
 	 */
-	public boolean printString(String charSequence, int type) {
+	protected boolean printString(String charSequence, int type) {
 		int length = charSequence.length();
 		if (length <= 0)
 			return false;
@@ -142,7 +142,8 @@ public class Output {
 				break;
 			case Key.UNKNOWN: // FIXME
 			case Key.CHAR:
-			// Get the starter Positions of Unicodes in a String...
+				// Get the starter Positions of Unicodes in a String...
+				charSequence = StringHelper.convertToUnicode(charSequence);
 				ArrayList<Integer> unicodeStart = StringHelper.extractUnicode(charSequence);
 				
 				for (int i = 0; i < length; i++) {
@@ -177,9 +178,9 @@ public class Output {
 	 * @return boolean
 	 * @author DanielAl
 	 */
-	public boolean printCombi(Button b) {
-		for (Key key : b.getSingleKey()) {
-			sendKey(getKeyCode(key.getKeycode(), COMBI));
+	protected boolean printCombi(ArrayList<Key> b) {
+		for (Key key : b) {
+			sendKey(convertKeyCode(key.getKeycode(), COMBI));
 		}
 		sendKey(0, COMBI);
 		logger.info("Key Combi printed");
@@ -187,36 +188,30 @@ public class Output {
 	}
 
 
-	public boolean markChar(int length) {
-		if (length <= 0)
-			return false;
-		else {
-			sendKey(KeyEvent.VK_SHIFT, PRESS);
-			
-			for (int i = 0; i < length; i++) {
-				sendKey(KeyEvent.VK_LEFT, TYPE);
-			}
-			sendKey(KeyEvent.VK_SHIFT, RELEASE);
-			return true;
-		}
+	/**
+	 * Calls getKeyCode(code, 0)
+	 * @param String code
+	 * @return Integer
+	 * @author DanielAl
+	 */
+	private Integer getKeyCode(String code) {
+		return convertKeyCode(code, 0);
 	}
 	
 
-	private Integer getKeyCode(String code) {
-		return getKeyCode(code, 0);
-	}
-
-
 	/**
+	 * Converts a Stringcode into a Constant of the KeyEvent class via Reflection.<br>
+	 * These constants could be used for sending Keys.<br>
+	 * The type parameter is for diefferentiate a number to be a normal Keynumber oder a NUMPAD Number.<br>
+	 * <br>
 	 * 
-	 * Converts a Stringcode into a Constant of the KeyEvent class via Reflection.
-	 * These constants could be used for sending Keys.
+	 * Exceptions SecurityException, NoSuchFieldException,IllegalArgumentException, IllegalAccessException which are
+	 * thrown by reflection returned the KeyEvent.UNKNOWN
 	 * 
-	 * @param code
-	 * @param i
-	 * @return
+	 * @param String code, int type
+	 * @return Integer
 	 */
-	private Integer getKeyCode(String code, int type) {
+	private Integer convertKeyCode(String code, int type) {
 		Field f;
 		try {
 			switch (type){
@@ -231,13 +226,11 @@ public class Output {
 				default:		
 					return KeyEvent.VK_UNDEFINED;
 			}
-
 		} catch (SecurityException err) {
 			logger.error("getKeyCode: Security: " + code);
 			return KeyEvent.VK_UNDEFINED;
 		} catch (NoSuchFieldException err) {
 			logger.error("getKeyCode: No Such Field: " + code);
-			// TODO Umlaute und andere Zeichen in Unicode Konvertieren
 			return KeyEvent.VK_UNDEFINED;
 		} catch (IllegalArgumentException err) {
 			logger.error("getKeyCode: Illegal Argument: " + code);
@@ -246,43 +239,46 @@ public class Output {
 			logger.error("getKeyCode: Illegal Access: " + code);
 			return KeyEvent.VK_UNDEFINED;
 		}
-		
 	}
 	
 
 	/**
 	 * 
-	 * TODO DanielAl, add comment!
+	 * Sends a Unicode in the Format \U+XXXX\ to the System by using a System specific Key combination. <br>
+	 * Windows and Linux are supported.<br>
+	 * For Windows compability a Registry hack is necessary. Use the install.reg to enable HexaDecimal Unicode Input in
+	 * Windows and restart your System. <br>
 	 * 
-	 * @param uni
-	 * @return
+	 * @param String uni
+	 * @return boolean
 	 * @author DanielAl
 	 */
 	private boolean sendUnicode(String uni) {
+		// Chekcs for the correct Unicode length, begin and end
 		if (uni.length() != 8 || !uni.substring(0, 3).equals("\\U+") || !uni.substring(7, 8).equals("\\")) {
 			logger.error("UNICODE wrong format; length: " + uni.length());
 			return false;
 		}
-		
+		// Extract the Unicode Hexadecimal digit from the surrounding meta symbols (\\u+FFFF\\)
 		char[] uniArr = uni.substring(3, 7).toLowerCase().toCharArray();
 
-		if (os == LINUX) {
-			sendKey(KeyEvent.VK_CONTROL, PRESS);
-			sendKey(KeyEvent.VK_SHIFT, PRESS);
-			sendKey(KeyEvent.VK_U, TYPE);
-			sendKey(KeyEvent.VK_SHIFT, RELEASE);
-			sendKey(KeyEvent.VK_CONTROL, RELEASE);
-			sendKey(getKeyCode(uniArr[0] + ""), TYPE);
-			sendKey(getKeyCode(uniArr[1] + ""), TYPE);
-			sendKey(getKeyCode(uniArr[2] + ""), TYPE);
-			sendKey(getKeyCode(uniArr[3] + ""), TYPE);
-			sendKey(KeyEvent.VK_ENTER, TYPE);
-		} else if (os == WINDOWS) {
-			// for the Windows Unicode Hexadecimal Input the following Registry data is needed, to install use install.reg
-			// [HKEY_CURRENT_USER\Control Panel\Input Method]: "EnableHexNumpad"="1"
+		switch (os) {
+			case LINUX:
+				sendKey(KeyEvent.VK_CONTROL, PRESS);
+				sendKey(KeyEvent.VK_SHIFT, PRESS);
+				sendKey(KeyEvent.VK_U, TYPE);
+				sendKey(KeyEvent.VK_SHIFT, RELEASE);
+				sendKey(KeyEvent.VK_CONTROL, RELEASE);
+				sendKey(getKeyCode(uniArr[0] + ""), TYPE);
+				sendKey(getKeyCode(uniArr[1] + ""), TYPE);
+				sendKey(getKeyCode(uniArr[2] + ""), TYPE);
+				sendKey(getKeyCode(uniArr[3] + ""), TYPE);
+				sendKey(KeyEvent.VK_ENTER, TYPE);
+				return true;
 
-			try {
-				boolean num_lock;
+			case WINDOWS:
+				try {
+					boolean num_lock;
 
 				// Checks the status of Num_Lock
 				Toolkit tool = Toolkit.getDefaultToolkit();
@@ -298,10 +294,10 @@ public class Output {
 				// FIXME ADD Symbol really needed??
 				sendKey(KeyEvent.VK_ADD, TYPE);
 				// send the Hexa Decimal number with digits as a numpad key and the chars from the normal keyboard...
-				sendKey(Character.isDigit(uniArr[0]) ? getKeyCode(uniArr[0] + "", 1) : getKeyCode(uniArr[0] + "", 0), TYPE);
-				sendKey(Character.isDigit(uniArr[1]) ? getKeyCode(uniArr[1] + "", 1) : getKeyCode(uniArr[1] + "", 0), TYPE);
-				sendKey(Character.isDigit(uniArr[2]) ? getKeyCode(uniArr[2] + "", 1) : getKeyCode(uniArr[2] + "", 0), TYPE);
-				sendKey(Character.isDigit(uniArr[3]) ? getKeyCode(uniArr[3] + "", 1) : getKeyCode(uniArr[3] + "", 0), TYPE);
+				sendKey(Character.isDigit(uniArr[0]) ? convertKeyCode(uniArr[0] + "", 1) : convertKeyCode(uniArr[0] + "", 0), TYPE);
+				sendKey(Character.isDigit(uniArr[1]) ? convertKeyCode(uniArr[1] + "", 1) : convertKeyCode(uniArr[1] + "", 0), TYPE);
+				sendKey(Character.isDigit(uniArr[2]) ? convertKeyCode(uniArr[2] + "", 1) : convertKeyCode(uniArr[2] + "", 0), TYPE);
+				sendKey(Character.isDigit(uniArr[3]) ? convertKeyCode(uniArr[3] + "", 1) : convertKeyCode(uniArr[3] + "", 0), TYPE);
 				
 				sendKey(KeyEvent.VK_ALT, RELEASE);
 				
@@ -309,35 +305,43 @@ public class Output {
 				if (!num_lock) {
 					sendKey(KeyEvent.VK_NUM_LOCK, TYPE);
 				}
-
 			} catch (UnsupportedOperationException err) {
-				logger.error("Unsupported Operation: Check Num_Lock state");
-				// In Linux it throws always this Exception, but here it isn't needed
+					logger.error("Unsupported Operation: Check Num_Lock state; can't write Unicode" + uniArr.toString());
 			}
-		} else {
-			logger.error("OS not supported: Unicode");
-			return false;
+				return true;
+			default:
+				logger.error("OS not supported: Unicode");
+				return false;
 		}
-		return true;
 	}
 	
 
+	/**
+	 * 
+	 * Calls sendKey(key, TYPE)
+	 * 
+	 * @param int key
+	 * @return boolean
+	 * @author DanielAl
+	 */
 	private boolean sendKey(int key) {
 		return sendKey(key, TYPE);
 	}
 	
 
 	/**
+	 * Send Key Codes to the System with a Robot and java.awt.event.KeyEvent constants. <br>
+	 * Functions:<br>
+	 * - TYPE for type a Key<br>
+	 * - PRESS for pressing and holding a key<br>
+	 * - RELEASE for releasing a key<br>
+	 * - COMBI for Key COmbination functionallity; used in printCombi()<br>
+	 * - SHIFT for shift a Key to its Uppercase and type it...<br>
 	 * 
-	 * Send Key Codes to the System with a Robot and ava.awt.event.KeyEvent constants
+	 * Hint: keyPress('ö') tested and it don't work<br>
 	 * 
-	 * Use function to use Shift, ... functionality
-	 * for function definitions look at constants...
-	 * 
-	 * Hint: keyPress('ö') tested and it don't work
-	 * 
-	 * @param key, function
-	 * @return
+	 * @param int key, int function
+	 * @return boolean
 	 */
 	private boolean sendKey(int key, int function) {
 		if (key == 0 && function != COMBI) {
@@ -363,14 +367,17 @@ public class Output {
 				// Input are keys from the printCombi method...
 				// each Key is pressed and pushed to the stack combi
 				// if Key is 0, the Stack elements are released...
-				if (key != 0) {
+				// log is written in printCombi()
+				switch (key) {
+					case 0:
+						while (!combi.isEmpty()) {
+							Integer i = combi.pop();
+							sendKey((int) i, RELEASE);
+						}
+						break;
+					default:
 					sendKey((int) key, PRESS);
 					combi.push(key);
-				} else if (key == 0) {
-					while (!combi.isEmpty()) {
-						Integer i = combi.pop();
-						sendKey((int) i, RELEASE);
-					}
 				}
 				break;
 			case SHIFT: // Shift function
