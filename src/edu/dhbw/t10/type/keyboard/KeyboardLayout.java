@@ -77,6 +77,7 @@ public class KeyboardLayout {
 	 * @param ddl
 	 * @author NicolaiO
 	 */
+	@Deprecated
 	public void addDdl(DropDownList ddl) {
 		ddls.add(ddl);
 	}
@@ -253,6 +254,11 @@ public class KeyboardLayout {
 	
 	public void setMuteButtons(ArrayList<MuteButton> muteButtons) {
 		this.muteButtons = muteButtons;
+	}
+	
+	
+	public void setDdls(ArrayList<DropDownList> ddls) {
+		this.ddls = ddls;
 	}
 	
 	

@@ -109,19 +109,23 @@ public class KeyboardLayoutLoader {
 		NodeList nList;
 		
 		// ########################## read ModeButtons ########################
-		HashMap<Integer, ModeButton> modeButtons = getModeButtons();
-		// a list should be returned, by the hashmap is also needed for getButtons()
-		ArrayList<ModeButton> modeButtonArray = new ArrayList<ModeButton>();
-		for (ModeButton b : modeButtons.values()) {
-			modeButtonArray.add(b);
-		}
-		logger.info("loaded " + modeButtonArray.size() + " ModeButtons.");
+		// HashMap<Integer, ModeButton> modeButtons = getModeButtons();
+		// // a list should be returned, by the hashmap is also needed for getButtons()
+		// ArrayList<ModeButton> modeButtonArray = new ArrayList<ModeButton>();
+		// for (ModeButton b : modeButtons.values()) {
+		// modeButtonArray.add(b);
+		// }
+		ArrayList<ModeButton> modeButtons = getModeButtons();
+		logger.info("loaded " + modeButtons.size() + " ModeButtons.");
 		// ########################## read Buttons ############################
 		ArrayList<Button> buttons = getButtons(modeButtons);
 		logger.info("loaded " + buttons.size() + " Buttons.");
 		// ########################## read MuteButtons ###########################
 		ArrayList<MuteButton> muteButtons = getMuteButtons();
 		logger.info("loaded " + muteButtons.size() + " MuteButtons.");
+		// ########################## read DDLs ###########################
+		ArrayList<DropDownList> ddls = getDdls();
+		logger.info("loaded " + ddls.size() + " ddls.");
 		
 		
 		// read default sizes and scale of layout
@@ -150,18 +154,41 @@ public class KeyboardLayoutLoader {
 					try {
 						fstyle = Integer.parseInt(n.getTextContent());
 					} catch (NumberFormatException e) {
+						logger.warn("Could not read global style value");
 					}
 				} else if (n.getNodeName() == "size") {
 					try {
 						fsize = Integer.parseInt(n.getTextContent());
 					} catch (NumberFormatException e) {
+						logger.warn("Could not read global size value");
 					}
 				}
 			}
 		}
 		
+		// add everything to layout and rescale layout to set button sizes correctly (scale!)
+		kbdLayout.setModeButtons(modeButtons);
+		kbdLayout.setButtons(buttons);
+		kbdLayout.setMuteButtons(muteButtons);
+		kbdLayout.setDdls(ddls);
+		kbdLayout.setFont(new Font(fname, fstyle, fsize));
+		kbdLayout.rescale();
+		
+		logger.debug("keyboard Layout loaded.");
+		return kbdLayout;
+	}
+	
+	
+	/**
+	 * TODO NicolaiO, add comment!
+	 * 
+	 * @return
+	 * @author NicolaiO
+	 */
+	private static ArrayList<DropDownList> getDdls() {
+		ArrayList<DropDownList> ddls = new ArrayList<DropDownList>();
 		// read dropdown lists
-		nList = doc.getElementsByTagName("dropdown");
+		NodeList nList = doc.getElementsByTagName("dropdown");
 		for (int temp = 0; temp < nList.getLength(); temp++) {
 			Node nNode = nList.item(temp);
 			try {
@@ -170,7 +197,7 @@ public class KeyboardLayoutLoader {
 					NamedNodeMap attr = eElement.getAttributes();
 					DropDownList cb = new DropDownList(getAttribute(attr, "type"), getIntAttribute(attr, "size_x"),
 							getIntAttribute(attr, "size_y"), getIntAttribute(attr, "pos_x"), getIntAttribute(attr, "pos_y"));
-					kbdLayout.addDdl(cb);
+					ddls.add(cb);
 					cb.addActionListener(Controller.getInstance());
 				}
 			} catch (NullPointerException e) {
@@ -178,17 +205,7 @@ public class KeyboardLayoutLoader {
 						+ nNode.toString());
 			}
 		}
-		
-		
-		// add everything to layout and rescale layout to set button sizes correctly (scale!)
-		kbdLayout.setModeButtons(modeButtonArray);
-		kbdLayout.setButtons(buttons);
-		kbdLayout.setMuteButtons(muteButtons);
-		kbdLayout.setFont(new Font(fname, fstyle, fsize));
-		kbdLayout.rescale();
-		
-		logger.debug("keyboard Layout loaded.");
-		return kbdLayout;
+		return ddls;
 	}
 	
 	
@@ -211,7 +228,7 @@ public class KeyboardLayoutLoader {
 	 * @return list of all buttons
 	 * @author NicolaiO
 	 */
-	private static ArrayList<Button> getButtons(HashMap<Integer, ModeButton> modeButtons) {
+	private static ArrayList<Button> getButtons(ArrayList<ModeButton> modeButtons) {
 		ArrayList<Button> buttons = new ArrayList<Button>();
 		NodeList nList = doc.getElementsByTagName("button");
 		
@@ -282,10 +299,14 @@ public class KeyboardLayoutLoader {
 								logger.warn("key not found in keymap. key content=" + item.getTextContent());
 							}
 							key.setAccept(accept);
-							if (modeButtons.get(iModeName) != null) {
-								button.addMode(modeButtons.get(iModeName), key);
-							} else {
-								logger.warn("A modeButton could not be found in keymap: " + iModeName + " i=" + i
+							for (ModeButton mb : modeButtons) {
+								if (mb.getModeKey().getId() == iModeName) {
+									button.addMode(mb, key);
+									logger.trace("ModeButton added to Button");
+								}
+							}
+							if (button.getModes().size() == 0) {
+								logger.warn("A modeButton could not be found in keymap: " + iModeName + " i=" + i + "key="
 										+ key.getName());
 							}
 							
@@ -304,8 +325,8 @@ public class KeyboardLayoutLoader {
 	}
 	
 	
-	private static HashMap<Integer, ModeButton> getModeButtons() {
-		HashMap<Integer, ModeButton> modeButtons = new HashMap<Integer, ModeButton>();
+	private static ArrayList<ModeButton> getModeButtons() {
+		ArrayList<ModeButton> modeButtons = new ArrayList<ModeButton>();
 		NodeList nList = doc.getElementsByTagName("modebutton");
 		
 		// loop through buttons
@@ -339,7 +360,7 @@ public class KeyboardLayoutLoader {
 				Bounds b = getBounds(nNode);
 				ModeButton button = new ModeButton(key, b.size_x, b.size_y, b.pos_x, b.pos_y);
 				button.addActionListener(Controller.getInstance());
-				modeButtons.put(key.getId(), button);
+				modeButtons.add(button);
 			} catch (NullPointerException e) {
 				logger.warn("A ModeButton could not be read.");
 			}
