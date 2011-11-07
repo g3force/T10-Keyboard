@@ -30,6 +30,7 @@ import edu.dhbw.t10.manager.Controller;
  * TODO ALL insert tooltips for mute buttons
  * TODO ALL StatusBar
  * TODO ALL DropDown List
+ * TODO ALL color in saveLayout
  * 
  * @author NicolaiO
  * 

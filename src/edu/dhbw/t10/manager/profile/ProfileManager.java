@@ -34,11 +34,10 @@ public class ProfileManager {
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
 	private static final Logger	logger				= Logger.getLogger(ProfileManager.class);
-	// private static ProfileManager instance = new ProfileManager();
 	private ArrayList<Profile>		profiles;
 	private ArrayList<String>		profilePathes;
 	private Profile					activeProfile;
-	private String						activeProfileName;														// Just for initializing
+	private String						activeProfileName;
 	private boolean					autoProfileChange	= true;
 	private boolean					autoCompleting		= true;
 	private boolean					treeExpanding		= true;
@@ -47,10 +46,6 @@ public class ProfileManager {
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
-	// Singleton
-	/**
-	 * Constructor as Singleton. This way, we prevent having multiple manager
-	 */
 	public ProfileManager() {
 		logger.debug("initializing...");
 		profilePathes = new ArrayList<String>();
@@ -72,13 +67,6 @@ public class ProfileManager {
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
-	// /**
-	// * @return Return of an instance of the Singleton "ProfileManager", thus preventing
-	// * multiple ProfileManager.
-	// */
-	// public static ProfileManager getInstance() {
-	// return instance;
-	// }
 	
 	
 	/**
@@ -115,12 +103,9 @@ public class ProfileManager {
 					try {
 						String valName = entry.substring(0, posOfEql);
 						String value = entry.substring(posOfEql + 1, entry.length());
-						if (valName.equals("ProfilePath")) {
+						if (valName.toLowerCase().equals("profilepath")) {
 							profilePathes.add(value);
-						} else if (valName.equals("XMLPath")) {
-							// XMLPath.add(value);
-							logger.debug("XMLPath: " + value);
-						} else if (valName.equals("ActiveProfile")) {
+						} else if (valName.toLowerCase().equals("activeprofile")) {
 							activeProfileName = value;
 						}
 					} catch (Exception ex) {
