@@ -20,6 +20,7 @@ import java.util.Stack;
 import org.apache.log4j.Logger;
 
 import edu.dhbw.t10.helper.StringHelper;
+import edu.dhbw.t10.type.keyboard.key.Button;
 import edu.dhbw.t10.type.keyboard.key.Key;
 
 
@@ -55,6 +56,7 @@ public class Output {
 
 	private static int				os;
 	private static int				delay		= 0;
+	Stack<Integer>						combi		= new Stack<Integer>();
 
 
 	// --------------------------------------------------------------------------
@@ -133,6 +135,15 @@ public class Output {
 		}
 	}
 	
+
+	public boolean printCombi(Button b) {
+		for (Key key : b.getSingleKey()) {
+			sendKey(getKeyCode(key.getKeycode(), COMBI));
+		}
+		sendKey(0, COMBI);
+		logger.info("Key Combi printed");
+		return true;
+	}
 
 	public boolean markChar(int length) {
 		if (length <= 0)
@@ -223,7 +234,7 @@ public class Output {
 			sendKey(KeyEvent.VK_ENTER, TYPE);
 		} else if (os == WINDOWS) {
 			// for the Windows Unicode Hexadecimal Input the following Registry data is needed, to install use install.reg
-			//[HKEY_CURRENT_USER\Control Panel\Input Method]:	"EnableHexNumpad"="1"
+			// [HKEY_CURRENT_USER\Control Panel\Input Method]: "EnableHexNumpad"="1"
 
 			try {
 				boolean num_lock;
@@ -288,7 +299,7 @@ public class Output {
 	 * @return
 	 */
 	private boolean sendKey(int key, int function) {
-		if (key == 0) {
+		if (key == 0 && function != COMBI) {
 			logger.error("sendKey: UNKNOWN Key");
 			return false;
 		}
@@ -308,17 +319,17 @@ public class Output {
 					keyRobot.keyRelease(key);
 					break;
 				case COMBI: // Kombination
-					Stack<Integer> combi = new Stack<Integer>();
-					// Input ist Liste... von vorne nach hinten wird diese abgearbeitet und das aktuelle Element ausgegeben,
-					// in den Stack gespeichert und gelöscht... Wenn die Liste leer ist wird das oberste Element des STacks
-					// ausgegeben und gelöscht bis der Stack leer ist...
-					for (Integer i : new Integer[] { 0, 0, 0 }) {
-						keyRobot.keyPress((int) i);
-						combi.push(i);
-					}
-					while (!combi.isEmpty()) {
-						Integer i = combi.pop();
-						keyRobot.keyRelease((int) i);
+					// Input are keys from the printCombi method...
+					// each Key is pressed and pushed to the stack combi
+					// if Key is 0, the Stack elements are released...
+					if (key != 0) {
+						sendKey((int) key, PRESS);
+						combi.push(key);
+					} else if (key == 0) {
+						while (!combi.isEmpty()) {
+							Integer i = combi.pop();
+							sendKey((int) i, RELEASE);
+						}
 					}
 					break;
 				case SHIFT: // Shift function
