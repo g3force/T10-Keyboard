@@ -109,12 +109,6 @@ public class KeyboardLayoutLoader {
 		NodeList nList;
 		
 		// ########################## read ModeButtons ########################
-		// HashMap<Integer, ModeButton> modeButtons = getModeButtons();
-		// // a list should be returned, by the hashmap is also needed for getButtons()
-		// ArrayList<ModeButton> modeButtonArray = new ArrayList<ModeButton>();
-		// for (ModeButton b : modeButtons.values()) {
-		// modeButtonArray.add(b);
-		// }
 		ArrayList<ModeButton> modeButtons = getModeButtons();
 		logger.info("loaded " + modeButtons.size() + " ModeButtons.");
 		// ########################## read Buttons ############################
@@ -125,7 +119,7 @@ public class KeyboardLayoutLoader {
 		logger.info("loaded " + muteButtons.size() + " MuteButtons.");
 		// ########################## read DDLs ###########################
 		ArrayList<DropDownList> ddls = getDdls();
-		logger.info("loaded " + ddls.size() + " ddls.");
+		logger.info("loaded " + ddls.size() + " DropDownLists.");
 		
 		
 		// read default sizes and scale of layout
