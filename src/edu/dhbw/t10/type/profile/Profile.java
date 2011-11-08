@@ -32,7 +32,7 @@ import edu.dhbw.t10.type.tree.PriorityTree;
  */
 public class Profile implements Serializable {
 	/**  */
-	private static final long			serialVersionUID	= 5085464540715301874L;
+	private static final long			serialVersionUID	= 5085464540715301875L;
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
@@ -40,6 +40,10 @@ public class Profile implements Serializable {
 	private String							pathToTree;
 	private String							pathToProfile;
 	private String							pathToAllowedChars;
+	private String							pathToLayoutFile;
+	// private String pathToKeymapFile;
+	private static final String		defaultLayoutFile	= "data/conf/layout_default.xml";
+	private static final String		defaultKeymapFile	= "data/conf/keymap_default.xml";
 	private transient PriorityTree	tree;
 	private transient KeyboardLayout	kbdLayout;
 	
@@ -54,18 +58,35 @@ public class Profile implements Serializable {
 	
 	public Profile(String pName) {
 		name = pName;
+		pathToLayoutFile = "data/layout/" + name + "_layout.xml";
+		init();
+	}
+	
+	
+	public Profile(String pName, String layoutPath) {
+		name = pName;
+		pathToLayoutFile = layoutPath;
+		init();
+	}
+	
+	
+	private void init() {
 		File file = new File("data/profiles");
 		if (!file.isDirectory()) {
 			file.mkdir();
 		}
-		pathToProfile = "data/profiles/" + name + ".profile";
 		file = new File("data/trees");
 		if (!file.isDirectory()) {
 			file.mkdir();
 		}
+		file = new File("data/layout");
+		if (!file.isDirectory()) {
+			file.mkdir();
+		}
+		pathToProfile = "data/profiles/" + name + ".profile";
 		pathToTree = "data/trees/" + name + ".tree";
 		pathToAllowedChars = "data/trees/" + name + ".chars";
-		logger.debug("Profile " + pName + " created");
+		logger.debug("Profile " + name + " created");
 		load();
 	}
 	
@@ -80,10 +101,7 @@ public class Profile implements Serializable {
 	 * @author NicolaiO
 	 */
 	public void load() {
-		logger.debug("loadLayout");
 		loadLayout();
-		logger.debug("loaded Layout");
-		tree = new PriorityTree(pathToAllowedChars);
 		loadTree();
 	}
 	
@@ -94,9 +112,7 @@ public class Profile implements Serializable {
 	 * @author NicolaiO
 	 */
 	public void save() {
-		logger.error("save Layout");
 		saveLayout();
-		logger.error("saved Layout");
 		saveTree();
 	}
 	
@@ -107,7 +123,7 @@ public class Profile implements Serializable {
 	 * @author NicolaiO
 	 */
 	private void saveLayout() {
-		KeyboardLayoutSaver.save(kbdLayout, "data/conf/keyboard_layout_de_default.out.xml");
+		KeyboardLayoutSaver.save(kbdLayout, pathToLayoutFile);
 	}
 	
 	
@@ -117,11 +133,16 @@ public class Profile implements Serializable {
 	 * @author NicolaiO
 	 */
 	private void loadLayout() {
-		kbdLayout = KeyboardLayoutLoader.load("data/conf/keyboard_layout_de_default.xml",
-				KeymapLoader.load("data/conf/keymap.xml"));
+		File file = new File(pathToLayoutFile);
+		if (file.exists()) {
+			kbdLayout = KeyboardLayoutLoader.load(pathToLayoutFile, KeymapLoader.load(defaultKeymapFile));
+		} else {
+			logger.info("Default Layout loaded");
+			kbdLayout = KeyboardLayoutLoader.load(defaultLayoutFile, KeymapLoader.load(defaultKeymapFile));
+		}
 	}
-
 	
+
 	/**
 	 * 
 	 * Loads the (serialized) PriorityTree.
@@ -131,7 +152,7 @@ public class Profile implements Serializable {
 	private void loadTree() {
 		tree = new PriorityTree(pathToAllowedChars);
 		tree.importFromHashMap(ImportExportManager.importFromFile(pathToTree, true));
-		logger.error("load: " + pathToTree + " Tree Size: " + tree.exportToHashMap().size());
+		logger.debug("load: " + pathToTree + " Tree Size: " + tree.exportToHashMap().size());
 	}
 	
 	
@@ -143,11 +164,13 @@ public class Profile implements Serializable {
 	 */
 	private void saveTree() {
 		if (tree != null) {
+			logger.debug("save tree to " + pathToTree);
 			ImportExportManager.exportToFile(tree.exportToHashMap(), pathToTree);
+		} else {
+			logger.debug("Tree not saved, because not existend");
 		}
-		logger.error("save: " + pathToTree);
+		logger.debug("save Chars to " + pathToAllowedChars);
 		tree.saveAllowedChars();
-		logger.error("save Chars: " + pathToAllowedChars);
 	}
 	
 	

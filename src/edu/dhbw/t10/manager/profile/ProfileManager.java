@@ -19,6 +19,7 @@ import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
 
+import edu.dhbw.t10.type.keyboard.DropDownList;
 import edu.dhbw.t10.type.keyboard.KeyboardLayout;
 import edu.dhbw.t10.type.profile.Profile;
 
@@ -34,11 +35,10 @@ public class ProfileManager {
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
 	private static final Logger	logger				= Logger.getLogger(ProfileManager.class);
-	// private static ProfileManager instance = new ProfileManager();
 	private ArrayList<Profile>		profiles;
 	private ArrayList<String>		profilePathes;
 	private Profile					activeProfile;
-	private String						activeProfileName;														// Just for initializing
+	private String						activeProfileName;
 	private boolean					autoProfileChange	= true;
 	private boolean					autoCompleting		= true;
 	private boolean					treeExpanding		= true;
@@ -47,16 +47,11 @@ public class ProfileManager {
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
-	// Singleton
-	/**
-	 * Constructor as Singleton. This way, we prevent having multiple manager
-	 */
 	public ProfileManager() {
 		logger.debug("initializing...");
 		profilePathes = new ArrayList<String>();
 		readConfig(); // fills activeProfileName and profilePathes with the data from the config file
-		logger.debug("configfile: activeProfileName=" + activeProfileName + " profiles="
-				+ profilePathes.size());
+		logger.debug("configfile: activeProfileName=" + activeProfileName + " profiles=" + profilePathes.size());
 		getSerializedProfiles(); // deserializes all profiles, fills profiles
 		logger.debug("deserializing the profiles");
 		if (profiles.size() == 0) {
@@ -72,15 +67,66 @@ public class ProfileManager {
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
-	// /**
-	// * @return Return of an instance of the Singleton "ProfileManager", thus preventing
-	// * multiple ProfileManager.
-	// */
-	// public static ProfileManager getInstance() {
-	// return instance;
-	// }
 	
+	/**
+	 * 
+	 * Adds <b>ALL</b> profiles to the Profile-DropdownList
+	 * 
+	 * @author SebastianN
+	 */
+	public void addAllProfilesToDDL() {
+		ArrayList<DropDownList> DDLs = getActive().getKbdLayout().getDdls();
+		for (int i = 0; i < DDLs.size(); i++) {
+			if (DDLs.get(i).getType() == DropDownList.PROFILE) {
+				for (int j = 0; j < profiles.size(); j++) {
+					DDLs.get(i).addItem(profiles.get(j).getName());
+				}
+			}
+		}
+	}
 	
+	/**
+	 * 
+	 * Adds <b>ONE</b> profile to the dropdown list.
+	 * 
+	 * @param handle
+	 * @author SebastianN
+	 */
+	
+	private void addProfileToDDL(Profile handle) {
+		ArrayList<DropDownList> DDLs = getActive().getKbdLayout().getDdls();
+		for (int i = 0; i < DDLs.size(); i++) {
+			if (DDLs.get(i).getType() == DropDownList.PROFILE) {
+				DDLs.get(i).addItem(handle.getName());
+				DDLs.get(i).updateUI();
+				// break;
+			}
+		}
+	}
+	
+
+	/**
+	 * 
+	 * Removes a certain profile from the DropdownList
+	 * 
+	 * @param name of the to-be deleted profile.
+	 * @author SebastianN
+	 */
+	private void removeProfileFromDDL(String name) {
+		ArrayList<DropDownList> DDLs = getActive().getKbdLayout().getDdls();
+		for (int i = 0; i < DDLs.size(); i++) {
+			if (DDLs.get(i).getType() == DropDownList.PROFILE) {
+				for (int j = 0; j < profiles.size(); j++) {
+					if (profiles.get(j).getName().equals(name)) {
+						DDLs.get(i).removeItem(name);
+						DDLs.get(i).repaint();
+					}
+				}
+			}
+		}
+	}
+
+
 	/**
 	 * 
 	 * Reads the config-file with all entrys and assigns
@@ -115,13 +161,11 @@ public class ProfileManager {
 					try {
 						String valName = entry.substring(0, posOfEql);
 						String value = entry.substring(posOfEql + 1, entry.length());
-						if (valName.equals("ProfilePath")) {
+						if (valName.toLowerCase().equals("profilepath")) {
 							profilePathes.add(value);
-						} else if (valName.equals("XMLPath")) {
-							// XMLPath.add(value);
-							logger.debug("XMLPath: " + value);
-						} else if (valName.equals("ActiveProfile")) {
+						} else if (valName.toLowerCase().equals("activeprofile")) {
 							activeProfileName = value;
+
 						}
 					} catch (Exception ex) {
 						ex.printStackTrace();
@@ -169,6 +213,8 @@ public class ProfileManager {
 			io.printStackTrace();
 		}
 	}
+
+
 	/**
 	 * 
 	 * Saves the name of the active profile and the path to all profile-files.
@@ -182,8 +228,8 @@ public class ProfileManager {
 			BufferedWriter bw = new BufferedWriter(fw);
 			
 			addEntry(bw, createComment("Configfile for T10"));
-
 			
+
 			if (activeProfile != null)
 				addEntry(bw, "ActiveProfile=" + activeProfile.getName());
 			
@@ -216,12 +262,17 @@ public class ProfileManager {
 	 */
 	
 	public Profile createProfile(String profileName) {
+		if (getProfileByName(profileName) != null) {
+			logger.error("Profile already exists.");
+			return null;
+		}
 		Profile newProfile = new Profile(profileName);
 		profiles.add(newProfile);
 		if (activeProfile == null) {
 			logger.info("Active profile was set to newProfile");
 			activeProfile = newProfile;
 		}
+		addProfileToDDL(newProfile);
 		return newProfile;
 	}
 	
@@ -234,7 +285,6 @@ public class ProfileManager {
 	 * @return If found, handle/reference to said profile. Otherwise NULL
 	 * @author SebastianN
 	 */
-	
 	public Profile getProfileByName(String name) {
 		if (!profiles.isEmpty()) {
 			for (int i = 0; i < profiles.size(); i++) {
@@ -254,34 +304,45 @@ public class ProfileManager {
 	 * 
 	 * @param id - int. ID of the profile you want to delete.
 	 */
-	public void deleteProfile(Profile toDelete) {
-		Profile curProfile = null;
+	public void deleteProfile(String toDel) {
+		Profile toDelete = getProfileByName(toDel);
 		if (profiles.size() <= 0) {
 			logger.debug("profiles.size()==0 at delete");
 			return;
 		} else if (toDelete == null) {
 			logger.debug("toDelete==null at delete");
 			return;
+		} else if (toDelete == activeProfile) {
+			logger.debug("toDelete = activeProfile");
+			return;
 		}
+		Profile curProfile = null;
 		for (int i = 0; i < profiles.size(); i++) {
 			curProfile = profiles.get(i);
 			if (curProfile == toDelete) {
 				profiles.remove(i);
+				removeProfileFromDDL(toDelete.getName());
 				break;
-			}
-		}
-		// If the deleted profile was currently active, we choose the first profile or mark "we need a new profile!"
-		if (activeProfile == toDelete) {
-			if (profiles.size() > 0) {
-				logger.debug("activeProfile=profiles(0)");
-				activeProfile = profiles.get(0);
-			} else {
-				logger.debug("activeProfile=NULL");
-				activeProfile = null;
 			}
 		}
 	}
 	
+	
+	/**
+	 * 
+	 * TODO SebastianN, add comment!
+	 * 
+	 * @param name of the profile whose position needs to be verified.
+	 * @return position. If not found, it returns -1
+	 * @author SebastianN
+	 */
+	private int getPositionOfProfile(String name) {
+		for (int i = 0; i < profiles.size(); i++) {
+			if (profiles.get(i).equals(name))
+				return i;
+		}
+		return -1;
+	}
 	
 	/**
 	 * 
@@ -293,7 +354,18 @@ public class ProfileManager {
 	 * @author SebastianN
 	 */
 	public void setActive(Profile newActive) {
-		activeProfile.save();
+		if (newActive == activeProfile) {
+			return;
+		}
+		if (activeProfile != null) {
+			activeProfile.save();
+		}
+		ArrayList<DropDownList> DDLs = getActive().getKbdLayout().getDdls();
+		for (int i = 0; i < DDLs.size(); i++) {
+			if (DDLs.get(i).getType() == DropDownList.PROFILE) {
+				DDLs.get(i).setSelectedItem(this.getPositionOfProfile(newActive.getName()));
+			}
+		}
 		activeProfile = newActive;
 		activeProfile.load();
 	}

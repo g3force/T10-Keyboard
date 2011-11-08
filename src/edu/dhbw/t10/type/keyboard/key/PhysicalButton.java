@@ -12,9 +12,14 @@ package edu.dhbw.t10.type.keyboard.key;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.lang.reflect.Field;
 
 import javax.swing.JButton;
+
+import org.apache.log4j.Logger;
 
 
 /**
@@ -25,15 +30,16 @@ import javax.swing.JButton;
  * @author DirkK
  * 
  */
-public abstract class PhysicalButton extends JButton {
-	/**  */
-	private static final long	serialVersionUID	= -5515131562102664028L;
+public abstract class PhysicalButton extends JButton implements MouseListener {
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
-	private int						pos_x					= 0;
-	private int						pos_y					= 0;
-	private Dimension				origSize				= new Dimension(10, 10);
+	private static final long		serialVersionUID	= -5515131562102664028L;
+	@SuppressWarnings("unused")
+	private static final Logger	logger				= Logger.getLogger(PhysicalButton.class);
+	private int							pos_x					= 0;
+	private int							pos_y					= 0;
+	private Dimension					origSize				= new Dimension(10, 10);
 	
 	
 	// --------------------------------------------------------------------------
@@ -50,9 +56,8 @@ public abstract class PhysicalButton extends JButton {
 		this.origSize = new Dimension(size_x, size_y);
 		this.pos_x = pos_x;
 		this.pos_y = pos_y;
-		setLayout(null);
-		setMargin(new Insets(0, 0, 0, 0));
 		setBounds(getPos_x(), getPos_y(), getSize().width, getSize().height);
+		init();
 	}
 	
 	
@@ -60,13 +65,21 @@ public abstract class PhysicalButton extends JButton {
 	 * This constructor is only for compatibility and to avoid nullPointerExceptions...
 	 */
 	public PhysicalButton() {
-		setLayout(null);
+		init();
 	}
 	
 	
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
+	
+	private void init() {
+		setLayout(null);
+		addMouseListener(this);
+		setMargin(new Insets(0, 0, 0, 0));
+	}
+
+
 	/**
 	 * @param bgColor
 	 * @return
@@ -93,8 +106,8 @@ public abstract class PhysicalButton extends JButton {
 		}
 		return color;
 	}
-
 	
+
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
@@ -127,5 +140,53 @@ public abstract class PhysicalButton extends JButton {
 	
 	public void setOrigSize(Dimension origSize) {
 		this.origSize = origSize;
+	}
+	
+	
+	@Override
+	public void mouseClicked(MouseEvent e) {
+
+	}
+	
+	
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		
+	}
+	
+	
+	@Override
+	public void mouseExited(MouseEvent e) {
+		
+	}
+	
+	
+	@Override
+	public void mousePressed(MouseEvent e) {
+		/**
+		 * visualize pressing button for right mouse click
+		 */
+		if (e.getButton() == MouseEvent.BUTTON3) {
+			if (e.getSource() instanceof JButton) {
+				JButton b = (JButton) e.getSource();
+				b.getModel().setPressed(true);
+			}
+		}
+	}
+	
+	
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		/**
+		 * visualize pressing button for right mouse click
+		 */
+		if (e.getButton() == MouseEvent.BUTTON3) {
+			if (e.getSource() instanceof JButton) {
+				this.actionListener.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, this
+						.getActionCommand(), ActionEvent.SHIFT_MASK));
+				JButton b = (JButton) e.getSource();
+				b.getModel().setPressed(false);
+			}
+		}
 	}
 }

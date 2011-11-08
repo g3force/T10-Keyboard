@@ -84,7 +84,7 @@ public class ImportExportManager {
 	 */
 	public static HashMap<String, Integer> importFromText(String fileName) {
 		HashMap<String, Integer> importMap = new HashMap<String, Integer>();
-		logger.error("reading form file");
+		logger.debug("reading form file");
 		try {
 			FileReader fr = new FileReader(fileName);
 			BufferedReader x = new BufferedReader(fr);
@@ -102,7 +102,7 @@ public class ImportExportManager {
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
-		logger.error("read form file");
+		logger.debug("read form file");
 		return importMap;
 	}
 	
@@ -137,7 +137,7 @@ public class ImportExportManager {
 	 */
 	public static HashMap<String, Integer> importFromFile(String fileName, boolean withFreq) {
 		HashMap<String, Integer> importMap = new HashMap<String, Integer>();
-		logger.error("reading form file");
+		logger.debug("reading form file");
 		int amount = 0;
 		try {
 			FileReader fr = new FileReader(fileName);
@@ -158,7 +158,7 @@ public class ImportExportManager {
 		} catch (IOException err) {
 			logger.error(err.getMessage());
 		}
-		logger.error("read form file (" + amount + ")");
+		logger.debug("read form file (" + amount + ")");
 		return importMap;
 	}
 	
