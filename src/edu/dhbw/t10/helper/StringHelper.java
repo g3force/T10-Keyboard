@@ -83,7 +83,7 @@ public class StringHelper {
 	 * Quelle: http://www.daniweb.com/software-development/java/threads/147397
 	 * modified
 	 * 
-	 * FIXME evtl. diese Funktion in Output.class und mit extractUnicode kombinieren
+	 * FIXME DanielA evtl. diese Funktion in Output.class und mit extractUnicode kombinieren
 	 * 
 	 * @param input
 	 * @return

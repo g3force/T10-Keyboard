@@ -13,13 +13,16 @@ package edu.dhbw.t10.view.menus;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
+import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
 import edu.dhbw.t10.manager.Controller;
+import edu.dhbw.t10.view.dialogs.ProfileChooser;
 
 
 /**
@@ -84,8 +87,10 @@ public class MenuBar extends JMenuBar {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				new ProfileChooser(1);
+
 				Controller.getInstance().createProfile("Profile" + (++inc));
-				// TODO ALL Menu erstellen (eingabe: Name und Pfad)
+				// TODO FelixP Menu erstellen (eingabe: Name und Pfad)
 			}
 		});
 		
@@ -93,7 +98,15 @@ public class MenuBar extends JMenuBar {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO ALL Menu
+				JFileChooser fc = new JFileChooser();
+				
+				fc.setDialogType(JFileChooser.OPEN_DIALOG);
+				int state = fc.showOpenDialog(null);
+				
+				if (state == JFileChooser.APPROVE_OPTION) {
+					File[] file = fc.getSelectedFiles();
+					// TODO FelixP use non-existent controller interface
+				}
 			}
 		});
 		
@@ -101,7 +114,7 @@ public class MenuBar extends JMenuBar {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO ALL Menu
+				// TODO FelixP Menu
 			}
 		});
 
@@ -117,7 +130,7 @@ public class MenuBar extends JMenuBar {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO ALL Menu bearbeiten(eingabe: Name und Pfad, vor ausgefüllt)
+				// TODO FelixP Menu bearbeiten(eingabe: Name und Pfad, vor ausgefüllt)
 			}
 		});
 		
@@ -125,7 +138,7 @@ public class MenuBar extends JMenuBar {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO ALL Menu
+				// TODO FelixP Menu
 			}
 		});
 		
@@ -133,7 +146,7 @@ public class MenuBar extends JMenuBar {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO ALL Menu
+				// TODO FelixP Menu
 			}
 		});
 		
@@ -141,7 +154,7 @@ public class MenuBar extends JMenuBar {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO ALL Menu
+				// TODO FelixP Menu
 			}
 		});
 		
@@ -149,7 +162,7 @@ public class MenuBar extends JMenuBar {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO ALL Menu autoLöschen (profilliste, Datum, Wortanzahl
+				// TODO FelixP Menu autoLöschen (profilliste, Datum, Wortanzahl
 			}
 		});
 		

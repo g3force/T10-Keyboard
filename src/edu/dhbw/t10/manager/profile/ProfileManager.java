@@ -373,7 +373,6 @@ public class ProfileManager {
 	
 	/**
 	 * 
-	 * TODO ??? implementieren... siehe Kontrollfluss Diagramm
 	 * OutputManager requests a Word suggestion with an given Startstring.
 	 * @param givenChars
 	 * @return
@@ -397,7 +396,6 @@ public class ProfileManager {
 	
 	/**
 	 * 
-	 * TODO ??? implementieren...
 	 * Gives a word which have to be inserted or updated in the data.
 	 * 
 	 * @param word
