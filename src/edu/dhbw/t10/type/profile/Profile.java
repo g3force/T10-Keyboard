@@ -176,7 +176,7 @@ public class Profile implements Serializable {
 	
 	/**
 	 * unused
-	 * TODO dirk, delete
+	 * TODO DirkK, delete
 	 * @author DirkK
 	 */
 	// public void saveOrderedTree() {

@@ -22,15 +22,16 @@ import edu.dhbw.t10.manager.Controller;
 /**
  * This is the main class of the t10 keyboard. It only initializes the first important classes.
  * 
- * TODO ALL graphical buttons (keys) e.g. pause- and arrow keys
- * TODO ALL right click on button activates shift mode
- * TODO SebastianN profile configuration
- * TODO ALL menus
- * TODO ALL insert tooltips for mute buttons
- * TODO ALL StatusBar
- * TODO ALL color in saveLayout
+ * TODO OPTIONAL ALL graphical buttons (keys) e.g. pause- and arrow keys
+ * TODO NicolaiO right click on button activates shift mode
+ * TODO FelixP menus
+ * TODO DirkK insert tooltips for mute buttons
+ * TODO NicolaiO insert tooltips for mute buttons
+ * TODO OPTIONAL ALL StatusBar
+ * TODO DirkK color in saveLayout
+ * TODO NicolaiO color in saveLayout
  * TODO NicolaiO shift button synchronized states => general Design problem
- * TODO ALL visualize Button state
+ * TODO NicolaiO visualize Button state
  * 
  * @author NicolaiO
  * 
