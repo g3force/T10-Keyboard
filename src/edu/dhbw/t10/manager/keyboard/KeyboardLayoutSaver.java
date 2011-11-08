@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.Map.Entry;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -125,10 +126,10 @@ public class KeyboardLayoutSaver {
 			for (DropDownList dd : kbdLayout.getDdls()) {
 				Element dropdown = doc.createElement("dropdown");
 				dropdown.setAttribute("type", dd.getTypeAsString());
-				dropdown.setAttribute("size_x", dd.getOrigSize().getWidth() + "");
-				dropdown.setAttribute("size_y", dd.getOrigSize().getHeight() + "");
-				dropdown.setAttribute("pos_x", dd.getX() + "");
-				dropdown.setAttribute("pos_y", dd.getY() + "");
+				dropdown.setAttribute("size_x", ((int) dd.getOrigSize().getWidth()) + "");
+				dropdown.setAttribute("size_y", ((int) dd.getOrigSize().getHeight()) + "");
+				dropdown.setAttribute("pos_x", dd.getPos_x() + "");
+				dropdown.setAttribute("pos_y", dd.getPos_y() + "");
 				layout.appendChild(dropdown);
 			}
 			// ---------------MUTEBUTTONS-----------------
@@ -139,13 +140,13 @@ public class KeyboardLayoutSaver {
 				// ON
 				Element on = doc.createElement("on");
 				on.setAttribute("color", muteButton.getStringFromColor(muteButton.getOnColor()));
-				text = doc.createTextNode("Save");
+				text = doc.createTextNode(muteButton.getOnName());
 				on.appendChild(text);
 				muteButtonEl.appendChild(on);
 				// OFF
 				Element off = doc.createElement("off");
 				off.setAttribute("color", muteButton.getStringFromColor(muteButton.getOffColor()));
-				text = doc.createTextNode("Save");
+				text = doc.createTextNode(muteButton.getOffName());
 				off.appendChild(text);
 				muteButtonEl.appendChild(off);
 				
@@ -161,7 +162,13 @@ public class KeyboardLayoutSaver {
 				key.appendChild(text);
 				buttonEl.appendChild(key);
 				
+				// workaround for double mode buttons (two phys. shift buttons)
+				ArrayList<Integer> workaroundList = new ArrayList<Integer>();
 				for (Entry<ModeButton, Key> mode : button.getModes().entrySet()) {
+					if (workaroundList.contains(mode.getKey().getModeKey().getId())) {
+						continue;
+					}
+					workaroundList.add(mode.getKey().getModeKey().getId());
 					Element modeEl = doc.createElement("mode");
 					modeEl.setAttribute("modename", mode.getKey().getModeKey().getId() + "");
 					text = doc.createTextNode(mode.getValue().getId() + "");
@@ -248,8 +255,8 @@ public class KeyboardLayoutSaver {
 	
 	
 	private static void setSizeOfPhysicalButton(Element el, PhysicalButton button) {
-		el.setAttribute("size_x", button.getOrigSize().getWidth() + "");
-		el.setAttribute("size_y", button.getOrigSize().getHeight() + "");
+		el.setAttribute("size_x", ((int) button.getOrigSize().getWidth()) + "");
+		el.setAttribute("size_y", ((int) button.getOrigSize().getHeight()) + "");
 		el.setAttribute("pos_x", button.getPos_x() + "");
 		el.setAttribute("pos_y", button.getPos_y() + "");
 	}

@@ -7,7 +7,7 @@
 	<font>
 		<!-- For description, see javadoc of Font-class -->
 		<name></name>
-		<style></style>
+		<style>0</style>
 		<size>10</size>
 	</font>
 
