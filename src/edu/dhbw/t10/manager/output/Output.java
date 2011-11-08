@@ -114,8 +114,8 @@ public class Output {
 	 * Switch with type over different sendKey calls. <br>
 	 * - Key.CONTROL is used for Control Symbols like Enter or Space. <br>
 	 * - Key.UNICODE is used for a Unicode Sequence. <br>
-	 * - Key.CHAR is sed for normal chars. <br>
-	 * - Key.UNKNOWN //TODO DanielA for what is this used? <br>
+	 * - Key.CHAR is used for normal chars. <br>
+	 * - Key.UNKNOWN produces a logger warning. <br>
 	 * The Key.CHAR type differntiate between Big, Small an Unicode Letters...<br>
 	 * Converts a char with convertKeyCode to a Key.Constant
 	 * 
@@ -138,7 +138,6 @@ public class Output {
 				sendUnicode(charSequence);
 				logger.info("Unicode Symbol printed: " + charSequence);
 				break;
-			case Key.UNKNOWN: // TODO DanielA Whats Key.UNKNOWN
 			case Key.CHAR:
 				// Get the starter Positions of Unicodes in a String...
 				charSequence = StringHelper.convertToUnicode(charSequence);
@@ -160,6 +159,7 @@ public class Output {
 				logger.info("String printed: " + charSequence);
 					break;
 			// No correct type can't be handeld...
+			case Key.UNKNOWN:
 			default: 
 				logger.info("Undefined type for printing:" + type);
 				return false;
