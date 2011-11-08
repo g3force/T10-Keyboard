@@ -77,7 +77,7 @@ public class PriorityTree implements Serializable {
 	 */
 	private void insert(String word, int frequency, boolean setFreq) {
 		if (inputValid(word)) {
-			logger.debug("Insertig Word...");
+			logger.trace("Insertig Word...");
 			PriorityElement node = root;
 			char[] inChar = word.toCharArray(); // put every letter of the word alone in an char array
 			for (int i = 0; i < inChar.length; i++) {
@@ -92,7 +92,7 @@ public class PriorityTree implements Serializable {
 							node.setFrequency(frequency - 1);
 						node.increase(); // increases frequency by one and arranges suggests
 					}
-					logger.debug("Inserting Node... (Node Increased)");
+					logger.trace("Inserting Node... (Node Increased)");
 				} else {
 					// node has to be created
 					node = node.addFollower(inChar[i]);
@@ -102,9 +102,9 @@ public class PriorityTree implements Serializable {
 							node.setFrequency(frequency - 1);
 						node.increase(); // increases frequency by one and arranges suggests
 					}
-					logger.debug("Inserting Node... (New Node Added)");
+					logger.trace("Inserting Node... (New Node Added)");
 				}
-				logger.info("Word Inserted");
+				logger.debug("Word Inserted");
 			}
 		} else {
 			logger.warn("Word (" + word + ") Ignored - not valid");
@@ -241,7 +241,7 @@ public class PriorityTree implements Serializable {
 		for (Entry<String, Integer> entry : input.entrySet()) {
 			insert(entry.getKey(), entry.getValue(), true);
 		}
-		logger.error("imported from HashMap");
+		logger.debug("imported from HashMap");
 	}
 	
 	
@@ -313,7 +313,7 @@ public class PriorityTree implements Serializable {
 	 * bad in performance
 	 */
 	public LinkedList<PriorityElement> getFreqSortedList() {
-		logger.error("fetching ordered list");
+		logger.debug("fetching ordered list");
 		LinkedList<PriorityElement> ll = new LinkedList<PriorityElement>();
 		for (PriorityElement pe : root.getListOfFollowers()) {
 			// boolean sorted = false;
@@ -348,7 +348,7 @@ public class PriorityTree implements Serializable {
 			// }
 			// }
 		}
-		logger.error("fetched ordered list");
+		logger.debug("fetched ordered list");
 		return ll;
 	}
 	
@@ -383,7 +383,7 @@ public class PriorityTree implements Serializable {
 	
 	public void saveAllowedChars() {
 		try {
-			File confFile = new File("pathToAllowedChars");
+			File confFile = new File(pathToAllowedChars);
 			FileWriter fw = new FileWriter(confFile);
 			BufferedWriter bw = new BufferedWriter(fw);
 			
@@ -392,10 +392,10 @@ public class PriorityTree implements Serializable {
 			}
 			bw.close();
 		} catch (IOException io) {
-			logger.debug("IOException in readConfig()");
+			logger.error("IOException in readConfig()");
 			io.printStackTrace();
 		} catch (Exception ex) {
-			logger.debug("Exception in readConfig(): " + ex.toString());
+			logger.error("Exception in readConfig(): " + ex.toString());
 			ex.printStackTrace();
 		}
 	}
@@ -420,15 +420,15 @@ public class PriorityTree implements Serializable {
 					allowedChars.add(newi);
 				}
 			} else {
-				logger.error("No allowed chars file found at " + pathToAllowedChars);
+				logger.warn("No allowed chars file found at " + pathToAllowedChars);
 				int[] newi = { 0, 255 };
 				allowedChars.add(newi);
 			}
 		} catch (IOException io) {
-			logger.debug("IOException in loadAllowedChars()");
+			logger.error("IOException in loadAllowedChars()");
 			io.printStackTrace();
 		} catch (Exception ex) {
-			logger.debug("Exception in loadAllowedChars(): " + ex.toString());
+			logger.error("Exception in loadAllowedChars(): " + ex.toString());
 			ex.printStackTrace();
 		}
 	}
