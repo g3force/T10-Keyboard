@@ -127,7 +127,7 @@ public class OutputManager {
 	public void printSuggest(String newSuggest, String typed) {
 		// only used if there are really chars that aren't typed yet...
 		if (newSuggest.length() > typed.length()) {
-			out.printString(newSuggest.substring(typed.length()), 0);
+			out.printString(newSuggest.substring(typed.length()), Key.CHAR);
 			mark(newSuggest.length() - typed.length());
 		}
 	}
