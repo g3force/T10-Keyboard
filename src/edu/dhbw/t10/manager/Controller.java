@@ -302,10 +302,11 @@ public class Controller implements ActionListener, WindowListener {
 	
 
 	/**
+	 * ö
 	 * 
-	 * TODO DanielAl, add comment!
 	 * 
-	 * @param currentList
+	 * 
+	 * @param key
 	 * @author DanielAl
 	 */
 	private void keyIsSpaceOrEnter(Key key) {
@@ -320,11 +321,10 @@ public class Controller implements ActionListener, WindowListener {
 	// Window ----------------------------
 	
 	/**
+	 * Resizes the Window and rescale the buttons to fit in there...
 	 * 
-	 * TODO DanielAl, add comment!
-	 * 
-	 * @param currentList
-	 * @author DanielAl
+	 * @param size
+	 * @author DanielAl FIXME
 	 */
 	public void resizeWindow(Dimension size) {
 		KeyboardLayout kbdLayout = profileMan.getActive().getKbdLayout();
@@ -386,11 +386,9 @@ public class Controller implements ActionListener, WindowListener {
 	
 
 	/**
+	 * Save the actual Profile and dictionary to be able to clse the application.
 	 * 
-	 * TODO DanielAl, add comment!
-	 * 
-	 * @param currentList
-	 * @author DanielAl
+	 * @author DanielAl FIXME
 	 */
 	private void closeSuperFelix() {
 		try {
@@ -412,11 +410,10 @@ public class Controller implements ActionListener, WindowListener {
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
 	/**
+	 * Calls the constructor if no instance exist. Singleton Design Pattern...
 	 * 
-	 * TODO DanielAl, add comment!
-	 * 
-	 * @param currentList
-	 * @author DanielAl
+	 * @return Controller
+	 * @author DanielAl FIXME
 	 */
 	
 	public static Controller getInstance() {
