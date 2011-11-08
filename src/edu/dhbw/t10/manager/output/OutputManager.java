@@ -3,7 +3,7 @@
  * Copyright (c) 2011 - 2011, DHBW Mannheim
  * Project: T10 On-Screen Keyboard
  * Date: Oct 15, 2011
- * Author(s): NicolaiO
+ * Author(s): DanielAl
  * 
  * *********************************************************
  */
