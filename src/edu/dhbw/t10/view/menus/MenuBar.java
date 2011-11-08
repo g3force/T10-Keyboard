@@ -85,7 +85,7 @@ public class MenuBar extends JMenuBar {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Controller.getInstance().createProfile("Profile" + (++inc));
-				// TODO ALL Menu erstellen (eingabe: Name und Pfad)
+				// TODO FelixP Menu erstellen (eingabe: Name und Pfad)
 			}
 		});
 		
@@ -93,7 +93,7 @@ public class MenuBar extends JMenuBar {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO ALL Menu
+				// TODO FelixP Menu
 			}
 		});
 		
@@ -101,7 +101,7 @@ public class MenuBar extends JMenuBar {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO ALL Menu
+				// TODO FelixP Menu
 			}
 		});
 
@@ -117,7 +117,7 @@ public class MenuBar extends JMenuBar {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO ALL Menu bearbeiten(eingabe: Name und Pfad, vor ausgefüllt)
+				// TODO FelixP Menu bearbeiten(eingabe: Name und Pfad, vor ausgefüllt)
 			}
 		});
 		
@@ -125,7 +125,7 @@ public class MenuBar extends JMenuBar {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO ALL Menu
+				// TODO FelixP Menu
 			}
 		});
 		
@@ -133,7 +133,7 @@ public class MenuBar extends JMenuBar {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO ALL Menu
+				// TODO FelixP Menu
 			}
 		});
 		
@@ -141,7 +141,7 @@ public class MenuBar extends JMenuBar {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO ALL Menu
+				// TODO FelixP Menu
 			}
 		});
 		
@@ -149,7 +149,7 @@ public class MenuBar extends JMenuBar {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO ALL Menu autoLöschen (profilliste, Datum, Wortanzahl
+				// TODO FelixP Menu autoLöschen (profilliste, Datum, Wortanzahl
 			}
 		});
 		
