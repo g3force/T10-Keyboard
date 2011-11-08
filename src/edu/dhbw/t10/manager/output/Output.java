@@ -114,8 +114,8 @@ public class Output {
 	 * Switch with type over different sendKey calls. <br>
 	 * - Key.CONTROL is used for Control Symbols like Enter or Space. <br>
 	 * - Key.UNICODE is used for a Unicode Sequence. <br>
-	 * - Key.CHAR is sed for normal chars. <br>
-	 * - Key.UNKNOWN //TODO DanielA for what is this used? <br>
+	 * - Key.CHAR is used for normal chars. <br>
+	 * - Key.UNKNOWN produces a logger warning. <br>
 	 * The Key.CHAR type differntiate between Big, Small an Unicode Letters...<br>
 	 * Converts a char with convertKeyCode to a Key.Constant
 	 * 
@@ -138,17 +138,19 @@ public class Output {
 				sendUnicode(charSequence);
 				logger.info("Unicode Symbol printed: " + charSequence);
 				break;
-			case Key.UNKNOWN: // TODO DanielA Whats Key.UNKNOWN
 			case Key.CHAR:
 				// Get the starter Positions of Unicodes in a String...
 				charSequence = StringHelper.convertToUnicode(charSequence);
+				length = charSequence.length();
 				ArrayList<Integer> unicodeStart = StringHelper.extractUnicode(charSequence);
+				logger.trace("Unicodes starts at: " + unicodeStart.toString());
 				
 				for (int i = 0; i < length; i++) {
 					// Unicode Zeichen
 					if (!unicodeStart.isEmpty() && unicodeStart.get(0) == i) { 
-						sendUnicode(charSequence.substring(i, i + 7));
+						sendUnicode(charSequence.substring(i, i + 8));
 						unicodeStart.remove(0);
+						i += 7;
 						// Big Letters
 					} else if (Character.isUpperCase(charSequence.charAt(i)) == true) {
 						sendKey(convertKeyCode(charSequence.substring(i, i + 1)), SHIFT);
@@ -160,6 +162,7 @@ public class Output {
 				logger.info("String printed: " + charSequence);
 					break;
 			// No correct type can't be handeld...
+			case Key.UNKNOWN:
 			default: 
 				logger.info("Undefined type for printing:" + type);
 				return false;
@@ -170,7 +173,7 @@ public class Output {
 
 	/**
 	 * Prints a combi by calling for each Key Element of the ArrayList the sendKey with function COMBI. <br>
-	 * When the List is empty, call the special mode of the COMBi Branch of sendKey to release all pressed Keys...<br>
+	 * When the List is empty, call the special mode of the COMBI Branch of sendKey to release all pressed Keys...<br>
 	 * 
 	 * 
 	 * @param Button b
@@ -255,6 +258,8 @@ public class Output {
 	 * @author DanielAl
 	 */
 	private boolean sendUnicode(String uni) {
+		logger.error("UNICODE length: " + uni.length() + " Uni:" + uni);
+
 		// Chekcs for the correct Unicode length, begin and end
 		if (uni.length() != 8 || !uni.substring(0, 3).equals("\\U+") || !uni.substring(7, 8).equals("\\")) {
 			logger.error("UNICODE wrong format; length: " + uni.length());

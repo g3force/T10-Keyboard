@@ -290,14 +290,13 @@ public class Controller implements ActionListener, WindowListener {
 	private void keyIsBackspace() {
 		if (typedWord.length() > 0 && typedWord.equals(suggest)) {
 			typedWord = typedWord.substring(0, typedWord.length() - 1);
-			// TODO DanielAl What the hell are these comments?! :o german...
-			// Eins, weil es keinen Vorschlag gibt...
+			// Delete 1, because nothing is marked and you want to delete one char
 			outputMan.deleteChar(1);
 			suggest = profileMan.getWordSuggest(typedWord);
 			outputMan.printSuggest(suggest, typedWord);
 		} else if (typedWord.length() > 0) {
 			typedWord = typedWord.substring(0, typedWord.length() - 1);
-			// Zwei, weil einmal muss die aktuelle Markierung gelöscht werden und dann ein Zeichen.
+			// Delete 1, because there are suggested chars marked and you want to delete them and one char
 			outputMan.deleteChar(2);
 			suggest = profileMan.getWordSuggest(typedWord);
 			outputMan.printSuggest(suggest, typedWord);
