@@ -1,10 +1,10 @@
-/* 
+/*
  * *********************************************************
  * Copyright (c) 2011 - 2011, DHBW Mannheim
  * Project: T10 On-Screen Keyboard
  * Date: Nov 1, 2011
- * Author(s): DirkK
- *
+ * Author(s): DirkK, DanielAl
+ * 
  * *********************************************************
  */
 package edu.dhbw.t10.helper;
@@ -13,9 +13,7 @@ import java.util.ArrayList;
 
 
 /**
- * TODO DirkK, add comment!
- * - What should this type do (in one sentence)?
- * - If not intuitive: A simple example how to use this class
+ * Provides Helper methods for String Handling...
  * 
  * @author DirkK, DanielAl
  * 
