@@ -72,7 +72,7 @@ public class StringHelper {
 			if (sequence.substring(help).startsWith("\\U+")) {
 				help = sequence.indexOf("\\U+", help);
 				unicodeStart.add(help);
-				help += 7;
+				help += 8;
 			} else
 				help++;
 		}
@@ -99,7 +99,7 @@ public class StringHelper {
 			if ((ch >= 0x0020) && (ch <= 0x007e)) { // Does the char need to be converted to unicode?
 				ostr.append(ch); // No.
 			} else { // Yes.
-				ostr.append("\\u+"); // own unicode format
+				ostr.append("\\U+"); // own unicode format
 				String hex = Integer.toHexString(input.charAt(i) & 0xFFFF); // Get hex value of the char.
 				for (int j = 0; j < 4 - hex.length(); j++)
 					// Prepend zeros because unicode requires 4 digits
