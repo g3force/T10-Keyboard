@@ -30,8 +30,6 @@ import edu.dhbw.t10.type.keyboard.key.Key;
  * All other symbols are written via their Unicode.<br>
  * 
  * Control symbols are sent via their java.awt.event.KeyEvent constant<br>
- * FIXME DanielA Windows support untested
- * 
  * 
  * @author DanielAl
  * 
@@ -140,7 +138,7 @@ public class Output {
 				sendUnicode(charSequence);
 				logger.info("Unicode Symbol printed: " + charSequence);
 				break;
-			case Key.UNKNOWN: // FIXME DanielA
+			case Key.UNKNOWN: // FIXME DanielA Whats Key.UNKNOWN
 			case Key.CHAR:
 				// Get the starter Positions of Unicodes in a String...
 				charSequence = StringHelper.convertToUnicode(charSequence);
@@ -171,8 +169,9 @@ public class Output {
 	
 
 	/**
+	 * Prints a combi by calling for each Key Element of the ArrayList the sendKey with function COMBI. <br>
+	 * When the List is empty, call the special mode of the COMBi Branch of sendKey to release all pressed Keys...<br>
 	 * 
-	 * TODO DanielAl, add comment!
 	 * 
 	 * @param Button b
 	 * @return boolean
@@ -289,9 +288,9 @@ public class Output {
 					sendKey(KeyEvent.VK_NUM_LOCK, TYPE);
 				}
 
-				// Sending KeyCombination for Unicode input to Windows...
+					// Sending KeyCombination for Unicode input to Windows (Hold ALT and press ADD and the digits, then
+					// release ALT)
 				sendKey(KeyEvent.VK_ALT, PRESS);
-					// FIXME DanielA ADD Symbol really needed??
 				sendKey(KeyEvent.VK_ADD, TYPE);
 				// send the Hexa Decimal number with digits as a numpad key and the chars from the normal keyboard...
 				sendKey(Character.isDigit(uniArr[0]) ? convertKeyCode(uniArr[0] + "", 1) : convertKeyCode(uniArr[0] + "", 0), TYPE);
