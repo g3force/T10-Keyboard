@@ -34,6 +34,12 @@ public class StringHelper {
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
+	/**
+	 * TODO DirkK Add comment!
+	 * Removes all punctuation Symbols of a given String.<br>
+	 * 
+	 * @author DirkK
+	 */
 	public static String removePunctuation(String input) {
 		input = input.replace("\"", "");
 		input = input.replace("'", "");
@@ -55,7 +61,7 @@ public class StringHelper {
 
 	/**
 	 * 
-	 * Find a Unicode in a given String and returns a List with the indices
+	 * Find a Unicode in a given String and returns a List with the indices.
 	 * 
 	 * @param sequence
 	 * @return
@@ -74,11 +80,11 @@ public class StringHelper {
 		}
 		return unicodeStart;
 	}
-
+	
 
 	/**
+	 * Converts a given String to a String, where non-ASCII chars a replaced by a Unicode Sequence.
 	 * 
-	 * TODO DanielAl, add comment!
 	 * Quelle: http://www.daniweb.com/software-development/java/threads/147397
 	 * modified
 	 * 
