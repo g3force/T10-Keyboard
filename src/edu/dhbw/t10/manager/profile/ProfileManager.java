@@ -34,14 +34,15 @@ public class ProfileManager {
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
-	private static final Logger	logger				= Logger.getLogger(ProfileManager.class);
-	private ArrayList<Profile>		profiles;
-	private ArrayList<String>		profilePathes;
+	private static final Logger	logger					= Logger.getLogger(ProfileManager.class);
+	private static final String	configFile				= "data/config";
+	private ArrayList<Profile>		profiles					= new ArrayList<Profile>();
+	private ArrayList<String>		profilePathes			= new ArrayList<String>();
 	private Profile					activeProfile;
-	private String						activeProfileName;
-	private boolean					autoProfileChange	= true;
-	private boolean					autoCompleting		= true;
-	private boolean					treeExpanding		= true;
+	private String						defaultActiveProfile	= "default";
+	private boolean					autoProfileChange		= true;
+	private boolean					autoCompleting			= true;
+	private boolean					treeExpanding			= true;
 	
 	
 	// --------------------------------------------------------------------------
@@ -49,16 +50,23 @@ public class ProfileManager {
 	// --------------------------------------------------------------------------
 	public ProfileManager() {
 		logger.debug("initializing...");
-		profilePathes = new ArrayList<String>();
 		readConfig(); // fills activeProfileName and profilePathes with the data from the config file
-		logger.debug("configfile: activeProfileName=" + activeProfileName + " profiles=" + profilePathes.size());
+		logger.debug("configfile: activeProfileName=" + defaultActiveProfile + " profiles=" + profilePathes.size());
 		getSerializedProfiles(); // deserializes all profiles, fills profiles
-		logger.debug("deserializing the profiles");
+		// if no profiles were loaded, create a new one
 		if (profiles.size() == 0) {
-			logger.debug("default profile will be created");
-			createProfile("default");
+			logger.debug("No profiles loaded. New profile will be created.");
+			createProfile(defaultActiveProfile);
 		}
-		activeProfile = getProfileByName(activeProfileName);
+		// set active profile by defauleActiveProfile which was either loaded from config file or is set to a default
+		// value
+		activeProfile = getProfileByName(defaultActiveProfile);
+		// if the defaultActiveProfile in the config file references a non existent profile, create a new profile with the
+		// given name
+		if (activeProfile == null) {
+			activeProfile = createProfile(defaultActiveProfile);
+		}
+		// now, active profile is hopefully set to any profile...
 		activeProfile.load();
 		logger.debug("initialized.");
 	}
@@ -85,6 +93,7 @@ public class ProfileManager {
 		}
 	}
 	
+
 	/**
 	 * 
 	 * Adds <b>ONE</b> profile to the dropdown list.
@@ -93,13 +102,12 @@ public class ProfileManager {
 	 * @author SebastianN
 	 */
 	
-	private void addProfileToDDL(Profile handle) {
+	public void addProfileToDDL(Profile handle) {
 		ArrayList<DropDownList> DDLs = getActive().getKbdLayout().getDdls();
 		for (int i = 0; i < DDLs.size(); i++) {
 			if (DDLs.get(i).getType() == DropDownList.PROFILE) {
 				DDLs.get(i).addItem(handle.getName());
 				DDLs.get(i).updateUI();
-				// break;
 			}
 		}
 	}
@@ -136,7 +144,7 @@ public class ProfileManager {
 	 */
 	public void readConfig() {
 		try {
-			File confFile = new File("data/config");
+			File confFile = new File(configFile);
 			if (confFile.exists()) {
 				FileReader fr = new FileReader(confFile);
 				BufferedReader br = new BufferedReader(fr);
@@ -164,8 +172,7 @@ public class ProfileManager {
 						if (valName.toLowerCase().equals("profilepath")) {
 							profilePathes.add(value);
 						} else if (valName.toLowerCase().equals("activeprofile")) {
-							activeProfileName = value;
-
+							defaultActiveProfile = value;
 						}
 					} catch (Exception ex) {
 						ex.printStackTrace();
@@ -173,6 +180,8 @@ public class ProfileManager {
 					}
 				}
 				br.close();
+			} else {
+				logger.error("Config file could not be found.");
 			}
 		} catch (IOException io) {
 			logger.debug("IOException in readConfig()");
@@ -268,11 +277,6 @@ public class ProfileManager {
 		}
 		Profile newProfile = new Profile(profileName);
 		profiles.add(newProfile);
-		if (activeProfile == null) {
-			logger.info("Active profile was set to newProfile");
-			activeProfile = newProfile;
-		}
-		addProfileToDDL(newProfile);
 		return newProfile;
 	}
 	
@@ -292,6 +296,7 @@ public class ProfileManager {
 					return profiles.get(i);
 			}
 		}
+		logger.error("Profile \"" + name + "\" not found.");
 		return null;
 	}
 	
@@ -344,8 +349,8 @@ public class ProfileManager {
 		return -1;
 	}
 	
+
 	/**
-	 * 
 	 * Marks a profile as 'active'.
 	 * 
 	 * TODO SebastianN use me
@@ -372,10 +377,11 @@ public class ProfileManager {
 	
 	
 	/**
-	 * 
 	 * OutputManager requests a Word suggestion with an given Startstring.
+	 * 
 	 * @param givenChars
 	 * @return
+	 * @author TODO ALL from who??
 	 */
 	public String getWordSuggest(String givenChars) {
 		if (autoCompleting) {
@@ -395,10 +401,10 @@ public class ProfileManager {
 	
 	
 	/**
-	 * 
 	 * Gives a word which have to be inserted or updated in the data.
 	 * 
 	 * @param word
+	 * @author SebastianN
 	 */
 	public void acceptWord(String word) {
 		if (getActive() == null) {
@@ -411,9 +417,9 @@ public class ProfileManager {
 	
 	
 	/**
-	 * 
 	 * Serializing Profile-Arraylist
 	 * 
+	 * @author SebastianN
 	 */
 	public void serializeProfiles() {
 		for (int i = 0; i < profiles.size(); i++) {
@@ -438,16 +444,19 @@ public class ProfileManager {
 	 * @author SebastianN
 	 */
 	public void getSerializedProfiles() {
+		int counter = 0;
 		if (profiles == null) {
 			profiles = new ArrayList<Profile>();
 		}
 		for (int i = 0; i < profilePathes.size(); i++) {
 			try {
 				profiles.add((Profile) Serializer.deserialize(profilePathes.get(i)));
+				counter++;
 			} catch (IOException io) {
-				logger.error("Not able to deserialize Profile from file" + profilePathes.get(i));
+				logger.error("Not able to deserialize Profile from file " + profilePathes.get(i));
 			}
 		}
+		logger.info("Deserialized " + counter + " profiles.");
 	}
 	
 	
