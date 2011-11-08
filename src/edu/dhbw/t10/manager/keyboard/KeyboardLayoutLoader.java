@@ -174,9 +174,10 @@ public class KeyboardLayoutLoader {
 	
 	
 	/**
-	 * TODO NicolaiO, add comment!
+	 * ddl = Drop Down List
+	 * load all drop down lists from file...
 	 * 
-	 * @return
+	 * @return ArrayList of all ddls
 	 * @author NicolaiO
 	 */
 	private static ArrayList<DropDownList> getDdls() {
@@ -500,11 +501,11 @@ public class KeyboardLayoutLoader {
 	
 	
 	/**
+	 * Returns the value of the first node with given name in the xml doc
 	 * 
-	 * TODO NicolaiO, add comment!
-	 * 
-	 * @param nodename
-	 * @return
+	 * @param nodename to search for
+	 * @param defaultValue value to be returned, if no value could be found or parsed
+	 * @return value of first node as int
 	 * @author NicolaiO
 	 */
 	private static int getIntFromNode(String nodename, int defaultValue) {
@@ -521,11 +522,11 @@ public class KeyboardLayoutLoader {
 	
 	
 	/**
+	 * Same as getIntFromNode, but returning a float
 	 * 
-	 * TODO NicolaiO, add comment!
-	 * 
-	 * @param nodename
-	 * @return
+	 * @param nodename to search for
+	 * @param defaultValue value to be returned, if no value could be found or parsed
+	 * @return value of first node as float
 	 * @author NicolaiO
 	 */
 	private static float getFloatFromNode(String nodename, float defaultValue) {

@@ -14,7 +14,7 @@
 		<key id="11" keycode="\F11\">F11</key>
 		<key id="12" keycode="\F12\">F12</key>
 		<key id="13" keycode="\PRINTSCREEN\">Druck</key>
-		<key id="14" keycode="???">Pause</key>
+		<key id="14" keycode="\PAUSE\">Pause</key>
 		<key id="28" keycode="\BACK_SPACE\">Backspace</key>
 		
 		<key id="1000" keycode="\CAPS_LOCK\">Caps</key>
@@ -36,16 +36,15 @@
 		
 		<key id="130" keycode="\SPACE\"> </key>
 		<key id="131" keycode="\END\">End</key>
-		<key id="132" keycode="\END\">Pos1</key>
-		<key id="133" keycode="\END\">BiHo</key>
-		<key id="134" keycode="\END\">BiRu</key>
-		<key id="135" keycode="\END\">Entf</key>
+		<key id="132" keycode="\HOME\">Pos1</key>
+		<key id="133" keycode="\PAGE_UP\">BiHo</key>
+		<key id="134" keycode="\PAGE_DOWN\">BiRu</key>
+		<key id="135" keycode="\DELETE\">Entf</key>
 	</keytype>
 	
 	<keytype name="unicode">
 		<key id="15" keycode="\U+005E\">^</key>
 		<!-- id jump reason: number keys missing here -->
-		<key id="26" keycode="\U+00DF\">ß</key>
 		<key id="27" keycode="\U+00B4\">´</key>
 		<key id="29" keycode="\U+00B0\">°</key>
 		<key id="30" keycode="\U+0021\">!</key>
@@ -70,21 +69,14 @@
 		<key id="48" keycode="\U+007D\">}</key>
 		<key id="49" keycode="\U+005C\">\</key>
 		
-		<key id="61" keycode="\U+00DC\">ü</key>
 		<key id="62" keycode="\U+002B\">+</key>
-		<key id="74" keycode="\U+00FC\">Ü</key>
 		<key id="75" keycode="\U+002A\">*</key>
 		
 		<key id="76" keycode="\U+0040\">@</key>
 		<key id="77" keycode="\U+20AC\">€</key>
 		<key id="78" keycode="\U+007E\">~</key>
 		
-		<key id="88" keycode="\U+00F6\">ö</key>
-		<key id="89" keycode="\U+00E4\">ä</key>
 		<key id="90" keycode="\U+0023\">#</key>
-		
-		<key id="100" keycode="\U+00D6\">Ö</key>
-		<key id="101" keycode="\U+00C4\">Ä</key>
 		<key id="102" keycode="\U+0027\">'</key>
 		
 		<key id="103" keycode="\U+003C\">&lt;</key>
@@ -109,6 +101,7 @@
 		<key id="23" keycode="8">8</key>
 		<key id="24" keycode="9">9</key>
 		<key id="25" keycode="0">0</key>
+		<key id="26" keycode="ß">ß</key>
 		
 		<key id="51" keycode="q">q</key>
 		<key id="52" keycode="w">w</key>
@@ -120,6 +113,7 @@
 		<key id="58" keycode="i">i</key>
 		<key id="59" keycode="o">o</key>
 		<key id="60" keycode="p">p</key>
+		<key id="61" keycode="ü">ü</key>
 		
 		<key id="64" keycode="Q">Q</key>
 		<key id="65" keycode="W">W</key>
@@ -131,6 +125,7 @@
 		<key id="71" keycode="I">I</key>
 		<key id="72" keycode="O">O</key>
 		<key id="73" keycode="P">P</key>
+		<key id="74" keycode="Ü">Ü</key>
 		
 		<key id="79" keycode="a">a</key>
 		<key id="80" keycode="s">s</key>
@@ -141,6 +136,8 @@
 		<key id="85" keycode="j">j</key>
 		<key id="86" keycode="k">k</key>
 		<key id="87" keycode="l">l</key>
+		<key id="88" keycode="ö">ö</key>
+		<key id="89" keycode="ä">ä</key>
 		
 		<key id="91" keycode="A">A</key>
 		<key id="92" keycode="S">S</key>
@@ -151,6 +148,8 @@
 		<key id="97" keycode="J">J</key>
 		<key id="98" keycode="K">K</key>
 		<key id="99" keycode="L">L</key>
+		<key id="100" keycode="Ö">Ö</key>
+		<key id="101" keycode="Ä">Ä</key>
 		
 		<key id="104" keycode="y">y</key>
 		<key id="105" keycode="x">x</key>

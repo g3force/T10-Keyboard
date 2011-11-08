@@ -78,7 +78,7 @@ public class Button extends PhysicalButton {
 			}
 		} else {
 			// If no mode or more than one mode is active, just set ButtonText to default...
-			// TODO NicolaiO support multi-modes
+			// TODO OPTIONAL NicolaiO support multi-modes
 			setText(key.getName());
 		}
 	}

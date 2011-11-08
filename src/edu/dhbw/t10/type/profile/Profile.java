@@ -42,8 +42,8 @@ public class Profile implements Serializable {
 	private String							pathToAllowedChars;
 	private String							pathToLayoutFile;
 	// private String pathToKeymapFile;
-	private static final String		defaultLayoutFile	= "data/conf/layout_default.xml";
-	private static final String		defaultKeymapFile	= "data/conf/keymap_default.xml";
+	private static final String		defaultLayoutFile	= "data/default/layout_default.xml";
+	private static final String		defaultKeymapFile	= "data/default/keymap_default.xml";
 	private transient PriorityTree	tree;
 	private transient KeyboardLayout	kbdLayout;
 	
@@ -58,7 +58,7 @@ public class Profile implements Serializable {
 	
 	public Profile(String pName) {
 		name = pName;
-		pathToLayoutFile = "data/layout/" + name + "_layout.xml";
+		pathToLayoutFile = "data/layout/" + name + ".layout";
 		init();
 	}
 	

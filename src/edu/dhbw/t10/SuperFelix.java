@@ -23,7 +23,6 @@ import edu.dhbw.t10.manager.Controller;
  * This is the main class of the t10 keyboard. It only initializes the first important classes.
  * 
  * TODO OPTIONAL ALL graphical buttons (keys) e.g. pause- and arrow keys
- * TODO NicolaiO right click on button activates shift mode
  * TODO FelixP menus
  * TODO DirkK insert tooltips for mute buttons
  * TODO NicolaiO insert tooltips for mute buttons
@@ -63,7 +62,7 @@ public class SuperFelix {
 		 * 
 		 * configuration is stored in a config file. If it does not exist, use basic config
 		 */
-		File logConfFile = new File("data/conf/log4j.conf");
+		File logConfFile = new File("data/log4j.conf");
 		if (logConfFile.exists()) {
 			PropertyConfigurator.configure(logConfFile.getPath());
 		} else {
