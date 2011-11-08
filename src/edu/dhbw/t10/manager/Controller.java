@@ -142,12 +142,12 @@ public class Controller implements ActionListener, WindowListener {
 	 * Do the logic for a button event. Switch between different types, specific Keys and a Key Combination...
 	 * 
 	 * @param button
-	 * @author DanielAl, //FIXME DanielAl
+	 * @author DanielAl
 	 */
 	private void eIsButton(Button button) {
-		// TODO DanielAl useful hint: e.getModifiers()
+		// TODO NicolaiO useful hint: e.getModifiers()
 		
-		// TODO DanielAl reference to Shift Mode Button??
+		// TODO NicolaiO reference to Shift Mode Button??
 		// if (e.getModifiers() == ActionEvent.SHIFT_MASK) {
 		// logger.debug("shift modifier is pressed.");
 		// }
@@ -171,7 +171,7 @@ public class Controller implements ActionListener, WindowListener {
 			}
 			logger.debug("Key pressed: " + key.toString());
 		} else if (button.getSingleKey().size() > 1) {
-			// FIXME DanielAl not working...
+			// FIXME NicolaiO, DanielAl Combi auslesen und weitergeben...
 			outputMan.printCombi(button);
 		} else
 			logger.error("No Key List");
@@ -181,10 +181,12 @@ public class Controller implements ActionListener, WindowListener {
 	
 
 	/**
-	 * 
-	 * TODO DanielAl, add comment!
-	 * 
-	 * @param currentList
+	 * Switchs between the three different Mute modes...<br>
+	 * Modes are:<br>
+	 * - AUTO_COMPLETING - If activated, this prints a suggested Word behind the typed chars and mark them...
+	 * - AUTO_PROFILE_CHANGE - If activated, this changes the profiles based on the sourrounded context.
+	 * - TREE_EXPANDING - If activated, accepted words are saved in the dicitionary...
+	 * @param muteB
 	 * @author DanielAl
 	 */
 
@@ -207,8 +209,7 @@ public class Controller implements ActionListener, WindowListener {
 	
 
 	/**
-	 * 
-	 * TODO DanielAl, add comment!
+	 * Switchs the profiles based on a Dropdownlist... <br>
 	 * 
 	 * @param currentList
 	 * @author DanielAl
@@ -221,13 +222,12 @@ public class Controller implements ActionListener, WindowListener {
 			profileMan.setActive(selectedProfile);
 		}
 	}
-
+	
 
 	/**
+	 * Accept a suggested word, unmarks it and prints the given key.
 	 * 
-	 * TODO DanielAl, add comment!
-	 * 
-	 * @param currentList
+	 * @param key
 	 * @author DanielAl
 	 */
 	private void keyIsAccept(Key key) {
@@ -243,10 +243,8 @@ public class Controller implements ActionListener, WindowListener {
 	
 
 	/**
-	 * 
-	 * TODO DanielAl, add comment!
-	 * 
-	 * @param currentList
+	 * Prints the given key, added it to the typed String and get a new suggest and prtints it...
+	 * @param key
 	 * @author DanielAl
 	 */
 	private void keyIsCHAR(Key key) {
@@ -258,17 +256,15 @@ public class Controller implements ActionListener, WindowListener {
 	
 
 	/**
+	 * If the input is a Unicode it is a Symbol character and this will be printed. <br>
+	 * The typed Word and SUggest WOrd will be forgotten.<br>
 	 * 
-	 * TODO DanielAl, add comment!
-	 * 
-	 * @param currentList
+	 * @param key
 	 * @author DanielAl
 	 */
 	private void keyIsUnicode(Key key) {
 		outputMan.printChar(key);
-		// FIXME DanielAl Wieso sind Umlaute als Unicode Zeichen im Keyboard gespeichert?? Wie soll die Unterscheidung
-		// zwischen
-		// Satzzeichen und Buchstaben stattfinden?
+		// TODO DanielAl review commented lines
 		// typedWord = typedWord + key.getName();
 		// suggest = profileMan.getWordSuggest(typedWord);
 		// outputMan.printSuggest(suggest, typedWord);
@@ -278,22 +274,23 @@ public class Controller implements ActionListener, WindowListener {
 	
 
 	/**
+	 * When Key is a BACK_SPACE the typed word is decreased by one char, when a suggest is already printed this is
+	 * deleted and also one char...
+	 * TODO DanielAl
 	 * 
-	 * TODO DanielAl, add comment!
-	 * 
-	 * @param currentList
 	 * @author DanielAl
 	 */
 	private void keyIsBackspace() {
 		if (typedWord.length() > 0 && typedWord.equals(suggest)) {
 			typedWord = typedWord.substring(0, typedWord.length() - 1);
-			outputMan.deleteChar(1); // Eins, weil es keinen Vorschlag gibt...
+			// Eins, weil es keinen Vorschlag gibt...
+			outputMan.deleteChar(1);
 			suggest = profileMan.getWordSuggest(typedWord);
 			outputMan.printSuggest(suggest, typedWord);
 		} else if (typedWord.length() > 0) {
 			typedWord = typedWord.substring(0, typedWord.length() - 1);
-			outputMan.deleteChar(2); // Zwei, weil einmal muss die aktuelle Markierung gelöscht werden und
-			// dann ein Zeichen.
+			// Zwei, weil einmal muss die aktuelle Markierung gelöscht werden und dann ein Zeichen.
+			outputMan.deleteChar(2);
 			suggest = profileMan.getWordSuggest(typedWord);
 			outputMan.printSuggest(suggest, typedWord);
 		} else {
@@ -303,9 +300,8 @@ public class Controller implements ActionListener, WindowListener {
 	
 
 	/**
-	 * ö
-	 * TODO DanielAl
-	 * 
+	 * When Space or Enter is pressed accept the the typed Word and print Space or Enter...<br>
+	 * The suggest will be declined and forgotten. // FIXME ALL Ist diese Zeile grammitsch richtig??
 	 * 
 	 * @param key
 	 * @author DanielAl
@@ -325,7 +321,7 @@ public class Controller implements ActionListener, WindowListener {
 	 * Resizes the Window and rescale the buttons to fit in there...
 	 * 
 	 * @param size
-	 * @author DanielAl FIXME DanielA
+	 * @author NicolaiO
 	 */
 	public void resizeWindow(Dimension size) {
 		KeyboardLayout kbdLayout = profileMan.getActive().getKbdLayout();
@@ -389,7 +385,7 @@ public class Controller implements ActionListener, WindowListener {
 	/**
 	 * Save the actual Profile and dictionary to be able to clse the application.
 	 * 
-	 * @author DanielAl FIXME DanielA
+	 * @author NicolaiO
 	 */
 	private void closeSuperFelix() {
 		try {
