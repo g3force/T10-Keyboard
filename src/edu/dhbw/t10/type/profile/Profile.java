@@ -141,8 +141,8 @@ public class Profile implements Serializable {
 			kbdLayout = KeyboardLayoutLoader.load(defaultLayoutFile, KeymapLoader.load(defaultKeymapFile));
 		}
 	}
-
 	
+
 	/**
 	 * 
 	 * Loads the (serialized) PriorityTree.
@@ -164,11 +164,13 @@ public class Profile implements Serializable {
 	 */
 	private void saveTree() {
 		if (tree != null) {
+			logger.debug("save tree to " + pathToTree);
 			ImportExportManager.exportToFile(tree.exportToHashMap(), pathToTree);
+		} else {
+			logger.debug("Tree not saved, because not existend");
 		}
-		logger.debug("save: " + pathToTree);
+		logger.debug("save Chars to " + pathToAllowedChars);
 		tree.saveAllowedChars();
-		logger.debug("save Chars: " + pathToAllowedChars);
 	}
 	
 	
