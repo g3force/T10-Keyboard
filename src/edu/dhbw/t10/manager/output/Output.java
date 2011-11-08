@@ -30,7 +30,7 @@ import edu.dhbw.t10.type.keyboard.key.Key;
  * All other symbols are written via their Unicode.<br>
  * 
  * Control symbols are sent via their java.awt.event.KeyEvent constant<br>
- * FIXME Windows support untested
+ * FIXME DanielA Windows support untested
  * 
  * 
  * @author DanielAl
@@ -117,7 +117,7 @@ public class Output {
 	 * - Key.CONTROL is used for Control Symbols like Enter or Space. <br>
 	 * - Key.UNICODE is used for a Unicode Sequence. <br>
 	 * - Key.CHAR is sed for normal chars. <br>
-	 * - Key.UNKNOWN //TODO for what is this used? <br>
+	 * - Key.UNKNOWN //TODO DanielA for what is this used? <br>
 	 * The Key.CHAR type differntiate between Big, Small an Unicode Letters...<br>
 	 * Converts a char with getKeyCode to a Key.Constant
 	 * 
@@ -140,7 +140,7 @@ public class Output {
 				sendUnicode(charSequence);
 				logger.info("Unicode Symbol printed: " + charSequence);
 				break;
-			case Key.UNKNOWN: // FIXME
+			case Key.UNKNOWN: // FIXME DanielA
 			case Key.CHAR:
 				// Get the starter Positions of Unicodes in a String...
 				charSequence = StringHelper.convertToUnicode(charSequence);
@@ -291,7 +291,7 @@ public class Output {
 
 				// Sending KeyCombination for Unicode input to Windows...
 				sendKey(KeyEvent.VK_ALT, PRESS);
-				// FIXME ADD Symbol really needed??
+					// FIXME DanielA ADD Symbol really needed??
 				sendKey(KeyEvent.VK_ADD, TYPE);
 				// send the Hexa Decimal number with digits as a numpad key and the chars from the normal keyboard...
 				sendKey(Character.isDigit(uniArr[0]) ? convertKeyCode(uniArr[0] + "", 1) : convertKeyCode(uniArr[0] + "", 0), TYPE);

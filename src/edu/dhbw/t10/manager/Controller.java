@@ -93,7 +93,7 @@ public class Controller implements ActionListener, WindowListener {
 	 * Creates a profile by name.
 	 * 
 	 * @param String name
-	 * @author //FIXME
+	 * @author SebastianN
 	 */
 	public void createProfile(String name) {
 		profileMan.createProfile(name);
@@ -104,7 +104,7 @@ public class Controller implements ActionListener, WindowListener {
 	 * Deletes a profile by name.
 	 * 
 	 * @param String name
-	 * @author //FIXME
+	 * @author SebastianN
 	 */
 	public void deleteProfile(String name) {
 		profileMan.deleteProfile(name);
@@ -116,7 +116,7 @@ public class Controller implements ActionListener, WindowListener {
 	 * Starts the right activities for a specific event...
 	 * 
 	 * @param e
-	 * @author //FIXME
+	 * @author ALL
 	 */
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() instanceof Button) {
@@ -142,12 +142,12 @@ public class Controller implements ActionListener, WindowListener {
 	 * Do the logic for a button event. Switch between different types, specific Keys and a Key Combination...
 	 * 
 	 * @param button
-	 * @author DanielAl, //FIXME
+	 * @author DanielAl, //FIXME DanielAl
 	 */
 	private void eIsButton(Button button) {
-		// TODO useful hint: e.getModifiers()
+		// TODO DanielAl useful hint: e.getModifiers()
 		
-		// TODO reference to Shift Mode Button??
+		// TODO DanielAl reference to Shift Mode Button??
 		// if (e.getModifiers() == ActionEvent.SHIFT_MASK) {
 		// logger.debug("shift modifier is pressed.");
 		// }
@@ -171,7 +171,7 @@ public class Controller implements ActionListener, WindowListener {
 			}
 			logger.debug("Key pressed: " + key.toString());
 		} else if (button.getSingleKey().size() > 1) {
-			// FIXME not working...
+			// FIXME DanielAl not working...
 			outputMan.printCombi(button);
 		} else
 			logger.error("No Key List");
@@ -266,7 +266,8 @@ public class Controller implements ActionListener, WindowListener {
 	 */
 	private void keyIsUnicode(Key key) {
 		outputMan.printChar(key);
-		// FIXME Wieso sind Umlaute als Unicode Zeichen im Keyboard gespeichert?? Wie soll die Unterscheidung zwischen
+		// FIXME DanielAl Wieso sind Umlaute als Unicode Zeichen im Keyboard gespeichert?? Wie soll die Unterscheidung
+		// zwischen
 		// Satzzeichen und Buchstaben stattfinden?
 		// typedWord = typedWord + key.getName();
 		// suggest = profileMan.getWordSuggest(typedWord);
@@ -303,7 +304,7 @@ public class Controller implements ActionListener, WindowListener {
 
 	/**
 	 * ö
-	 * 
+	 * TODO DanielAl
 	 * 
 	 * 
 	 * @param key
@@ -324,7 +325,7 @@ public class Controller implements ActionListener, WindowListener {
 	 * Resizes the Window and rescale the buttons to fit in there...
 	 * 
 	 * @param size
-	 * @author DanielAl FIXME
+	 * @author DanielAl FIXME DanielA
 	 */
 	public void resizeWindow(Dimension size) {
 		KeyboardLayout kbdLayout = profileMan.getActive().getKbdLayout();
@@ -388,7 +389,7 @@ public class Controller implements ActionListener, WindowListener {
 	/**
 	 * Save the actual Profile and dictionary to be able to clse the application.
 	 * 
-	 * @author DanielAl FIXME
+	 * @author DanielAl FIXME DanielA
 	 */
 	private void closeSuperFelix() {
 		try {
@@ -413,7 +414,7 @@ public class Controller implements ActionListener, WindowListener {
 	 * Calls the constructor if no instance exist. Singleton Design Pattern...
 	 * 
 	 * @return Controller
-	 * @author DanielAl FIXME
+	 * @author NicolaiO
 	 */
 	
 	public static Controller getInstance() {
