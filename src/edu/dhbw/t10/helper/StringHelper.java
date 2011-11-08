@@ -64,7 +64,6 @@ public class StringHelper {
 	public static ArrayList<Integer> extractUnicode(String sequence) {
 		ArrayList<Integer> unicodeStart = new ArrayList<Integer>();
 		int help = 0;
-		// TODO DanielAl erkenne Sonderzeichen und Konvertiere das in Unicode
 		while (help < sequence.length()) {
 			if (sequence.substring(help).startsWith("\\U+")) {
 				help = sequence.indexOf("\\U+", help);
@@ -82,8 +81,6 @@ public class StringHelper {
 	 * TODO DanielAl, add comment!
 	 * Quelle: http://www.daniweb.com/software-development/java/threads/147397
 	 * modified
-	 * 
-	 * FIXME DanielA evtl. diese Funktion in Output.class und mit extractUnicode kombinieren
 	 * 
 	 * @param input
 	 * @return
