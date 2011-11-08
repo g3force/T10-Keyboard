@@ -45,6 +45,10 @@ public class MuteButton extends PhysicalButton {
 		super(size_x, size_y, pos_x, pos_y);
 		onColor = this.getBackground();
 		offColor = this.getBackground();
+		createToolTip();
+		setToolTipText("Blubb");
+		// JToolTip t;
+		// t.
 	}
 	
 	
@@ -61,11 +65,13 @@ public class MuteButton extends PhysicalButton {
 			activated = false;
 			setText(offName);
 			setBackground(offColor);
+			setToolTipText("Blubb");
 			logger.debug("MuteButton deactivated");
 		} else {
 			activated = true;
 			setText(onName);
 			setBackground(onColor);
+			setToolTipText("Blubb");
 			logger.debug("MuteButton activated");
 		}
 	}

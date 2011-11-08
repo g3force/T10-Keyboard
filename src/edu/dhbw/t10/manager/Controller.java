@@ -121,20 +121,30 @@ public class Controller implements ActionListener, WindowListener {
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() instanceof Button) {
 			eIsButton((Button) e.getSource());
-		} // end if instance of Button
+		}
 
 		if (e.getSource() instanceof ModeButton) {
 			ModeButton modeB = (ModeButton) e.getSource();
 			modeB.push();
-		} // end if instance of ModeButton
+		}
 
 		if (e.getSource() instanceof MuteButton) {
 			eIsMuteButton((MuteButton) e.getSource());
-		} // end if instance of MuteButton
+		}
 		
 		if (e.getSource() instanceof DropDownList) {
 			eIsDropDownList((DropDownList) e.getSource());
-		} // end if instance of DropDownList
+		}
+		
+		// FIXME NicolaiO reference to Shift Mode Button?? => problem, any idea??
+		/**
+		 * SHIFT_MASK modifier is set, when a button is clicked with right mouse button.
+		 * How can I tell that shift should be pressed?! with ModeButton Shift or is there another way?
+		 * TODO DanielAl send shift signal to Output
+		 */
+		if (e.getModifiers() == ActionEvent.SHIFT_MASK) {
+			logger.debug("shift modifier is pressed. No action yet...");
+		}
 	}
 	
 
@@ -145,13 +155,6 @@ public class Controller implements ActionListener, WindowListener {
 	 * @author DanielAl
 	 */
 	private void eIsButton(Button button) {
-		// TODO NicolaiO useful hint: e.getModifiers()
-		
-		// TODO NicolaiO reference to Shift Mode Button??
-		// if (e.getModifiers() == ActionEvent.SHIFT_MASK) {
-		// logger.debug("shift modifier is pressed.");
-		// }
-		
 		if (button.getSingleKey().size() == 1) {
 			Key key = (Key) button.getSingleKey().get(0);
 
@@ -283,6 +286,7 @@ public class Controller implements ActionListener, WindowListener {
 	private void keyIsBackspace() {
 		if (typedWord.length() > 0 && typedWord.equals(suggest)) {
 			typedWord = typedWord.substring(0, typedWord.length() - 1);
+			// TODO DanielAl What the hell are these comments?! :o german...
 			// Eins, weil es keinen Vorschlag gibt...
 			outputMan.deleteChar(1);
 			suggest = profileMan.getWordSuggest(typedWord);
@@ -300,8 +304,9 @@ public class Controller implements ActionListener, WindowListener {
 	
 
 	/**
-	 * When Space or Enter is pressed accept the the typed Word and print Space or Enter...<br>
-	 * The suggest will be declined and forgotten. // FIXME ALL Ist diese Zeile grammitsch richtig??
+	 * When Space or Enter is pressed accept the typed Word and print Space or Enter...<br>
+	 * The suggest will be declined and forgotten. // FIXME ALL Ist diese Zeile grammitsch richtig?? NicolaiO: correct
+	 * enaugh :P
 	 * 
 	 * @param key
 	 * @author DanielAl
