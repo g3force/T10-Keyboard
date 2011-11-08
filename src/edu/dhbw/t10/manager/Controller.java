@@ -277,9 +277,13 @@ public class Controller implements ActionListener, WindowListener {
 	
 
 	/**
-	 * When Key is a BACK_SPACE the typed word is decreased by one char, when a suggest is already printed this is
-	 * deleted and also one char...
-	 * TODO DanielAl
+	 * Handles a typed BackSpace.<br>
+	 * There are 3 options:<br>
+	 * - typedWord and suggest are equal, so no suggest is printed and one Backspace deletes the last typed char.<br>
+	 * - a suggest is printed to complete the typedWord. Then you need to delete the marked chars and the last typed
+	 * char, so yo need two Back_Spaces.<br>
+	 * - all other options, you'll only need to send one Back_Space<br>
+	 * A new suggest will also be generated.<br>
 	 * 
 	 * @author DanielAl
 	 */
