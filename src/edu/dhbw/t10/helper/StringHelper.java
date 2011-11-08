@@ -1,10 +1,10 @@
-/* 
+/*
  * *********************************************************
  * Copyright (c) 2011 - 2011, DHBW Mannheim
  * Project: T10 On-Screen Keyboard
  * Date: Nov 1, 2011
- * Author(s): DirkK
- *
+ * Author(s): DirkK, DanielAl
+ * 
  * *********************************************************
  */
 package edu.dhbw.t10.helper;
@@ -13,9 +13,7 @@ import java.util.ArrayList;
 
 
 /**
- * TODO DirkK, add comment!
- * - What should this type do (in one sentence)?
- * - If not intuitive: A simple example how to use this class
+ * Provides Helper methods for String Handling...
  * 
  * @author DirkK, DanielAl
  * 
@@ -34,6 +32,12 @@ public class StringHelper {
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
+	/**
+	 * TODO DirkK Add comment!
+	 * Removes all punctuation Symbols of a given String.<br>
+	 * 
+	 * @author DirkK
+	 */
 	public static String removePunctuation(String input) {
 		input = input.replace("\"", "");
 		input = input.replace("'", "");
@@ -55,7 +59,7 @@ public class StringHelper {
 
 	/**
 	 * 
-	 * Find a Unicode in a given String and returns a List with the indices
+	 * Find a Unicode in a given String and returns a List with the indices.
 	 * 
 	 * @param sequence
 	 * @return
@@ -74,11 +78,11 @@ public class StringHelper {
 		}
 		return unicodeStart;
 	}
-
+	
 
 	/**
+	 * Converts a given String to a String, where non-ASCII chars a replaced by a Unicode Sequence.
 	 * 
-	 * TODO DanielAl, add comment!
 	 * Quelle: http://www.daniweb.com/software-development/java/threads/147397
 	 * modified
 	 * 
