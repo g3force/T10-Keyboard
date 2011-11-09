@@ -194,7 +194,8 @@ public class PriorityElement implements Serializable {
 	
 	/**
 	 * 
-	 * TODO DirkK, add comment!
+	 * creates a HashMap of the Followers of this element
+	 * this element itself is not included
 	 * 
 	 * @return
 	 * @author DirkK

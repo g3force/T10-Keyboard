@@ -25,9 +25,11 @@ import javax.swing.JFrame;
  * 
  */
 public class ProfileChooser extends JFrame {
+	/**  */
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
+	private static final long	serialVersionUID	= 1033076958567424395L;
 	JFileChooser	fc;
 
 
