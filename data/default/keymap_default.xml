@@ -40,6 +40,7 @@
 		<key id="133" keycode="\PAGE_UP\">BiHo</key>
 		<key id="134" keycode="\PAGE_DOWN\">BiRu</key>
 		<key id="135" keycode="\DELETE\">Entf</key>
+		<key id="136" keycode="\INSERT\">Einfg</key>
 	</keytype>
 	
 	<keytype name="unicode">
