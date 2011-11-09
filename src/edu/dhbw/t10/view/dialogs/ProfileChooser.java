@@ -16,6 +16,8 @@ import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 
+import edu.dhbw.t10.manager.Controller;
+
 
 /**
  * TODO felix, add comment!
@@ -70,6 +72,7 @@ public class ProfileChooser extends JFrame {
 		};
 
 		fc.addActionListener(al);
+		fc.addActionListener(Controller.getInstance());
 		setVisible(true);
 	}
 
