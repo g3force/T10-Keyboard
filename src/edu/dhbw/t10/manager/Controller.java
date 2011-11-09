@@ -15,6 +15,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
+import javax.swing.JFileChooser;
+
 import org.apache.log4j.Logger;
 
 import edu.dhbw.t10.manager.output.OutputManager;
@@ -27,6 +29,7 @@ import edu.dhbw.t10.type.keyboard.key.ModeButton;
 import edu.dhbw.t10.type.keyboard.key.MuteButton;
 import edu.dhbw.t10.type.profile.Profile;
 import edu.dhbw.t10.view.Presenter;
+import edu.dhbw.t10.view.dialogs.ProfileChooser;
 import edu.dhbw.t10.view.menus.StatusBar;
 import edu.dhbw.t10.view.panels.MainPanel;
 
@@ -140,6 +143,10 @@ public class Controller implements ActionListener, WindowListener {
 			eIsDropDownList((DropDownList) e.getSource());
 		}
 		
+		if (e.getSource() instanceof ProfileChooser) {
+			eIsProfileChooser((ProfileChooser) e.getSource());
+		}
+
 		// FIXME NicolaiO reference to Shift Mode Button?? => problem, any idea??
 		/**
 		 * SHIFT_MASK modifier is set, when a button is clicked with right mouse button.
@@ -151,6 +158,21 @@ public class Controller implements ActionListener, WindowListener {
 		}
 	}
 	
+
+	private void eIsProfileChooser(ProfileChooser pc) {
+		if (pc.isApproved()) {
+			switch (pc.getDialogType()) {
+				// export profile
+				case JFileChooser.SAVE_DIALOG:
+					// TODO profile export
+					break;
+				// import profile
+				case JFileChooser.OPEN_DIALOG:
+					// TODO profile import....
+					break;
+			}
+		}
+	}
 
 	/**
 	 * Do the logic for a button event. Switch between different types, specific Keys and a Key Combination...
