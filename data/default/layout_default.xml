@@ -1,5 +1,5 @@
 <layout>
-	<sizex>1010</sizex>
+	<sizex>955</sizex>
 	<sizey>335</sizey>
 	<scalex>0.8</scalex>
 	<scaley>0.8</scaley>
@@ -11,7 +11,7 @@
 		<size>10</size>
 	</font>
 
-	<dropdown type="profile" size_x="100" size_y="30" pos_x="830"
+	<dropdown type="profile" size_x="120" size_y="30" pos_x="830"
 		pos_y="15"></dropdown>
 
 
@@ -19,11 +19,11 @@
 		<on color="green" tooltip="Turn off the Auto Completing, so you will not be corrected by T10 anymore.">T10</on>
 		<off color="red" tooltip="Turn on the Auto Completing, T10 will help you typing.">T10</off>
 	</mutebutton>
-	<mutebutton type="auto_profile_change" size_x="50" size_y="50" pos_x="845" pos_y="115">
+	<!-- <mutebutton type="auto_profile_change" size_x="50" size_y="50" pos_x="845" pos_y="115">
 		<on color="green" tooltip="Turn off the Auto Profile Change. Then the profile can only be changed manually.">Auto</on>
 		<off color="red" tooltip="Turn on the Auto Profile Change. The profile will be changed automatically to the language you type. NOT IMPLEMENTED">Auto</off>
-	</mutebutton>
-	<mutebutton type="tree_expanding" size_x="50" size_y="50" pos_x="845" pos_y="170">
+	</mutebutton> -->
+	<mutebutton type="tree_expanding" size_x="50" size_y="50" pos_x="845" pos_y="115">
 		<on color="green" tooltip="Turn off the Expanding of the Tree. No words will be saved in the tree anymore.">Save</on>
 		<off color="red" tooltip="Turn on the Expanding of the Tree. Every word you type will be saved to support you.">Save</off>
 	</mutebutton>
@@ -216,51 +216,51 @@
 	</button>
 
 	<!-- a to ' -->
-	<button size_x="50" size_y="50" pos_x="95" pos_y="170">
+	<button size_x="50" size_y="50" pos_x="105" pos_y="170">
 		<key>79</key>
 		<mode modename="1001">91</mode>
 	</button>
-	<button size_x="50" size_y="50" pos_x="150" pos_y="170">
+	<button size_x="50" size_y="50" pos_x="160" pos_y="170">
 		<key>80</key>
 		<mode modename="1001">92</mode>
 	</button>
-	<button size_x="50" size_y="50" pos_x="205" pos_y="170">
+	<button size_x="50" size_y="50" pos_x="215" pos_y="170">
 		<key>81</key>
 		<mode modename="1001">93</mode>
 	</button>
-	<button size_x="50" size_y="50" pos_x="260" pos_y="170">
+	<button size_x="50" size_y="50" pos_x="270" pos_y="170">
 		<key>82</key>
 		<mode modename="1001">94</mode>
 	</button>
-	<button size_x="50" size_y="50" pos_x="315" pos_y="170">
+	<button size_x="50" size_y="50" pos_x="325" pos_y="170">
 		<key>83</key>
 		<mode modename="1001">95</mode>
 	</button>
-	<button size_x="50" size_y="50" pos_x="370" pos_y="170">
+	<button size_x="50" size_y="50" pos_x="380" pos_y="170">
 		<key>84</key>
 		<mode modename="1001">96</mode>
 	</button>
-	<button size_x="50" size_y="50" pos_x="425" pos_y="170">
+	<button size_x="50" size_y="50" pos_x="435" pos_y="170">
 		<key>85</key>
 		<mode modename="1001">97</mode>
 	</button>
-	<button size_x="50" size_y="50" pos_x="480" pos_y="170">
+	<button size_x="50" size_y="50" pos_x="490" pos_y="170">
 		<key>86</key>
 		<mode modename="1001">98</mode>
 	</button>
-	<button size_x="50" size_y="50" pos_x="535" pos_y="170">
+	<button size_x="50" size_y="50" pos_x="545" pos_y="170">
 		<key>87</key>
 		<mode modename="1001">99</mode>
 	</button>
-	<button size_x="50" size_y="50" pos_x="590" pos_y="170">
+	<button size_x="50" size_y="50" pos_x="600" pos_y="170">
 		<key>88</key>
 		<mode modename="1001">100</mode>
 	</button>
-	<button size_x="50" size_y="50" pos_x="645" pos_y="170">
+	<button size_x="50" size_y="50" pos_x="655" pos_y="170">
 		<key>89</key>
 		<mode modename="1001">101</mode>
 	</button>
-	<button size_x="50" size_y="50" pos_x="700" pos_y="170">
+	<button size_x="50" size_y="50" pos_x="710" pos_y="170">
 		<key>90</key>
 		<mode modename="1001">102</mode>
 	</button>
@@ -312,6 +312,31 @@
 		<mode modename="1001">124</mode>
 	</button>
 
+	<!-- End -->
+	<button size_x="50" size_y="50" pos_x="735" pos_y="280">
+		<key>131</key>
+	</button>
+	<!-- Pos1 -->
+	<button size_x="75" size_y="50" pos_x="765" pos_y="170">
+		<key>132</key>
+	</button>
+	<!-- Einfg -->
+	<button size_x="50" size_y="50" pos_x="845" pos_y="170">
+		<key>136</key>
+	</button>
+	<!-- Entf -->
+	<button size_x="50" size_y="105" pos_x="900" pos_y="170">
+		<key>135</key>
+	</button>
+	<!-- Bild Auf -->
+	<button size_x="50" size_y="50" pos_x="900" pos_y="60">
+		<key>133</key>
+	</button>
+	<!-- Bild Ab -->
+	<button size_x="50" size_y="50" pos_x="900" pos_y="115">
+		<key>134</key>
+	</button>
+
 
 	<!-- arrow keys -->
 	<button size_x="50" size_y="50" pos_x="845" pos_y="225">
@@ -327,22 +352,17 @@
 		<key>129</key>
 	</button>
 
-	<!-- End -->
-	<button size_x="50" size_y="50" pos_x="955" pos_y="280">
-		<key>131</key>
-	</button>
-
 	<!-- Spaces -->
-	<button size_x="150" size_y="50" pos_x="240" pos_y="280">
+	<button size_x="160" size_y="50" pos_x="240" pos_y="280">
 		<key accept="true">130</key>
 	</button>
-	<button size_x="150" size_y="50" pos_x="395" pos_y="280">
+	<button size_x="160" size_y="50" pos_x="405" pos_y="280">
 		<key>130</key>
 	</button>
 
 
 	<!-- mode buttons -->
-	<modebutton size_x="90" size_y="50" pos_x="5" pos_y="170">
+	<modebutton size_x="95" size_y="50" pos_x="5" pos_y="170">
 		<key>1000</key>
 	</modebutton>
 	<modebutton size_x="70" size_y="50" pos_x="5" pos_y="225">
@@ -360,13 +380,13 @@
 	<modebutton size_x="80" size_y="50" pos_x="155" pos_y="280">
 		<key>1004</key>
 	</modebutton>
-	<modebutton size_x="50" size_y="50" pos_x="550" pos_y="280">
+	<modebutton size_x="50" size_y="50" pos_x="570" pos_y="280">
 		<key>1007</key>
 	</modebutton>
-	<modebutton size_x="50" size_y="50" pos_x="605" pos_y="280">
+	<modebutton size_x="50" size_y="50" pos_x="625" pos_y="280">
 		<key>1008</key>
 	</modebutton>
-	<modebutton size_x="50" size_y="50" pos_x="660" pos_y="280">
+	<modebutton size_x="50" size_y="50" pos_x="680" pos_y="280">
 		<key>1009</key>
 	</modebutton>
 </layout>
