@@ -17,7 +17,7 @@ import org.apache.log4j.Logger;
 
 
 /**
- * Statusbar, where different things could be displayed for 5 Seconds...
+ * Statusbar, where different btf things could be displayed for 5 Seconds...
  * TODO Thread to be able to run the overwrite method all over the time...
  * TODO DanielAl Comments
  * @author DanielAl
@@ -32,9 +32,9 @@ public class StatusBar extends JLabel implements Runnable {
 	private static final Logger	logger				= Logger.getLogger(StatusBar.class);
 
 
-	LinkedList<String>				messageQueue;
-	Thread								thread				= null;
-	int									delay					= 2000;
+	private LinkedList<String>		messageQueue;
+	private Thread						thread				= null;
+	private int							delay					= 2000;
 	
 	
 	// --------------------------------------------------------------------------
