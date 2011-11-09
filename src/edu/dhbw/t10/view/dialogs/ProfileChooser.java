@@ -16,6 +16,7 @@ import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 
+
 /**
  * TODO felix, add comment!
  * - What should this type do (in one sentence)?
@@ -30,7 +31,9 @@ public class ProfileChooser extends JFrame {
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
 	private static final long	serialVersionUID	= 1033076958567424395L;
-	JFileChooser	fc;
+	private JFileChooser			fc;
+	private boolean				approve				= false;
+	File								selectedFile;
 
 
 	// --------------------------------------------------------------------------
@@ -43,26 +46,30 @@ public class ProfileChooser extends JFrame {
 		getContentPane().add(fc, "Center");
 		pack();
 		
+		// ActionListener for OK/Cancel buttons
 		ActionListener al = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent actionEvent) {
 				 JFileChooser fileChooser = (JFileChooser) actionEvent.getSource();
-
 				String command = actionEvent.getActionCommand();
+				
+				// OK button
 				if (command.equals(JFileChooser.APPROVE_SELECTION)) {
-
-					File selectedFile = fileChooser.getSelectedFile();
-					selectedFile.getParent();
-					selectedFile.getName();
+					// set flag and selected file
+					selectedFile = fileChooser.getSelectedFile();
+					approve = true;
 
 					setVisible(false);
+					
+					// Cancel button
 				} else if (command.equals(JFileChooser.CANCEL_SELECTION)) {
+					// do nothing...
 					setVisible(false);
 				}
 			}
 		};
 
-
+		fc.addActionListener(al);
 		setVisible(true);
 	}
 
@@ -74,4 +81,51 @@ public class ProfileChooser extends JFrame {
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
+	
+	/**
+	 * 
+	 * @return type of dialog
+	 * @author felix
+	 */
+	public int getDialogType() {
+		return fc.getDialogType();
+	}
+	
+
+	/**
+	 * 
+	 * @return status of dialog: true for approve and false for cancel
+	 * @author felix
+	 */
+	public boolean isApproved() {
+		return approve;
+	}
+	
+
+	/**
+	 * 
+	 * @return name of profile
+	 * @author felix
+	 */
+	public String getProfileName() {
+		if (approve) {
+			return selectedFile.getName();
+		}
+		
+		return "";
+	}
+	
+
+	/**
+	 * 
+	 * @return path to profile
+	 * @author felix
+	 */
+	public String getPathToProfile() {
+		if (approve) {
+			return selectedFile.getParent();
+		}
+		
+		return "";
+	}
 }
