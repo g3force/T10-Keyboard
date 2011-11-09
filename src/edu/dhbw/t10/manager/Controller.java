@@ -74,7 +74,7 @@ public class Controller implements ActionListener, WindowListener {
 		logger.debug("initializing...");
 		outputMan = new OutputManager();
 		mainPanel = new MainPanel();
-		statusBar = new StatusBar("");
+		statusBar = new StatusBar();
 		presenter = new Presenter(mainPanel, statusBar);
 		typedWord = "";
 		suggest = "";
@@ -86,7 +86,7 @@ public class Controller implements ActionListener, WindowListener {
 
 		mainPanel.addComponentListener(mainPanel);
 		resizeWindow(profileMan.getActive().getKbdLayout().getSize());
-		statusBar.message("Keyboard initialiezd.");
+		statusBar.enqueueMessage("Keyboard initialiezd.");
 		logger.debug("initialized.");
 	}
 	
@@ -264,6 +264,7 @@ public class Controller implements ActionListener, WindowListener {
 			outputMan.unMark();
 		outputMan.printChar(key);
 		profileMan.acceptWord(suggest);
+		statusBar.enqueueMessage("Word inserted: " + suggest);
 		typedWord = "";
 		suggest = "";
 	}
@@ -279,7 +280,6 @@ public class Controller implements ActionListener, WindowListener {
 		typedWord = typedWord + key.getName();
 		suggest = profileMan.getWordSuggest(typedWord);
 		outputMan.printSuggest(suggest, typedWord);
-		statusBar.message("Suggest: " + suggest);
 	}
 	
 
@@ -315,7 +315,6 @@ public class Controller implements ActionListener, WindowListener {
 			outputMan.deleteChar(1);
 			suggest = profileMan.getWordSuggest(typedWord);
 			outputMan.printSuggest(suggest, typedWord);
-			statusBar.message("Suggest: " + suggest);
 		} else if (typedWord.length() > 0) {
 			typedWord = typedWord.substring(0, typedWord.length() - 1);
 			// Delete 1, because there are suggested chars marked and you want to delete them and one char
@@ -338,6 +337,7 @@ public class Controller implements ActionListener, WindowListener {
 	private void keyIsSpaceOrEnter(Key key) {
 		logger.debug("Keycode " + key.getKeycode() + " " + key.getType());
 		profileMan.acceptWord(typedWord);
+		statusBar.enqueueMessage("Word inserted: " + typedWord);
 		outputMan.printChar(key);
 		typedWord = "";
 		suggest = "";
