@@ -40,9 +40,7 @@ public class ProfileManager {
 	private ArrayList<String>		profilePathes			= new ArrayList<String>();
 	private Profile					activeProfile;
 	private String						defaultActiveProfile	= "default";
-	private boolean					autoProfileChange		= true;
-	private boolean					autoCompleting			= true;
-	private boolean					treeExpanding			= true;
+
 	
 	
 	// --------------------------------------------------------------------------
@@ -382,7 +380,7 @@ public class ProfileManager {
 	 * @author DirkK
 	 */
 	public String getWordSuggest(String givenChars) {
-		if (autoCompleting) {
+		if (activeProfile.isAutoCompleting()) {
 			if (getActive() == null) {
 				logger.error("getActive()==NULL at getWordSuggest");
 				return "";
@@ -409,7 +407,7 @@ public class ProfileManager {
 			logger.error("getActive()==NULL at acceptWord");
 			return;
 		}
-		if (treeExpanding)
+		if (activeProfile.isTreeExpanding())
 			getActive().getTree().insert(word);
 	}
 	
@@ -448,7 +446,8 @@ public class ProfileManager {
 		}
 		for (int i = 0; i < profilePathes.size(); i++) {
 			try {
-				profiles.add((Profile) Serializer.deserialize(profilePathes.get(i)));
+				Profile dProf = (Profile) Serializer.deserialize(profilePathes.get(i));
+				profiles.add(dProf);
 				counter++;
 			} catch (IOException io) {
 				logger.error("Not able to deserialize Profile from file " + profilePathes.get(i));
@@ -458,6 +457,7 @@ public class ProfileManager {
 	}
 	
 	
+
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
@@ -475,59 +475,7 @@ public class ProfileManager {
 		return activeProfile.getKbdLayout();
 	}
 	
-	
-	public boolean isAutoProfileChange() {
-		return autoProfileChange;
-	}
-	
-	
-	public void setAutoProfileChange(boolean autoProfileChange) {
-		this.autoProfileChange = autoProfileChange;
-	}
-	
-	
-	public void toggleAutoProfileChange() {
-		if (autoProfileChange)
-			autoProfileChange = false;
-		else
-			autoProfileChange = true;
-	}
-	
-	
-	public boolean isAutoCompleting() {
-		return autoCompleting;
-	}
-	
-	
-	public void setAutoCompleting(boolean autoCompleting) {
-		this.autoCompleting = autoCompleting;
-	}
-	
-	
-	public void toggleAutoCompleting() {
-		if (autoCompleting)
-			autoCompleting = false;
-		else
-			autoCompleting = true;
-	}
-	
-	
-	public boolean isTreeExpanding() {
-		return treeExpanding;
-	}
-	
-	
-	public void setTreeExpanding(boolean treeExpanding) {
-		this.treeExpanding = treeExpanding;
-	}
-	
-	
-	public void toggleTreeExpanding() {
-		if (treeExpanding)
-			treeExpanding = false;
-		else
-			treeExpanding = true;
-	}
+
 	
 	
 }

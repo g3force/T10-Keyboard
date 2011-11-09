@@ -28,6 +28,7 @@ import edu.dhbw.t10.type.keyboard.key.ModeButton;
 import edu.dhbw.t10.type.keyboard.key.MuteButton;
 import edu.dhbw.t10.type.profile.Profile;
 import edu.dhbw.t10.view.Presenter;
+import edu.dhbw.t10.view.menus.StatusBar;
 import edu.dhbw.t10.view.panels.MainPanel;
 
 
@@ -53,6 +54,7 @@ public class Controller implements ActionListener, WindowListener {
 	private ProfileManager			profileMan;
 	private OutputManager			outputMan;
 	private MainPanel					mainPanel;
+	private StatusBar					statusBar;
 	private Presenter					presenter;
 	
 	
@@ -70,7 +72,8 @@ public class Controller implements ActionListener, WindowListener {
 		logger.debug("initializing...");
 		outputMan = new OutputManager();
 		mainPanel = new MainPanel();
-		presenter = new Presenter(mainPanel);
+		statusBar = new StatusBar("");
+		presenter = new Presenter(mainPanel, statusBar);
 		typedWord = "";
 		suggest = "";
 		profileMan = new ProfileManager();
@@ -78,8 +81,10 @@ public class Controller implements ActionListener, WindowListener {
 		mainPanel.setKbdLayout(profileMan.getActive().getKbdLayout());
 		profileMan.addAllProfilesToDDL();
 
+
 		mainPanel.addComponentListener(mainPanel);
 		resizeWindow(profileMan.getActive().getKbdLayout().getSize());
+		statusBar.message("Keyboard initialiezd.");
 		logger.debug("initialized.");
 	}
 	
@@ -198,13 +203,13 @@ public class Controller implements ActionListener, WindowListener {
 		int type = muteB.getType();
 		switch (type) {
 			case MuteButton.AUTO_COMPLETING:
-				profileMan.toggleAutoCompleting();
+				profileMan.getActive().setAutoCompleting(muteB.isActivated());
 				break;
 			case MuteButton.AUTO_PROFILE_CHANGE:
-				profileMan.toggleAutoProfileChange();
+				profileMan.getActive().setAutoProfileChange(muteB.isActivated());
 				break;
 			case MuteButton.TREE_EXPANDING:
-				profileMan.toggleTreeExpanding();
+				profileMan.getActive().setTreeExpanding(muteB.isActivated());
 				break;
 		}
 		logger.debug("MuteButton pressed");
@@ -255,22 +260,19 @@ public class Controller implements ActionListener, WindowListener {
 		typedWord = typedWord + key.getName();
 		suggest = profileMan.getWordSuggest(typedWord);
 		outputMan.printSuggest(suggest, typedWord);
+		statusBar.message("Suggest: " + suggest);
 	}
 	
 
 	/**
-	 * If the input is a Unicode it is a Symbol character and this will be printed. <br>
-	 * The typed Word and SUggest WOrd will be forgotten.<br>
+	 * If the input is a Unicode (it is a Symbol character, special chars are type char) and this will be printed. <br>
+	 * The typed Word and Suggest Word will be forgotten.<br>
 	 * 
 	 * @param key
 	 * @author DanielAl
 	 */
 	private void keyIsUnicode(Key key) {
 		outputMan.printChar(key);
-		// TODO DanielAl review commented lines
-		// typedWord = typedWord + key.getName();
-		// suggest = profileMan.getWordSuggest(typedWord);
-		// outputMan.printSuggest(suggest, typedWord);
 		typedWord = "";
 		suggest = "";
 	}
@@ -294,6 +296,7 @@ public class Controller implements ActionListener, WindowListener {
 			outputMan.deleteChar(1);
 			suggest = profileMan.getWordSuggest(typedWord);
 			outputMan.printSuggest(suggest, typedWord);
+			statusBar.message("Suggest: " + suggest);
 		} else if (typedWord.length() > 0) {
 			typedWord = typedWord.substring(0, typedWord.length() - 1);
 			// Delete 1, because there are suggested chars marked and you want to delete them and one char
@@ -308,8 +311,7 @@ public class Controller implements ActionListener, WindowListener {
 
 	/**
 	 * When Space or Enter is pressed accept the typed Word and print Space or Enter...<br>
-	 * The suggest will be declined and forgotten. // FIXME ALL Ist diese Zeile grammitsch richtig?? NicolaiO: correct
-	 * enaugh :P
+	 * The suggest will be declined and forgotten.<br>
 	 * 
 	 * @param key
 	 * @author DanielAl
