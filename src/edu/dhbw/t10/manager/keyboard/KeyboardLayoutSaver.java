@@ -136,17 +136,32 @@ public class KeyboardLayoutSaver {
 			for (MuteButton muteButton : kbdLayout.getMuteButtons()) {
 				Element muteButtonEl = doc.createElement("mutebutton");
 				setSizeOfPhysicalButton(muteButtonEl, muteButton);
+				switch (muteButton.getType()) {
+					case MuteButton.AUTO_COMPLETING:
+						muteButtonEl.setAttribute("type", "auto_completing");
+						break;
+					case MuteButton.AUTO_PROFILE_CHANGE:
+						muteButtonEl.setAttribute("type", "auto_profile_change");
+						break;
+					case MuteButton.TREE_EXPANDING:
+						muteButtonEl.setAttribute("type", "tree_expanding");
+						break;
+					default:
+						muteButtonEl.setAttribute("type", "unknown");
+				}
 				// muteButtonEl.setAttribute("type", muteButton.getType());
 				// ON
 				Element on = doc.createElement("on");
-				on.setAttribute("color", muteButton.getStringFromColor(muteButton.getOnColor()));
-				text = doc.createTextNode(muteButton.getOnName());
+				on.setAttribute("color", muteButton.getModeOn().getColorString());
+				on.setAttribute("tooltip", muteButton.getModeOn().getTooltip());
+				text = doc.createTextNode(muteButton.getModeOn().getName());
 				on.appendChild(text);
 				muteButtonEl.appendChild(on);
 				// OFF
 				Element off = doc.createElement("off");
-				off.setAttribute("color", muteButton.getStringFromColor(muteButton.getOffColor()));
-				text = doc.createTextNode(muteButton.getOffName());
+				off.setAttribute("color", muteButton.getModeOff().getColorString());
+				off.setAttribute("tooltip", muteButton.getModeOff().getTooltip());
+				text = doc.createTextNode(muteButton.getModeOff().getName());
 				off.appendChild(text);
 				muteButtonEl.appendChild(off);
 				

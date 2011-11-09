@@ -33,7 +33,6 @@ public class StringHelper {
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
 	/**
-	 * TODO DirkK Add comment!
 	 * Removes all punctuation Symbols of a given String.<br>
 	 * 
 	 * @author DirkK

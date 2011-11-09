@@ -31,10 +31,12 @@ public class MuteButton extends PhysicalButton {
 	public static final int			AUTO_COMPLETING		= 2;
 	public static final int			TREE_EXPANDING			= 3;
 	private int							type						= UNKNOWN;
-	private Color						onColor;
-	private Color						offColor;
-	private String						onName					= "";
-	private String						offName					= "";
+	// private Color onColor;
+	// private Color offColor;
+	// private String onName = "";
+	// private String offName = "";
+	private Mode						on;
+	private Mode						off;
 	private boolean					activated				= false;
 	
 	
@@ -43,8 +45,8 @@ public class MuteButton extends PhysicalButton {
 	// --------------------------------------------------------------------------
 	public MuteButton(int size_x, int size_y, int pos_x, int pos_y) {
 		super(size_x, size_y, pos_x, pos_y);
-		onColor = this.getBackground();
-		offColor = this.getBackground();
+		on = new Mode(this.getBackground());
+		off = new Mode(this.getBackground());
 		createToolTip();
 		setToolTipText("Blubb");
 		// JToolTip t;
@@ -66,26 +68,14 @@ public class MuteButton extends PhysicalButton {
 	 * @author NicolaiO
 	 */
 	public void push() {
-		if (activated) {
-			activated = false;
-			setText(offName);
-			setBackground(offColor);
-			setToolTipText("Blubb");
-			logger.debug("MuteButton deactivated");
-		} else {
-			activated = true;
-			setText(onName);
-			setBackground(onColor);
-			setToolTipText("Blubb");
-			logger.debug("MuteButton activated");
-		}
+		setActivated(!activated);
 	}
 	
 	
 	public void release() {
 		activated = false;
-		setText(offName);
-		setBackground(offColor);
+		setText(off.getName());
+		setBackground(off.getColor());
 	}
 	
 
@@ -103,47 +93,146 @@ public class MuteButton extends PhysicalButton {
 	}
 	
 	
-	public Color getOnColor() {
-		return onColor;
+
+	// public Color getOnColor() {
+	// return onColor;
+	// }
+	//
+	//
+	// public void setOnColor(String onColor) {
+	// Color c = getColorFromString(onColor);
+	// if (c != null)
+	// this.onColor = c;
+	// }
+	//
+	//
+	// public Color getOffColor() {
+	// return offColor;
+	// }
+	//
+	//
+	// public void setOffColor(String offColor) {
+	// Color c = getColorFromString(offColor);
+	// if (c != null)
+	// this.offColor = c;
+	// }
+	//
+	//
+	// public String getOnName() {
+	// return onName;
+	// }
+	//
+	//
+	// public void setOnName(String onName) {
+	// this.onName = onName;
+	// }
+	//
+	//
+	// public String getOffName() {
+	// return offName;
+	// }
+	//
+	//
+	// public void setOffName(String offName) {
+	// this.offName = offName;
+	// }
+	
+	
+	public Mode getModeOn() {
+		return on;
 	}
 	
 	
-	public void setOnColor(String onColor) {
-		Color c = getColorFromString(onColor);
-		if (c != null)
-			this.onColor = c;
+	public void setModeOn(Mode on) {
+		this.on = on;
 	}
 	
 	
-	public Color getOffColor() {
-		return offColor;
+	public Mode getModeOff() {
+		return off;
 	}
 	
 	
-	public void setOffColor(String offColor) {
-		Color c = getColorFromString(offColor);
-		if (c != null)
-			this.offColor = c;
+	public void setModeOff(Mode off) {
+		this.off = off;
 	}
 	
 	
-	public String getOnName() {
-		return onName;
+	public boolean isActivated() {
+		return activated;
 	}
 	
 	
-	public void setOnName(String onName) {
-		this.onName = onName;
+	public void setActivated(boolean activated) {
+		this.activated = activated;
+		if (!activated) {
+			setText(off.getName());
+			setBackground(off.getColor());
+			setToolTipText(off.getTooltip());
+			logger.debug("MuteButton deactivated");
+		} else {
+			setText(on.getName());
+			setBackground(on.getColor());
+			setToolTipText(on.getTooltip());
+			logger.debug("MuteButton activated");
+		}
 	}
-	
-	
-	public String getOffName() {
-		return offName;
-	}
-	
-	
-	public void setOffName(String offName) {
-		this.offName = offName;
+
+
+	public class Mode {
+		private Color	color;
+		private String	colorS;
+		private String	name;
+		private String	tooltip;
+		
+		
+		private Mode(Color c) {
+			colorS = "white";
+			color = c;
+		}
+		
+		
+		public Color getColor() {
+			return color;
+		}
+		
+		
+		public String getColorString() {
+			return colorS;
+		}
+		
+		
+		public void setColor(String color) {
+			colorS = color;
+			Color c = getColorFromString(color);
+			if (c != null)
+				this.color = c;
+		}
+		
+		
+		public String getName() {
+			return name;
+		}
+		
+		
+		@SuppressWarnings("unused")
+		public void setName(String name) {
+			this.name = name;
+		}
+		
+		
+		@SuppressWarnings("unused")
+		public String getTooltip() {
+			return tooltip;
+		}
+		
+		
+		@SuppressWarnings("unused")
+		public void setTooltip(String tooltip) {
+			this.tooltip = tooltip;
+		}
+
+
 	}
 	
 }
