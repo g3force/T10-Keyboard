@@ -30,8 +30,6 @@ import edu.dhbw.t10.type.keyboard.key.Key;
  * All other symbols are written via their Unicode.<br>
  * 
  * Control symbols are sent via their java.awt.event.KeyEvent constant<br>
- * FIXME Windows support untested
- * 
  * 
  * @author DanielAl
  * 
@@ -116,10 +114,10 @@ public class Output {
 	 * Switch with type over different sendKey calls. <br>
 	 * - Key.CONTROL is used for Control Symbols like Enter or Space. <br>
 	 * - Key.UNICODE is used for a Unicode Sequence. <br>
-	 * - Key.CHAR is sed for normal chars. <br>
-	 * - Key.UNKNOWN //TODO for what is this used? <br>
+	 * - Key.CHAR is used for normal chars. <br>
+	 * - Key.UNKNOWN produces a logger warning. <br>
 	 * The Key.CHAR type differntiate between Big, Small an Unicode Letters...<br>
-	 * Converts a char with getKeyCode to a Key.Constant
+	 * Converts a char with convertKeyCode to a Key.Constant
 	 * 
 	 * @param String charSequence, int type
 	 * @return boolean
@@ -133,35 +131,38 @@ public class Output {
 		switch(type){
 			// Print Control Symbol, like ENTER or SPACEm,,,höll hlööp ho
 			case Key.CONTROL: 
-				sendKey(getKeyCode(charSequence.substring(1, length - 1)));
+				sendKey(convertKeyCode(charSequence.substring(1, length - 1)));
 				logger.info("Control Symbol printed: " + charSequence);
 				break;
 			case Key.UNICODE:
 				sendUnicode(charSequence);
 				logger.info("Unicode Symbol printed: " + charSequence);
 				break;
-			case Key.UNKNOWN: // FIXME
 			case Key.CHAR:
 				// Get the starter Positions of Unicodes in a String...
 				charSequence = StringHelper.convertToUnicode(charSequence);
+				length = charSequence.length();
 				ArrayList<Integer> unicodeStart = StringHelper.extractUnicode(charSequence);
+				logger.trace("Unicodes starts at: " + unicodeStart.toString());
 				
 				for (int i = 0; i < length; i++) {
 					// Unicode Zeichen
 					if (!unicodeStart.isEmpty() && unicodeStart.get(0) == i) { 
-						sendUnicode(charSequence.substring(i, i + 7));
+						sendUnicode(charSequence.substring(i, i + 8));
 						unicodeStart.remove(0);
+						i += 7;
 						// Big Letters
 					} else if (Character.isUpperCase(charSequence.charAt(i)) == true) {
-						sendKey(getKeyCode(charSequence.substring(i, i + 1)), SHIFT);
+						sendKey(convertKeyCode(charSequence.substring(i, i + 1)), SHIFT);
 						// Small letters
 					} else {
-						sendKey(getKeyCode(charSequence.substring(i, i + 1)), TYPE);
+						sendKey(convertKeyCode(charSequence.substring(i, i + 1)), TYPE);
 					}
 				}
 				logger.info("String printed: " + charSequence);
 					break;
 			// No correct type can't be handeld...
+			case Key.UNKNOWN:
 			default: 
 				logger.info("Undefined type for printing:" + type);
 				return false;
@@ -171,30 +172,33 @@ public class Output {
 	
 
 	/**
+	 * Prints a combi by calling for each Key Element of the ArrayList the sendKey with function COMBI. <br>
+	 * When the List is empty, call the special mode of the COMBI Branch of sendKey to release all pressed Keys...<br>
 	 * 
-	 * TODO DanielAl, add comment!
 	 * 
 	 * @param Button b
 	 * @return boolean
 	 * @author DanielAl
 	 */
 	protected boolean printCombi(ArrayList<Key> b) {
+		sendKey(KeyEvent.VK_SHIFT, COMBI);
 		for (Key key : b) {
-			sendKey(convertKeyCode(key.getKeycode(), COMBI));
+			String code = key.getKeycode();
+			sendKey(convertKeyCode(code));
 		}
 		sendKey(0, COMBI);
 		logger.info("Key Combi printed");
 		return true;
 	}
-
+	
 
 	/**
-	 * Calls getKeyCode(code, 0)
+	 * Calls convertKeyCode(code, 0)
 	 * @param String code
 	 * @return Integer
 	 * @author DanielAl
 	 */
-	private Integer getKeyCode(String code) {
+	private Integer convertKeyCode(String code) {
 		return convertKeyCode(code, 0);
 	}
 	
@@ -227,16 +231,16 @@ public class Output {
 					return KeyEvent.VK_UNDEFINED;
 			}
 		} catch (SecurityException err) {
-			logger.error("getKeyCode: Security: " + code);
+			logger.error("convertKeyCode: Security: " + code);
 			return KeyEvent.VK_UNDEFINED;
 		} catch (NoSuchFieldException err) {
-			logger.error("getKeyCode: No Such Field: " + code);
+			logger.error("convertKeyCode: No Such Field: " + code);
 			return KeyEvent.VK_UNDEFINED;
 		} catch (IllegalArgumentException err) {
-			logger.error("getKeyCode: Illegal Argument: " + code);
+			logger.error("convertKeyCode: Illegal Argument: " + code);
 			return KeyEvent.VK_UNDEFINED;
 		} catch (IllegalAccessException err) {
-			logger.error("getKeyCode: Illegal Access: " + code);
+			logger.error("convertKeyCode: Illegal Access: " + code);
 			return KeyEvent.VK_UNDEFINED;
 		}
 	}
@@ -254,6 +258,8 @@ public class Output {
 	 * @author DanielAl
 	 */
 	private boolean sendUnicode(String uni) {
+		logger.error("UNICODE length: " + uni.length() + " Uni:" + uni);
+
 		// Chekcs for the correct Unicode length, begin and end
 		if (uni.length() != 8 || !uni.substring(0, 3).equals("\\U+") || !uni.substring(7, 8).equals("\\")) {
 			logger.error("UNICODE wrong format; length: " + uni.length());
@@ -269,10 +275,10 @@ public class Output {
 				sendKey(KeyEvent.VK_U, TYPE);
 				sendKey(KeyEvent.VK_SHIFT, RELEASE);
 				sendKey(KeyEvent.VK_CONTROL, RELEASE);
-				sendKey(getKeyCode(uniArr[0] + ""), TYPE);
-				sendKey(getKeyCode(uniArr[1] + ""), TYPE);
-				sendKey(getKeyCode(uniArr[2] + ""), TYPE);
-				sendKey(getKeyCode(uniArr[3] + ""), TYPE);
+				sendKey(convertKeyCode(uniArr[0] + ""), TYPE);
+				sendKey(convertKeyCode(uniArr[1] + ""), TYPE);
+				sendKey(convertKeyCode(uniArr[2] + ""), TYPE);
+				sendKey(convertKeyCode(uniArr[3] + ""), TYPE);
 				sendKey(KeyEvent.VK_ENTER, TYPE);
 				return true;
 
@@ -289,9 +295,9 @@ public class Output {
 					sendKey(KeyEvent.VK_NUM_LOCK, TYPE);
 				}
 
-				// Sending KeyCombination for Unicode input to Windows...
+					// Sending KeyCombination for Unicode input to Windows (Hold ALT and press ADD and the digits, then
+					// release ALT)
 				sendKey(KeyEvent.VK_ALT, PRESS);
-				// FIXME ADD Symbol really needed??
 				sendKey(KeyEvent.VK_ADD, TYPE);
 				// send the Hexa Decimal number with digits as a numpad key and the chars from the normal keyboard...
 				sendKey(Character.isDigit(uniArr[0]) ? convertKeyCode(uniArr[0] + "", 1) : convertKeyCode(uniArr[0] + "", 0), TYPE);

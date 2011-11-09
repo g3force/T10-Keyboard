@@ -1,10 +1,10 @@
-/* 
+/*
  * *********************************************************
  * Copyright (c) 2011 - 2011, DHBW Mannheim
  * Project: T10 On-Screen Keyboard
  * Date: Nov 1, 2011
- * Author(s): DirkK
- *
+ * Author(s): DirkK, DanielAl
+ * 
  * *********************************************************
  */
 package edu.dhbw.t10.helper;
@@ -13,9 +13,7 @@ import java.util.ArrayList;
 
 
 /**
- * TODO DirkK, add comment!
- * - What should this type do (in one sentence)?
- * - If not intuitive: A simple example how to use this class
+ * Provides Helper methods for String Handling...
  * 
  * @author DirkK, DanielAl
  * 
@@ -34,6 +32,11 @@ public class StringHelper {
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
+	/**
+	 * Removes all punctuation Symbols of a given String.<br>
+	 * 
+	 * @author DirkK
+	 */
 	public static String removePunctuation(String input) {
 		input = input.replace("\"", "");
 		input = input.replace("'", "");
@@ -55,7 +58,7 @@ public class StringHelper {
 
 	/**
 	 * 
-	 * Find a Unicode in a given String and returns a List with the indices
+	 * Find a Unicode in a given String and returns a List with the indices.
 	 * 
 	 * @param sequence
 	 * @return
@@ -64,26 +67,23 @@ public class StringHelper {
 	public static ArrayList<Integer> extractUnicode(String sequence) {
 		ArrayList<Integer> unicodeStart = new ArrayList<Integer>();
 		int help = 0;
-		// TODO DanielAl erkenne Sonderzeichen und Konvertiere das in Unicode
 		while (help < sequence.length()) {
 			if (sequence.substring(help).startsWith("\\U+")) {
 				help = sequence.indexOf("\\U+", help);
 				unicodeStart.add(help);
-				help += 7;
+				help += 8;
 			} else
 				help++;
 		}
 		return unicodeStart;
 	}
-
+	
 
 	/**
+	 * Converts a given String to a String, where non-ASCII chars a replaced by a Unicode Sequence.
 	 * 
-	 * TODO DanielAl, add comment!
 	 * Quelle: http://www.daniweb.com/software-development/java/threads/147397
 	 * modified
-	 * 
-	 * FIXME evtl. diese Funktion in Output.class und mit extractUnicode kombinieren
 	 * 
 	 * @param input
 	 * @return
@@ -98,7 +98,7 @@ public class StringHelper {
 			if ((ch >= 0x0020) && (ch <= 0x007e)) { // Does the char need to be converted to unicode?
 				ostr.append(ch); // No.
 			} else { // Yes.
-				ostr.append("\\u+"); // own unicode format
+				ostr.append("\\U+"); // own unicode format
 				String hex = Integer.toHexString(input.charAt(i) & 0xFFFF); // Get hex value of the char.
 				for (int j = 0; j < 4 - hex.length(); j++)
 					// Prepend zeros because unicode requires 4 digits
