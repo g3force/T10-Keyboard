@@ -406,11 +406,13 @@ public class KeyboardLayoutLoader {
 				if (on.getLength() == 1) {
 					String name = on.item(0).getTextContent();
 					if (name != null) {
-						button.setOnName(name);
+						button.getModeOn().setName(name);
 					}
 					try {
 						String color = on.item(0).getAttributes().getNamedItem("color").getTextContent();
-						button.setOnColor(color);
+						button.getModeOn().setColor(color);
+						String tooltip = on.item(0).getAttributes().getNamedItem("tooltip").getTextContent();
+						button.getModeOn().setTooltip(tooltip);
 					} catch (NullPointerException e) {
 						logger.info("No color found/specified");
 					}
@@ -423,11 +425,13 @@ public class KeyboardLayoutLoader {
 				if (off.getLength() == 1) {
 					String name = off.item(0).getTextContent();
 					if (name != null) {
-						button.setOffName(name);
+						button.getModeOff().setName(name);
 					}
 					try {
 						String color = off.item(0).getAttributes().getNamedItem("color").getTextContent();
-						button.setOffColor(color);
+						button.getModeOff().setColor(color);
+						String tooltip = off.item(0).getAttributes().getNamedItem("tooltip").getTextContent();
+						button.getModeOff().setTooltip(tooltip);
 					} catch (NullPointerException e) {
 						logger.info("No color found/specified");
 					}
