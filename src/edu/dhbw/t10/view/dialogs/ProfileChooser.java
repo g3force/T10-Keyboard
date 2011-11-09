@@ -16,6 +16,7 @@ import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 
+
 /**
  * TODO felix, add comment!
  * - What should this type do (in one sentence)?
