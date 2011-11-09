@@ -377,11 +377,11 @@ public class ProfileManager {
 	
 	
 	/**
-	 * OutputManager requests a Word suggestion with an given Startstring.
+	 * Controller requests a Word suggestion with an given Startstring.
 	 * 
 	 * @param givenChars
 	 * @return
-	 * @author TODO ALL from who??
+	 * @author DirkK
 	 */
 	public String getWordSuggest(String givenChars) {
 		if (autoCompleting) {
