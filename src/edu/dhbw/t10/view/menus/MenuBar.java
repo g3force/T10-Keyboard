@@ -20,7 +20,6 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
-import edu.dhbw.t10.manager.Controller;
 import edu.dhbw.t10.view.dialogs.ProfileChooser;
 
 
@@ -77,18 +76,17 @@ public class MenuBar extends JMenuBar {
 		// Action Listener for menu items
 		iChange.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Object response = JOptionPane.showInputDialog((Component) e.getSource(),
-						"Where would you like to go to lunch?", "Select a Destination", JOptionPane.PLAIN_MESSAGE, null,
-						eventCache, "");
+
 			}
 		});
-		
+
 		iNewProfile.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Controller.getInstance().createProfile("Profile" + (++inc));
-				// TODO FelixP Menu erstellen (eingabe: Name und Pfad)
+				Object response = JOptionPane.showInputDialog((Component) e.getSource(),
+						"Geben Sie den Namen des neuen Profils an.", "Neues Profil anlegen", JOptionPane.PLAIN_MESSAGE, null,
+						eventCache, "");
 			}
 		});
 		
