@@ -101,7 +101,7 @@ public class Controller implements ActionListener, WindowListener {
 	 * @author SebastianN
 	 */
 	public void createProfile(String name) {
-		profileMan.addProfileToDDL(profileMan.createProfile(name));
+		profileMan.createProfile(name);
 	}
 	
 
