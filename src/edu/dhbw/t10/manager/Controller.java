@@ -28,6 +28,7 @@ import edu.dhbw.t10.type.keyboard.key.ModeButton;
 import edu.dhbw.t10.type.keyboard.key.MuteButton;
 import edu.dhbw.t10.type.profile.Profile;
 import edu.dhbw.t10.view.Presenter;
+import edu.dhbw.t10.view.menus.StatusBar;
 import edu.dhbw.t10.view.panels.MainPanel;
 
 
@@ -53,6 +54,7 @@ public class Controller implements ActionListener, WindowListener {
 	private ProfileManager			profileMan;
 	private OutputManager			outputMan;
 	private MainPanel					mainPanel;
+	private StatusBar					statusBar;
 	private Presenter					presenter;
 	
 	
@@ -70,7 +72,8 @@ public class Controller implements ActionListener, WindowListener {
 		logger.debug("initializing...");
 		outputMan = new OutputManager();
 		mainPanel = new MainPanel();
-		presenter = new Presenter(mainPanel);
+		statusBar = new StatusBar("");
+		presenter = new Presenter(mainPanel, statusBar);
 		typedWord = "";
 		suggest = "";
 		profileMan = new ProfileManager();
@@ -80,6 +83,7 @@ public class Controller implements ActionListener, WindowListener {
 
 		mainPanel.addComponentListener(mainPanel);
 		resizeWindow(profileMan.getActive().getKbdLayout().getSize());
+		statusBar.message("Keyboard initialiezd.");
 		logger.debug("initialized.");
 	}
 	
@@ -255,6 +259,7 @@ public class Controller implements ActionListener, WindowListener {
 		typedWord = typedWord + key.getName();
 		suggest = profileMan.getWordSuggest(typedWord);
 		outputMan.printSuggest(suggest, typedWord);
+		statusBar.message("Suggest: " + suggest);
 	}
 	
 
@@ -290,6 +295,7 @@ public class Controller implements ActionListener, WindowListener {
 			outputMan.deleteChar(1);
 			suggest = profileMan.getWordSuggest(typedWord);
 			outputMan.printSuggest(suggest, typedWord);
+			statusBar.message("Suggest: " + suggest);
 		} else if (typedWord.length() > 0) {
 			typedWord = typedWord.substring(0, typedWord.length() - 1);
 			// Delete 1, because there are suggested chars marked and you want to delete them and one char
