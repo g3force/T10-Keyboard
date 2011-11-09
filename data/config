@@ -1,3 +1,6 @@
 //Configfile for T10
 ActiveProfile=default
 ProfilePath=data/profiles/default.profile
+ProfilePath=data/profiles/Profile2.profile
+ProfilePath=data/profiles/Profile3.profile
+ProfilePath=data/profiles/Profile4.profile
