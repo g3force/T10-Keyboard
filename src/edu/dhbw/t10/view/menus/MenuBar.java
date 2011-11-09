@@ -77,6 +77,7 @@ public class MenuBar extends JMenuBar {
 		// Action Listener for menu items
 		iChange.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				// FIXME FelixP response is never used...
 				Object response = JOptionPane.showInputDialog((Component) e.getSource(),
 						"Where would you like to go to lunch?", "Select a Destination", JOptionPane.PLAIN_MESSAGE, null,
 						eventCache, "");
