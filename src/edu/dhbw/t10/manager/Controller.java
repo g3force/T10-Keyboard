@@ -19,7 +19,6 @@ import javax.swing.JFileChooser;
 
 import org.apache.log4j.Logger;
 
-import edu.dhbw.t10.helper.StringHelper;
 import edu.dhbw.t10.manager.output.OutputManager;
 import edu.dhbw.t10.manager.profile.ProfileManager;
 import edu.dhbw.t10.type.keyboard.DropDownList;
@@ -263,9 +262,7 @@ public class Controller implements ActionListener, WindowListener {
 	private void keyIsAccept(Key key) {
 		if (suggest.length() > typedWord.length())
 			outputMan.unMark();
-		
 		outputMan.printChar(key);
-		suggest = StringHelper.removePunctuation(suggest);
 		profileMan.acceptWord(suggest);
 		typedWord = "";
 		suggest = "";

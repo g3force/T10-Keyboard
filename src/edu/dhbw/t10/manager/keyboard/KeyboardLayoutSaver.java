@@ -177,6 +177,10 @@ public class KeyboardLayoutSaver {
 				key.appendChild(text);
 				buttonEl.appendChild(key);
 				
+				if (button.getKey().isAccept()) {
+					key.setAttribute("accept", "true");
+				}
+				
 				// workaround for double mode buttons (two phys. shift buttons)
 				ArrayList<Integer> workaroundList = new ArrayList<Integer>();
 				for (Entry<ModeButton, Key> mode : button.getModes().entrySet()) {
