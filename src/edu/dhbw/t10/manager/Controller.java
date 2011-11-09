@@ -404,7 +404,7 @@ public class Controller implements ActionListener, WindowListener {
 			logger.debug("closing - serializing the profiles");
 			profileMan.serializeProfiles();
 			logger.debug("closed - good BUY");
-			logger.trace("(c) FIT 42");
+			logger.info("(c) FIT 42");
 		} catch (Exception e) {
 			logger.error("closing routine produced an error: " + e.toString());
 		}
