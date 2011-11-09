@@ -335,10 +335,10 @@ public class ProfileManager {
 	
 	/**
 	 * 
-	 * TODO SebastianN, add comment!
+	 * Gets the Position of the wanted profile within the Profile-Arraylist
 	 * 
 	 * @param name of the profile whose position needs to be verified.
-	 * @return position. If not found, it returns -1
+	 * @return Position within array (int). If not found, it returns -1
 	 * @author SebastianN
 	 */
 	private int getPositionOfProfile(String name) {
@@ -352,8 +352,6 @@ public class ProfileManager {
 
 	/**
 	 * Marks a profile as 'active'.
-	 * 
-	 * TODO SebastianN use me
 	 * 
 	 * @param newActive - Handle of the to-be activated profile
 	 * @author SebastianN
