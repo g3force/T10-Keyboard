@@ -19,11 +19,11 @@
 		<on color="green" tooltip="Turn off the Auto Completing, so you will not be corrected by T10 anymore.">T10</on>
 		<off color="red" tooltip="Turn on the Auto Completing, T10 will help you typing.">T10</off>
 	</mutebutton>
-	<mutebutton type="auto_profile_change" size_x="50" size_y="50" pos_x="845" pos_y="115">
+	<!-- <mutebutton type="auto_profile_change" size_x="50" size_y="50" pos_x="845" pos_y="115">
 		<on color="green" tooltip="Turn off the Auto Profile Change. Then the profile can only be changed manually.">Auto</on>
 		<off color="red" tooltip="Turn on the Auto Profile Change. The profile will be changed automatically to the language you type. NOT IMPLEMENTED">Auto</off>
-	</mutebutton>
-	<mutebutton type="tree_expanding" size_x="50" size_y="50" pos_x="845" pos_y="170">
+	</mutebutton> -->
+	<mutebutton type="tree_expanding" size_x="50" size_y="50" pos_x="845" pos_y="115">
 		<on color="green" tooltip="Turn off the Expanding of the Tree. No words will be saved in the tree anymore.">Save</on>
 		<off color="red" tooltip="Turn on the Expanding of the Tree. Every word you type will be saved to support you.">Save</off>
 	</mutebutton>
@@ -312,6 +312,16 @@
 		<mode modename="1001">124</mode>
 	</button>
 
+	<!-- End -->
+	<button size_x="50" size_y="50" pos_x="735" pos_y="280">
+		<key>131</key>
+	</button>
+
+	<!-- Pos1 -->
+	<button size_x="50" size_y="50" pos_x="790" pos_y="170">
+		<key>132</key>
+	</button>
+
 
 	<!-- arrow keys -->
 	<button size_x="50" size_y="50" pos_x="845" pos_y="225">
@@ -325,11 +335,6 @@
 	</button>
 	<button size_x="50" size_y="50" pos_x="900" pos_y="280">
 		<key>129</key>
-	</button>
-
-	<!-- End -->
-	<button size_x="50" size_y="50" pos_x="955" pos_y="280">
-		<key>131</key>
 	</button>
 
 	<!-- Spaces -->
