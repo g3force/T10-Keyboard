@@ -43,27 +43,28 @@ public class MuteButton extends PhysicalButton {
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
+	
+	/**
+	 * Create new MuteButton with given size and position
+	 * 
+	 * @param size_x
+	 * @param size_y
+	 * @param pos_x
+	 * @param pos_y
+	 */
 	public MuteButton(int size_x, int size_y, int pos_x, int pos_y) {
 		super(size_x, size_y, pos_x, pos_y);
 		on = new Mode(this.getBackground());
 		off = new Mode(this.getBackground());
-		createToolTip();
-		setToolTipText("Blubb");
-		// JToolTip t;
-		// t.
 	}
 	
 	
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
-	// public String getTypeAsString() {
-	// MuteButton.class.getDeclaredField("THIS_IS_MY_CONST").get(String.class)
-	// }
 
 	/**
-	 * 
-	 * TODO NicolaiO synchronisation with actual mute state... either here or in profile(manager)
+	 * Toggle state of mute button
 	 * 
 	 * @author NicolaiO
 	 */
@@ -72,12 +73,35 @@ public class MuteButton extends PhysicalButton {
 	}
 	
 	
+	/**
+	 * Set button state to off (deactivated)
+	 * 
+	 * @author NicolaiO
+	 */
 	public void release() {
-		activated = false;
-		setText(off.getName());
-		setBackground(off.getColor());
+		setActivated(false);
 	}
 	
+	
+	/**
+	 * Set state and modify visibility of button
+	 * 
+	 * @param activated
+	 * @author NicolaiO
+	 */
+	public void setActivated(boolean activated) {
+		this.activated = activated;
+		if (!activated) {
+			setText(off.getName());
+			setBackground(off.getColor());
+			logger.debug("MuteButton deactivated");
+		} else {
+			setText(on.getName());
+			setBackground(on.getColor());
+			logger.debug("MuteButton activated");
+		}
+	}
+
 
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
@@ -93,7 +117,6 @@ public class MuteButton extends PhysicalButton {
 	}
 	
 	
-
 	// public Color getOnColor() {
 	// return onColor;
 	// }
@@ -160,22 +183,6 @@ public class MuteButton extends PhysicalButton {
 	
 	public boolean isActivated() {
 		return activated;
-	}
-	
-	
-	public void setActivated(boolean activated) {
-		this.activated = activated;
-		if (!activated) {
-			setText(off.getName());
-			setBackground(off.getColor());
-			setToolTipText(off.getTooltip());
-			logger.debug("MuteButton deactivated");
-		} else {
-			setText(on.getName());
-			setBackground(on.getColor());
-			setToolTipText(on.getTooltip());
-			logger.debug("MuteButton activated");
-		}
 	}
 
 

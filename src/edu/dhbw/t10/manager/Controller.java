@@ -127,23 +127,28 @@ public class Controller implements ActionListener, WindowListener {
 	 */
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() instanceof Button) {
+			logger.debug("Normal Button pressed.");
 			eIsButton((Button) e.getSource());
 		}
 
 		if (e.getSource() instanceof ModeButton) {
+			logger.debug("ModeButton pressed.");
 			ModeButton modeB = (ModeButton) e.getSource();
 			modeB.push();
 		}
 
 		if (e.getSource() instanceof MuteButton) {
+			logger.debug("MuteButton pressed.");
 			eIsMuteButton((MuteButton) e.getSource());
 		}
 		
 		if (e.getSource() instanceof DropDownList) {
+			logger.debug("DropDownList pressed.");
 			eIsDropDownList((DropDownList) e.getSource());
 		}
 		
 		if (e.getSource() instanceof ProfileChooser) {
+			logger.debug("ProfileChooser pressed.");
 			eIsProfileChooser((ProfileChooser) e.getSource());
 		}
 
@@ -164,11 +169,11 @@ public class Controller implements ActionListener, WindowListener {
 			switch (pc.getDialogType()) {
 				// export profile
 				case JFileChooser.SAVE_DIALOG:
-					// TODO profile export
+					// TODO ALL profile export
 					break;
 				// import profile
 				case JFileChooser.OPEN_DIALOG:
-					// TODO profile import....
+					// TODO ALL profile import....
 					break;
 			}
 		}

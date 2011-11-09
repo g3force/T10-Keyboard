@@ -50,10 +50,15 @@ public class ModeButton extends PhysicalButton {
 	public void push() {
 		if (state == HOLD) {
 			release();
+			this.getModel().setPressed(false);
+			this.setBorderPainted(true);
 		} else if (state == PRESSED) {
 			state = HOLD;
+			this.getModel().setPressed(true);
+			this.setBorderPainted(false);
 		} else if (state == DEFAULT) {
 			state = PRESSED;
+			this.getModel().setPressed(true);
 			for (Button b : observers) {
 				b.addCurrentMode(this);
 			}
@@ -67,6 +72,8 @@ public class ModeButton extends PhysicalButton {
 		for (Button b : observers) {
 			b.rmCurrentMode(this);
 		}
+		this.getModel().setPressed(false);
+		this.setBorderPainted(false);
 		logger.debug("ModeButton released");
 	}
 
@@ -85,6 +92,11 @@ public class ModeButton extends PhysicalButton {
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
+	public String getModeName() {
+		return modeKey.getName();
+	}
+
+
 	public Key getModeKey() {
 		return modeKey;
 	}
