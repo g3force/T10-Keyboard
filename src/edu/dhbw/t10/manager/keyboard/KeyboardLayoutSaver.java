@@ -139,14 +139,16 @@ public class KeyboardLayoutSaver {
 				// muteButtonEl.setAttribute("type", muteButton.getType());
 				// ON
 				Element on = doc.createElement("on");
-				on.setAttribute("color", muteButton.getStringFromColor(muteButton.getOnColor()));
-				text = doc.createTextNode(muteButton.getOnName());
+				on.setAttribute("color", muteButton.getModeOn().getColorString());
+				on.setAttribute("tooltip", muteButton.getModeOn().getTooltip());
+				text = doc.createTextNode(muteButton.getModeOn().getName());
 				on.appendChild(text);
 				muteButtonEl.appendChild(on);
 				// OFF
 				Element off = doc.createElement("off");
-				off.setAttribute("color", muteButton.getStringFromColor(muteButton.getOffColor()));
-				text = doc.createTextNode(muteButton.getOffName());
+				off.setAttribute("color", muteButton.getModeOff().getColorString());
+				off.setAttribute("tooltip", muteButton.getModeOff().getTooltip());
+				text = doc.createTextNode(muteButton.getModeOff().getName());
 				off.appendChild(text);
 				muteButtonEl.appendChild(off);
 				
