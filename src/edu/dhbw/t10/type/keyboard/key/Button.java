@@ -9,8 +9,13 @@
  */
 package edu.dhbw.t10.type.keyboard.key;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import javax.swing.JButton;
 
 import org.apache.log4j.Logger;
 
@@ -22,7 +27,7 @@ import org.apache.log4j.Logger;
  * @author NicolaiO
  * 
  */
-public class Button extends PhysicalButton {
+public class Button extends PhysicalButton implements MouseListener {
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
@@ -40,6 +45,7 @@ public class Button extends PhysicalButton {
 
 	public Button(int size_x, int size_y, int pos_x, int pos_y) {
 		super(size_x, size_y, pos_x, pos_y);
+		addMouseListener(this);
 	}
 	
 	
@@ -70,6 +76,7 @@ public class Button extends PhysicalButton {
 	 */
 	public void addCurrentMode(ModeButton mode) {
 		activeModes.add(mode);
+		logger.debug("Mode added to currently active modes: " + mode);
 		if (activeModes.size() == 1) {
 			if (modes.get(mode) != null) {
 				setText(modes.get(mode).getName());
@@ -167,6 +174,58 @@ public class Button extends PhysicalButton {
 	public void setKey(Key key) {
 		this.key = key;
 		setText(key.getName());
+	}
+	
+	
+	@Override
+	public void mousePressed(MouseEvent e) {
+		/**
+		 * visualize pressing button for right mouse click
+		 */
+		if (e.getButton() == MouseEvent.BUTTON3) {
+			if (e.getSource() instanceof JButton) {
+				JButton b = (JButton) e.getSource();
+				b.getModel().setPressed(true);
+			}
+		}
+	}
+	
+	
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		/**
+		 * visualize pressing button for right mouse click
+		 */
+		if (e.getButton() == MouseEvent.BUTTON3) {
+			if (e.getSource() instanceof JButton) {
+				for (ModeButton mb : modes.keySet()) {
+					if (mb.getModeName().toLowerCase().equals("shift")) {
+						this.addCurrentMode(mb);
+					} else {
+						logger.trace(mb.getModeName());
+					}
+				}
+				this.actionListener.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, this
+						.getActionCommand(), ActionEvent.SHIFT_MASK));
+				JButton b = (JButton) e.getSource();
+				b.getModel().setPressed(false);
+			}
+		}
+	}
+	
+	
+	@Override
+	public void mouseClicked(MouseEvent e) {
+	}
+	
+	
+	@Override
+	public void mouseEntered(MouseEvent e) {
+	}
+	
+	
+	@Override
+	public void mouseExited(MouseEvent e) {
 	}
 	
 	

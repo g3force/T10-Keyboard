@@ -12,9 +12,6 @@ package edu.dhbw.t10.type.keyboard.key;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.lang.reflect.Field;
 
 import javax.swing.JButton;
@@ -30,7 +27,7 @@ import org.apache.log4j.Logger;
  * @author DirkK
  * 
  */
-public abstract class PhysicalButton extends JButton implements MouseListener {
+public abstract class PhysicalButton extends JButton {
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
@@ -75,7 +72,6 @@ public abstract class PhysicalButton extends JButton implements MouseListener {
 	
 	private void init() {
 		setLayout(null);
-		addMouseListener(this);
 		setMargin(new Insets(0, 0, 0, 0));
 	}
 
@@ -140,53 +136,5 @@ public abstract class PhysicalButton extends JButton implements MouseListener {
 	
 	public void setOrigSize(Dimension origSize) {
 		this.origSize = origSize;
-	}
-	
-	
-	@Override
-	public void mouseClicked(MouseEvent e) {
-
-	}
-	
-	
-	@Override
-	public void mouseEntered(MouseEvent e) {
-		
-	}
-	
-	
-	@Override
-	public void mouseExited(MouseEvent e) {
-		
-	}
-	
-	
-	@Override
-	public void mousePressed(MouseEvent e) {
-		/**
-		 * visualize pressing button for right mouse click
-		 */
-		if (e.getButton() == MouseEvent.BUTTON3) {
-			if (e.getSource() instanceof JButton) {
-				JButton b = (JButton) e.getSource();
-				b.getModel().setPressed(true);
-			}
-		}
-	}
-	
-	
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		/**
-		 * visualize pressing button for right mouse click
-		 */
-		if (e.getButton() == MouseEvent.BUTTON3) {
-			if (e.getSource() instanceof JButton) {
-				this.actionListener.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, this
-						.getActionCommand(), ActionEvent.SHIFT_MASK));
-				JButton b = (JButton) e.getSource();
-				b.getModel().setPressed(false);
-			}
-		}
 	}
 }
