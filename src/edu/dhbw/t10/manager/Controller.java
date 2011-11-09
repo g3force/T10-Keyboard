@@ -305,8 +305,7 @@ public class Controller implements ActionListener, WindowListener {
 
 	/**
 	 * When Space or Enter is pressed accept the typed Word and print Space or Enter...<br>
-	 * The suggest will be declined and forgotten. // FIXME ALL Ist diese Zeile grammitsch richtig?? NicolaiO: correct
-	 * enaugh :P
+	 * The suggest will be declined and forgotten.<br>
 	 * 
 	 * @param key
 	 * @author DanielAl
