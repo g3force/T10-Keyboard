@@ -19,6 +19,7 @@ import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
 
+import edu.dhbw.t10.helper.StringHelper;
 import edu.dhbw.t10.type.keyboard.DropDownList;
 import edu.dhbw.t10.type.keyboard.KeyboardLayout;
 import edu.dhbw.t10.type.profile.Profile;
@@ -275,6 +276,7 @@ public class ProfileManager {
 		}
 		Profile newProfile = new Profile(profileName);
 		profiles.add(newProfile);
+		addProfileToDDL(newProfile);
 		return newProfile;
 	}
 	
@@ -403,6 +405,7 @@ public class ProfileManager {
 	 * @author SebastianN
 	 */
 	public void acceptWord(String word) {
+		word = StringHelper.removePunctuation(word);
 		if (getActive() == null) {
 			logger.error("getActive()==NULL at acceptWord");
 			return;
