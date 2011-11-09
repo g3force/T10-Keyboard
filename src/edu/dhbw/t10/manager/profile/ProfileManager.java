@@ -276,7 +276,8 @@ public class ProfileManager {
 		}
 		Profile newProfile = new Profile(profileName);
 		profiles.add(newProfile);
-		addProfileToDDL(newProfile);
+		if (getActive() != null)
+			addProfileToDDL(newProfile);
 		return newProfile;
 	}
 	
