@@ -35,6 +35,7 @@ public class MenuBar extends JMenuBar {
 	// --------------------------------------------------------------------------
 	private static final long			serialVersionUID	= -2903181098465204289L;
 	protected static final Object[]	eventCache			= null;
+	// TODO FelixP unused variable
 	private static int					inc					= 1;
 	
 	
