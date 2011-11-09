@@ -70,13 +70,11 @@ public class MuteButton extends PhysicalButton {
 			activated = false;
 			setText(offName);
 			setBackground(offColor);
-			setToolTipText("Blubb");
 			logger.debug("MuteButton deactivated");
 		} else {
 			activated = true;
 			setText(onName);
 			setBackground(onColor);
-			setToolTipText("Blubb");
 			logger.debug("MuteButton activated");
 		}
 	}
