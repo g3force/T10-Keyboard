@@ -259,18 +259,14 @@ public class Controller implements ActionListener, WindowListener {
 	
 
 	/**
-	 * If the input is a Unicode it is a Symbol character and this will be printed. <br>
-	 * The typed Word and SUggest WOrd will be forgotten.<br>
+	 * If the input is a Unicode (it is a Symbol character, special chars are type char) and this will be printed. <br>
+	 * The typed Word and Suggest Word will be forgotten.<br>
 	 * 
 	 * @param key
 	 * @author DanielAl
 	 */
 	private void keyIsUnicode(Key key) {
 		outputMan.printChar(key);
-		// TODO DanielAl review commented lines
-		// typedWord = typedWord + key.getName();
-		// suggest = profileMan.getWordSuggest(typedWord);
-		// outputMan.printSuggest(suggest, typedWord);
 		typedWord = "";
 		suggest = "";
 	}
