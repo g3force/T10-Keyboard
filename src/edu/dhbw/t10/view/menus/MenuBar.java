@@ -13,7 +13,6 @@ package edu.dhbw.t10.view.menus;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 
 import javax.swing.JFileChooser;
 import javax.swing.JMenu;
@@ -73,11 +72,11 @@ public class MenuBar extends JMenuBar {
 		mProfile.add(iD2F);
 		mProfile.add(iClean);
 		mProfile.add(iDelete);
+
 		
 		// Action Listener for menu items
 		iChange.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// FIXME FelixP response is never used...
 				Object response = JOptionPane.showInputDialog((Component) e.getSource(),
 						"Where would you like to go to lunch?", "Select a Destination", JOptionPane.PLAIN_MESSAGE, null,
 						eventCache, "");
@@ -88,8 +87,6 @@ public class MenuBar extends JMenuBar {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new ProfileChooser(1);
-
 				Controller.getInstance().createProfile("Profile" + (++inc));
 				// TODO FelixP Menu erstellen (eingabe: Name und Pfad)
 			}
@@ -99,15 +96,7 @@ public class MenuBar extends JMenuBar {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				JFileChooser fc = new JFileChooser();
-				
-				fc.setDialogType(JFileChooser.OPEN_DIALOG);
-				int state = fc.showOpenDialog(null);
-				
-				if (state == JFileChooser.APPROVE_OPTION) {
-					File[] file = fc.getSelectedFiles();
-					// TODO FelixP use non-existent controller interface
-				}
+				ProfileChooser pc = new ProfileChooser(JFileChooser.OPEN_DIALOG);
 			}
 		});
 		
@@ -115,7 +104,7 @@ public class MenuBar extends JMenuBar {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO FelixP Menu
+				ProfileChooser pc = new ProfileChooser(JFileChooser.SAVE_DIALOG);
 			}
 		});
 
