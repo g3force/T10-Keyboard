@@ -136,6 +136,19 @@ public class KeyboardLayoutSaver {
 			for (MuteButton muteButton : kbdLayout.getMuteButtons()) {
 				Element muteButtonEl = doc.createElement("mutebutton");
 				setSizeOfPhysicalButton(muteButtonEl, muteButton);
+				switch (muteButton.getType()) {
+					case MuteButton.AUTO_COMPLETING:
+						muteButtonEl.setAttribute("type", "auto_completing");
+						break;
+					case MuteButton.AUTO_PROFILE_CHANGE:
+						muteButtonEl.setAttribute("type", "auto_profile_change");
+						break;
+					case MuteButton.TREE_EXPANDING:
+						muteButtonEl.setAttribute("type", "tree_expanding");
+						break;
+					default:
+						muteButtonEl.setAttribute("type", "unknown");
+				}
 				// muteButtonEl.setAttribute("type", muteButton.getType());
 				// ON
 				Element on = doc.createElement("on");

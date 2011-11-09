@@ -81,6 +81,7 @@ public class Controller implements ActionListener, WindowListener {
 		mainPanel.setKbdLayout(profileMan.getActive().getKbdLayout());
 		profileMan.addAllProfilesToDDL();
 
+
 		mainPanel.addComponentListener(mainPanel);
 		resizeWindow(profileMan.getActive().getKbdLayout().getSize());
 		statusBar.message("Keyboard initialiezd.");
@@ -202,13 +203,13 @@ public class Controller implements ActionListener, WindowListener {
 		int type = muteB.getType();
 		switch (type) {
 			case MuteButton.AUTO_COMPLETING:
-				profileMan.toggleAutoCompleting();
+				profileMan.getActive().setAutoCompleting(muteB.isActivated());
 				break;
 			case MuteButton.AUTO_PROFILE_CHANGE:
-				profileMan.toggleAutoProfileChange();
+				profileMan.getActive().setAutoProfileChange(muteB.isActivated());
 				break;
 			case MuteButton.TREE_EXPANDING:
-				profileMan.toggleTreeExpanding();
+				profileMan.getActive().setTreeExpanding(muteB.isActivated());
 				break;
 		}
 		logger.debug("MuteButton pressed");

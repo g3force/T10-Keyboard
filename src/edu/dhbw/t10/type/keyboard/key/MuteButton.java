@@ -68,19 +68,7 @@ public class MuteButton extends PhysicalButton {
 	 * @author NicolaiO
 	 */
 	public void push() {
-		if (activated) {
-			activated = false;
-			setText(off.getName());
-			setBackground(off.getColor());
-			setToolTipText(off.getTooltip());
-			logger.debug("MuteButton deactivated");
-		} else {
-			activated = true;
-			setText(on.getName());
-			setBackground(on.getColor());
-			setToolTipText(on.getTooltip());
-			logger.debug("MuteButton activated");
-		}
+		setActivated(!activated);
 	}
 	
 	
@@ -167,6 +155,27 @@ public class MuteButton extends PhysicalButton {
 	
 	public void setModeOff(Mode off) {
 		this.off = off;
+	}
+	
+	
+	public boolean isActivated() {
+		return activated;
+	}
+	
+	
+	public void setActivated(boolean activated) {
+		this.activated = activated;
+		if (!activated) {
+			setText(off.getName());
+			setBackground(off.getColor());
+			setToolTipText(off.getTooltip());
+			logger.debug("MuteButton deactivated");
+		} else {
+			setText(on.getName());
+			setBackground(on.getColor());
+			setToolTipText(on.getTooltip());
+			logger.debug("MuteButton activated");
+		}
 	}
 
 

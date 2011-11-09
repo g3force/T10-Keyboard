@@ -19,6 +19,7 @@ import edu.dhbw.t10.manager.keyboard.KeyboardLayoutSaver;
 import edu.dhbw.t10.manager.keyboard.KeymapLoader;
 import edu.dhbw.t10.manager.profile.ImportExportManager;
 import edu.dhbw.t10.type.keyboard.KeyboardLayout;
+import edu.dhbw.t10.type.keyboard.key.MuteButton;
 import edu.dhbw.t10.type.tree.PriorityTree;
 
 
@@ -47,6 +48,10 @@ public class Profile implements Serializable {
 	private transient PriorityTree	tree;
 	private transient KeyboardLayout	kbdLayout;
 	
+	private boolean						autoProfileChange	= true;
+	private boolean						autoCompleting		= true;
+	private boolean						treeExpanding		= true;
+
 	@SuppressWarnings("unused")
 	private static final Logger		logger				= Logger.getLogger(Profile.class);
 	
@@ -139,6 +144,23 @@ public class Profile implements Serializable {
 		} else {
 			logger.info("Default Layout loaded");
 			kbdLayout = KeyboardLayoutLoader.load(defaultLayoutFile, KeymapLoader.load(defaultKeymapFile));
+		}
+		logger.error(kbdLayout.getMuteButtons().size());
+		for (MuteButton mb : kbdLayout.getMuteButtons()) {
+			switch (mb.getType()) {
+				case MuteButton.AUTO_COMPLETING:
+					mb.setActivated(autoCompleting);
+					break;
+				case MuteButton.AUTO_PROFILE_CHANGE:
+					mb.setActivated(autoProfileChange);
+					break;
+				case MuteButton.TREE_EXPANDING:
+					mb.setActivated(treeExpanding);
+					break;
+				default:
+					logger.error(mb.getType());
+					break;
+			}
 		}
 	}
 	
@@ -253,5 +275,35 @@ public class Profile implements Serializable {
 		this.kbdLayout = kbdLayout;
 	}
 	
+	
+	public boolean isAutoProfileChange() {
+		return autoProfileChange;
+	}
+	
+	
+	public void setAutoProfileChange(boolean autoProfileChange) {
+		this.autoProfileChange = autoProfileChange;
+	}
+	
+	
+	public boolean isAutoCompleting() {
+		return autoCompleting;
+	}
+	
+	
+	public void setAutoCompleting(boolean autoCompleting) {
+		this.autoCompleting = autoCompleting;
+	}
+	
+	
+	public boolean isTreeExpanding() {
+		return treeExpanding;
+	}
+	
+	
+	public void setTreeExpanding(boolean treeExpanding) {
+		this.treeExpanding = treeExpanding;
+	}
+
 	
 }
