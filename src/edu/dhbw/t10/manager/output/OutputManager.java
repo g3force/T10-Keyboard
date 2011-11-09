@@ -96,10 +96,12 @@ public class OutputManager {
 	public boolean mark(int num) {
 		// Use a ArrayList to be able to use the printCombi
 		ArrayList<Key> markCombi = new ArrayList<Key>();
-		markCombi.add(new Key(0, "Shift", "\\SHIFT\\", Key.CONTROL));
+		// Keycode is here not like the standard CONTROL code between two \\ \\, because this minimizes calculation of
+		// strings in the called out.printCombi function...
 		for (int j = 0; j < num; j++) {
 			// Add one marked char via one LEFT Key...
-			markCombi.add(new Key(j, "Left", "\\LEFT\\", Key.CONTROL));
+			markCombi.add(new Key(j, "Left", "LEFT", Key.CONTROL));
+			logger.trace("Added one mark...");
 		}
 		boolean mark = out.printCombi(markCombi);
 		logger.info(num + " Symboly marked");
@@ -125,7 +127,7 @@ public class OutputManager {
 	public void printSuggest(String newSuggest, String typed) {
 		// only used if there are really chars that aren't typed yet...
 		if (newSuggest.length() > typed.length()) {
-			out.printString(newSuggest.substring(typed.length()), 0);
+			out.printString(newSuggest.substring(typed.length()), Key.CHAR);
 			mark(newSuggest.length() - typed.length());
 		}
 	}

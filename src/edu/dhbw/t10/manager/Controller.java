@@ -93,10 +93,10 @@ public class Controller implements ActionListener, WindowListener {
 	 * Creates a profile by name.
 	 * 
 	 * @param String name
-	 * @author //FIXME
+	 * @author SebastianN
 	 */
 	public void createProfile(String name) {
-		profileMan.createProfile(name);
+		profileMan.addProfileToDDL(profileMan.createProfile(name));
 	}
 	
 
@@ -104,7 +104,7 @@ public class Controller implements ActionListener, WindowListener {
 	 * Deletes a profile by name.
 	 * 
 	 * @param String name
-	 * @author //FIXME
+	 * @author SebastianN
 	 */
 	public void deleteProfile(String name) {
 		profileMan.deleteProfile(name);
@@ -116,25 +116,35 @@ public class Controller implements ActionListener, WindowListener {
 	 * Starts the right activities for a specific event...
 	 * 
 	 * @param e
-	 * @author //FIXME
+	 * @author ALL
 	 */
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() instanceof Button) {
 			eIsButton((Button) e.getSource());
-		} // end if instance of Button
+		}
 
 		if (e.getSource() instanceof ModeButton) {
 			ModeButton modeB = (ModeButton) e.getSource();
 			modeB.push();
-		} // end if instance of ModeButton
+		}
 
 		if (e.getSource() instanceof MuteButton) {
 			eIsMuteButton((MuteButton) e.getSource());
-		} // end if instance of MuteButton
+		}
 		
 		if (e.getSource() instanceof DropDownList) {
 			eIsDropDownList((DropDownList) e.getSource());
-		} // end if instance of DropDownList
+		}
+		
+		// FIXME NicolaiO reference to Shift Mode Button?? => problem, any idea??
+		/**
+		 * SHIFT_MASK modifier is set, when a button is clicked with right mouse button.
+		 * How can I tell that shift should be pressed?! with ModeButton Shift or is there another way?
+		 * TODO DanielAl send shift signal to Output
+		 */
+		if (e.getModifiers() == ActionEvent.SHIFT_MASK) {
+			logger.debug("shift modifier is pressed. No action yet...");
+		}
 	}
 	
 
@@ -142,16 +152,9 @@ public class Controller implements ActionListener, WindowListener {
 	 * Do the logic for a button event. Switch between different types, specific Keys and a Key Combination...
 	 * 
 	 * @param button
-	 * @author DanielAl, //FIXME
+	 * @author DanielAl
 	 */
 	private void eIsButton(Button button) {
-		// TODO useful hint: e.getModifiers()
-		
-		// TODO reference to Shift Mode Button??
-		// if (e.getModifiers() == ActionEvent.SHIFT_MASK) {
-		// logger.debug("shift modifier is pressed.");
-		// }
-		
 		if (button.getSingleKey().size() == 1) {
 			Key key = (Key) button.getSingleKey().get(0);
 
@@ -171,7 +174,7 @@ public class Controller implements ActionListener, WindowListener {
 			}
 			logger.debug("Key pressed: " + key.toString());
 		} else if (button.getSingleKey().size() > 1) {
-			// FIXME not working...
+			// FIXME NicolaiO, DanielAl Combi auslesen und weitergeben...
 			outputMan.printCombi(button);
 		} else
 			logger.error("No Key List");
@@ -181,10 +184,12 @@ public class Controller implements ActionListener, WindowListener {
 	
 
 	/**
-	 * 
-	 * TODO DanielAl, add comment!
-	 * 
-	 * @param currentList
+	 * Switchs between the three different Mute modes...<br>
+	 * Modes are:<br>
+	 * - AUTO_COMPLETING - If activated, this prints a suggested Word behind the typed chars and mark them...
+	 * - AUTO_PROFILE_CHANGE - If activated, this changes the profiles based on the sourrounded context.
+	 * - TREE_EXPANDING - If activated, accepted words are saved in the dicitionary...
+	 * @param muteB
 	 * @author DanielAl
 	 */
 
@@ -207,8 +212,7 @@ public class Controller implements ActionListener, WindowListener {
 	
 
 	/**
-	 * 
-	 * TODO DanielAl, add comment!
+	 * Switchs the profiles based on a Dropdownlist... <br>
 	 * 
 	 * @param currentList
 	 * @author DanielAl
@@ -221,13 +225,12 @@ public class Controller implements ActionListener, WindowListener {
 			profileMan.setActive(selectedProfile);
 		}
 	}
-
+	
 
 	/**
+	 * Accept a suggested word, unmarks it and prints the given key.
 	 * 
-	 * TODO DanielAl, add comment!
-	 * 
-	 * @param currentList
+	 * @param key
 	 * @author DanielAl
 	 */
 	private void keyIsAccept(Key key) {
@@ -243,10 +246,8 @@ public class Controller implements ActionListener, WindowListener {
 	
 
 	/**
-	 * 
-	 * TODO DanielAl, add comment!
-	 * 
-	 * @param currentList
+	 * Prints the given key, added it to the typed String and get a new suggest and prtints it...
+	 * @param key
 	 * @author DanielAl
 	 */
 	private void keyIsCHAR(Key key) {
@@ -258,16 +259,15 @@ public class Controller implements ActionListener, WindowListener {
 	
 
 	/**
+	 * If the input is a Unicode it is a Symbol character and this will be printed. <br>
+	 * The typed Word and SUggest WOrd will be forgotten.<br>
 	 * 
-	 * TODO DanielAl, add comment!
-	 * 
-	 * @param currentList
+	 * @param key
 	 * @author DanielAl
 	 */
 	private void keyIsUnicode(Key key) {
 		outputMan.printChar(key);
-		// FIXME Wieso sind Umlaute als Unicode Zeichen im Keyboard gespeichert?? Wie soll die Unterscheidung zwischen
-		// Satzzeichen und Buchstaben stattfinden?
+		// TODO DanielAl review commented lines
 		// typedWord = typedWord + key.getName();
 		// suggest = profileMan.getWordSuggest(typedWord);
 		// outputMan.printSuggest(suggest, typedWord);
@@ -277,22 +277,27 @@ public class Controller implements ActionListener, WindowListener {
 	
 
 	/**
+	 * Handles a typed BackSpace.<br>
+	 * There are 3 options:<br>
+	 * - typedWord and suggest are equal, so no suggest is printed and one Backspace deletes the last typed char.<br>
+	 * - a suggest is printed to complete the typedWord. Then you need to delete the marked chars and the last typed
+	 * char, so yo need two Back_Spaces.<br>
+	 * - all other options, you'll only need to send one Back_Space<br>
+	 * A new suggest will also be generated.<br>
 	 * 
-	 * TODO DanielAl, add comment!
-	 * 
-	 * @param currentList
 	 * @author DanielAl
 	 */
 	private void keyIsBackspace() {
 		if (typedWord.length() > 0 && typedWord.equals(suggest)) {
 			typedWord = typedWord.substring(0, typedWord.length() - 1);
-			outputMan.deleteChar(1); // Eins, weil es keinen Vorschlag gibt...
+			// Delete 1, because nothing is marked and you want to delete one char
+			outputMan.deleteChar(1);
 			suggest = profileMan.getWordSuggest(typedWord);
 			outputMan.printSuggest(suggest, typedWord);
 		} else if (typedWord.length() > 0) {
 			typedWord = typedWord.substring(0, typedWord.length() - 1);
-			outputMan.deleteChar(2); // Zwei, weil einmal muss die aktuelle Markierung gelöscht werden und
-			// dann ein Zeichen.
+			// Delete 1, because there are suggested chars marked and you want to delete them and one char
+			outputMan.deleteChar(2);
 			suggest = profileMan.getWordSuggest(typedWord);
 			outputMan.printSuggest(suggest, typedWord);
 		} else {
@@ -302,9 +307,9 @@ public class Controller implements ActionListener, WindowListener {
 	
 
 	/**
-	 * ö
-	 * 
-	 * 
+	 * When Space or Enter is pressed accept the typed Word and print Space or Enter...<br>
+	 * The suggest will be declined and forgotten. // FIXME ALL Ist diese Zeile grammitsch richtig?? NicolaiO: correct
+	 * enaugh :P
 	 * 
 	 * @param key
 	 * @author DanielAl
@@ -324,7 +329,7 @@ public class Controller implements ActionListener, WindowListener {
 	 * Resizes the Window and rescale the buttons to fit in there...
 	 * 
 	 * @param size
-	 * @author DanielAl FIXME
+	 * @author NicolaiO
 	 */
 	public void resizeWindow(Dimension size) {
 		KeyboardLayout kbdLayout = profileMan.getActive().getKbdLayout();
@@ -388,7 +393,7 @@ public class Controller implements ActionListener, WindowListener {
 	/**
 	 * Save the actual Profile and dictionary to be able to clse the application.
 	 * 
-	 * @author DanielAl FIXME
+	 * @author NicolaiO
 	 */
 	private void closeSuperFelix() {
 		try {
@@ -399,7 +404,7 @@ public class Controller implements ActionListener, WindowListener {
 			logger.debug("closing - serializing the profiles");
 			profileMan.serializeProfiles();
 			logger.debug("closed - good BUY");
-			logger.trace("(c) FIT 42");
+			logger.info("(c) FIT 42");
 		} catch (Exception e) {
 			logger.error("closing routine produced an error: " + e.toString());
 		}
@@ -413,7 +418,7 @@ public class Controller implements ActionListener, WindowListener {
 	 * Calls the constructor if no instance exist. Singleton Design Pattern...
 	 * 
 	 * @return Controller
-	 * @author DanielAl FIXME
+	 * @author NicolaiO
 	 */
 	
 	public static Controller getInstance() {

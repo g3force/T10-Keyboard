@@ -45,6 +45,10 @@ public class MuteButton extends PhysicalButton {
 		super(size_x, size_y, pos_x, pos_y);
 		onColor = this.getBackground();
 		offColor = this.getBackground();
+		createToolTip();
+		setToolTipText("Blubb");
+		// JToolTip t;
+		// t.
 	}
 	
 	
@@ -55,17 +59,24 @@ public class MuteButton extends PhysicalButton {
 	// MuteButton.class.getDeclaredField("THIS_IS_MY_CONST").get(String.class)
 	// }
 
-	
+	/**
+	 * 
+	 * TODO NicolaiO synchronisation with actual mute state... either here or in profile(manager)
+	 * 
+	 * @author NicolaiO
+	 */
 	public void push() {
 		if (activated) {
 			activated = false;
 			setText(offName);
 			setBackground(offColor);
+			setToolTipText("Blubb");
 			logger.debug("MuteButton deactivated");
 		} else {
 			activated = true;
 			setText(onName);
 			setBackground(onColor);
+			setToolTipText("Blubb");
 			logger.debug("MuteButton activated");
 		}
 	}

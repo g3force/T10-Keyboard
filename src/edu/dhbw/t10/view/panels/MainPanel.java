@@ -90,7 +90,7 @@ public class MainPanel extends JPanel implements ComponentListener {
 		// do not resize if (0,0)
 		if (e.getComponent().getSize().height != 0 && e.getComponent().getSize().width != 0) {
 			logger.debug("Window resized handler called");
-			// FIXME Controller access?!
+			// FIXME NicolaiO Controller access?!
 			Controller.getInstance().resizeWindow(e.getComponent().getSize());
 		}
 	}
