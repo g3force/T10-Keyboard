@@ -163,9 +163,9 @@ public class Controller implements ActionListener, WindowListener {
 	private void eIsProfileChooser(ProfileChooser pc) {
 		if (pc.isApproved()) {
 			switch (pc.getDialogType()) {
-				// save/export profile
+				// export profile
 				case JFileChooser.SAVE_DIALOG:
-					createProfile("");
+					// TODO profile export
 					break;
 				// import profile
 				case JFileChooser.OPEN_DIALOG:
