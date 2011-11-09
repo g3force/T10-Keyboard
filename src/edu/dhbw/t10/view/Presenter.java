@@ -18,6 +18,7 @@ import org.apache.log4j.Logger;
 
 import edu.dhbw.t10.manager.Controller;
 import edu.dhbw.t10.view.menus.MenuBar;
+import edu.dhbw.t10.view.menus.StatusBar;
 import edu.dhbw.t10.view.panels.MainPanel;
 
 
@@ -43,7 +44,7 @@ public class Presenter extends JFrame {
 	/**
 	  * 
 	  */
-	public Presenter(MainPanel mainPanel) {
+	public Presenter(MainPanel mainPanel, StatusBar statusBar) {
 		logger.debug("Initializing...");
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setLocationByPlatform(true);
@@ -58,6 +59,7 @@ public class Presenter extends JFrame {
 		// get a reference to the content pane
 		contentPane = (JPanel) getContentPane();
 		contentPane.add(mainPanel);
+		contentPane.add(statusBar, java.awt.BorderLayout.SOUTH);
 		this.setJMenuBar(new MenuBar());
 		
 		// build GUI
