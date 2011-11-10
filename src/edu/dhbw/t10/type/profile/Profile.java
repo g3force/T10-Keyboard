@@ -179,7 +179,7 @@ public class Profile implements Serializable {
 		} catch (IOException err) {
 			logger.error("Could not fetch the word list for the proifle " + name + ", Path to tree: " + pathToTree);
 		}
-		logger.debug("load: " + pathToTree + " Tree Size: " + tree.exportToHashMap().size());
+		logger.debug("Tree successfully loaded");
 	}
 	
 	
