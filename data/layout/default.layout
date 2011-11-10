@@ -2,8 +2,8 @@
 <sizex>955</sizex>
 <sizey>335</sizey>
 <scalex>0.8</scalex>
-<scaley>0.7552239</scaley>
-<scale_font>1.177612</scale_font>
+<scaley>0.48656717</scaley>
+<scale_font>1.0432836</scale_font>
 <font>
 <name/>
 <style/>
@@ -69,18 +69,18 @@
 </button>
 <button pos_x="60" pos_y="60" size_x="50" size_y="50">
 <key>16</key>
-<mode modename="1001">30</mode>
 <mode modename="1007">42</mode>
+<mode modename="1001">30</mode>
 </button>
 <button pos_x="115" pos_y="60" size_x="50" size_y="50">
 <key>17</key>
-<mode modename="1001">31</mode>
 <mode modename="1007">43</mode>
+<mode modename="1001">31</mode>
 </button>
 <button pos_x="170" pos_y="60" size_x="50" size_y="50">
 <key>18</key>
-<mode modename="1001">32</mode>
 <mode modename="1007">44</mode>
+<mode modename="1001">32</mode>
 </button>
 <button pos_x="225" pos_y="60" size_x="50" size_y="50">
 <key>19</key>
@@ -96,28 +96,28 @@
 </button>
 <button pos_x="390" pos_y="60" size_x="50" size_y="50">
 <key>22</key>
-<mode modename="1001">36</mode>
 <mode modename="1007">45</mode>
+<mode modename="1001">36</mode>
 </button>
 <button pos_x="445" pos_y="60" size_x="50" size_y="50">
 <key>23</key>
-<mode modename="1001">37</mode>
 <mode modename="1007">46</mode>
+<mode modename="1001">37</mode>
 </button>
 <button pos_x="500" pos_y="60" size_x="50" size_y="50">
 <key>24</key>
-<mode modename="1001">38</mode>
 <mode modename="1007">47</mode>
+<mode modename="1001">38</mode>
 </button>
 <button pos_x="555" pos_y="60" size_x="50" size_y="50">
 <key>25</key>
-<mode modename="1001">39</mode>
 <mode modename="1007">48</mode>
+<mode modename="1001">39</mode>
 </button>
 <button pos_x="610" pos_y="60" size_x="50" size_y="50">
 <key>26</key>
-<mode modename="1001">40</mode>
 <mode modename="1007">49</mode>
+<mode modename="1001">40</mode>
 </button>
 <button pos_x="665" pos_y="60" size_x="50" size_y="50">
 <key>27</key>
@@ -131,8 +131,8 @@
 </button>
 <button pos_x="85" pos_y="115" size_x="50" size_y="50">
 <key>51</key>
-<mode modename="1001">64</mode>
 <mode modename="1007">76</mode>
+<mode modename="1001">64</mode>
 </button>
 <button pos_x="140" pos_y="115" size_x="50" size_y="50">
 <key>52</key>
@@ -140,8 +140,8 @@
 </button>
 <button pos_x="195" pos_y="115" size_x="50" size_y="50">
 <key>53</key>
-<mode modename="1001">66</mode>
 <mode modename="1007">77</mode>
+<mode modename="1001">66</mode>
 </button>
 <button pos_x="250" pos_y="115" size_x="50" size_y="50">
 <key>54</key>
@@ -169,8 +169,8 @@
 </button>
 <button pos_x="580" pos_y="115" size_x="50" size_y="50">
 <key>60</key>
-<mode modename="1001">73</mode>
 <mode modename="1007">78</mode>
+<mode modename="1001">73</mode>
 </button>
 <button pos_x="635" pos_y="115" size_x="50" size_y="50">
 <key>61</key>
@@ -233,8 +233,8 @@
 </button>
 <button pos_x="80" pos_y="225" size_x="50" size_y="50">
 <key>103</key>
-<mode modename="1001">114</mode>
 <mode modename="1007">125</mode>
+<mode modename="1001">114</mode>
 </button>
 <button pos_x="135" pos_y="225" size_x="50" size_y="50">
 <key>104</key>

@@ -38,6 +38,7 @@ public class StringHelper {
 	 * @author DirkK
 	 */
 	public static String removePunctuation(String input) {
+		input = input.replace("\t", "");
 		input = input.replace("\"", "");
 		input = input.replace("'", "");
 		input = input.replace(".", "");
