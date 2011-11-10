@@ -64,7 +64,7 @@ public class Key {
 
 
 	public String toString() {
-		return "id:" + id + " n:" + name + " kc:" + keycode + " t:" + type + " a:" + accept;
+		return "id:" + id + " n:" + name + " kc:" + keycode + " t:" + type;
 	}
 	
 	// --------------------------------------------------------------------------
@@ -109,6 +109,7 @@ public class Key {
 		this.type = type;
 	}
 	
+
 	
 	public boolean isAccept() {
 		return accept;
@@ -118,6 +119,6 @@ public class Key {
 	public void setAccept(boolean accept) {
 		this.accept = accept;
 	}
-	
+
 	
 }

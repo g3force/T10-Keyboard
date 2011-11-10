@@ -49,7 +49,7 @@ public class Output {
 	public static final int			RELEASE	= 2;
 	public static final int			COMBI		= 3;
 	public static final int			SHIFT		= 10;
-
+	
 	private static int				delay		= 0;
 	// 0 represents UNKNOWN OS, 1 Linux, 2 any Windows
 	private static int				os;
@@ -57,8 +57,8 @@ public class Output {
 	private Stack<Integer>			combi;
 	// Robot for sending Keys to the system - used in sendKey()
 	private Robot						keyRobot;
-
-
+	
+	
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
@@ -128,9 +128,9 @@ public class Output {
 		if (length <= 0)
 			return false;
 		
-		switch(type){
-			// Print Control Symbol, like ENTER or SPACEm,,,höll hlööp ho
-			case Key.CONTROL: 
+		switch (type) {
+			// Print Control Symbol, like ENTER or SPACE
+			case Key.CONTROL:
 				sendKey(convertKeyCode(charSequence.substring(1, length - 1)));
 				logger.info("Control Symbol printed: " + charSequence);
 				break;
@@ -147,7 +147,7 @@ public class Output {
 				
 				for (int i = 0; i < length; i++) {
 					// Unicode Zeichen
-					if (!unicodeStart.isEmpty() && unicodeStart.get(0) == i) { 
+					if (!unicodeStart.isEmpty() && unicodeStart.get(0) == i) {
 						sendUnicode(charSequence.substring(i, i + 8));
 						unicodeStart.remove(0);
 						i += 7;
@@ -160,10 +160,10 @@ public class Output {
 					}
 				}
 				logger.info("String printed: " + charSequence);
-					break;
+				break;
 			// No correct type can't be handeld...
 			case Key.UNKNOWN:
-			default: 
+			default:
 				logger.info("Undefined type for printing:" + type);
 				return false;
 		}
@@ -181,14 +181,20 @@ public class Output {
 	 * @author DanielAl
 	 */
 	protected boolean printCombi(ArrayList<Key> b) {
+		boolean state = true;
 		sendKey(KeyEvent.VK_SHIFT, COMBI);
 		for (Key key : b) {
-			String code = key.getKeycode();
-			sendKey(convertKeyCode(code));
+			try {
+				printChar(key);
+			} catch (Exception err) {
+				logger.error("printCombi: " + err.getMessage());
+				state = false;
+				break;
+			} 
 		}
 		sendKey(0, COMBI);
 		logger.info("Key Combi printed");
-		return true;
+		return state;
 	}
 	
 
@@ -218,16 +224,16 @@ public class Output {
 	private Integer convertKeyCode(String code, int type) {
 		Field f;
 		try {
-			switch (type){
+			switch (type) {
 				case 0:
 					f = KeyEvent.class.getField("VK_" + code.toUpperCase());
 					f.setAccessible(true);
 					return (Integer) f.get(null);
-				case 1: 
+				case 1:
 					f = KeyEvent.class.getField("VK_NUMPAD" + code.toUpperCase());
 					f.setAccessible(true);
 					return (Integer) f.get(null);
-				default:		
+				default:
 					return KeyEvent.VK_UNDEFINED;
 			}
 		} catch (SecurityException err) {
@@ -259,7 +265,7 @@ public class Output {
 	 */
 	private boolean sendUnicode(String uni) {
 		logger.error("UNICODE length: " + uni.length() + " Uni:" + uni);
-
+		
 		// Chekcs for the correct Unicode length, begin and end
 		if (uni.length() != 8 || !uni.substring(0, 3).equals("\\U+") || !uni.substring(7, 8).equals("\\")) {
 			logger.error("UNICODE wrong format; length: " + uni.length());
@@ -267,7 +273,7 @@ public class Output {
 		}
 		// Extract the Unicode Hexadecimal digit from the surrounding meta symbols (\\u+FFFF\\)
 		char[] uniArr = uni.substring(3, 7).toLowerCase().toCharArray();
-
+		
 		switch (os) {
 			case LINUX:
 				sendKey(KeyEvent.VK_CONTROL, PRESS);
@@ -281,39 +287,47 @@ public class Output {
 				sendKey(convertKeyCode(uniArr[3] + ""), TYPE);
 				sendKey(KeyEvent.VK_ENTER, TYPE);
 				return true;
-
+				
 			case WINDOWS:
 				try {
 					boolean num_lock;
-
-				// Checks the status of Num_Lock
-				Toolkit tool = Toolkit.getDefaultToolkit();
-				num_lock = tool.getLockingKeyState(KeyEvent.VK_NUM_LOCK);
-				logger.info((num_lock ? "Num Lock is on" : "Num Lock is off"));
-				// If Num_Lock is off, turn it on
-				if (!num_lock) {
-					sendKey(KeyEvent.VK_NUM_LOCK, TYPE);
-				}
-
+					
+					// Checks the status of Num_Lock
+					Toolkit tool = Toolkit.getDefaultToolkit();
+					num_lock = tool.getLockingKeyState(KeyEvent.VK_NUM_LOCK);
+					logger.info((num_lock ? "Num Lock is on" : "Num Lock is off"));
+					// If Num_Lock is off, turn it on
+					if (!num_lock) {
+						sendKey(KeyEvent.VK_NUM_LOCK, TYPE);
+					}
+					
 					// Sending KeyCombination for Unicode input to Windows (Hold ALT and press ADD and the digits, then
 					// release ALT)
-				sendKey(KeyEvent.VK_ALT, PRESS);
-				sendKey(KeyEvent.VK_ADD, TYPE);
-				// send the Hexa Decimal number with digits as a numpad key and the chars from the normal keyboard...
-				sendKey(Character.isDigit(uniArr[0]) ? convertKeyCode(uniArr[0] + "", 1) : convertKeyCode(uniArr[0] + "", 0), TYPE);
-				sendKey(Character.isDigit(uniArr[1]) ? convertKeyCode(uniArr[1] + "", 1) : convertKeyCode(uniArr[1] + "", 0), TYPE);
-				sendKey(Character.isDigit(uniArr[2]) ? convertKeyCode(uniArr[2] + "", 1) : convertKeyCode(uniArr[2] + "", 0), TYPE);
-				sendKey(Character.isDigit(uniArr[3]) ? convertKeyCode(uniArr[3] + "", 1) : convertKeyCode(uniArr[3] + "", 0), TYPE);
-				
-				sendKey(KeyEvent.VK_ALT, RELEASE);
-				
-				// If Num_Lock was off, turn it off again, so that you have the same status as before...
-				if (!num_lock) {
-					sendKey(KeyEvent.VK_NUM_LOCK, TYPE);
-				}
-			} catch (UnsupportedOperationException err) {
+					sendKey(KeyEvent.VK_ALT, PRESS);
+					sendKey(KeyEvent.VK_ADD, TYPE);
+					// send the Hexa Decimal number with digits as a numpad key and the chars from the normal keyboard...
+					sendKey(
+							Character.isDigit(uniArr[0]) ? convertKeyCode(uniArr[0] + "", 1) : convertKeyCode(uniArr[0] + "",
+									0), TYPE);
+					sendKey(
+							Character.isDigit(uniArr[1]) ? convertKeyCode(uniArr[1] + "", 1) : convertKeyCode(uniArr[1] + "",
+									0), TYPE);
+					sendKey(
+							Character.isDigit(uniArr[2]) ? convertKeyCode(uniArr[2] + "", 1) : convertKeyCode(uniArr[2] + "",
+									0), TYPE);
+					sendKey(
+							Character.isDigit(uniArr[3]) ? convertKeyCode(uniArr[3] + "", 1) : convertKeyCode(uniArr[3] + "",
+									0), TYPE);
+					
+					sendKey(KeyEvent.VK_ALT, RELEASE);
+					
+					// If Num_Lock was off, turn it off again, so that you have the same status as before...
+					if (!num_lock) {
+						sendKey(KeyEvent.VK_NUM_LOCK, TYPE);
+					}
+				} catch (UnsupportedOperationException err) {
 					logger.error("Unsupported Operation: Check Num_Lock state; can't write Unicode" + uniArr.toString());
-			}
+				}
 				return true;
 			default:
 				logger.error("OS not supported: Unicode");
@@ -382,8 +396,8 @@ public class Output {
 						}
 						break;
 					default:
-					sendKey((int) key, PRESS);
-					combi.push(key);
+						sendKey((int) key, PRESS);
+						combi.push(key);
 				}
 				break;
 			case SHIFT: // Shift function

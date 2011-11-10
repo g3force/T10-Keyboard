@@ -16,6 +16,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
@@ -24,7 +25,9 @@ import edu.dhbw.t10.helper.StringHelper;
 
 
 /**
- * Handles the import/export of a file.
+ * Handles the import/export of the files for the profile management (tree and chars).
+ * 
+ * @author DirkK
  */
 public class ImportExportManager {
 	// --------------------------------------------------------------------------
@@ -46,6 +49,7 @@ public class ImportExportManager {
 	
 	/**
 	 * import for special dictionary
+	 * TODO DirkK DELETE
 	 * @param fileName path to text file
 	 * @return importable HashMap
 	 */
@@ -78,29 +82,73 @@ public class ImportExportManager {
 	
 	
 	/**
+	 * reads the .chars file at the given path and returns the content in a list
+	 * @param pathToAllowedChars the path to the .chars file of the current profile
+	 * @return a linked list containing the ranges of the chars which are allowed
+	 * @throws NumberFormatException
+	 * @throws IOException
+	 * @author DirkK
+	 */
+	public static LinkedList<int[]> loadChars(String pathToAllowedChars) throws NumberFormatException, IOException {
+		LinkedList<int[]> allowedChars = new LinkedList<int[]>();
+		File confFile = new File(pathToAllowedChars);
+		if (confFile.exists()) {
+			FileReader fr = new FileReader(confFile);
+			BufferedReader br = new BufferedReader(fr);
+			String entry = "";
+			while ((entry = br.readLine()) != null) {
+				String[] entries = entry.split("-");
+				int[] newi = { Integer.parseInt(entries[0]), Integer.parseInt(entries[1]) };
+				allowedChars.add(newi);
+			}
+		} else {
+			logger.warn("No allowed chars file found at " + pathToAllowedChars);
+			int[] newi = { 0, 255 };
+			allowedChars.add(newi);
+		}
+		return allowedChars;
+	}
+	
+	
+	/**
+	 * reads the .chars file at the given path and returns the content in a list
+	 * @param pathToAllowedChars the path to the .chars file of the current profile
+	 * @param allowedChars the chars to be saved
+	 * @throws IOException
+	 * @author DirkK
+	 */
+	public static void saveChars(String pathToAllowedChars, LinkedList<int[]> allowedChars) throws IOException {
+		File confFile = new File(pathToAllowedChars);
+		FileWriter fw = new FileWriter(confFile);
+		BufferedWriter bw = new BufferedWriter(fw);
+		
+		for (int i = 0; i < allowedChars.size(); i++) {
+			bw.write(allowedChars.get(i)[0] + "-" + allowedChars.get(i)[1] + "\n");
+		}
+		bw.close();
+	}
+	
+	/**
 	 * takes an arbitrary text files and inserts all contained words in the tree
 	 * Tree cleaning recommended after this
 	 * @param fileName path to the input file
+	 * @throws IOException
 	 */
-	public static HashMap<String, Integer> importFromText(String fileName) {
+	public static HashMap<String, Integer> importFromText(String fileName) throws IOException {
 		HashMap<String, Integer> importMap = new HashMap<String, Integer>();
 		logger.debug("reading form file");
-		try {
-			FileReader fr = new FileReader(fileName);
-			BufferedReader x = new BufferedReader(fr);
-			
-			String res = x.readLine();
-			while (res != null) {
-				// System.out.println("Tmpbuf: " + res);
-				res = StringHelper.removePunctuation(res);
-				String[] words = res.split(" ");
-				for (String word : words)
-					if (word.length() > 1)
-						increase(importMap, word);
-				res = x.readLine();
-			}
-		} catch (Exception ex) {
-			ex.printStackTrace();
+		FileReader fr = new FileReader(fileName);
+		BufferedReader x = new BufferedReader(fr);
+		
+		String res = x.readLine();
+		while (res != null) {
+			// System.out.println("Tmpbuf: " + res);
+			res = StringHelper.removePunctuation(res);
+			String[] words = res.split(" ");
+			for (String word : words)
+				if (word.length() > 1)
+					increase(importMap, word);
+			res = x.readLine();
 		}
 		logger.debug("read form file");
 		return importMap;
@@ -111,52 +159,49 @@ public class ImportExportManager {
 	 * takes a Map with the structure word -> frequency and prints it into a file
 	 * @param exportMap the dictionary map
 	 * @param fileName the path inclusive file name
+	 * @throws IOException
+	 * @author DirkK
 	 */
-	public static void exportToFile(HashMap<String, Integer> exportMap, String fileName) {
+	public static void exportToFile(HashMap<String, Integer> exportMap, String fileName) throws IOException {
 		logger.debug("saving to file");
 		int counter = 0;
-		try {
-			FileWriter file = new FileWriter(fileName);
-			BufferedWriter o = new BufferedWriter(file);
-			for (Entry<String, Integer> entry : exportMap.entrySet()) {
-				o.write(entry.getKey() + " " + entry.getValue() + "\n");
-				counter++;
-			}
-			o.close();
-		} catch (IOException err) {
-			logger.error(err.getMessage());
+		FileWriter file = new FileWriter(fileName);
+		BufferedWriter o = new BufferedWriter(file);
+		for (Entry<String, Integer> entry : exportMap.entrySet()) {
+			o.write(entry.getKey() + " " + entry.getValue() + "\n");
+			counter++;
 		}
+		o.close();
 		logger.debug("saved to file (" + counter + " words written)");
 	}
+	
 	
 	/**
 	 * imports a dictionary from a file
 	 * returns the input of the file as HashMap (word->frequency)
 	 * @param fileName
 	 * @return HashMap
+	 * @throws IOException
+	 * @author DirkK
 	 */
-	public static HashMap<String, Integer> importFromFile(String fileName, boolean withFreq) {
+	public static HashMap<String, Integer> importFromFile(String fileName, boolean withFreq) throws IOException {
 		HashMap<String, Integer> importMap = new HashMap<String, Integer>();
 		logger.debug("reading form file");
 		int amount = 0;
-		try {
-			FileReader fr = new FileReader(fileName);
-			BufferedReader x = new BufferedReader(fr);
-			String res = x.readLine();
-			while (res != null) {
-				if (withFreq && res.contains(" ")) {
-					String[] entries = res.split(" ");
-					if (entries.length == 2 && entries[0].length() > 1 && entries[1].length() > 0) {
-						importMap.put(entries[0], Integer.parseInt(entries[1]));
-						amount++;
-					}
-				} else {
-					increase(importMap, res);
+		FileReader fr = new FileReader(fileName);
+		BufferedReader x = new BufferedReader(fr);
+		String res = x.readLine();
+		while (res != null) {
+			if (withFreq && res.contains(" ")) {
+				String[] entries = res.split(" ");
+				if (entries.length == 2 && entries[0].length() > 1 && entries[1].length() > 0) {
+					importMap.put(entries[0], Integer.parseInt(entries[1]));
+					amount++;
 				}
-				res = x.readLine();
+			} else {
+				increase(importMap, res);
 			}
-		} catch (IOException err) {
-			logger.error(err.getMessage());
+			res = x.readLine();
 		}
 		logger.debug("read form file (" + amount + ")");
 		return importMap;
@@ -168,6 +213,7 @@ public class ImportExportManager {
 	 * if it exists it will be increased by one
 	 * @param importMap the affected HashMap
 	 * @param word inserted word
+	 * @author DirkK
 	 */
 	private static void increase(HashMap<String, Integer> importMap, String word) {
 		if (importMap.containsKey(word)) {

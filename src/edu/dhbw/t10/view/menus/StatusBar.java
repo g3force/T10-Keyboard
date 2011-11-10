@@ -19,8 +19,8 @@ import org.apache.log4j.Logger;
 
 
 /**
- * Statusbar, where different btf things could be displayed for 5 Seconds...
- * TODO DanielAl Comments
+ * Statusbar, where different things could be displayed for 2 Seconds...
+ * 
  * @author DanielAl
  * 
  */
@@ -41,6 +41,12 @@ public class StatusBar extends JLabel implements Runnable {
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
+	/**
+	 * Creates a StatusBar as a JLabel, sets the Border and the align.
+	 * 
+	 * @param align
+	 * @author DanielAl
+	 */
 	public StatusBar(int align) {
 		super();
 		super.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -52,12 +58,23 @@ public class StatusBar extends JLabel implements Runnable {
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
+	/**
+	 * Adds a message to the messageQueue and calls the processQueue().<br>
+	 * 
+	 * @param message
+	 * @author DanielAl
+	 */
 	public void enqueueMessage(String message) {
 		messageQueue.add(message);
 		processQueue();
 	}
 
-
+	
+	/**
+	 * Starts a new thread for processing the Queue (run()), if no Thread exist. Otherwise it do nothing.<br>
+	 * 
+	 * @author DanielAl
+	 */
 	private void processQueue() {
 		if (thread == null) {
 			thread = new Thread(this);
@@ -65,8 +82,16 @@ public class StatusBar extends JLabel implements Runnable {
 		}
 	}
 
-
-	@Override
+	
+	/**
+	 * Process the messageQueue and set text of the Statusbar.<br>
+	 * Each message is displayed 2 seconds.<br>
+	 * If the Queue is empty the thread is yield and the thread variable is set to null, so that processQueue() generates
+	 * a new Thread if necessary.<br>
+	 * 
+	 * @author DanielAl
+	 * @Override
+	 */
 	public void run() {
 		while (!messageQueue.isEmpty()) {
 			setMessage(messageQueue.getFirst());
@@ -77,9 +102,8 @@ public class StatusBar extends JLabel implements Runnable {
 				logger.warn("Can't wait for Statusbar...");
 			}
 		}
-		setMessage("");
 		thread = null;
-
+		setMessage("");
 		Thread.yield();
 	}
 

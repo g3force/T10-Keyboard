@@ -14,13 +14,12 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
-import edu.dhbw.t10.view.dialogs.ProfileChooser;
+import edu.dhbw.t10.view.dialogs.DialogContainer;
 
 
 /**
@@ -95,7 +94,8 @@ public class MenuBar extends JMenuBar {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ProfileChooser pc = new ProfileChooser(JFileChooser.OPEN_DIALOG);
+				// ProfileChooser pc = new ProfileChooser(0);
+				DialogContainer pc = new DialogContainer(0);
 			}
 		});
 		
@@ -103,7 +103,8 @@ public class MenuBar extends JMenuBar {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ProfileChooser pc = new ProfileChooser(JFileChooser.SAVE_DIALOG);
+				// ProfileChooser pc = new ProfileChooser(1);
+				DialogContainer pc = new DialogContainer(1);
 			}
 		});
 
@@ -128,6 +129,8 @@ public class MenuBar extends JMenuBar {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO FelixP Menu
+				// ProfileChooser pc = new ProfileChooser(2);
+				DialogContainer pc = new DialogContainer(2);
 			}
 		});
 		
