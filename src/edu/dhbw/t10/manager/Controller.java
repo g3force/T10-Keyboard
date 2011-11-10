@@ -282,14 +282,7 @@ public class Controller implements ActionListener, WindowListener {
 		if (suggest.length() > typedWord.length())
 			outputMan.unMark();
 		outputMan.printChar(key);
-		boolean success = profileMan.acceptWord(suggest);
-		if (success) {
-			statusBar.enqueueMessage("Word inserted: " + suggest);
-		} else {
-			statusBar.enqueueMessage("Word ignored: " + suggest);
-		}
-		typedWord = "";
-		suggest = "";
+		acceptWord(suggest);
 	}
 	
 
@@ -359,17 +352,28 @@ public class Controller implements ActionListener, WindowListener {
 	 */
 	private void keyIsSpaceOrEnter(Key key) {
 		logger.debug("Keycode " + key.getKeycode() + " " + key.getType());
-		boolean success = profileMan.acceptWord(typedWord);
-		if (success) {
-			statusBar.enqueueMessage("Word inserted: " + suggest);
-		} else {
-			statusBar.enqueueMessage("Word ignored: " + suggest);
-		}
 		outputMan.printChar(key);
+		acceptWord(typedWord);
+	}
+	
+	
+	/**
+	 * is called whenever a word shall be accepted
+	 * 
+	 * @param word
+	 * @author DirkK
+	 */
+	private void acceptWord(String word) {
+		boolean success = profileMan.acceptWord(word);
+		if (success) {
+			statusBar.enqueueMessage("Word inserted: " + word);
+		} else {
+			statusBar.enqueueMessage("Word ignored: " + word);
+		}
 		typedWord = "";
 		suggest = "";
 	}
-	
+
 
 	// Window ----------------------------
 	
