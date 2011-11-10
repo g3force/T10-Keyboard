@@ -1,0 +1,342 @@
+<layout>
+<sizex>955</sizex>
+<sizey>335</sizey>
+<scalex>0.8</scalex>
+<scaley>0.7552239</scaley>
+<scale_font>1.177612</scale_font>
+<font>
+<name/>
+<style/>
+<size>10</size>
+</font>
+<dropdown pos_x="830" pos_y="15" size_x="120" size_y="30" type="profile"/>
+<mutebutton pos_x="845" pos_y="60" size_x="50" size_y="50" type="auto_completing">
+<on color="green" tooltip="Turn off the Auto Completing, so you will not be corrected by T10 anymore.">T10</on>
+<off color="red" tooltip="Turn on the Auto Completing, T10 will help you typing.">T10</off>
+</mutebutton>
+<mutebutton pos_x="845" pos_y="115" size_x="50" size_y="50" type="tree_expanding">
+<on color="green" tooltip="Turn off the Expanding of the Tree. No words will be saved in the tree anymore.">Save</on>
+<off color="red" tooltip="Turn on the Expanding of the Tree. Every word you type will be saved to support you.">Save</off>
+</mutebutton>
+<button pos_x="5" pos_y="5" size_x="50" size_y="50">
+<key>0</key>
+</button>
+<button pos_x="60" pos_y="5" size_x="50" size_y="50">
+<key>1</key>
+</button>
+<button pos_x="115" pos_y="5" size_x="50" size_y="50">
+<key>2</key>
+</button>
+<button pos_x="170" pos_y="5" size_x="50" size_y="50">
+<key>3</key>
+</button>
+<button pos_x="225" pos_y="5" size_x="50" size_y="50">
+<key>4</key>
+</button>
+<button pos_x="280" pos_y="5" size_x="50" size_y="50">
+<key>5</key>
+</button>
+<button pos_x="335" pos_y="5" size_x="50" size_y="50">
+<key>6</key>
+</button>
+<button pos_x="390" pos_y="5" size_x="50" size_y="50">
+<key>7</key>
+</button>
+<button pos_x="445" pos_y="5" size_x="50" size_y="50">
+<key>8</key>
+</button>
+<button pos_x="500" pos_y="5" size_x="50" size_y="50">
+<key>9</key>
+</button>
+<button pos_x="555" pos_y="5" size_x="50" size_y="50">
+<key>10</key>
+</button>
+<button pos_x="610" pos_y="5" size_x="50" size_y="50">
+<key>11</key>
+</button>
+<button pos_x="665" pos_y="5" size_x="50" size_y="50">
+<key>12</key>
+</button>
+<button pos_x="720" pos_y="5" size_x="50" size_y="50">
+<key>13</key>
+</button>
+<button pos_x="775" pos_y="5" size_x="50" size_y="50">
+<key>14</key>
+</button>
+<button pos_x="5" pos_y="60" size_x="50" size_y="50">
+<key>15</key>
+<mode modename="1001">29</mode>
+</button>
+<button pos_x="60" pos_y="60" size_x="50" size_y="50">
+<key>16</key>
+<mode modename="1007">42</mode>
+<mode modename="1001">30</mode>
+</button>
+<button pos_x="115" pos_y="60" size_x="50" size_y="50">
+<key>17</key>
+<mode modename="1007">43</mode>
+<mode modename="1001">31</mode>
+</button>
+<button pos_x="170" pos_y="60" size_x="50" size_y="50">
+<key>18</key>
+<mode modename="1007">44</mode>
+<mode modename="1001">32</mode>
+</button>
+<button pos_x="225" pos_y="60" size_x="50" size_y="50">
+<key>19</key>
+<mode modename="1001">33</mode>
+</button>
+<button pos_x="280" pos_y="60" size_x="50" size_y="50">
+<key>20</key>
+<mode modename="1001">34</mode>
+</button>
+<button pos_x="335" pos_y="60" size_x="50" size_y="50">
+<key>21</key>
+<mode modename="1001">35</mode>
+</button>
+<button pos_x="390" pos_y="60" size_x="50" size_y="50">
+<key>22</key>
+<mode modename="1007">45</mode>
+<mode modename="1001">36</mode>
+</button>
+<button pos_x="445" pos_y="60" size_x="50" size_y="50">
+<key>23</key>
+<mode modename="1007">46</mode>
+<mode modename="1001">37</mode>
+</button>
+<button pos_x="500" pos_y="60" size_x="50" size_y="50">
+<key>24</key>
+<mode modename="1007">47</mode>
+<mode modename="1001">38</mode>
+</button>
+<button pos_x="555" pos_y="60" size_x="50" size_y="50">
+<key>25</key>
+<mode modename="1007">48</mode>
+<mode modename="1001">39</mode>
+</button>
+<button pos_x="610" pos_y="60" size_x="50" size_y="50">
+<key>26</key>
+<mode modename="1007">49</mode>
+<mode modename="1001">40</mode>
+</button>
+<button pos_x="665" pos_y="60" size_x="50" size_y="50">
+<key>27</key>
+<mode modename="1001">41</mode>
+</button>
+<button pos_x="720" pos_y="60" size_x="120" size_y="50">
+<key>28</key>
+</button>
+<button pos_x="5" pos_y="115" size_x="75" size_y="50">
+<key>50</key>
+</button>
+<button pos_x="85" pos_y="115" size_x="50" size_y="50">
+<key>51</key>
+<mode modename="1007">76</mode>
+<mode modename="1001">64</mode>
+</button>
+<button pos_x="140" pos_y="115" size_x="50" size_y="50">
+<key>52</key>
+<mode modename="1001">65</mode>
+</button>
+<button pos_x="195" pos_y="115" size_x="50" size_y="50">
+<key>53</key>
+<mode modename="1007">77</mode>
+<mode modename="1001">66</mode>
+</button>
+<button pos_x="250" pos_y="115" size_x="50" size_y="50">
+<key>54</key>
+<mode modename="1001">67</mode>
+</button>
+<button pos_x="305" pos_y="115" size_x="50" size_y="50">
+<key>55</key>
+<mode modename="1001">68</mode>
+</button>
+<button pos_x="360" pos_y="115" size_x="50" size_y="50">
+<key>56</key>
+<mode modename="1001">69</mode>
+</button>
+<button pos_x="415" pos_y="115" size_x="50" size_y="50">
+<key>57</key>
+<mode modename="1001">70</mode>
+</button>
+<button pos_x="470" pos_y="115" size_x="50" size_y="50">
+<key>58</key>
+<mode modename="1001">71</mode>
+</button>
+<button pos_x="525" pos_y="115" size_x="50" size_y="50">
+<key>59</key>
+<mode modename="1001">72</mode>
+</button>
+<button pos_x="580" pos_y="115" size_x="50" size_y="50">
+<key>60</key>
+<mode modename="1007">78</mode>
+<mode modename="1001">73</mode>
+</button>
+<button pos_x="635" pos_y="115" size_x="50" size_y="50">
+<key>61</key>
+<mode modename="1001">74</mode>
+</button>
+<button pos_x="690" pos_y="115" size_x="50" size_y="50">
+<key>62</key>
+<mode modename="1001">75</mode>
+</button>
+<button pos_x="745" pos_y="115" size_x="95" size_y="50">
+<key>63</key>
+</button>
+<button pos_x="105" pos_y="170" size_x="50" size_y="50">
+<key>79</key>
+<mode modename="1001">91</mode>
+</button>
+<button pos_x="160" pos_y="170" size_x="50" size_y="50">
+<key>80</key>
+<mode modename="1001">92</mode>
+</button>
+<button pos_x="215" pos_y="170" size_x="50" size_y="50">
+<key>81</key>
+<mode modename="1001">93</mode>
+</button>
+<button pos_x="270" pos_y="170" size_x="50" size_y="50">
+<key>82</key>
+<mode modename="1001">94</mode>
+</button>
+<button pos_x="325" pos_y="170" size_x="50" size_y="50">
+<key>83</key>
+<mode modename="1001">95</mode>
+</button>
+<button pos_x="380" pos_y="170" size_x="50" size_y="50">
+<key>84</key>
+<mode modename="1001">96</mode>
+</button>
+<button pos_x="435" pos_y="170" size_x="50" size_y="50">
+<key>85</key>
+<mode modename="1001">97</mode>
+</button>
+<button pos_x="490" pos_y="170" size_x="50" size_y="50">
+<key>86</key>
+<mode modename="1001">98</mode>
+</button>
+<button pos_x="545" pos_y="170" size_x="50" size_y="50">
+<key>87</key>
+<mode modename="1001">99</mode>
+</button>
+<button pos_x="600" pos_y="170" size_x="50" size_y="50">
+<key>88</key>
+<mode modename="1001">100</mode>
+</button>
+<button pos_x="655" pos_y="170" size_x="50" size_y="50">
+<key>89</key>
+<mode modename="1001">101</mode>
+</button>
+<button pos_x="710" pos_y="170" size_x="50" size_y="50">
+<key>90</key>
+<mode modename="1001">102</mode>
+</button>
+<button pos_x="80" pos_y="225" size_x="50" size_y="50">
+<key>103</key>
+<mode modename="1007">125</mode>
+<mode modename="1001">114</mode>
+</button>
+<button pos_x="135" pos_y="225" size_x="50" size_y="50">
+<key>104</key>
+<mode modename="1001">115</mode>
+</button>
+<button pos_x="190" pos_y="225" size_x="50" size_y="50">
+<key>105</key>
+<mode modename="1001">116</mode>
+</button>
+<button pos_x="245" pos_y="225" size_x="50" size_y="50">
+<key>106</key>
+<mode modename="1001">117</mode>
+</button>
+<button pos_x="300" pos_y="225" size_x="50" size_y="50">
+<key>107</key>
+<mode modename="1001">118</mode>
+</button>
+<button pos_x="355" pos_y="225" size_x="50" size_y="50">
+<key>108</key>
+<mode modename="1001">119</mode>
+</button>
+<button pos_x="410" pos_y="225" size_x="50" size_y="50">
+<key>109</key>
+<mode modename="1001">120</mode>
+</button>
+<button pos_x="465" pos_y="225" size_x="50" size_y="50">
+<key>110</key>
+<mode modename="1001">121</mode>
+</button>
+<button pos_x="520" pos_y="225" size_x="50" size_y="50">
+<key>111</key>
+<mode modename="1001">122</mode>
+</button>
+<button pos_x="575" pos_y="225" size_x="50" size_y="50">
+<key>112</key>
+<mode modename="1001">123</mode>
+</button>
+<button pos_x="630" pos_y="225" size_x="50" size_y="50">
+<key>113</key>
+<mode modename="1001">124</mode>
+</button>
+<button pos_x="735" pos_y="280" size_x="50" size_y="50">
+<key>131</key>
+</button>
+<button pos_x="765" pos_y="170" size_x="75" size_y="50">
+<key>132</key>
+</button>
+<button pos_x="845" pos_y="170" size_x="50" size_y="50">
+<key>136</key>
+</button>
+<button pos_x="900" pos_y="170" size_x="50" size_y="105">
+<key>135</key>
+</button>
+<button pos_x="900" pos_y="60" size_x="50" size_y="50">
+<key>133</key>
+</button>
+<button pos_x="900" pos_y="115" size_x="50" size_y="50">
+<key>134</key>
+</button>
+<button pos_x="845" pos_y="225" size_x="50" size_y="50">
+<key>126</key>
+</button>
+<button pos_x="790" pos_y="280" size_x="50" size_y="50">
+<key>127</key>
+</button>
+<button pos_x="845" pos_y="280" size_x="50" size_y="50">
+<key>128</key>
+</button>
+<button pos_x="900" pos_y="280" size_x="50" size_y="50">
+<key>129</key>
+</button>
+<button pos_x="240" pos_y="280" size_x="160" size_y="50">
+<key accept="true">130</key>
+</button>
+<button pos_x="405" pos_y="280" size_x="160" size_y="50">
+<key accept="true">130</key>
+</button>
+<modebutton pos_x="5" pos_y="170" size_x="95" size_y="50">
+<key>1000</key>
+</modebutton>
+<modebutton pos_x="5" pos_y="225" size_x="70" size_y="50">
+<key>1001</key>
+</modebutton>
+<modebutton pos_x="685" pos_y="225" size_x="155" size_y="50">
+<key>1001</key>
+</modebutton>
+<modebutton pos_x="5" pos_y="280" size_x="80" size_y="50">
+<key>1002</key>
+</modebutton>
+<modebutton pos_x="90" pos_y="280" size_x="60" size_y="50">
+<key>1003</key>
+</modebutton>
+<modebutton pos_x="155" pos_y="280" size_x="80" size_y="50">
+<key>1004</key>
+</modebutton>
+<modebutton pos_x="570" pos_y="280" size_x="50" size_y="50">
+<key>1007</key>
+</modebutton>
+<modebutton pos_x="625" pos_y="280" size_x="50" size_y="50">
+<key>1008</key>
+</modebutton>
+<modebutton pos_x="680" pos_y="280" size_x="50" size_y="50">
+<key>1009</key>
+</modebutton>
+</layout>
