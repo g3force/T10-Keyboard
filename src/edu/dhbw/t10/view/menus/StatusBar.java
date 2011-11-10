@@ -9,10 +9,8 @@
  */
 package edu.dhbw.t10.view.menus;
 
-import java.awt.Color;
 import java.util.LinkedList;
 
-import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 
 import org.apache.log4j.Logger;
@@ -49,7 +47,7 @@ public class StatusBar extends JLabel implements Runnable {
 	 */
 	public StatusBar(int align) {
 		super();
-		super.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		// super.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		messageQueue = new LinkedList<String>();
 		this.setHorizontalAlignment(align);
 	}
