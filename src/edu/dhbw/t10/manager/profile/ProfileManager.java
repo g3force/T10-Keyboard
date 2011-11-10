@@ -405,14 +405,15 @@ public class ProfileManager {
 	 * @param word
 	 * @author SebastianN
 	 */
-	public void acceptWord(String word) {
+	public boolean acceptWord(String word) {
 		word = StringHelper.removePunctuation(word);
 		if (getActive() == null) {
 			logger.error("getActive()==NULL at acceptWord");
-			return;
+			return false;
 		}
 		if (activeProfile.isTreeExpanding())
-			getActive().getTree().insert(word);
+			return getActive().getTree().insert(word);
+		return false;
 	}
 	
 	

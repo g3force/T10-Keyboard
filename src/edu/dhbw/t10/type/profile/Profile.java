@@ -10,6 +10,7 @@
 package edu.dhbw.t10.type.profile;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 
 import org.apache.log4j.Logger;
@@ -173,7 +174,11 @@ public class Profile implements Serializable {
 	 */
 	private void loadTree() {
 		tree = new PriorityTree(pathToAllowedChars);
-		tree.importFromHashMap(ImportExportManager.importFromFile(pathToTree, true));
+		try {
+			tree.importFromHashMap(ImportExportManager.importFromFile(pathToTree, true));
+		} catch (IOException err) {
+			logger.error("Could not fetch the word list for the proifle " + name + ", Path to tree: " + pathToTree);
+		}
 		logger.debug("load: " + pathToTree + " Tree Size: " + tree.exportToHashMap().size());
 	}
 	
@@ -187,7 +192,11 @@ public class Profile implements Serializable {
 	private void saveTree() {
 		if (tree != null) {
 			logger.debug("save tree to " + pathToTree);
-			ImportExportManager.exportToFile(tree.exportToHashMap(), pathToTree);
+			try {
+				ImportExportManager.exportToFile(tree.exportToHashMap(), pathToTree);
+			} catch (IOException err) {
+				logger.error("Not able to save the tree for proifle " + name + " to " + pathToTree);
+			}
 		} else {
 			logger.debug("Tree not saved, because not existend");
 		}
