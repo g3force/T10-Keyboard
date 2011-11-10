@@ -15,6 +15,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
 
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
@@ -22,6 +24,7 @@ import javax.swing.JLabel;
 import org.apache.log4j.Logger;
 
 import edu.dhbw.t10.manager.output.OutputManager;
+import edu.dhbw.t10.manager.profile.ImportExportManager;
 import edu.dhbw.t10.manager.profile.ProfileManager;
 import edu.dhbw.t10.type.keyboard.DropDownList;
 import edu.dhbw.t10.type.keyboard.KeyboardLayout;
@@ -178,7 +181,14 @@ public class Controller implements ActionListener, WindowListener {
 			case 1:
 				break;
 			case 2:
-				System.out.println(path);
+				HashMap<String, Integer> words = new HashMap<String, Integer>();
+				try {
+					words = ImportExportManager.importFromText(path.toString());
+				} catch (IOException err) {
+					statusBar.enqueueMessage("Could not load the text file. Please choose another one.");
+				}
+				profileMan.getActive().getTree().importFromHashMap(words);
+				statusBar.enqueueMessage("Text file included.");
 				break;
 		}
 	}
@@ -278,7 +288,6 @@ public class Controller implements ActionListener, WindowListener {
 		} else {
 			statusBar.enqueueMessage("Word ignored: " + suggest);
 		}
-
 		typedWord = "";
 		suggest = "";
 	}
@@ -350,8 +359,12 @@ public class Controller implements ActionListener, WindowListener {
 	 */
 	private void keyIsSpaceOrEnter(Key key) {
 		logger.debug("Keycode " + key.getKeycode() + " " + key.getType());
-		profileMan.acceptWord(typedWord);
-		statusBar.enqueueMessage("Word inserted: " + typedWord);
+		boolean success = profileMan.acceptWord(typedWord);
+		if (success) {
+			statusBar.enqueueMessage("Word inserted: " + suggest);
+		} else {
+			statusBar.enqueueMessage("Word ignored: " + suggest);
+		}
 		outputMan.printChar(key);
 		typedWord = "";
 		suggest = "";
