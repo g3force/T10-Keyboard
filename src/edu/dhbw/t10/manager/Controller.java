@@ -210,6 +210,7 @@ public class Controller implements ActionListener, WindowListener {
 			logger.debug("Key pressed: " + key.toString());
 		} else if (button.getSingleKey().size() > 1) {
 			// FIXME NicolaiO, DanielAl Combi auslesen und weitergeben...
+			logger.warn("More than one modeButton pressed. Not handeld correct...");
 			outputMan.printCombi(button);
 		} else
 			logger.error("No Key List");

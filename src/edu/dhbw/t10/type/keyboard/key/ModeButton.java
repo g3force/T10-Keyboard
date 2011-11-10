@@ -9,8 +9,6 @@
  */
 package edu.dhbw.t10.type.keyboard.key;
 
-import java.util.ArrayList;
-
 import org.apache.log4j.Logger;
 
 
@@ -24,70 +22,30 @@ public class ModeButton extends PhysicalButton {
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
+	@SuppressWarnings("unused")
 	private static final Logger	logger				= Logger.getLogger(ModeButton.class);
-	public static final int			DEFAULT				= 0;
-	public static final int			PRESSED				= 1;
-	public static final int			HOLD					= 2;
 	private static final long		serialVersionUID	= 5356736981172867044L;
-	private Key							modeKey;
-	private ArrayList<Button>		observers			= new ArrayList<Button>();
-	private int							state					= DEFAULT;
+	private ModeKey					modeKey;
 	
 	
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
-	public ModeButton(Key modeKey, int size_x, int size_y, int pos_x, int pos_y) {
+	public ModeButton(ModeKey modeKey, int size_x, int size_y, int pos_x, int pos_y) {
 		super(size_x, size_y, pos_x, pos_y);
 		this.modeKey = modeKey;
 		setText(modeKey.getName());
+		modeKey.addModeButton(this);
 	}
 	
 	
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
+	
 	public void push() {
-		if (state == HOLD) {
-			release();
-			this.getModel().setPressed(false);
-			this.setBorderPainted(true);
-		} else if (state == PRESSED) {
-			state = HOLD;
-			this.getModel().setPressed(true);
-			this.setBorderPainted(false);
-		} else if (state == DEFAULT) {
-			state = PRESSED;
-			this.getModel().setPressed(true);
-			for (Button b : observers) {
-				b.addCurrentMode(this);
-			}
-		}
-		logger.debug("ModeButton pressed. State is now " + state);
+		modeKey.push();
 	}
-	
-	
-	public void release() {
-		state = DEFAULT;
-		for (Button b : observers) {
-			b.rmCurrentMode(this);
-		}
-		this.getModel().setPressed(false);
-		this.setBorderPainted(false);
-		logger.debug("ModeButton released");
-	}
-
-
-	public void register(Button b) {
-		observers.add(b);
-
-	}
-	
-	
-	public void unregister(Button b) {
-		observers.remove(b);
-	}
-
 
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
@@ -102,18 +60,13 @@ public class ModeButton extends PhysicalButton {
 	}
 	
 	
-	public void setModeKey(Key modeKey) {
+	public void setModeKey(ModeKey modeKey) {
 		this.modeKey = modeKey;
 		setText(modeKey.getName());
 	}
 	
 	
 	public int getState() {
-		return state;
-	}
-	
-	
-	public void setState(int state) {
-		this.state = state;
+		return modeKey.getState();
 	}
 }
