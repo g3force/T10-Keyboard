@@ -46,6 +46,7 @@ public class ImportExportManager {
 	
 	/**
 	 * import for special dictionary
+	 * TODO DirkK DELETE
 	 * @param fileName path to text file
 	 * @return importable HashMap
 	 */
@@ -81,26 +82,23 @@ public class ImportExportManager {
 	 * takes an arbitrary text files and inserts all contained words in the tree
 	 * Tree cleaning recommended after this
 	 * @param fileName path to the input file
+	 * @throws IOException
 	 */
-	public static HashMap<String, Integer> importFromText(String fileName) {
+	public static HashMap<String, Integer> importFromText(String fileName) throws IOException {
 		HashMap<String, Integer> importMap = new HashMap<String, Integer>();
 		logger.debug("reading form file");
-		try {
-			FileReader fr = new FileReader(fileName);
-			BufferedReader x = new BufferedReader(fr);
-			
-			String res = x.readLine();
-			while (res != null) {
-				// System.out.println("Tmpbuf: " + res);
-				res = StringHelper.removePunctuation(res);
-				String[] words = res.split(" ");
-				for (String word : words)
-					if (word.length() > 1)
-						increase(importMap, word);
-				res = x.readLine();
-			}
-		} catch (Exception ex) {
-			ex.printStackTrace();
+		FileReader fr = new FileReader(fileName);
+		BufferedReader x = new BufferedReader(fr);
+		
+		String res = x.readLine();
+		while (res != null) {
+			// System.out.println("Tmpbuf: " + res);
+			res = StringHelper.removePunctuation(res);
+			String[] words = res.split(" ");
+			for (String word : words)
+				if (word.length() > 1)
+					increase(importMap, word);
+			res = x.readLine();
 		}
 		logger.debug("read form file");
 		return importMap;
@@ -111,52 +109,47 @@ public class ImportExportManager {
 	 * takes a Map with the structure word -> frequency and prints it into a file
 	 * @param exportMap the dictionary map
 	 * @param fileName the path inclusive file name
+	 * @throws IOException
 	 */
-	public static void exportToFile(HashMap<String, Integer> exportMap, String fileName) {
+	public static void exportToFile(HashMap<String, Integer> exportMap, String fileName) throws IOException {
 		logger.debug("saving to file");
 		int counter = 0;
-		try {
-			FileWriter file = new FileWriter(fileName);
-			BufferedWriter o = new BufferedWriter(file);
-			for (Entry<String, Integer> entry : exportMap.entrySet()) {
-				o.write(entry.getKey() + " " + entry.getValue() + "\n");
-				counter++;
-			}
-			o.close();
-		} catch (IOException err) {
-			logger.error(err.getMessage());
+		FileWriter file = new FileWriter(fileName);
+		BufferedWriter o = new BufferedWriter(file);
+		for (Entry<String, Integer> entry : exportMap.entrySet()) {
+			o.write(entry.getKey() + " " + entry.getValue() + "\n");
+			counter++;
 		}
+		o.close();
 		logger.debug("saved to file (" + counter + " words written)");
 	}
+	
 	
 	/**
 	 * imports a dictionary from a file
 	 * returns the input of the file as HashMap (word->frequency)
 	 * @param fileName
 	 * @return HashMap
+	 * @throws IOException
 	 */
-	public static HashMap<String, Integer> importFromFile(String fileName, boolean withFreq) {
+	public static HashMap<String, Integer> importFromFile(String fileName, boolean withFreq) throws IOException {
 		HashMap<String, Integer> importMap = new HashMap<String, Integer>();
 		logger.debug("reading form file");
 		int amount = 0;
-		try {
-			FileReader fr = new FileReader(fileName);
-			BufferedReader x = new BufferedReader(fr);
-			String res = x.readLine();
-			while (res != null) {
-				if (withFreq && res.contains(" ")) {
-					String[] entries = res.split(" ");
-					if (entries.length == 2 && entries[0].length() > 1 && entries[1].length() > 0) {
-						importMap.put(entries[0], Integer.parseInt(entries[1]));
-						amount++;
-					}
-				} else {
-					increase(importMap, res);
+		FileReader fr = new FileReader(fileName);
+		BufferedReader x = new BufferedReader(fr);
+		String res = x.readLine();
+		while (res != null) {
+			if (withFreq && res.contains(" ")) {
+				String[] entries = res.split(" ");
+				if (entries.length == 2 && entries[0].length() > 1 && entries[1].length() > 0) {
+					importMap.put(entries[0], Integer.parseInt(entries[1]));
+					amount++;
 				}
-				res = x.readLine();
+			} else {
+				increase(importMap, res);
 			}
-		} catch (IOException err) {
-			logger.error(err.getMessage());
+			res = x.readLine();
 		}
 		logger.debug("read form file (" + amount + ")");
 		return importMap;
