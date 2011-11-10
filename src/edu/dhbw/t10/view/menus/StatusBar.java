@@ -77,9 +77,8 @@ public class StatusBar extends JLabel implements Runnable {
 				logger.warn("Can't wait for Statusbar...");
 			}
 		}
-		setMessage("");
 		thread = null;
-
+		setMessage("");
 		Thread.yield();
 	}
 
