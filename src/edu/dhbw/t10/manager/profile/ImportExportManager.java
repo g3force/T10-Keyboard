@@ -16,6 +16,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
@@ -24,7 +25,9 @@ import edu.dhbw.t10.helper.StringHelper;
 
 
 /**
- * Handles the import/export of a file.
+ * Handles the import/export of the files for the profile management (tree and chars).
+ * 
+ * @author DirkK
  */
 public class ImportExportManager {
 	// --------------------------------------------------------------------------
@@ -79,6 +82,53 @@ public class ImportExportManager {
 	
 	
 	/**
+	 * reads the .chars file at the given path and returns the content in a list
+	 * @param pathToAllowedChars the path to the .chars file of the current profile
+	 * @return a linked list containing the ranges of the chars which are allowed
+	 * @throws NumberFormatException
+	 * @throws IOException
+	 * @author DirkK
+	 */
+	public static LinkedList<int[]> loadChars(String pathToAllowedChars) throws NumberFormatException, IOException {
+		LinkedList<int[]> allowedChars = new LinkedList<int[]>();
+		File confFile = new File(pathToAllowedChars);
+		if (confFile.exists()) {
+			FileReader fr = new FileReader(confFile);
+			BufferedReader br = new BufferedReader(fr);
+			String entry = "";
+			while ((entry = br.readLine()) != null) {
+				String[] entries = entry.split("-");
+				int[] newi = { Integer.parseInt(entries[0]), Integer.parseInt(entries[1]) };
+				allowedChars.add(newi);
+			}
+		} else {
+			logger.warn("No allowed chars file found at " + pathToAllowedChars);
+			int[] newi = { 0, 255 };
+			allowedChars.add(newi);
+		}
+		return allowedChars;
+	}
+	
+	
+	/**
+	 * reads the .chars file at the given path and returns the content in a list
+	 * @param pathToAllowedChars the path to the .chars file of the current profile
+	 * @param allowedChars the chars to be saved
+	 * @throws IOException
+	 * @author DirkK
+	 */
+	public static void saveChars(String pathToAllowedChars, LinkedList<int[]> allowedChars) throws IOException {
+		File confFile = new File(pathToAllowedChars);
+		FileWriter fw = new FileWriter(confFile);
+		BufferedWriter bw = new BufferedWriter(fw);
+		
+		for (int i = 0; i < allowedChars.size(); i++) {
+			bw.write(allowedChars.get(i)[0] + "-" + allowedChars.get(i)[1] + "\n");
+		}
+		bw.close();
+	}
+	
+	/**
 	 * takes an arbitrary text files and inserts all contained words in the tree
 	 * Tree cleaning recommended after this
 	 * @param fileName path to the input file
@@ -110,6 +160,7 @@ public class ImportExportManager {
 	 * @param exportMap the dictionary map
 	 * @param fileName the path inclusive file name
 	 * @throws IOException
+	 * @author DirkK
 	 */
 	public static void exportToFile(HashMap<String, Integer> exportMap, String fileName) throws IOException {
 		logger.debug("saving to file");
@@ -131,6 +182,7 @@ public class ImportExportManager {
 	 * @param fileName
 	 * @return HashMap
 	 * @throws IOException
+	 * @author DirkK
 	 */
 	public static HashMap<String, Integer> importFromFile(String fileName, boolean withFreq) throws IOException {
 		HashMap<String, Integer> importMap = new HashMap<String, Integer>();
@@ -161,6 +213,7 @@ public class ImportExportManager {
 	 * if it exists it will be increased by one
 	 * @param importMap the affected HashMap
 	 * @param word inserted word
+	 * @author DirkK
 	 */
 	private static void increase(HashMap<String, Integer> importMap, String word) {
 		if (importMap.containsKey(word)) {
