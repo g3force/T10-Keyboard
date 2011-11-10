@@ -44,11 +44,12 @@ public class Key {
 	 * @param keycode
 	 * @param type see constants
 	 */
-	public Key(int id, String name, String keycode, int type) {
+	public Key(int id, String name, String keycode, int type, boolean accept) {
 		this.id = id;
 		this.name = name;
 		this.keycode = keycode;
 		this.type = type;
+		this.accept = accept;
 	}
 	
 	
@@ -56,6 +57,12 @@ public class Key {
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
 	
+	public Key clone() {
+		Key nk = new Key(id, name, keycode, type, accept);
+		return nk;
+	}
+
+
 	public String toString() {
 		return "id:" + id + " n:" + name + " kc:" + keycode + " t:" + type + " a:" + accept;
 	}
