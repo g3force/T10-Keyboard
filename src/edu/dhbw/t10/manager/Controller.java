@@ -209,8 +209,6 @@ public class Controller implements ActionListener, WindowListener {
 				this.keyIsCHAR(key);
 			else if (key.getType() == Key.UNICODE)
 				this.keyIsUnicode(key);
-			else if (key.getType() == Key.CONTROL)
-				this.keyIsControl(key);
 			else if (key.getKeycode().equals("\\BACK_SPACE\\"))
 				this.keyIsBackspace();
 			else if ((key.getKeycode().equals("\\SPACE\\") || key.getKeycode().equals("\\ENTER\\")))
@@ -218,7 +216,8 @@ public class Controller implements ActionListener, WindowListener {
 			else if (key.getKeycode().equals("\\DELETE\\")) {
 				outputMan.printChar(key);
 				suggest = typedWord;
-			}
+			} else if (key.getType() == Key.CONTROL)
+				this.keyIsControl(key);
 			logger.debug("Key pressed: " + key.toString());
 		} else if (button.getSingleKey().size() > 1) {
 			// FIXME NicolaiO, DanielAl Combi auslesen und weitergeben...
@@ -289,7 +288,8 @@ public class Controller implements ActionListener, WindowListener {
 	
 	
 	/**
-	 * TODO DanielAl, add comment!
+	 * Prints a Control Key, <br>
+	 * if no SPACE, ENTER, DELETE or BACK_SPACE, these are special Keys and handled with extra methods...
 	 * 
 	 * @param key
 	 * @author DanielAl
