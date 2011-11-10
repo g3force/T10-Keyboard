@@ -9,16 +9,17 @@
  */
 package edu.dhbw.t10.view.menus;
 
+import java.awt.Color;
 import java.util.LinkedList;
 
+import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 
 import org.apache.log4j.Logger;
 
 
 /**
- * Statusbar, where different things could be displayed for 5 Seconds...
- * TODO Thread to be able to run the overwrite method all over the time...
+ * Statusbar, where different btf things could be displayed for 5 Seconds...
  * TODO DanielAl Comments
  * @author DanielAl
  * 
@@ -32,18 +33,19 @@ public class StatusBar extends JLabel implements Runnable {
 	private static final Logger	logger				= Logger.getLogger(StatusBar.class);
 
 
-	LinkedList<String>				messageQueue;
-	Thread								thread				= null;
-	int									delay					= 2000;
+	private LinkedList<String>		messageQueue;
+	private Thread						thread				= null;
+	private int							delay					= 2000;
 	
 	
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
-	public StatusBar() {
+	public StatusBar(int align) {
 		super();
-		// super.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		super.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		messageQueue = new LinkedList<String>();
+		this.setHorizontalAlignment(align);
 	}
 
 
@@ -65,7 +67,6 @@ public class StatusBar extends JLabel implements Runnable {
 
 
 	@Override
-
 	public void run() {
 		while (!messageQueue.isEmpty()) {
 			setMessage(messageQueue.getFirst());
@@ -76,9 +77,9 @@ public class StatusBar extends JLabel implements Runnable {
 				logger.warn("Can't wait for Statusbar...");
 			}
 		}
-		setMessage("");	
-		Thread.yield();
 		thread = null;
+		setMessage("");
+		Thread.yield();
 	}
 
 

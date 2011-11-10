@@ -17,6 +17,7 @@ import java.awt.event.WindowListener;
 import java.io.File;
 
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 
 import org.apache.log4j.Logger;
 
@@ -58,6 +59,7 @@ public class Controller implements ActionListener, WindowListener {
 	private OutputManager			outputMan;
 	private MainPanel					mainPanel;
 	private StatusBar					statusBar;
+	private StatusBar					statusBarR;
 	private Presenter					presenter;
 	
 	
@@ -75,8 +77,9 @@ public class Controller implements ActionListener, WindowListener {
 		logger.debug("initializing...");
 		outputMan = new OutputManager();
 		mainPanel = new MainPanel();
-		statusBar = new StatusBar();
-		presenter = new Presenter(mainPanel, statusBar);
+		statusBar = new StatusBar(JLabel.LEFT);
+		statusBarR = new StatusBar(JLabel.RIGHT);
+		presenter = new Presenter(mainPanel, statusBar, statusBarR);
 		typedWord = "";
 		suggest = "";
 		profileMan = new ProfileManager();
@@ -88,6 +91,7 @@ public class Controller implements ActionListener, WindowListener {
 		mainPanel.addComponentListener(mainPanel);
 		resizeWindow(profileMan.getActive().getKbdLayout().getSize());
 		statusBar.enqueueMessage("Keyboard initialiezd.");
+		statusBarR.enqueueMessage("Tooltip");
 		logger.debug("initialized.");
 	}
 	
@@ -128,19 +132,23 @@ public class Controller implements ActionListener, WindowListener {
 	 */
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() instanceof Button) {
+			logger.debug("Normal Button pressed.");
 			eIsButton((Button) e.getSource());
 		}
 
 		if (e.getSource() instanceof ModeButton) {
+			logger.debug("ModeButton pressed.");
 			ModeButton modeB = (ModeButton) e.getSource();
 			modeB.push();
 		}
 
 		if (e.getSource() instanceof MuteButton) {
+			logger.debug("MuteButton pressed.");
 			eIsMuteButton((MuteButton) e.getSource());
 		}
 		
 		if (e.getSource() instanceof DropDownList) {
+			logger.debug("DropDownList pressed.");
 			eIsDropDownList((DropDownList) e.getSource());
 		}
 		
@@ -264,8 +272,13 @@ public class Controller implements ActionListener, WindowListener {
 		if (suggest.length() > typedWord.length())
 			outputMan.unMark();
 		outputMan.printChar(key);
-		profileMan.acceptWord(suggest);
-		statusBar.enqueueMessage("Word inserted: " + suggest);
+		boolean success = profileMan.acceptWord(suggest);
+		if (success) {
+			statusBar.enqueueMessage("Word inserted: " + suggest);
+		} else {
+			statusBar.enqueueMessage("Word ignored: " + suggest);
+		}
+
 		typedWord = "";
 		suggest = "";
 	}

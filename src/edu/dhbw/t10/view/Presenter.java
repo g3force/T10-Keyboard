@@ -44,15 +44,15 @@ public class Presenter extends JFrame {
 	/**
 	  * 
 	  */
-	public Presenter(MainPanel mainPanel, StatusBar statusBar) {
+	public Presenter(MainPanel mainPanel, StatusBar statusBar, StatusBar statusBarR) {
 		logger.debug("Initializing...");
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setLocationByPlatform(true);
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage("data/icons/useacc_logo.png"));
 		this.setTitle("T10 On-Screen Keyboard");
 		this.setAlwaysOnTop(true);
-		this.setFocusableWindowState(false); // Window can't be focussed, so you can type at your current position with
-															// the On-Screen Keyboard
+		// Window can't be focussed, so you can type at your current position with the On-Screen Keyboard
+		this.setFocusableWindowState(false);
 		this.setVisible(true);
 		this.addWindowListener(Controller.getInstance());
 
@@ -60,6 +60,8 @@ public class Presenter extends JFrame {
 		contentPane = (JPanel) getContentPane();
 		contentPane.add(mainPanel);
 		contentPane.add(statusBar, java.awt.BorderLayout.SOUTH);
+		// FIXME DanielAl second Statusbar... which Layout?
+		// contentPane.add(statusBarR, java.awt.BorderLayout.SOUTH);
 		this.setJMenuBar(new MenuBar());
 		
 		// build GUI

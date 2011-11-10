@@ -24,11 +24,7 @@ import edu.dhbw.t10.manager.Controller;
  * 
  * TODO OPTIONAL ALL graphical buttons (keys) e.g. pause- and arrow keys
  * TODO FelixP menus
- * TODO NicolaiO insert tooltips for mute buttons
  * TODO OPTIONAL ALL StatusBar
- * TODO NicolaiO color in saveLayout
- * TODO NicolaiO shift button synchronized states => general Design problem
- * TODO NicolaiO visualize Button state
  * 
  * @author NicolaiO
  * 
