@@ -61,7 +61,7 @@ public class Controller implements ActionListener, WindowListener {
 	private ProfileManager			profileMan;
 	private OutputManager			outputMan;
 	private MainPanel					mainPanel;
-	private StatusBar					statusBar;
+	private StatusBar					statusBarL;
 	private StatusBar					statusBarR;
 	private Presenter					presenter;
 	
@@ -80,9 +80,9 @@ public class Controller implements ActionListener, WindowListener {
 		logger.debug("initializing...");
 		outputMan = new OutputManager();
 		mainPanel = new MainPanel();
-		statusBar = new StatusBar(JLabel.LEFT);
+		statusBarL = new StatusBar(JLabel.LEFT);
 		statusBarR = new StatusBar(JLabel.RIGHT);
-		presenter = new Presenter(mainPanel, statusBar, statusBarR);
+		presenter = new Presenter(mainPanel, statusBarL, statusBarR);
 		typedWord = "";
 		suggest = "";
 		profileMan = new ProfileManager();
@@ -93,7 +93,7 @@ public class Controller implements ActionListener, WindowListener {
 
 		mainPanel.addComponentListener(mainPanel);
 		resizeWindow(profileMan.getActive().getKbdLayout().getSize());
-		statusBar.enqueueMessage("Keyboard initialiezd.");
+		statusBarL.enqueueMessage("Keyboard initialiezd.");
 		statusBarR.enqueueMessage("Tooltip");
 		logger.debug("initialized.");
 	}
@@ -185,10 +185,10 @@ public class Controller implements ActionListener, WindowListener {
 				try {
 					words = ImportExportManager.importFromText(path.toString());
 				} catch (IOException err) {
-					statusBar.enqueueMessage("Could not load the text file. Please choose another one.");
+					statusBarL.enqueueMessage("Could not load the text file. Please choose another one.");
 				}
 				profileMan.getActive().getTree().importFromHashMap(words);
-				statusBar.enqueueMessage("Text file included.");
+				statusBarL.enqueueMessage("Text file included.");
 				break;
 		}
 	}
@@ -382,7 +382,7 @@ public class Controller implements ActionListener, WindowListener {
 	private void acceptWord(String word) {
 		boolean success = profileMan.acceptWord(word);
 		if (success) {
-			statusBar.enqueueMessage("Word inserted: " + word);
+			statusBarL.enqueueMessage("Word inserted: " + word);
 		}
 		typedWord = "";
 		suggest = "";

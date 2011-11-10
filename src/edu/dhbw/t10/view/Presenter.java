@@ -9,8 +9,11 @@
  */
 package edu.dhbw.t10.view;
 
+import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.Toolkit;
 
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -44,7 +47,7 @@ public class Presenter extends JFrame {
 	/**
 	  * 
 	  */
-	public Presenter(MainPanel mainPanel, StatusBar statusBar, StatusBar statusBarR) {
+	public Presenter(MainPanel mainPanel, StatusBar statusBarL, StatusBar statusBarR) {
 		logger.debug("Initializing...");
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setLocationByPlatform(true);
@@ -59,9 +62,14 @@ public class Presenter extends JFrame {
 		// get a reference to the content pane
 		contentPane = (JPanel) getContentPane();
 		contentPane.add(mainPanel);
-		contentPane.add(statusBar, java.awt.BorderLayout.SOUTH);
-		// FIXME DanielAl second Statusbar... which Layout?
-		// contentPane.add(statusBarR, java.awt.BorderLayout.SOUTH);
+		JPanel statusPane = new JPanel();
+		statusPane.setLayout(new FlowLayout());
+		// statusPane.add(statusBarL, java.awt.BorderLayout.LINE_START);
+		// statusPane.add(statusBarR, java.awt.BorderLayout.LINE_END);
+		statusPane.add(statusBarL, java.awt.BorderLayout.LINE_START);
+		statusPane.add(statusBarR, java.awt.BorderLayout.LINE_END);
+		statusPane.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		contentPane.add(statusPane, java.awt.BorderLayout.SOUTH);
 		this.setJMenuBar(new MenuBar());
 		
 		// build GUI
