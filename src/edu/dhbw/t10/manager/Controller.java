@@ -325,8 +325,7 @@ public class Controller implements ActionListener, WindowListener {
 	 */
 	private void keyIsUnicode(Key key) {
 		outputMan.printChar(key);
-		typedWord = "";
-		suggest = "";
+		acceptWord(typedWord);
 	}
 	
 
@@ -384,8 +383,6 @@ public class Controller implements ActionListener, WindowListener {
 		boolean success = profileMan.acceptWord(word);
 		if (success) {
 			statusBar.enqueueMessage("Word inserted: " + word);
-		} else {
-			statusBar.enqueueMessage("Word ignored: " + word);
 		}
 		typedWord = "";
 		suggest = "";
