@@ -460,6 +460,21 @@ public class ProfileManager {
 		logger.info("Deserialized " + counter + " profiles.");
 	}
 	
+
+	/**
+	 * 
+	 * 
+	 * 
+	 * @param profile
+	 * @return profile exists -> true ...else false
+	 * @author felix
+	 */
+	public boolean existProfile(String profile) {
+		Profile p = getProfileByName(profile);
+		if (p == null)
+			return false;
+		return true;
+	}
 	
 
 	// --------------------------------------------------------------------------
