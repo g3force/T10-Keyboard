@@ -209,6 +209,8 @@ public class Controller implements ActionListener, WindowListener {
 				this.keyIsCHAR(key);
 			else if (key.getType() == Key.UNICODE)
 				this.keyIsUnicode(key);
+			else if (key.getType() == Key.CONTROL)
+				this.keyIsControl(key);
 			else if (key.getKeycode().equals("\\BACK_SPACE\\"))
 				this.keyIsBackspace();
 			else if ((key.getKeycode().equals("\\SPACE\\") || key.getKeycode().equals("\\ENTER\\")))
@@ -285,7 +287,22 @@ public class Controller implements ActionListener, WindowListener {
 		acceptWord(suggest);
 	}
 	
-
+	
+	/**
+	 * TODO DanielAl, add comment!
+	 * 
+	 * @param key
+	 * @author DanielAl
+	 */
+	private void keyIsControl(Key key) {
+		if (suggest.length() > typedWord.length())
+			outputMan.printChar(new Key(0, "Delete", "\\DELETE\\", Key.CONTROL));
+		outputMan.printChar(key);
+		typedWord = "";
+		suggest = "";
+	}
+	
+	
 	/**
 	 * Prints the given key, added it to the typed String and get a new suggest and prtints it...
 	 * @param key
