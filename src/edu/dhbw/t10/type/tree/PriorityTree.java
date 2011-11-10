@@ -9,11 +9,6 @@
  */
 package edu.dhbw.t10.type.tree;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
@@ -21,6 +16,8 @@ import java.util.LinkedList;
 import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
+
+import edu.dhbw.t10.manager.profile.ImportExportManager;
 
 
 /**
@@ -64,8 +61,8 @@ public class PriorityTree implements Serializable {
 	 * if the word already exist, frequency is increased by one and suggests are adujsted
 	 * @param word the word that should be inserted
 	 */
-	public void insert(String word) {
-		insert(word, 1, false);
+	public boolean insert(String word) {
+		return insert(word, 1, false);
 	}
 	
 	
@@ -75,7 +72,7 @@ public class PriorityTree implements Serializable {
 	 * @param word the word that should be inserted
 	 * @param frequency the start frequency of the inserting word
 	 */
-	private void insert(String word, int frequency, boolean setFreq) {
+	private boolean insert(String word, int frequency, boolean setFreq) {
 		if (inputValid(word)) {
 			logger.trace("Insertig Word...");
 			PriorityElement node = root;
@@ -104,10 +101,12 @@ public class PriorityTree implements Serializable {
 					}
 					logger.trace("Inserting Node... (New Node Added)");
 				}
-				logger.debug("Word Inserted");
 			}
+			logger.debug("Word Inserted");
+			return true;
 		} else {
 			logger.warn("Word (" + word + ") Ignored - not valid");
+			return false;
 		}
 	}
 	
@@ -355,14 +354,21 @@ public class PriorityTree implements Serializable {
 	
 	/**
 	 * 
-	 * only for english, ÄÖÜäüö not supported
+	 * takes the range of chars defined int the .chars file
+	 * if the string contains another char, false will be returned
 	 * @param in string
+	 * 
 	 * @return true if, all chars are in the alphabet
+	 * @author DirkK
 	 */
 	
 	private boolean inputValid(String in) {
+		if (in.length() == 0) {
+			return false;
+		}
 		for (char letter : in.toCharArray()) {
 			int counter = 0;
+			// check for every range, if the char is in a range counter is increased by one
 			for (int[] range : allowedChars) {
 				if ((int) letter >= range[0] && (int) letter <= range[1])
 					counter++;
@@ -383,14 +389,7 @@ public class PriorityTree implements Serializable {
 	
 	public void saveAllowedChars() {
 		try {
-			File confFile = new File(pathToAllowedChars);
-			FileWriter fw = new FileWriter(confFile);
-			BufferedWriter bw = new BufferedWriter(fw);
-			
-			for (int i = 0; i < allowedChars.size(); i++) {
-				bw.write(allowedChars.get(i)[0] + "-" + allowedChars.get(i)[1] + "\n");
-			}
-			bw.close();
+			ImportExportManager.saveChars(pathToAllowedChars, allowedChars);
 		} catch (IOException io) {
 			logger.error("IOException in readConfig()");
 			io.printStackTrace();
@@ -409,21 +408,7 @@ public class PriorityTree implements Serializable {
 	 */
 	private void loadAllowedChars() {
 		try {
-			File confFile = new File(pathToAllowedChars);
-			if (confFile.exists()) {
-				FileReader fr = new FileReader(confFile);
-				BufferedReader br = new BufferedReader(fr);
-				String entry = "";
-				while ((entry = br.readLine()) != null) {
-					String[] entries = entry.split("-");
-					int[] newi = { Integer.parseInt(entries[0]), Integer.parseInt(entries[1]) };
-					allowedChars.add(newi);
-				}
-			} else {
-				logger.warn("No allowed chars file found at " + pathToAllowedChars);
-				int[] newi = { 0, 255 };
-				allowedChars.add(newi);
-			}
+			allowedChars = ImportExportManager.loadChars(pathToAllowedChars);
 		} catch (IOException io) {
 			logger.error("IOException in loadAllowedChars()");
 			io.printStackTrace();

@@ -272,8 +272,13 @@ public class Controller implements ActionListener, WindowListener {
 		if (suggest.length() > typedWord.length())
 			outputMan.unMark();
 		outputMan.printChar(key);
-		profileMan.acceptWord(suggest);
-		statusBar.enqueueMessage("Word inserted: " + suggest);
+		boolean success = profileMan.acceptWord(suggest);
+		if (success) {
+			statusBar.enqueueMessage("Word inserted: " + suggest);
+		} else {
+			statusBar.enqueueMessage("Word ignored: " + suggest);
+		}
+
 		typedWord = "";
 		suggest = "";
 	}
