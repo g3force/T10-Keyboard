@@ -14,6 +14,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.File;
 
 import javax.swing.JFileChooser;
 
@@ -144,7 +145,8 @@ public class Controller implements ActionListener, WindowListener {
 		}
 		
 		if (e.getSource() instanceof ProfileChooser) {
-			eIsProfileChooser((ProfileChooser) e.getSource());
+			if (e.getActionCommand().equals(JFileChooser.APPROVE_SELECTION))
+				eIsProfileChooser((ProfileChooser) e.getSource());
 		}
 
 		// FIXME NicolaiO reference to Shift Mode Button?? => problem, any idea??
@@ -160,17 +162,16 @@ public class Controller implements ActionListener, WindowListener {
 	
 
 	private void eIsProfileChooser(ProfileChooser pc) {
-		if (pc.isApproved()) {
-			switch (pc.getDialogType()) {
-				// export profile
-				case JFileChooser.SAVE_DIALOG:
-					// TODO profile export
-					break;
-				// import profile
-				case JFileChooser.OPEN_DIALOG:
-					// TODO profile import....
-					break;
-			}
+		File path = pc.getSelectedFile();
+
+		switch (pc.getMenuType()) {
+			case 0:
+				break;
+			case 1:
+				break;
+			case 2:
+				System.out.println(path);
+				break;
 		}
 	}
 
