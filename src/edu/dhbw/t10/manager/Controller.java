@@ -216,7 +216,8 @@ public class Controller implements ActionListener, WindowListener {
 			else if (key.getKeycode().equals("\\DELETE\\")) {
 				outputMan.printChar(key);
 				suggest = typedWord;
-			}
+			} else if (key.getType() == Key.CONTROL)
+				this.keyIsControl(key);
 			logger.debug("Key pressed: " + key.toString());
 		} else if (button.getSingleKey().size() > 1) {
 			// FIXME NicolaiO, DanielAl Combi auslesen und weitergeben...
@@ -285,7 +286,23 @@ public class Controller implements ActionListener, WindowListener {
 		acceptWord(suggest);
 	}
 	
-
+	
+	/**
+	 * Prints a Control Key, <br>
+	 * if no SPACE, ENTER, DELETE or BACK_SPACE, these are special Keys and handled with extra methods...
+	 * 
+	 * @param key
+	 * @author DanielAl
+	 */
+	private void keyIsControl(Key key) {
+		if (suggest.length() > typedWord.length())
+			outputMan.printChar(new Key(0, "Delete", "\\DELETE\\", Key.CONTROL));
+		outputMan.printChar(key);
+		typedWord = "";
+		suggest = "";
+	}
+	
+	
 	/**
 	 * Prints the given key, added it to the typed String and get a new suggest and prtints it...
 	 * @param key
@@ -308,8 +325,7 @@ public class Controller implements ActionListener, WindowListener {
 	 */
 	private void keyIsUnicode(Key key) {
 		outputMan.printChar(key);
-		typedWord = "";
-		suggest = "";
+		acceptWord(typedWord);
 	}
 	
 
@@ -367,8 +383,6 @@ public class Controller implements ActionListener, WindowListener {
 		boolean success = profileMan.acceptWord(word);
 		if (success) {
 			statusBar.enqueueMessage("Word inserted: " + word);
-		} else {
-			statusBar.enqueueMessage("Word ignored: " + word);
 		}
 		typedWord = "";
 		suggest = "";
