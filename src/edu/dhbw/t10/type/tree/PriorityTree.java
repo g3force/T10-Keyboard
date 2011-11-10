@@ -9,11 +9,6 @@
  */
 package edu.dhbw.t10.type.tree;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
@@ -21,6 +16,8 @@ import java.util.LinkedList;
 import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
+
+import edu.dhbw.t10.manager.profile.ImportExportManager;
 
 
 /**
@@ -64,8 +61,8 @@ public class PriorityTree implements Serializable {
 	 * if the word already exist, frequency is increased by one and suggests are adujsted
 	 * @param word the word that should be inserted
 	 */
-	public void insert(String word) {
-		insert(word, 1, false);
+	public boolean insert(String word) {
+		return insert(word, 1, false);
 	}
 	
 	
@@ -75,9 +72,9 @@ public class PriorityTree implements Serializable {
 	 * @param word the word that should be inserted
 	 * @param frequency the start frequency of the inserting word
 	 */
-	private void insert(String word, int frequency, boolean setFreq) {
+	private boolean insert(String word, int frequency, boolean setFreq) {
 		if (inputValid(word)) {
-			logger.trace("Insertig Word...");
+			// logger.trace("Insertig Word...");
 			PriorityElement node = root;
 			char[] inChar = word.toCharArray(); // put every letter of the word alone in an char array
 			for (int i = 0; i < inChar.length; i++) {
@@ -92,7 +89,7 @@ public class PriorityTree implements Serializable {
 							node.setFrequency(frequency - 1);
 						node.increase(); // increases frequency by one and arranges suggests
 					}
-					logger.trace("Inserting Node... (Node Increased)");
+					// logger.trace("Inserting Node... (Node Increased)");
 				} else {
 					// node has to be created
 					node = node.addFollower(inChar[i]);
@@ -102,12 +99,14 @@ public class PriorityTree implements Serializable {
 							node.setFrequency(frequency - 1);
 						node.increase(); // increases frequency by one and arranges suggests
 					}
-					logger.trace("Inserting Node... (New Node Added)");
+					// logger.trace("Inserting Node... (New Node Added)");
 				}
-				logger.debug("Word Inserted");
 			}
+			// logger.debug("Word Inserted");
+			return true;
 		} else {
-			logger.warn("Word (" + word + ") Ignored - not valid");
+			// logger.warn("Word (" + word + ") Ignored - not valid");
+			return false;
 		}
 	}
 	
@@ -119,14 +118,14 @@ public class PriorityTree implements Serializable {
 	 * @return suggested Word
 	 */
 	public String getSuggest(String wordPart) {
-		logger.debug("Creating suggest for " + wordPart + "...");
+		// logger.debug("Creating suggest for " + wordPart + "...");
 		PriorityElement suggest = getElement(wordPart);
 		if (suggest == null) {
-			logger.info("Suggest created (same as wordPart)");
+			// logger.info("Suggest created (same as wordPart)");
 			return wordPart;
 		} else {
 			String out = suggest.getSuggest().buildWord();
-			logger.info("Suggest created (suggest word: " + out + ")");
+			// logger.info("Suggest created (suggest word: " + out + ")");
 			return out;
 		}
 	}
@@ -141,27 +140,27 @@ public class PriorityTree implements Serializable {
 	 * @param word the word to be deleted
 	 */
 	public void delete(String word) {
-		logger.debug("Deleting Node...");
+		// logger.debug("Deleting Node...");
 		PriorityElement deleteEl = getElement(word);
 		if (deleteEl != null) {
-			logger.debug("Deleting Node... (Node exist)");
+			// logger.debug("Deleting Node... (Node exist)");
 			deleteEl.setFrequency(0); // frequency==0 -> same as delete
 			PriorityElement node = deleteEl;
 			while (node.getFollowers().isEmpty()) {
 				// delete the node and all fathers, if they have not got any other followers (not part of another word)
-				logger.debug("Deleting Node... (Node deleted)");
+				// logger.debug("Deleting Node... (Node deleted)");
 				node = node.getFather();
 				node.deleteFollower(word);
 			}
 			while (node.getFather() != null && node.getSuggest().buildWord().equals(word)) {
 				// have a look at all the fathers of the deleted node, until a node is found which has not got the deleted
 				// node as suggest
-				logger.debug("Deleting Node... (Suggest changed)");
+				// logger.debug("Deleting Node... (Suggest changed)");
 				node.resetSuggest(); // searches for a new suggest
 				node = node.getFather();
 			}
 		}
-		logger.info("Node deleted");
+		// logger.info("Node deleted");
 	}
 	
 	
@@ -179,16 +178,16 @@ public class PriorityTree implements Serializable {
 			if (node.hasFollower(elChar[i])) {
 				node = node.getFollower(elChar[i]);
 				if (i == elChar.length - 1) { // current char is last char
-					logger.debug("Node found");
+					// logger.debug("Node found");
 					return node;
 				}
 			} else {
 				// child not found -> element is not in the tree
-				logger.debug("Node not found (getElement)");
+				// logger.debug("Node not found (getElement)");
 				return null;
 			}
 		}
-		logger.debug("Node not found (getElement)");
+		// logger.debug("Node not found (getElement)");
 		return null;
 	}
 	
@@ -228,7 +227,7 @@ public class PriorityTree implements Serializable {
 		for (PriorityElement pe : start.getListOfFollowers()) {
 			pe.print();
 		}
-		System.out.println("Complete amount of Elements: " + start.getListOfFollowers().size());
+		logger.debug("Complete amount of Elements: " + start.getListOfFollowers().size());
 		logger.debug("Output printed");
 	}
 	
@@ -250,6 +249,7 @@ public class PriorityTree implements Serializable {
 	 * @return the dictionary tree as a HashMap
 	 */
 	public HashMap<String, Integer> exportToHashMap() {
+		logger.debug("exporting to HashMap");
 		return root.getHashMapOfFollowers();
 		// HashMap<String, Integer> exportMap = new HashMap<String, Integer>();
 		// for (PriorityElement pe : root.getListOfFollowers()) {
@@ -261,6 +261,13 @@ public class PriorityTree implements Serializable {
 	}
 	
 	
+	/**
+	 * just a testing method for Kruse
+	 * TODO DirkK delete
+	 * @param in
+	 * @return
+	 * @author DirkK
+	 */
 	public String suggestInHashMap(String in) {
 		String word = "";
 		int amount = 0;
@@ -284,6 +291,7 @@ public class PriorityTree implements Serializable {
 	 *           2 -> bottomBorder OR olderThan
 	 *           3 -> bottomBorder AND olderThan
 	 * @return the amount of deleted items
+	 * @author DirkK
 	 */
 	public int autoCleaning(int bottomBorder, long olderThan, int flag) {
 		LinkedList<PriorityElement> toDelete = new LinkedList<PriorityElement>();
@@ -311,6 +319,8 @@ public class PriorityTree implements Serializable {
 	/**
 	 * prints out the dictionary, beginning with the word with the highest frequency
 	 * bad in performance
+	 * TODO DirkK delete
+	 * @author DirkK
 	 */
 	public LinkedList<PriorityElement> getFreqSortedList() {
 		logger.debug("fetching ordered list");
@@ -355,14 +365,21 @@ public class PriorityTree implements Serializable {
 	
 	/**
 	 * 
-	 * only for english, ÄÖÜäüö not supported
+	 * takes the range of chars defined int the .chars file
+	 * if the string contains another char, false will be returned
 	 * @param in string
+	 * 
 	 * @return true if, all chars are in the alphabet
+	 * @author DirkK
 	 */
 	
 	private boolean inputValid(String in) {
+		if (in.length() == 0) {
+			return false;
+		}
 		for (char letter : in.toCharArray()) {
 			int counter = 0;
+			// check for every range, if the char is in a range counter is increased by one
 			for (int[] range : allowedChars) {
 				if ((int) letter >= range[0] && (int) letter <= range[1])
 					counter++;
@@ -383,14 +400,7 @@ public class PriorityTree implements Serializable {
 	
 	public void saveAllowedChars() {
 		try {
-			File confFile = new File(pathToAllowedChars);
-			FileWriter fw = new FileWriter(confFile);
-			BufferedWriter bw = new BufferedWriter(fw);
-			
-			for (int i = 0; i < allowedChars.size(); i++) {
-				bw.write(allowedChars.get(i)[0] + "-" + allowedChars.get(i)[1] + "\n");
-			}
-			bw.close();
+			ImportExportManager.saveChars(pathToAllowedChars, allowedChars);
 		} catch (IOException io) {
 			logger.error("IOException in readConfig()");
 			io.printStackTrace();
@@ -409,21 +419,7 @@ public class PriorityTree implements Serializable {
 	 */
 	private void loadAllowedChars() {
 		try {
-			File confFile = new File(pathToAllowedChars);
-			if (confFile.exists()) {
-				FileReader fr = new FileReader(confFile);
-				BufferedReader br = new BufferedReader(fr);
-				String entry = "";
-				while ((entry = br.readLine()) != null) {
-					String[] entries = entry.split("-");
-					int[] newi = { Integer.parseInt(entries[0]), Integer.parseInt(entries[1]) };
-					allowedChars.add(newi);
-				}
-			} else {
-				logger.warn("No allowed chars file found at " + pathToAllowedChars);
-				int[] newi = { 0, 255 };
-				allowedChars.add(newi);
-			}
+			allowedChars = ImportExportManager.loadChars(pathToAllowedChars);
 		} catch (IOException io) {
 			logger.error("IOException in loadAllowedChars()");
 			io.printStackTrace();

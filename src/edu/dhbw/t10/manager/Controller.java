@@ -14,6 +14,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
 
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
@@ -21,6 +24,7 @@ import javax.swing.JLabel;
 import org.apache.log4j.Logger;
 
 import edu.dhbw.t10.manager.output.OutputManager;
+import edu.dhbw.t10.manager.profile.ImportExportManager;
 import edu.dhbw.t10.manager.profile.ProfileManager;
 import edu.dhbw.t10.type.keyboard.DropDownList;
 import edu.dhbw.t10.type.keyboard.KeyboardLayout;
@@ -152,8 +156,8 @@ public class Controller implements ActionListener, WindowListener {
 		}
 		
 		if (e.getSource() instanceof ProfileChooser) {
-			logger.debug("ProfileChooser pressed.");
-			eIsProfileChooser((ProfileChooser) e.getSource());
+			if (e.getActionCommand().equals(JFileChooser.APPROVE_SELECTION))
+				eIsProfileChooser((ProfileChooser) e.getSource());
 		}
 
 		// FIXME NicolaiO reference to Shift Mode Button?? => problem, any idea??
@@ -169,17 +173,23 @@ public class Controller implements ActionListener, WindowListener {
 	
 
 	private void eIsProfileChooser(ProfileChooser pc) {
-		if (pc.isApproved()) {
-			switch (pc.getDialogType()) {
-				// export profile
-				case JFileChooser.SAVE_DIALOG:
-					// TODO ALL profile export
-					break;
-				// import profile
-				case JFileChooser.OPEN_DIALOG:
-					// TODO ALL profile import....
-					break;
-			}
+		File path = pc.getSelectedFile();
+
+		switch (pc.getMenuType()) {
+			case 0:
+				break;
+			case 1:
+				break;
+			case 2:
+				HashMap<String, Integer> words = new HashMap<String, Integer>();
+				try {
+					words = ImportExportManager.importFromText(path.toString());
+				} catch (IOException err) {
+					statusBar.enqueueMessage("Could not load the text file. Please choose another one.");
+				}
+				profileMan.getActive().getTree().importFromHashMap(words);
+				statusBar.enqueueMessage("Text file included.");
+				break;
 		}
 	}
 
@@ -206,7 +216,8 @@ public class Controller implements ActionListener, WindowListener {
 			else if (key.getKeycode().equals("\\DELETE\\")) {
 				outputMan.printChar(key);
 				suggest = typedWord;
-			}
+			} else if (key.getType() == Key.CONTROL)
+				this.keyIsControl(key);
 			logger.debug("Key pressed: " + key.toString());
 		} else if (button.getSingleKey().size() > 1) {
 			// FIXME NicolaiO, DanielAl Combi auslesen und weitergeben...
@@ -273,13 +284,26 @@ public class Controller implements ActionListener, WindowListener {
 		if (suggest.length() > typedWord.length())
 			outputMan.unMark();
 		outputMan.printChar(key);
-		profileMan.acceptWord(suggest);
-		statusBar.enqueueMessage("Word inserted: " + suggest);
+		acceptWord(suggest);
+	}
+	
+	
+	/**
+	 * Prints a Control Key, <br>
+	 * if no SPACE, ENTER, DELETE or BACK_SPACE, these are special Keys and handled with extra methods...
+	 * 
+	 * @param key
+	 * @author DanielAl
+	 */
+	private void keyIsControl(Key key) {
+		if (suggest.length() > typedWord.length())
+			outputMan.printChar(new Key(0, "Delete", "\\DELETE\\", Key.CONTROL, false));
+		outputMan.printChar(key);
 		typedWord = "";
 		suggest = "";
 	}
 	
-
+	
 	/**
 	 * Prints the given key, added it to the typed String and get a new suggest and prtints it...
 	 * @param key
@@ -302,8 +326,7 @@ public class Controller implements ActionListener, WindowListener {
 	 */
 	private void keyIsUnicode(Key key) {
 		outputMan.printChar(key);
-		typedWord = "";
-		suggest = "";
+		acceptWord(typedWord);
 	}
 	
 
@@ -346,13 +369,26 @@ public class Controller implements ActionListener, WindowListener {
 	 */
 	private void keyIsSpaceOrEnter(Key key) {
 		logger.debug("Keycode " + key.getKeycode() + " " + key.getType());
-		profileMan.acceptWord(typedWord);
-		statusBar.enqueueMessage("Word inserted: " + typedWord);
 		outputMan.printChar(key);
+		acceptWord(typedWord);
+	}
+	
+	
+	/**
+	 * is called whenever a word shall be accepted
+	 * 
+	 * @param word
+	 * @author DirkK
+	 */
+	private void acceptWord(String word) {
+		boolean success = profileMan.acceptWord(word);
+		if (success) {
+			statusBar.enqueueMessage("Word inserted: " + word);
+		}
 		typedWord = "";
 		suggest = "";
 	}
-	
+
 
 	// Window ----------------------------
 	
