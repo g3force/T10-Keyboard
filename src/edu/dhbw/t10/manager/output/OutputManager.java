@@ -100,7 +100,7 @@ public class OutputManager {
 		// strings in the called out.printCombi function...
 		for (int j = 0; j < num; j++) {
 			// Add one marked char via one LEFT Key...
-			markCombi.add(new Key(j, "Left", "LEFT", Key.CONTROL));
+			markCombi.add(new Key(j, "Left", "\\LEFT\\", Key.CONTROL));
 			logger.trace("Added one mark...");
 		}
 		boolean mark = out.printCombi(markCombi);
