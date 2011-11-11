@@ -9,19 +9,30 @@
  */
 package edu.dhbw.t10.manager.profile;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map.Entry;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipException;
+import java.util.zip.ZipFile;
+import java.util.zip.ZipOutputStream;
 
 import org.apache.log4j.Logger;
 
 import edu.dhbw.t10.helper.StringHelper;
+import edu.dhbw.t10.manager.Controller;
+import edu.dhbw.t10.type.profile.Profile;
 
 
 /**
@@ -81,6 +92,8 @@ public class ImportExportManager {
 	}
 	
 	
+	// ----------------------------CHARS-----------------------------
+	
 	/**
 	 * reads the .chars file at the given path and returns the content in a list
 	 * @param pathToAllowedChars the path to the .chars file of the current profile
@@ -128,6 +141,9 @@ public class ImportExportManager {
 		bw.close();
 	}
 	
+	
+	// -------------------------------TREE----------------------------------
+
 	/**
 	 * takes an arbitrary text files and inserts all contained words in the tree
 	 * Tree cleaning recommended after this
@@ -226,6 +242,89 @@ public class ImportExportManager {
 		}
 	}
 	
+	
+	// ----------------------------------PROFILES----------------------------
+	static final int	BUFFER	= 2048;
+	
+	
+	public static void exportProfiles(Profile prof, File folder) throws IOException {
+		logger.debug("Exporting profile " + prof.getName());
+		BufferedInputStream origin = null;
+		String zipFile = folder.toString() + "/" + prof.getName() + ".zip";
+		logger.debug("Exporting to " + zipFile);
+		FileOutputStream dest = new FileOutputStream(zipFile);
+		ZipOutputStream out = new ZipOutputStream(new BufferedOutputStream(dest));
+		byte data[] = new byte[BUFFER];
+		// get a list of files from current directory
+		File[] files = new File[3];
+		files[0] = new File(prof.getPathToTree());
+		files[1] = new File(prof.getPathToAllowedChars());
+		files[2] = new File(prof.getPathToLayoutFile());
+		
+		for (int i = 0; i < files.length; i++) {
+			logger.debug("Writing to zip file: " + files[i]);
+			FileInputStream fi = new FileInputStream(files[i]);
+			origin = new BufferedInputStream(fi, BUFFER);
+			ZipEntry entry = new ZipEntry(files[i].toString());
+			out.putNextEntry(entry);
+			int count;
+			while ((count = origin.read(data, 0, BUFFER)) != -1) {
+				out.write(data, 0, count);
+			}
+			origin.close();
+		}
+		out.close();
+	}
+	
+	
+	/**
+	 * imports a profile from file
+	 * just puts the zip files to the correct folders
+	 * TODO OPTIONAL dirty, neets ProfileManager
+	 * @param zipFile
+	 * @throws ZipException
+	 * @throws IOException
+	 * @author dirk
+	 */
+	
+	public static void importProfiles(ProfileManager profM, File zipFile) throws ZipException, IOException {
+		logger.debug("Extracting zip file " + zipFile.toString());
+		String profileName = zipFile.getName();
+		profileName = profileName.replace(".zip", "");
+		int counter = 0;
+		while (profM.existProfile(profileName)) {
+			counter++;
+			if (counter == 0)
+				profileName += counter;
+			else
+				profileName += profileName.substring(0, profileName.length() - 1) + counter;
+		}
+		logger.debug("Profile " + profileName + " created");
+		BufferedOutputStream dest = null;
+		BufferedInputStream is = null;
+		ZipEntry entry;
+		ZipFile zipfile = new ZipFile(zipFile);
+		Enumeration<? extends ZipEntry> e = zipfile.entries();
+		while (e.hasMoreElements()) {
+			entry = (ZipEntry) e.nextElement();
+			is = new BufferedInputStream(zipfile.getInputStream(entry));
+			int count;
+			byte data[] = new byte[BUFFER];
+			String file = "data/profiles/" + profileName + entry.getName().substring(entry.getName().lastIndexOf("."));
+			FileOutputStream fos = new FileOutputStream(file);
+			logger.debug(file + " extracted");
+			// TODO if data folder changebale -> change here too
+			dest = new BufferedOutputStream(fos, BUFFER);
+			while ((count = is.read(data, 0, BUFFER)) != -1) {
+				dest.write(data, 0, count);
+			}
+			dest.flush();
+			dest.close();
+			is.close();
+		}
+		Controller.getInstance().createProfile(profileName);
+	}
+
 	
 	// --------------------------------------------------------------------------
 	// --- unused methods --------------------------------------------------------
