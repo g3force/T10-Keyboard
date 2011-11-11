@@ -254,7 +254,14 @@ public class Controller implements ActionListener, WindowListener {
 				this.keyIsControl(key);
 			logger.debug("Key pressed: " + key.toString());
 		} else if (button.getSingleKey().size() > 1) {
-			// FIXME DanielAl Combi auslesen und weitergeben...
+			/*
+			 * FIXME NicolaiO
+			 * es wird keine Combi übergeben (z.B. CRTL+SHIFT+u ergibt U und nicht u (unicode))...
+			 * die Methode printCombi funktioniert an sich (nur unsauber programmiert)
+			 * 
+			 * Wie kann man Combis auf der Tastatur eintippen?
+			 * das ist extra auf Deutsch damit es schnell von dir behandelt wird :P)
+			 */
 			logger.warn("More than one modeButton pressed. Not handeld correct...");
 			outputMan.printCombi(button);
 		} else

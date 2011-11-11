@@ -10,7 +10,8 @@
 package edu.dhbw.t10.manager.output;
 
 /**
- * Exception class if the application is running on a unsupported Operating System (only Windows and Linux works)
+ * Exception class if the application is running on a unsupported Operating System (only Windows and Linux are
+ * supported).
  * 
  * @author DanielAl
  */
@@ -31,7 +32,7 @@ public class UnknownOSException extends RuntimeException {
 	
 	/**
 	 * 
-	 * TODO DanielAl, add comment!
+	 * Calls constructor from super class (RuntimeException).
 	 * 
 	 * @author DanielAl
 	 */
@@ -42,7 +43,7 @@ public class UnknownOSException extends RuntimeException {
 	
 	/**
 	 * 
-	 * TODO DanielAl, add comment!
+	 * Calls constructor from super class (RuntimeException) with a String to set the Exception Message.
 	 * 
 	 * @param s
 	 * @author DanielAl
