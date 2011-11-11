@@ -64,16 +64,9 @@ public class Profile implements Serializable {
 	
 	public Profile(String pName) {
 		name = pName;
-		pathToLayoutFile = "data/layout/" + name + ".layout";
 		init();
 	}
 	
-	
-	public Profile(String pName, String layoutPath) {
-		name = pName;
-		pathToLayoutFile = layoutPath;
-		init();
-	}
 	
 	
 	private void init() {
@@ -81,17 +74,10 @@ public class Profile implements Serializable {
 		if (!file.isDirectory()) {
 			file.mkdir();
 		}
-		file = new File("data/trees");
-		if (!file.isDirectory()) {
-			file.mkdir();
-		}
-		file = new File("data/layout");
-		if (!file.isDirectory()) {
-			file.mkdir();
-		}
+		pathToLayoutFile = "data/profiles/" + name + ".layout";
 		pathToProfile = "data/profiles/" + name + ".profile";
-		pathToTree = "data/trees/" + name + ".tree";
-		pathToAllowedChars = "data/trees/" + name + ".chars";
+		pathToTree = "data/profiles/" + name + ".tree";
+		pathToAllowedChars = "data/profiles/" + name + ".chars";
 		logger.debug("Profile " + name + " created");
 		load();
 	}
@@ -231,6 +217,26 @@ public class Profile implements Serializable {
 	}
 	
 	
+	public String getPathToAllowedChars() {
+		return pathToAllowedChars;
+	}
+	
+	
+	public void setPathToAllowedChars(String pathToAllowedChars) {
+		this.pathToAllowedChars = pathToAllowedChars;
+	}
+	
+	
+	public String getPathToLayoutFile() {
+		return pathToLayoutFile;
+	}
+	
+	
+	public void setPathToLayoutFile(String pathToLayoutFile) {
+		this.pathToLayoutFile = pathToLayoutFile;
+	}
+
+
 	/**
 	 * 
 	 * Sets a profile's name
