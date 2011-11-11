@@ -2,18 +2,22 @@
  * *********************************************************
  * Copyright (c) 2011 - 2011, DHBW Mannheim
  * Project: T10 On-Screen Keyboard
- * Date: 06.11.2011
+ * Date: 11.11.2011
  * Author(s): felix
  *
  * *********************************************************
  */
 package edu.dhbw.t10.view.dialogs;
 
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import edu.dhbw.t10.manager.Controller;
 import edu.dhbw.t10.view.menus.EMenuItem;
@@ -27,59 +31,74 @@ import edu.dhbw.t10.view.menus.EMenuItem;
  * @author felix
  * 
  */
-public class ProfileChooser extends JFileChooser {
-	/**  */
+public class InputDlg extends JDialog {
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
-	private static final long	serialVersionUID	= 1033076958567424395L;
-	private EMenuItem				type;
-
+	private JLabel			textLbl;
+	private JTextField	textField;
+	private JButton		okBtn;
+	private JButton		cancelBtn;
+	private EMenuItem		menuItem;
+	private InputDlg		mhhh;
 
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
-	public ProfileChooser(EMenuItem menuType, final JFrame container) {
-		type = menuType;
-		switch (menuType) {
-			case iImport: // import
-			case iT2D: // Extend Dictionary By Text
-				setDialogType(JFileChooser.OPEN_DIALOG);
-				break;
-			case iExport: // export
-				setDialogType(JFileChooser.SAVE_DIALOG);
-				break;
-		}
+	public InputDlg(final EMenuItem menuItem, String title, String text) {
+		this.setTitle(title);
+		this.setModalityType(null);
+		this.mhhh = this;
 		
-		// ActionListener for OK/Cancel buttons
-		 ActionListener al = new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent actionEvent) {
-				String command = actionEvent.getActionCommand();
-				if (command.equals(JFileChooser.APPROVE_SELECTION) || command.equals(JFileChooser.CANCEL_SELECTION)) {
-					container.setVisible(false);
-				}
-			}
-		 };
+		this.menuItem = menuItem;
 
-		addActionListener(al);
-		addActionListener(Controller.getInstance());
-		container.setVisible(true);
+		textLbl = new JLabel(text);
+		textField = new JTextField();
+		okBtn = new JButton("Ok");
+		cancelBtn = new JButton("Cancel");
+
+		okBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Controller.getInstance().eIsInputDlg(menuItem, mhhh);
+			}
+		});
+
+		cancelBtn.addActionListener( new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
+			}
+		});
+		
+		this.add(textLbl, BorderLayout.NORTH);
+		this.add(textField, BorderLayout.CENTER);
+		
+		JPanel p = new JPanel();
+		p.add(okBtn, BorderLayout.WEST);
+		p.add(cancelBtn, BorderLayout.EAST);
+		this.add(p, BorderLayout.SOUTH);
+
+		this.pack();
+		this.setVisible(true);
 	}
 
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
-
+	public void addActionListener(ActionListener al) {
+		
+	}
 
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
+	public String getProfileName() {
+		return textField.getText();
+	}
+	
 
-	/**
-	 * 
-	 */
-	public EMenuItem getMenuType() {
-		return type;
+	public void setLblText(String text) {
+		textLbl.setText(text);
 	}
 }
