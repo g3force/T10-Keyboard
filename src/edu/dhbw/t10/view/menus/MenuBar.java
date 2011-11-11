@@ -10,16 +10,15 @@
 package edu.dhbw.t10.view.menus;
 
 
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 
 import edu.dhbw.t10.view.dialogs.DialogContainer;
+import edu.dhbw.t10.view.dialogs.InputDlg;
 
 
 /**
@@ -84,9 +83,10 @@ public class MenuBar extends JMenuBar {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Object response = JOptionPane.showInputDialog((Component) e.getSource(),
-						"Geben Sie den Namen des neuen Profils an.", "Neues Profil anlegen", JOptionPane.PLAIN_MESSAGE, null,
-						eventCache, "");
+				// Object response = JOptionPane.showInputDialog((Component) e.getSource(),
+				// "Geben Sie den Namen des neuen Profils an.", "Neues Profil anlegen", JOptionPane.PLAIN_MESSAGE, null,
+				// eventCache, "");
+				new InputDlg("New Profile", "Name of profile:");
 			}
 		});
 		
@@ -94,8 +94,7 @@ public class MenuBar extends JMenuBar {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// ProfileChooser pc = new ProfileChooser(0);
-				DialogContainer pc = new DialogContainer(0);
+				new DialogContainer(EMenuItem.iImport);
 			}
 		});
 		
@@ -103,8 +102,7 @@ public class MenuBar extends JMenuBar {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// ProfileChooser pc = new ProfileChooser(1);
-				DialogContainer pc = new DialogContainer(1);
+				new DialogContainer(EMenuItem.iExport);
 			}
 		});
 
@@ -128,9 +126,8 @@ public class MenuBar extends JMenuBar {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO FelixP Menu
-				// ProfileChooser pc = new ProfileChooser(2);
-				DialogContainer pc = new DialogContainer(2);
+
+				new DialogContainer(EMenuItem.iT2D);
 			}
 		});
 		
