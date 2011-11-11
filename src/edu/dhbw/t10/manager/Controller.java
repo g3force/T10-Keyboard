@@ -34,6 +34,7 @@ import edu.dhbw.t10.type.keyboard.key.ModeButton;
 import edu.dhbw.t10.type.keyboard.key.MuteButton;
 import edu.dhbw.t10.type.profile.Profile;
 import edu.dhbw.t10.view.Presenter;
+import edu.dhbw.t10.view.dialogs.InputDlg;
 import edu.dhbw.t10.view.dialogs.ProfileChooser;
 import edu.dhbw.t10.view.menus.EMenuItem;
 import edu.dhbw.t10.view.menus.StatusBar;
@@ -209,12 +210,17 @@ public class Controller implements ActionListener, WindowListener {
 	}
 	
 
-	private void eIsMenuItem(EMenuItem menuItem, Object o) {
+	public void eIsInputDlg(EMenuItem menuItem, Object o) {
 		switch (menuItem) {
 			// new profile
 			case iNewProfile:
-				if (!profileMan.existProfile((String) o)) {
-					this.createProfile((String) o);
+				InputDlg iDlg = (InputDlg)o;
+				String newProfile = iDlg.getProfileName();
+				if (!profileMan.existProfile(newProfile)) {
+					this.createProfile(newProfile);
+					iDlg.setVisible(false);
+				} else {
+					iDlg.setLblText("Profile exisiert bereits :-(");
 				}
 				break;
 		}

@@ -83,10 +83,7 @@ public class MenuBar extends JMenuBar {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// Object response = JOptionPane.showInputDialog((Component) e.getSource(),
-				// "Geben Sie den Namen des neuen Profils an.", "Neues Profil anlegen", JOptionPane.PLAIN_MESSAGE, null,
-				// eventCache, "");
-				new InputDlg("New Profile", "Name of profile:");
+				new InputDlg(EMenuItem.iNewProfile, "New Profile", "Name of profile:");
 			}
 		});
 		

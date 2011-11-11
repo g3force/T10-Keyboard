@@ -20,6 +20,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import edu.dhbw.t10.manager.Controller;
+import edu.dhbw.t10.view.menus.EMenuItem;
 
 
 /**
@@ -38,20 +39,30 @@ public class InputDlg extends JDialog {
 	private JTextField	textField;
 	private JButton		okBtn;
 	private JButton		cancelBtn;
+	private EMenuItem		menuItem;
+	private InputDlg		mhhh;
 
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
-	public InputDlg(String title, String text) {
+	public InputDlg(final EMenuItem menuItem, String title, String text) {
 		this.setTitle(title);
 		this.setModalityType(null);
+		this.mhhh = this;
 		
+		this.menuItem = menuItem;
+
 		textLbl = new JLabel(text);
 		textField = new JTextField();
 		okBtn = new JButton("Ok");
 		cancelBtn = new JButton("Cancel");
-		
-		okBtn.addActionListener(Controller.getInstance());
+
+		okBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Controller.getInstance().eIsInputDlg(menuItem, mhhh);
+			}
+		});
 
 		cancelBtn.addActionListener( new ActionListener() {
 			@Override
@@ -75,12 +86,19 @@ public class InputDlg extends JDialog {
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
-	
+	public void addActionListener(ActionListener al) {
+		
+	}
 
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
 	public String getProfileName() {
 		return textField.getText();
+	}
+	
+
+	public void setLblText(String text) {
+		textLbl.setText(text);
 	}
 }
