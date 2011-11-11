@@ -24,7 +24,7 @@ import edu.dhbw.t10.manager.Controller;
  * 
  * TODO OPTIONAL ALL graphical buttons (keys) e.g. pause- and arrow keys
  * TODO FelixP menus
- * TODO OPTIONAL ALL StatusBar
+ * TODO ALL use the Right Statusbar for Tooltips...
  * TODO ALL question: insert word that is smaller than an existing one?!
  * TODO NicolaiO Toolbar
  * 
