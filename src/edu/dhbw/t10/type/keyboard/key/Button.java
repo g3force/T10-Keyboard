@@ -31,11 +31,11 @@ public class Button extends PhysicalButton implements MouseListener {
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
-	private static final Logger		logger				= Logger.getLogger(Button.class);
-	private static final long			serialVersionUID	= 6949715976373962684L;
-	private HashMap<ModeButton, Key>	modes					= new HashMap<ModeButton, Key>();
-	private Key								key;
-	private ArrayList<ModeButton>		activeModes			= new ArrayList<ModeButton>();
+	private static final Logger	logger				= Logger.getLogger(Button.class);
+	private static final long		serialVersionUID	= 6949715976373962684L;
+	private HashMap<ModeKey, Key>	modes					= new HashMap<ModeKey, Key>();
+	private Key							key;
+	private ArrayList<ModeKey>		activeModes			= new ArrayList<ModeKey>();
 	
 
 	// --------------------------------------------------------------------------
@@ -61,7 +61,7 @@ public class Button extends PhysicalButton implements MouseListener {
 	 * @param accordingKey Key, that should be pressed, when ModeButton is active and Button is pressed
 	 * @author NicolaiO
 	 */
-	public void addMode(ModeButton mode, Key accordingKey) {
+	public void addMode(ModeKey mode, Key accordingKey) {
 		modes.put(mode, accordingKey);
 		mode.register(this);
 	}
@@ -74,9 +74,10 @@ public class Button extends PhysicalButton implements MouseListener {
 	 * @param mode ModeButton, that should be activated
 	 * @author NicolaiO
 	 */
-	public void addCurrentMode(ModeButton mode) {
-		activeModes.add(mode);
-		logger.debug("Mode added to currently active modes: " + mode);
+	public void addCurrentMode(ModeKey mode) {
+		if (!activeModes.contains(mode)) {
+			activeModes.add(mode);
+		}
 		if (activeModes.size() == 1) {
 			if (modes.get(mode) != null) {
 				setText(modes.get(mode).getName());
@@ -87,6 +88,7 @@ public class Button extends PhysicalButton implements MouseListener {
 			// If no mode or more than one mode is active, just set ButtonText to default...
 			// TODO OPTIONAL NicolaiO support multi-modes
 			setText(key.getName());
+			logger.warn("Multi-ModeButtons not implemented yet! Show default key name as Button Text.");
 		}
 	}
 	
@@ -97,7 +99,7 @@ public class Button extends PhysicalButton implements MouseListener {
 	 * @param mode ModeButton, that should be deactivated
 	 * @author NicolaiO
 	 */
-	public void rmCurrentMode(ModeButton mode) {
+	public void rmCurrentMode(ModeKey mode) {
 		activeModes.remove(mode);
 		if (activeModes.size() == 1) {
 			setText(modes.get(activeModes.get(0)).getName());
@@ -120,8 +122,9 @@ public class Button extends PhysicalButton implements MouseListener {
 		} else if (activeModes.size() == 1 && modes.containsKey(activeModes.get(0))) {
 			output.add(modes.get(activeModes.get(0)));
 		} else {
-			for (ModeButton modeKey : activeModes)
-				output.add(modeKey.getModeKey());
+			for (ModeKey modeKey : activeModes) {
+				output.add(modeKey);
+			}
 			output.add(modes.get("default"));
 		}
 		return output;
@@ -134,13 +137,13 @@ public class Button extends PhysicalButton implements MouseListener {
 	 * @author NicolaiO
 	 */
 	public void unsetPressedModes() {
-		ArrayList<ModeButton> tactiveModes = new ArrayList<ModeButton>();
-		for (ModeButton b : activeModes) {
-			if (b.getState() == ModeButton.PRESSED) {
+		ArrayList<ModeKey> tactiveModes = new ArrayList<ModeKey>();
+		for (ModeKey b : activeModes) {
+			if (b.getState() == ModeKey.PRESSED) {
 				tactiveModes.add(b);
 			}
 		}
-		for (ModeButton b : tactiveModes) {
+		for (ModeKey b : tactiveModes) {
 			b.release();
 		}
 	}
@@ -151,17 +154,17 @@ public class Button extends PhysicalButton implements MouseListener {
 	// --------------------------------------------------------------------------
 	
 	
-	public HashMap<ModeButton, Key> getModes() {
+	public HashMap<ModeKey, Key> getModes() {
 		return modes;
 	}
 	
 	
-	public void setModes(HashMap<ModeButton, Key> modes) {
+	public void setModes(HashMap<ModeKey, Key> modes) {
 		this.modes = modes;
 	}
 	
 	
-	public ArrayList<ModeButton> getActiveModes() {
+	public ArrayList<ModeKey> getActiveModes() {
 		return activeModes;
 	}
 	
@@ -198,11 +201,11 @@ public class Button extends PhysicalButton implements MouseListener {
 		 */
 		if (e.getButton() == MouseEvent.BUTTON3) {
 			if (e.getSource() instanceof JButton) {
-				for (ModeButton mb : modes.keySet()) {
-					if (mb.getModeName().toLowerCase().equals("shift")) {
+				for (ModeKey mb : modes.keySet()) {
+					if (mb.getName().toLowerCase().equals("shift")) {
 						this.addCurrentMode(mb);
 					} else {
-						logger.trace(mb.getModeName());
+						logger.trace(mb.getName());
 					}
 				}
 				this.actionListener.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, this
