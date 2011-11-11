@@ -10,16 +10,15 @@
 package edu.dhbw.t10.view.menus;
 
 
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 
 import edu.dhbw.t10.view.dialogs.DialogContainer;
+import edu.dhbw.t10.view.dialogs.InputDlg;
 
 
 /**
@@ -84,9 +83,10 @@ public class MenuBar extends JMenuBar {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Object response = JOptionPane.showInputDialog((Component) e.getSource(),
-						"Geben Sie den Namen des neuen Profils an.", "Neues Profil anlegen", JOptionPane.PLAIN_MESSAGE, null,
-						eventCache, "");
+				// Object response = JOptionPane.showInputDialog((Component) e.getSource(),
+				// "Geben Sie den Namen des neuen Profils an.", "Neues Profil anlegen", JOptionPane.PLAIN_MESSAGE, null,
+				// eventCache, "");
+				new InputDlg("New Profile", "Name of profile:");
 			}
 		});
 		
