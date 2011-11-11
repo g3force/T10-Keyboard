@@ -92,7 +92,6 @@ public class Controller implements ActionListener, WindowListener {
 		mainPanel.addComponentListener(mainPanel);
 		resizeWindow(profileMan.getActive().getKbdLayout().getSize());
 		statusPane.enqueueMessage("Keyboard initialized.", StatusPane.LEFT);
-		statusPane.enqueueMessage("Tooltip", StatusPane.RIGHT);
 		logger.debug("initialized.");
 	}
 	
