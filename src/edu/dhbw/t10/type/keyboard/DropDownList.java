@@ -62,6 +62,7 @@ public class DropDownList extends JComboBox {
 		if (type.equals("profile")) {
 			this.type = PROFILE;
 		}
+		init(this.type, size_x, size_y, pos_x, pos_y);
 	}
 	
 	

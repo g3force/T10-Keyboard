@@ -14,6 +14,8 @@ import java.lang.reflect.Field;
 
 import org.apache.log4j.Logger;
 
+import edu.dhbw.t10.manager.Controller;
+
 
 /**
  * button for the mute options
@@ -59,6 +61,7 @@ public class MuteButton extends PhysicalButton {
 		super(size_x, size_y, pos_x, pos_y);
 		on = new Mode(this.getBackground());
 		off = new Mode(this.getBackground());
+		addMouseListener(Controller.getInstance());
 	}
 	
 	
@@ -104,8 +107,8 @@ public class MuteButton extends PhysicalButton {
 			logger.debug("MuteButton activated");
 		}
 	}
-	
-	
+
+
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
@@ -140,6 +143,13 @@ public class MuteButton extends PhysicalButton {
 	}
 	
 	
+	public Mode getMode() {
+		if (activated)
+			return on;
+		return off;
+	}
+
+
 	public boolean isActivated() {
 		return activated;
 	}
