@@ -16,6 +16,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 
 import edu.dhbw.t10.manager.Controller;
+import edu.dhbw.t10.view.menus.EMenuItem;
 
 
 /**
@@ -32,20 +33,20 @@ public class ProfileChooser extends JFileChooser {
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
 	private static final long	serialVersionUID	= 1033076958567424395L;
-	private int						type;
+	private EMenuItem				type;
 
 
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
-	public ProfileChooser(int menuType, final JFrame container) {
+	public ProfileChooser(EMenuItem menuType, final JFrame container) {
 		type = menuType;
 		switch (menuType) {
-			case 0: // import
-			case 2: // Extend Dictionary By Text
+			case iImport: // import
+			case iT2D: // Extend Dictionary By Text
 				setDialogType(JFileChooser.OPEN_DIALOG);
 				break;
-			case 1: // export
+			case iExport: // export
 				setDialogType(JFileChooser.SAVE_DIALOG);
 				break;
 		}
@@ -78,7 +79,7 @@ public class ProfileChooser extends JFileChooser {
 	/**
 	 * 
 	 */
-	public int getMenuType() {
+	public EMenuItem getMenuType() {
 		return type;
 	}
 }

@@ -94,8 +94,7 @@ public class MenuBar extends JMenuBar {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// ProfileChooser pc = new ProfileChooser(0);
-				DialogContainer pc = new DialogContainer(0);
+				new DialogContainer(EMenuItem.iImport);
 			}
 		});
 		
@@ -103,8 +102,7 @@ public class MenuBar extends JMenuBar {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// ProfileChooser pc = new ProfileChooser(1);
-				DialogContainer pc = new DialogContainer(1);
+				new DialogContainer(EMenuItem.iExport);
 			}
 		});
 
@@ -128,9 +126,8 @@ public class MenuBar extends JMenuBar {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO FelixP Menu
-				// ProfileChooser pc = new ProfileChooser(2);
-				DialogContainer pc = new DialogContainer(2);
+
+				new DialogContainer(EMenuItem.iT2D);
 			}
 		});
 		

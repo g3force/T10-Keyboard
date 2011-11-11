@@ -11,6 +11,9 @@ package edu.dhbw.t10.view.dialogs;
 
 import javax.swing.JFrame;
 
+import edu.dhbw.t10.view.menus.EMenuItem;
+
+
 /**
  * TODO felix, add comment!
  * - What should this type do (in one sentence)?
@@ -28,7 +31,7 @@ public class DialogContainer extends JFrame {
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
-	public DialogContainer(int menuType) {
+	public DialogContainer(EMenuItem menuType) {
 		pc = new ProfileChooser(menuType, this);
 		
 		getContentPane().add(pc, "Center");

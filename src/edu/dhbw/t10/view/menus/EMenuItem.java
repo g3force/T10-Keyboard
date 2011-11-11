@@ -17,17 +17,15 @@ package edu.dhbw.t10.view.menus;
  * @author felix
  * 
  */
-public enum MenuItem {
-	mFile,
-	mProfile,
-	iNewProfile,
-	iImport,
-	iExport,
-	iClose,
-	iChange,
-	iT2D,
-	iF2D,
-	iD2F,
-	iClean,
-	iDelete;
+public enum EMenuItem {
+	iNewProfile, // new profile
+	iImport, // import profile
+	iExport, // export profile
+	iClose, // close
+	iChange, // modify
+	iT2D, // Extend Dictionary By Text
+	iF2D, // Extend Dictionary From File
+	iD2F, // Export Dictionary To File
+	iClean, // Clean Dictionary
+	iDelete; // Delete
 }
