@@ -12,6 +12,8 @@ package edu.dhbw.t10.manager;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
@@ -42,14 +44,14 @@ import edu.dhbw.t10.view.panels.MainPanel;
 
 
 /**
- * The Controller Class provides the central interface to combine the functionallity of the porgramm. the data flows
+ * The Controller Class provides the central interface to combine the functionality of the program. the data flows
  * through it. <br>
  * Here all Managers and the view is initialized...<br>
  * It provides overwritten methods to handles actionEvents...<br>
  * 
  * @author NicolaiO, DirkK, FelixP, SebastianN, DanielAl
  */
-public class Controller implements ActionListener, WindowListener {
+public class Controller implements ActionListener, WindowListener, MouseListener {
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
@@ -526,5 +528,38 @@ public class Controller implements ActionListener, WindowListener {
 			instance = new Controller();
 		}
 		return instance;
+	}
+	
+	
+	@Override
+	public void mouseClicked(MouseEvent e) {
+	}
+	
+	
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		logger.debug("Mouse moved into a tooltip area");
+		if (e.getSource() instanceof MuteButton) {
+			MuteButton pb = (MuteButton) e.getSource();
+			// FIXME DanielAl nothing to see on right statusPane
+			statusPane.enqueueMessage(pb.getMode().getTooltip(), StatusPane.RIGHT);
+		}
+	}
+	
+	
+	@Override
+	public void mouseExited(MouseEvent e) {
+		logger.debug("Mouse left tooltip area");
+		statusPane.enqueueMessage("", StatusPane.RIGHT);
+	}
+	
+	
+	@Override
+	public void mousePressed(MouseEvent e) {
+	}
+	
+	
+	@Override
+	public void mouseReleased(MouseEvent e) {
 	}
 }

@@ -82,7 +82,7 @@ public class KeyboardLayoutLoader {
 	 * @author NicolaiO
 	 */
 	public static KeyboardLayout load(String filePath, HashMap<Integer, Key> _keymap) {
-		logger.debug("Loading KeyboardLayout...");
+		logger.debug("Loading KeyboardLayout from " + filePath + "...");
 		DocumentBuilder dBuilder;
 		keymap = _keymap;
 		KeyboardLayout kbdLayout = new KeyboardLayout(0, 0, 1, 1, 1);
@@ -197,6 +197,7 @@ public class KeyboardLayoutLoader {
 					DropDownList cb = new DropDownList(getAttribute(attr, "type"), getIntAttribute(attr, "size_x"),
 							getIntAttribute(attr, "size_y"), getIntAttribute(attr, "pos_x"), getIntAttribute(attr, "pos_y"));
 					ddls.add(cb);
+					logger.trace("ddl: " + getIntAttribute(attr, "pos_x"));
 					cb.addActionListener(Controller.getInstance());
 				}
 			} catch (NullPointerException e) {
