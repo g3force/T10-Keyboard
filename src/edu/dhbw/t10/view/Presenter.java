@@ -9,11 +9,8 @@
  */
 package edu.dhbw.t10.view;
 
-import java.awt.Color;
-import java.awt.FlowLayout;
 import java.awt.Toolkit;
 
-import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -21,7 +18,7 @@ import org.apache.log4j.Logger;
 
 import edu.dhbw.t10.manager.Controller;
 import edu.dhbw.t10.view.menus.MenuBar;
-import edu.dhbw.t10.view.menus.StatusBar;
+import edu.dhbw.t10.view.menus.StatusPane;
 import edu.dhbw.t10.view.panels.MainPanel;
 
 
@@ -47,7 +44,7 @@ public class Presenter extends JFrame {
 	/**
 	  * 
 	  */
-	public Presenter(MainPanel mainPanel, StatusBar statusBarL, StatusBar statusBarR) {
+	public Presenter(MainPanel mainPanel, StatusPane statusPane) {
 		logger.debug("Initializing...");
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setLocationByPlatform(true);
@@ -62,13 +59,6 @@ public class Presenter extends JFrame {
 		// get a reference to the content pane
 		contentPane = (JPanel) getContentPane();
 		contentPane.add(mainPanel);
-		JPanel statusPane = new JPanel();
-		statusPane.setLayout(new FlowLayout());
-		// statusPane.add(statusBarL, java.awt.BorderLayout.LINE_START);
-		// statusPane.add(statusBarR, java.awt.BorderLayout.LINE_END);
-		statusPane.add(statusBarL, java.awt.BorderLayout.LINE_START);
-		statusPane.add(statusBarR, java.awt.BorderLayout.LINE_END);
-		statusPane.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		contentPane.add(statusPane, java.awt.BorderLayout.SOUTH);
 		this.setJMenuBar(new MenuBar());
 		
