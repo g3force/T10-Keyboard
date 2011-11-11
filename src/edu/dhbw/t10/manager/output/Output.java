@@ -42,7 +42,10 @@ public class Output {
 	public static final int			LINUX		= 1;
 	public static final int			WINDOWS	= 2;
 	// SendKey Function Constants
-	public static final int			TYPE		= 0;
+	public static final int			TYPE		= 0;											// FIXME DanielAl TYPE is really really
+																										// confusing without context... MAYBE
+																										// rather use HOLD instead of PRESS and
+																										// PRESS instead of TYPE?
 	public static final int			PRESS		= 1;
 	public static final int			RELEASE	= 2;
 	public static final int			COMBI		= 3;

@@ -124,7 +124,7 @@ public class Button extends PhysicalButton implements MouseListener {
 	 * @return
 	 * @author DirkK
 	 */
-	public ArrayList<Key> getSingleKey() {
+	public ArrayList<Key> getPressedKeys() {
 		ArrayList<Key> output = new ArrayList<Key>();
 		if (activeModes.size() == 0) {
 			output.add(key);
@@ -132,9 +132,11 @@ public class Button extends PhysicalButton implements MouseListener {
 			output.add(modes.get(activeModes.get(0)));
 		} else {
 			for (ModeKey modeKey : activeModes) {
-				output.add(modeKey);
+				output.add((Key) modeKey);
+				logger.trace(modeKey);
 			}
-			output.add(modes.get("default"));
+			output.add(key);
+			logger.trace(key);
 		}
 		return output;
 	}

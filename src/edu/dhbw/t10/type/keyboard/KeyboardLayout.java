@@ -110,6 +110,24 @@ public class KeyboardLayout {
 	}
 	
 	
+	/**
+	 * Unset/release all currently active ModeButtons
+	 * 
+	 * @author NicolaiO
+	 */
+	public void unsetPressedModes() {
+		ArrayList<ModeKey> tactiveModes = new ArrayList<ModeKey>();
+		for (ModeKey b : modeKeys) {
+			if (b.getState() == ModeKey.PRESSED) {
+				tactiveModes.add(b);
+			}
+		}
+		for (ModeKey b : tactiveModes) {
+			b.release();
+		}
+	}
+
+
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
