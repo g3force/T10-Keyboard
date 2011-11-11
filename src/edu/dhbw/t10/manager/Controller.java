@@ -159,16 +159,6 @@ public class Controller implements ActionListener, WindowListener {
 			if (e.getActionCommand().equals(JFileChooser.APPROVE_SELECTION))
 				eIsProfileChooser((ProfileChooser) e.getSource());
 		}
-
-		// FIXME NicolaiO reference to Shift Mode Button?? => problem, any idea??
-		/**
-		 * SHIFT_MASK modifier is set, when a button is clicked with right mouse button.
-		 * How can I tell that shift should be pressed?! with ModeButton Shift or is there another way?
-		 * TODO DanielAl send shift signal to Output
-		 */
-		if (e.getModifiers() == ActionEvent.SHIFT_MASK) {
-			logger.debug("shift modifier is pressed. No action yet...");
-		}
 	}
 	
 
@@ -220,7 +210,7 @@ public class Controller implements ActionListener, WindowListener {
 				this.keyIsControl(key);
 			logger.debug("Key pressed: " + key.toString());
 		} else if (button.getSingleKey().size() > 1) {
-			// FIXME NicolaiO, DanielAl Combi auslesen und weitergeben...
+			// FIXME DanielAl Combi auslesen und weitergeben...
 			logger.warn("More than one modeButton pressed. Not handeld correct...");
 			outputMan.printCombi(button);
 		} else
