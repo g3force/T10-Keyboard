@@ -2,16 +2,24 @@
  * *********************************************************
  * Copyright (c) 2011 - 2011, DHBW Mannheim
  * Project: T10 On-Screen Keyboard
- * Date: 10.11.2011
+ * Date: 11.11.2011
  * Author(s): felix
  *
  * *********************************************************
  */
 package edu.dhbw.t10.view.dialogs;
 
-import javax.swing.JFrame;
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-import edu.dhbw.t10.view.menus.EMenuItem;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+import edu.dhbw.t10.manager.Controller;
 
 
 /**
@@ -22,22 +30,46 @@ import edu.dhbw.t10.view.menus.EMenuItem;
  * @author felix
  * 
  */
-public class DialogContainer extends JFrame {
+public class InputDlg extends JDialog {
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
-	private ProfileChooser	pc;
+	private JLabel			textLbl;
+	private JTextField	textField;
+	private JButton		okBtn;
+	private JButton		cancelBtn;
 
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
-	public DialogContainer(EMenuItem menuType) {
-		pc = new ProfileChooser(menuType, this);
+	public InputDlg(String title, String text) {
+		this.setTitle(title);
+		this.setModalityType(null);
 		
-		getContentPane().add(pc, "Center");
-		pack();
+		textLbl = new JLabel(text);
+		textField = new JTextField();
+		okBtn = new JButton("Ok");
+		cancelBtn = new JButton("Cancel");
 		
+		okBtn.addActionListener(Controller.getInstance());
+
+		cancelBtn.addActionListener( new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
+			}
+		});
 		
+		this.add(textLbl, BorderLayout.NORTH);
+		this.add(textField, BorderLayout.CENTER);
+		
+		JPanel p = new JPanel();
+		p.add(okBtn, BorderLayout.WEST);
+		p.add(cancelBtn, BorderLayout.EAST);
+		this.add(p, BorderLayout.SOUTH);
+
+		this.pack();
+		this.setVisible(true);
 	}
 
 	// --------------------------------------------------------------------------
@@ -48,4 +80,7 @@ public class DialogContainer extends JFrame {
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
+	public String getProfileName() {
+		return textField.getText();
+	}
 }
