@@ -248,6 +248,7 @@ public class Controller implements ActionListener, WindowListener {
 			logger.debug("Key pressed: " + key.toString());
 		} else if (button.getSingleKey().size() > 1) {
 			// FIXME NicolaiO, DanielAl Combi auslesen und weitergeben...
+			logger.warn("More than one modeButton pressed. Not handeld correct...");
 			outputMan.printCombi(button);
 		} else
 			logger.error("No Key List");
@@ -322,7 +323,7 @@ public class Controller implements ActionListener, WindowListener {
 	 */
 	private void keyIsControl(Key key) {
 		if (suggest.length() > typedWord.length())
-			outputMan.printChar(new Key(0, "Delete", "\\DELETE\\", Key.CONTROL));
+			outputMan.printChar(new Key(0, "Delete", "\\DELETE\\", Key.CONTROL, false));
 		outputMan.printChar(key);
 		typedWord = "";
 		suggest = "";

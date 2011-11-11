@@ -406,9 +406,7 @@ public class ProfileManager {
 	 * @author SebastianN
 	 */
 	public boolean acceptWord(String word) {
-		System.out.println(word);
 		word = StringHelper.removePunctuation(word);
-		System.out.println(word);
 		if (getActive() == null) {
 			logger.error("getActive()==NULL at acceptWord");
 			return false;
