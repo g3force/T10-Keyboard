@@ -97,15 +97,15 @@ public class OutputManager {
 	 */
 	public boolean mark(int num) {
 		// Use a ArrayList to be able to use the printCombi
-		ArrayList<Key> markCombi = new ArrayList<Key>();
-		// Keycode is here not like the standard CONTROL code between two \\ \\, because this minimizes calculation of
-		// strings in the called out.printCombi function...
-		for (int j = 0; j < num; j++) {
+		ArrayList<Key> markCombiHold = new ArrayList<Key>();
+		ArrayList<Key> markCombiPress = new ArrayList<Key>();
+		markCombiHold.add(new Key(0, "Shift", "\\SHIFT\\", Key.CONTROL, false));
+		for (int j = 1; j < num + 1; j++) {
 			// Add one marked char via one LEFT Key...
-			markCombi.add(new Key(j, "Left", "\\LEFT\\", Key.CONTROL, false));
+			markCombiPress.add(new Key(j, "Left", "\\LEFT\\", Key.CONTROL, false));
 			logger.trace("Added one mark...");
 		}
-		boolean mark = out.printCombi(markCombi);
+		boolean mark = out.printCombi(markCombiHold, markCombiPress);
 		logger.info(num + " Symboly marked");
 		return mark;
 	}
@@ -143,7 +143,7 @@ public class OutputManager {
 	 * @author DanielAl
 	 */
 	public void printCombi(Button b) {
-		out.printCombi(b.getSingleKey());
+		out.printCombi(b.getSingleKey(), null);
 	}
 	
 	
