@@ -15,6 +15,7 @@ import org.apache.log4j.Logger;
 
 import edu.dhbw.t10.type.keyboard.key.Button;
 import edu.dhbw.t10.type.keyboard.key.Key;
+import edu.dhbw.t10.type.keyboard.key.ModeKey;
 
 
 /**
@@ -142,11 +143,33 @@ public class OutputManager {
 	 * @param Button b
 	 * @author DanielAl
 	 */
+	@Deprecated
 	public void printCombi(Button b) {
-		out.printCombi(b.getSingleKey(), null);
+		out.printCombi(b.getPressedKeys(), null);
 	}
 	
 	
+	/**
+	 * Print a combination of keys, given by a list of ModeKeys and a finishing key
+	 * 
+	 * @param mks list of ModeKeys to be pressed
+	 * @param key key to be pressed at the end
+	 * @author NicolaiO
+	 */
+	public void printCombi(ArrayList<ModeKey> mks, Key key) {
+		ArrayList<Key> pressed = new ArrayList<Key>();
+		ArrayList<Key> hold = new ArrayList<Key>();
+
+		for (ModeKey mk : mks) {
+			if (mk.getState() != ModeKey.DEFAULT) {
+				hold.add((Key) mk);
+			}
+		}
+		pressed.add(key);
+		out.printCombi(hold, pressed);
+	}
+
+
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------

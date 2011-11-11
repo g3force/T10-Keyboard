@@ -18,6 +18,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.zip.ZipException;
 
@@ -33,6 +34,7 @@ import edu.dhbw.t10.type.keyboard.KeyboardLayout;
 import edu.dhbw.t10.type.keyboard.key.Button;
 import edu.dhbw.t10.type.keyboard.key.Key;
 import edu.dhbw.t10.type.keyboard.key.ModeButton;
+import edu.dhbw.t10.type.keyboard.key.ModeKey;
 import edu.dhbw.t10.type.keyboard.key.MuteButton;
 import edu.dhbw.t10.type.profile.Profile;
 import edu.dhbw.t10.view.Presenter;
@@ -236,9 +238,13 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	 * @author DanielAl
 	 */
 	private void eIsButton(Button button) {
-		if (button.getSingleKey().size() == 1) {
-			Key key = (Key) button.getSingleKey().get(0);
+		ArrayList<ModeKey> modeKeys = profileMan.getActive().getKbdLayout().getModeKeys();
+		if (modeKeys.size() > 1) {
+			outputMan.printCombi(modeKeys, button.getKey());
+		} else if (button.getPressedKeys().size() == 1) {
+			Key key = (Key) button.getPressedKeys().get(0);
 			
+			logger.trace("buttons: " + button.getPressedKeys().size() + "   " + button.getPressedKeys());
 			if (key.isAccept())
 				this.keyIsAccept(key);
 			else if (key.getType() == Key.CHAR)
@@ -255,21 +261,25 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 			} else if (key.getType() == Key.CONTROL)
 				this.keyIsControl(key);
 			logger.debug("Key pressed: " + key.toString());
-		} else if (button.getSingleKey().size() > 1) {
+		} else if (button.getPressedKeys().size() > 1) {
 			/*
-			 * FIXME NicolaiO
+			 * FIXME DanielAl delete me after reading
 			 * es wird keine Combi übergeben (z.B. CRTL+SHIFT+u ergibt U und nicht u (unicode))...
 			 * die Methode printCombi funktioniert an sich (nur unsauber programmiert)
+			 * => habe es oben eingefügt, so wie es war, hat alles keinen Sinn gemacht... deine Methode war auch
+			 * fehlerhaft, habe ich neu geschrieben (siehe printCombi(ArrayList<ModeKey> mks, Key key) in OutputManager)
+			 * die alte Methode darüber kann dann weg...
 			 * 
-			 * Wie kann man Combis auf der Tastatur eintippen?
+			 * Wie kann man Combis auf der Tastatur eintippen? => Mode Tasten nacheinander drücken und dann einen Button
+			 * => Habe es mit Strg + c/v und Strg+Shift+f probiert => funzt
 			 * das ist extra auf Deutsch damit es schnell von dir behandelt wird :P)
 			 */
-			logger.warn("More than one modeButton pressed. Not handeld correct...");
-			outputMan.printCombi(button);
+			logger.error("You just reached one of the famouse parts of code, that were never be supposed to be reached :O");
 		} else
 			logger.error("No Key List");
 		
-		button.unsetPressedModes();
+		// button.unsetPressedModes();
+		profileMan.getActive().getKbdLayout().unsetPressedModes();
 	}
 	
 	
