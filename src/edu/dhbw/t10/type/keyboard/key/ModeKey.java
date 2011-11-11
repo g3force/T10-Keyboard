@@ -36,7 +36,7 @@ public class ModeKey extends Key {
 	private ArrayList<Button>		observers		= new ArrayList<Button>();
 	private HashSet<ModeButton>	conModeButtons	= new HashSet<ModeButton>();
 	
-
+	
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
@@ -51,8 +51,8 @@ public class ModeKey extends Key {
 	public ModeKey(Key key) {
 		super(key.getId(), key.getName(), key.getKeycode(), key.getType(), key.isAccept());
 	}
-
-
+	
+	
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
@@ -150,8 +150,8 @@ public class ModeKey extends Key {
 	public void removeModeButton(ModeButton b) {
 		conModeButtons.remove(b);
 	}
-
-
+	
+	
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------

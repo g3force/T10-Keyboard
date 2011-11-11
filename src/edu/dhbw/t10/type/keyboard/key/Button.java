@@ -37,12 +37,12 @@ public class Button extends PhysicalButton implements MouseListener {
 	private Key							key;
 	private ArrayList<ModeKey>		activeModes			= new ArrayList<ModeKey>();
 	
-
+	
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
-
-
+	
+	
 	/**
 	 * Create a new Button with given size and position
 	 * 
@@ -122,7 +122,7 @@ public class Button extends PhysicalButton implements MouseListener {
 	 * Return all keys, that are currently pressed, including mode keys!
 	 * 
 	 * @return
-	 * @author Dirk
+	 * @author DirkK
 	 */
 	public ArrayList<Key> getSingleKey() {
 		ArrayList<Key> output = new ArrayList<Key>();
@@ -179,14 +179,17 @@ public class Button extends PhysicalButton implements MouseListener {
 		 */
 		if (e.getButton() == MouseEvent.BUTTON3) {
 			if (e.getSource() instanceof JButton) {
+				// press shift
 				for (ModeKey mb : modes.keySet()) {
 					if (mb.getName().toLowerCase().equals("shift")) {
 						this.addCurrentMode(mb);
 						break;
 					}
 				}
+				// press key button (SHIFT_MASK not really used)
 				this.actionListener.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, this
 						.getActionCommand(), ActionEvent.SHIFT_MASK));
+				// release shift
 				for (ModeKey mb : modes.keySet()) {
 					if (mb.getName().toLowerCase().equals("shift")) {
 						this.rmCurrentMode(mb);
@@ -244,6 +247,4 @@ public class Button extends PhysicalButton implements MouseListener {
 		this.key = key;
 		setText(key.getName());
 	}
-	
-
 }

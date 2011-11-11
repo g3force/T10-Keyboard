@@ -1,10 +1,10 @@
-/* 
+/*
  * *********************************************************
  * Copyright (c) 2011 - 2011, DHBW Mannheim
  * Project: T10 On-Screen Keyboard
  * Date: 06.11.2011
- * Author(s): felix
- *
+ * Author(s): FelixP
+ * 
  * *********************************************************
  */
 package edu.dhbw.t10.view.dialogs;
@@ -20,11 +20,11 @@ import edu.dhbw.t10.view.menus.EMenuItem;
 
 
 /**
- * TODO felix, add comment!
+ * TODO FelixP, add comment!
  * - What should this type do (in one sentence)?
  * - If not intuitive: A simple example how to use this class
  * 
- * @author felix
+ * @author FelixP
  * 
  */
 public class ProfileChooser extends JFileChooser {
@@ -34,11 +34,20 @@ public class ProfileChooser extends JFileChooser {
 	// --------------------------------------------------------------------------
 	private static final long	serialVersionUID	= 1033076958567424395L;
 	private EMenuItem				type;
-
-
+	
+	
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
+	
+	/**
+	 * 
+	 * TODO FelixP, add comment!
+	 * 
+	 * @param menuType
+	 * @param container
+	 * @author FelixP
+	 */
 	public ProfileChooser(EMenuItem menuType, final JFrame container) {
 		type = menuType;
 		switch (menuType) {
@@ -52,7 +61,7 @@ public class ProfileChooser extends JFileChooser {
 		}
 		
 		// ActionListener for OK/Cancel buttons
-		 ActionListener al = new ActionListener() {
+		ActionListener al = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent actionEvent) {
 				String command = actionEvent.getActionCommand();
@@ -60,22 +69,23 @@ public class ProfileChooser extends JFileChooser {
 					container.setVisible(false);
 				}
 			}
-		 };
-
+		};
+		
 		addActionListener(al);
 		addActionListener(Controller.getInstance());
 		container.setVisible(true);
 	}
-
+	
+	
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
-
-
+	
+	
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
-
+	
 	/**
 	 * 
 	 */

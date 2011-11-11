@@ -18,8 +18,8 @@ import java.io.ObjectOutputStream;
 
 /**
  * Serializes an arbitrary Object
- * * @author DirkK
  * 
+ * @author DirkK
  */
 public class Serializer {
 	// --------------------------------------------------------------------------
@@ -35,6 +35,15 @@ public class Serializer {
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
 	
+	/**
+	 * 
+	 * TODO DirkK, add comment!
+	 * 
+	 * @param pathToFile
+	 * @return
+	 * @throws IOException
+	 * @author DirkK
+	 */
 	@SuppressWarnings("unchecked")
 	public static <T> T deserialize(String pathToFile) throws IOException {
 		T out = null;
@@ -50,6 +59,15 @@ public class Serializer {
 	}
 	
 	
+	/**
+	 * 
+	 * TODO DirkK, add comment!
+	 * 
+	 * @param toS
+	 * @param pathToFile
+	 * @throws IOException
+	 * @author DirkK
+	 */
 	public static <T> void serialize(T toS, String pathToFile) throws IOException {
 		FileOutputStream file = new FileOutputStream(pathToFile);
 		ObjectOutputStream o = new ObjectOutputStream(file);

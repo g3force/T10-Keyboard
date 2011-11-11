@@ -1,5 +1,13 @@
 package edu.dhbw.t10.type;
 
+/**
+ * 
+ * TODO DirkK, is this class needed yet?? Else, delete??
+ * 
+ * @author FelixP
+ * 
+ * @param <T>
+ */
 public class Ringbuffer<T> {
 	
 	private T[]			buffer;
