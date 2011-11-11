@@ -19,6 +19,7 @@ import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
 
+import edu.dhbw.t10.helper.StringHelper;
 import edu.dhbw.t10.type.keyboard.DropDownList;
 import edu.dhbw.t10.type.keyboard.KeyboardLayout;
 import edu.dhbw.t10.type.profile.Profile;
@@ -279,6 +280,8 @@ public class ProfileManager {
 		}
 		Profile newProfile = new Profile(profileName);
 		profiles.add(newProfile);
+		if (getActive() != null)
+			addProfileToDDL(newProfile);
 		return newProfile;
 	}
 	
@@ -407,13 +410,15 @@ public class ProfileManager {
 	 * @param word
 	 * @author SebastianN
 	 */
-	public void acceptWord(String word) {
+	public boolean acceptWord(String word) {
+		word = StringHelper.removePunctuation(word);
 		if (getActive() == null) {
 			logger.error("getActive()==NULL at acceptWord");
-			return;
+			return false;
 		}
 		if (activeProfile.isTreeExpanding())
-			getActive().getTree().insert(word);
+			return getActive().getTree().insert(word);
+		return false;
 	}
 	
 	
@@ -461,6 +466,21 @@ public class ProfileManager {
 		logger.info("Deserialized " + counter + " profiles.");
 	}
 	
+
+	/**
+	 * 
+	 * 
+	 * 
+	 * @param profile
+	 * @return profile exists -> true ...else false
+	 * @author felix
+	 */
+	public boolean existProfile(String profile) {
+		Profile p = getProfileByName(profile);
+		if (p == null)
+			return false;
+		return true;
+	}
 	
 
 	// --------------------------------------------------------------------------

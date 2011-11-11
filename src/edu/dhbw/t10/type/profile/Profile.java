@@ -10,6 +10,7 @@
 package edu.dhbw.t10.type.profile;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 
 import org.apache.log4j.Logger;
@@ -63,16 +64,9 @@ public class Profile implements Serializable {
 	
 	public Profile(String pName) {
 		name = pName;
-		pathToLayoutFile = "data/layout/" + name + ".layout";
 		init();
 	}
 	
-	
-	public Profile(String pName, String layoutPath) {
-		name = pName;
-		pathToLayoutFile = layoutPath;
-		init();
-	}
 	
 	
 	private void init() {
@@ -80,17 +74,10 @@ public class Profile implements Serializable {
 		if (!file.isDirectory()) {
 			file.mkdir();
 		}
-		file = new File("data/trees");
-		if (!file.isDirectory()) {
-			file.mkdir();
-		}
-		file = new File("data/layout");
-		if (!file.isDirectory()) {
-			file.mkdir();
-		}
+		pathToLayoutFile = "data/profiles/" + name + ".layout";
 		pathToProfile = "data/profiles/" + name + ".profile";
-		pathToTree = "data/trees/" + name + ".tree";
-		pathToAllowedChars = "data/trees/" + name + ".chars";
+		pathToTree = "data/profiles/" + name + ".tree";
+		pathToAllowedChars = "data/profiles/" + name + ".chars";
 		logger.debug("Profile " + name + " created");
 		load();
 	}
@@ -145,7 +132,6 @@ public class Profile implements Serializable {
 			logger.info("Default Layout loaded");
 			kbdLayout = KeyboardLayoutLoader.load(defaultLayoutFile, KeymapLoader.load(defaultKeymapFile));
 		}
-		logger.error(kbdLayout.getMuteButtons().size());
 		for (MuteButton mb : kbdLayout.getMuteButtons()) {
 			switch (mb.getType()) {
 				case MuteButton.AUTO_COMPLETING:
@@ -158,7 +144,6 @@ public class Profile implements Serializable {
 					mb.setActivated(treeExpanding);
 					break;
 				default:
-					logger.error(mb.getType());
 					break;
 			}
 		}
@@ -173,8 +158,12 @@ public class Profile implements Serializable {
 	 */
 	private void loadTree() {
 		tree = new PriorityTree(pathToAllowedChars);
-		tree.importFromHashMap(ImportExportManager.importFromFile(pathToTree, true));
-		logger.debug("load: " + pathToTree + " Tree Size: " + tree.exportToHashMap().size());
+		try {
+			tree.importFromHashMap(ImportExportManager.importFromFile(pathToTree, true));
+		} catch (IOException err) {
+			logger.error("Could not fetch the word list for the proifle " + name + ", Path to tree: " + pathToTree);
+		}
+		logger.debug("Tree successfully loaded");
 	}
 	
 	
@@ -187,7 +176,11 @@ public class Profile implements Serializable {
 	private void saveTree() {
 		if (tree != null) {
 			logger.debug("save tree to " + pathToTree);
-			ImportExportManager.exportToFile(tree.exportToHashMap(), pathToTree);
+			try {
+				ImportExportManager.exportToFile(tree.exportToHashMap(), pathToTree);
+			} catch (IOException err) {
+				logger.error("Not able to save the tree for proifle " + name + " to " + pathToTree);
+			}
 		} else {
 			logger.debug("Tree not saved, because not existend");
 		}
@@ -224,6 +217,26 @@ public class Profile implements Serializable {
 	}
 	
 	
+	public String getPathToAllowedChars() {
+		return pathToAllowedChars;
+	}
+	
+	
+	public void setPathToAllowedChars(String pathToAllowedChars) {
+		this.pathToAllowedChars = pathToAllowedChars;
+	}
+	
+	
+	public String getPathToLayoutFile() {
+		return pathToLayoutFile;
+	}
+	
+	
+	public void setPathToLayoutFile(String pathToLayoutFile) {
+		this.pathToLayoutFile = pathToLayoutFile;
+	}
+
+
 	/**
 	 * 
 	 * Sets a profile's name

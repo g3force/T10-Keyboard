@@ -14,11 +14,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.zip.ZipException;
+
+import javax.swing.JFileChooser;
 
 import org.apache.log4j.Logger;
 
-import edu.dhbw.t10.helper.StringHelper;
 import edu.dhbw.t10.manager.output.OutputManager;
+import edu.dhbw.t10.manager.profile.ImportExportManager;
 import edu.dhbw.t10.manager.profile.ProfileManager;
 import edu.dhbw.t10.type.keyboard.DropDownList;
 import edu.dhbw.t10.type.keyboard.KeyboardLayout;
@@ -28,6 +34,10 @@ import edu.dhbw.t10.type.keyboard.key.ModeButton;
 import edu.dhbw.t10.type.keyboard.key.MuteButton;
 import edu.dhbw.t10.type.profile.Profile;
 import edu.dhbw.t10.view.Presenter;
+import edu.dhbw.t10.view.dialogs.InputDlg;
+import edu.dhbw.t10.view.dialogs.ProfileChooser;
+import edu.dhbw.t10.view.menus.EMenuItem;
+import edu.dhbw.t10.view.menus.StatusPane;
 import edu.dhbw.t10.view.panels.MainPanel;
 
 
@@ -54,6 +64,7 @@ public class Controller implements ActionListener, WindowListener {
 	private OutputManager			outputMan;
 	private MainPanel					mainPanel;
 	private Presenter					presenter;
+	private StatusPane				statusPane;
 	
 	
 	// --------------------------------------------------------------------------
@@ -70,7 +81,8 @@ public class Controller implements ActionListener, WindowListener {
 		logger.debug("initializing...");
 		outputMan = new OutputManager();
 		mainPanel = new MainPanel();
-		presenter = new Presenter(mainPanel);
+		statusPane = new StatusPane();
+		presenter = new Presenter(mainPanel, statusPane);
 		typedWord = "";
 		suggest = "";
 		profileMan = new ProfileManager();
@@ -81,6 +93,7 @@ public class Controller implements ActionListener, WindowListener {
 
 		mainPanel.addComponentListener(mainPanel);
 		resizeWindow(profileMan.getActive().getKbdLayout().getSize());
+		statusPane.enqueueMessage("Keyboard initialized.", StatusPane.LEFT);
 		logger.debug("initialized.");
 	}
 	
@@ -123,33 +136,97 @@ public class Controller implements ActionListener, WindowListener {
 	 */
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() instanceof Button) {
+			logger.debug("Normal Button pressed.");
 			eIsButton((Button) e.getSource());
 		}
 
 		if (e.getSource() instanceof ModeButton) {
+			logger.debug("ModeButton pressed.");
 			ModeButton modeB = (ModeButton) e.getSource();
 			modeB.push();
 		}
 
 		if (e.getSource() instanceof MuteButton) {
+			logger.debug("MuteButton pressed.");
 			eIsMuteButton((MuteButton) e.getSource());
 		}
 		
 		if (e.getSource() instanceof DropDownList) {
+			logger.debug("DropDownList pressed.");
 			eIsDropDownList((DropDownList) e.getSource());
 		}
 		
-		// FIXME NicolaiO reference to Shift Mode Button?? => problem, any idea??
-		/**
-		 * SHIFT_MASK modifier is set, when a button is clicked with right mouse button.
-		 * How can I tell that shift should be pressed?! with ModeButton Shift or is there another way?
-		 * TODO DanielAl send shift signal to Output
-		 */
-		if (e.getModifiers() == ActionEvent.SHIFT_MASK) {
-			logger.debug("shift modifier is pressed. No action yet...");
+		if (e.getSource() instanceof ProfileChooser) {
+			if (e.getActionCommand().equals(JFileChooser.APPROVE_SELECTION))
+				eIsProfileChooser((ProfileChooser) e.getSource());
 		}
 	}
 	
+
+	/**
+	 * 
+	 * Do something, if ProfileChooser was activated. o_O
+	 * 
+	 * @param pc
+	 * @author FelixP
+	 */
+	private void eIsProfileChooser(ProfileChooser pc) {
+		File path = pc.getSelectedFile();
+
+		switch (pc.getMenuType()) {
+			// import profile
+			case iImport:
+				try {
+					ImportExportManager.importProfiles(profileMan, path);
+				} catch (ZipException err1) {
+					logger.error("unable to extract file " + path.toString());
+				} catch (IOException err1) {
+					logger.error("Error by importing Profile from " + path.toString());
+				}
+				// TODO FelixP extract selected profile and save it
+				break;
+			
+			// export profile
+			case iExport:
+				try {
+					ImportExportManager.exportProfiles(profileMan.getActive(), path);
+					logger.debug("Proifle exported");
+					statusPane.enqueueMessage("Profile exported", statusPane.LEFT);
+				} catch (IOException err1) {
+					logger.error("Unable to export profile " + path.toString());
+				}
+				break;
+			
+			// Extend Dictionary By Text
+			case iT2D:
+				HashMap<String, Integer> words = new HashMap<String, Integer>();
+				try {
+					words = ImportExportManager.importFromText(path.toString());
+				} catch (IOException err) {
+					statusPane.enqueueMessage("Could not load the text file. Please choose another one.", StatusPane.LEFT);
+				}
+				profileMan.getActive().getTree().importFromHashMap(words);
+				statusPane.enqueueMessage("Text file included.", StatusPane.LEFT);
+				break;
+		}
+	}
+	
+
+	public void eIsInputDlg(EMenuItem menuItem, Object o) {
+		switch (menuItem) {
+			// new profile
+			case iNewProfile:
+				InputDlg iDlg = (InputDlg)o;
+				String newProfile = iDlg.getProfileName();
+				if (!profileMan.existProfile(newProfile)) {
+					this.createProfile(newProfile);
+					iDlg.setVisible(false);
+				} else {
+					iDlg.setLblText("Profile exisiert bereits :-(");
+				}
+				break;
+		}
+	}
 
 	/**
 	 * Do the logic for a button event. Switch between different types, specific Keys and a Key Combination...
@@ -174,10 +251,12 @@ public class Controller implements ActionListener, WindowListener {
 			else if (key.getKeycode().equals("\\DELETE\\")) {
 				outputMan.printChar(key);
 				suggest = typedWord;
-			}
+			} else if (key.getType() == Key.CONTROL)
+				this.keyIsControl(key);
 			logger.debug("Key pressed: " + key.toString());
 		} else if (button.getSingleKey().size() > 1) {
-			// FIXME NicolaiO, DanielAl Combi auslesen und weitergeben...
+			// FIXME DanielAl Combi auslesen und weitergeben...
+			logger.warn("More than one modeButton pressed. Not handeld correct...");
 			outputMan.printCombi(button);
 		} else
 			logger.error("No Key List");
@@ -195,7 +274,6 @@ public class Controller implements ActionListener, WindowListener {
 	 * @param muteB
 	 * @author DanielAl
 	 */
-
 	private void eIsMuteButton(MuteButton muteB) {
 		muteB.push();
 		int type = muteB.getType();
@@ -239,15 +317,27 @@ public class Controller implements ActionListener, WindowListener {
 	private void keyIsAccept(Key key) {
 		if (suggest.length() > typedWord.length())
 			outputMan.unMark();
-		
 		outputMan.printChar(key);
-		suggest = StringHelper.removePunctuation(suggest);
-		profileMan.acceptWord(suggest);
+		acceptWord(suggest);
+	}
+	
+	
+	/**
+	 * Prints a Control Key, <br>
+	 * if no SPACE, ENTER, DELETE or BACK_SPACE, these are special Keys and handled with extra methods...
+	 * 
+	 * @param key
+	 * @author DanielAl
+	 */
+	private void keyIsControl(Key key) {
+		if (suggest.length() > typedWord.length())
+			outputMan.printChar(new Key(0, "Delete", "\\DELETE\\", Key.CONTROL, false));
+		outputMan.printChar(key);
 		typedWord = "";
 		suggest = "";
 	}
 	
-
+	
 	/**
 	 * Prints the given key, added it to the typed String and get a new suggest and prtints it...
 	 * @param key
@@ -270,8 +360,7 @@ public class Controller implements ActionListener, WindowListener {
 	 */
 	private void keyIsUnicode(Key key) {
 		outputMan.printChar(key);
-		typedWord = "";
-		suggest = "";
+		acceptWord(typedWord);
 	}
 	
 
@@ -314,12 +403,26 @@ public class Controller implements ActionListener, WindowListener {
 	 */
 	private void keyIsSpaceOrEnter(Key key) {
 		logger.debug("Keycode " + key.getKeycode() + " " + key.getType());
-		profileMan.acceptWord(typedWord);
 		outputMan.printChar(key);
+		acceptWord(typedWord);
+	}
+	
+	
+	/**
+	 * is called whenever a word shall be accepted
+	 * 
+	 * @param word
+	 * @author DirkK
+	 */
+	private void acceptWord(String word) {
+		boolean success = profileMan.acceptWord(word);
+		if (success) {
+			statusPane.enqueueMessage("Word inserted: " + word, StatusPane.LEFT);
+		}
 		typedWord = "";
 		suggest = "";
 	}
-	
+
 
 	// Window ----------------------------
 	

@@ -14,7 +14,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
-import java.util.ArrayList;
 import java.util.Map.Entry;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -38,6 +37,7 @@ import edu.dhbw.t10.type.keyboard.KeyboardLayout;
 import edu.dhbw.t10.type.keyboard.key.Button;
 import edu.dhbw.t10.type.keyboard.key.Key;
 import edu.dhbw.t10.type.keyboard.key.ModeButton;
+import edu.dhbw.t10.type.keyboard.key.ModeKey;
 import edu.dhbw.t10.type.keyboard.key.MuteButton;
 import edu.dhbw.t10.type.keyboard.key.PhysicalButton;
 
@@ -177,16 +177,14 @@ public class KeyboardLayoutSaver {
 				key.appendChild(text);
 				buttonEl.appendChild(key);
 				
-				// workaround for double mode buttons (two phys. shift buttons)
-				ArrayList<Integer> workaroundList = new ArrayList<Integer>();
-				for (Entry<ModeButton, Key> mode : button.getModes().entrySet()) {
-					if (workaroundList.contains(mode.getKey().getModeKey().getId())) {
-						continue;
-					}
-					workaroundList.add(mode.getKey().getModeKey().getId());
+				if (button.getKey().isAccept()) {
+					key.setAttribute("accept", "true");
+				}
+				
+				for (Entry<ModeKey, Key> entry : button.getModes().entrySet()) {
 					Element modeEl = doc.createElement("mode");
-					modeEl.setAttribute("modename", mode.getKey().getModeKey().getId() + "");
-					text = doc.createTextNode(mode.getValue().getId() + "");
+					modeEl.setAttribute("modename", entry.getKey().getId() + "");
+					text = doc.createTextNode(entry.getValue().getId() + "");
 					modeEl.appendChild(text);
 					buttonEl.appendChild(modeEl);
 				}
