@@ -91,6 +91,7 @@ public class ProfileManager {
 			if (DDLs.get(i).getType() == DropDownList.PROFILE) {
 				for (int j = 0; j < profiles.size(); j++) {
 					DDLs.get(i).addItem(profiles.get(j).getName());
+					DDLs.get(i).revalidate();
 				}
 			}
 		}
@@ -108,7 +109,7 @@ public class ProfileManager {
 		for (int i = 0; i < DDLs.size(); i++) {
 			if (DDLs.get(i).getType() == DropDownList.PROFILE) {
 				DDLs.get(i).addItem(handle.getName());
-				DDLs.get(i).updateUI();
+				DDLs.get(i).revalidate();
 			}
 		}
 	}
@@ -124,11 +125,14 @@ public class ProfileManager {
 		ArrayList<DropDownList> DDLs = getActive().getKbdLayout().getDdls();
 		for (int i = 0; i < DDLs.size(); i++) {
 			if (DDLs.get(i).getType() == DropDownList.PROFILE) {
+				DDLs.get(i).removeAllItems();
+				DDLs.get(i).revalidate();
+				System.out.println(":D");
 				for (int j = 0; j < profiles.size(); j++) {
-					if (profiles.get(j).getName().equals(name)) {
-						DDLs.get(i).removeItem(name);
-						DDLs.get(i).repaint();
-					}
+					logger.debug("Profile re-added: " + profiles.get(j).getName());
+					DDLs.get(i).addItem(profiles.get(j).getName());
+					DDLs.get(i).revalidate();
+					DDLs.get(i).repaint();
 				}
 			}
 		}
@@ -324,6 +328,7 @@ public class ProfileManager {
 		for (int i = 0; i < profiles.size(); i++) {
 			curProfile = profiles.get(i);
 			if (curProfile == toDelete) {
+				logger.debug("Delete profile: " + toDelete.getName());
 				profiles.remove(i);
 				removeProfileFromDDL(toDelete.getName());
 				break;

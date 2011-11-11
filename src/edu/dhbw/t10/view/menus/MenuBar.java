@@ -17,6 +17,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
+import edu.dhbw.t10.manager.Controller;
 import edu.dhbw.t10.view.dialogs.DialogContainer;
 import edu.dhbw.t10.view.dialogs.InputDlg;
 
@@ -160,7 +161,7 @@ public class MenuBar extends JMenuBar {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// Controller.getInstance().deleteProfile("Profile3");
+				Controller.getInstance().deleteProfile("Profile2");
 			}
 		});
 	}
