@@ -10,13 +10,15 @@
 package edu.dhbw.t10.type.keyboard.key;
 
 import java.awt.Color;
+import java.lang.reflect.Field;
 
 import org.apache.log4j.Logger;
 
 
 /**
  * button for the mute options
- * @author DirkK
+ * 
+ * @author DirkK, NicolaiO
  * 
  */
 public class MuteButton extends PhysicalButton {
@@ -51,6 +53,7 @@ public class MuteButton extends PhysicalButton {
 	 * @param size_y
 	 * @param pos_x
 	 * @param pos_y
+	 * @author DirkK, NicolaiO
 	 */
 	public MuteButton(int size_x, int size_y, int pos_x, int pos_y) {
 		super(size_x, size_y, pos_x, pos_y);
@@ -62,7 +65,7 @@ public class MuteButton extends PhysicalButton {
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
-
+	
 	/**
 	 * Toggle state of mute button
 	 * 
@@ -101,8 +104,8 @@ public class MuteButton extends PhysicalButton {
 			logger.debug("MuteButton activated");
 		}
 	}
-
-
+	
+	
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
@@ -115,50 +118,6 @@ public class MuteButton extends PhysicalButton {
 	public void setType(int type) {
 		this.type = type;
 	}
-	
-	
-	// public Color getOnColor() {
-	// return onColor;
-	// }
-	//
-	//
-	// public void setOnColor(String onColor) {
-	// Color c = getColorFromString(onColor);
-	// if (c != null)
-	// this.onColor = c;
-	// }
-	//
-	//
-	// public Color getOffColor() {
-	// return offColor;
-	// }
-	//
-	//
-	// public void setOffColor(String offColor) {
-	// Color c = getColorFromString(offColor);
-	// if (c != null)
-	// this.offColor = c;
-	// }
-	//
-	//
-	// public String getOnName() {
-	// return onName;
-	// }
-	//
-	//
-	// public void setOnName(String onName) {
-	// this.onName = onName;
-	// }
-	//
-	//
-	// public String getOffName() {
-	// return offName;
-	// }
-	//
-	//
-	// public void setOffName(String offName) {
-	// this.offName = offName;
-	// }
 	
 	
 	public Mode getModeOn() {
@@ -184,8 +143,21 @@ public class MuteButton extends PhysicalButton {
 	public boolean isActivated() {
 		return activated;
 	}
-
-
+	
+	
+	// --------------------------------------------------------------------------
+	// --- sub-classes ----------------------------------------------------------
+	// --------------------------------------------------------------------------
+	
+	/**
+	 * 
+	 * TODO DirkK, add comment!
+	 * - What should this type do (in one sentence)?
+	 * - If not intuitive: A simple example how to use this class
+	 * 
+	 * @author DirkK
+	 * 
+	 */
 	public class Mode {
 		private Color	color;
 		private String	colorS;
@@ -222,24 +194,35 @@ public class MuteButton extends PhysicalButton {
 		}
 		
 		
-		@SuppressWarnings("unused")
 		public void setName(String name) {
 			this.name = name;
 		}
 		
 		
-		@SuppressWarnings("unused")
 		public String getTooltip() {
 			return tooltip;
 		}
 		
 		
-		@SuppressWarnings("unused")
 		public void setTooltip(String tooltip) {
 			this.tooltip = tooltip;
 		}
-
-
+		
+		
+		/**
+		 * @param bgColor
+		 * @return
+		 * @author NicolaiO
+		 */
+		private Color getColorFromString(String bgColor) {
+			Color color;
+			try {
+				Field field = Class.forName("java.awt.Color").getField(bgColor);
+				color = (Color) field.get(null);
+			} catch (Exception e) {
+				color = null;
+			}
+			return color;
+		}
 	}
-	
 }

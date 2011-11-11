@@ -20,6 +20,7 @@ import edu.dhbw.t10.type.keyboard.key.Key;
 /**
  * The OutputManager provides the interface between the controller and Output. <br>
  * It gives different meta methods for a better handling in the Output. <br>
+ * 
  * @author DanielAl
  */
 public class OutputManager {
@@ -31,7 +32,7 @@ public class OutputManager {
 	// Output instance
 	Output								out;
 	
-
+	
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
@@ -40,7 +41,6 @@ public class OutputManager {
 	 * Instanciate Output. If this fails with an UnknownOSException, the Keyboard is closed.
 	 * 
 	 * @author DanielAl
-	 * 
 	 */
 	public OutputManager() {
 		try {
@@ -52,7 +52,7 @@ public class OutputManager {
 		}
 	}
 	
-
+	
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
@@ -67,6 +67,7 @@ public class OutputManager {
 	public boolean printChar(Key c) {
 		return out.printChar(c);
 	}
+	
 	
 	/**
 	 * Deletes 'num' chars via sending so many Back_Spaces...
@@ -85,6 +86,7 @@ public class OutputManager {
 			return true;
 		}
 	}
+	
 	
 	/**
 	 * Marks 'num' chars backwards via holding SHIFT and press the LEFT Key.
@@ -107,7 +109,8 @@ public class OutputManager {
 		logger.info(num + " Symboly marked");
 		return mark;
 	}
-
+	
+	
 	/**
 	 * Unmark all things via pressing the RIGHT Key
 	 * 
@@ -117,7 +120,7 @@ public class OutputManager {
 		out.printString("\\RIGHT\\", Key.CONTROL);
 	}
 	
-
+	
 	/**
 	 * Prints a new Suggest for given chars and mark the suggested chars, which aren't yet typed.<br>
 	 * 
@@ -132,7 +135,7 @@ public class OutputManager {
 		}
 	}
 	
-
+	
 	/**
 	 * Prints a Key Combination...
 	 * 
@@ -143,7 +146,7 @@ public class OutputManager {
 		out.printCombi(b.getSingleKey());
 	}
 	
-
+	
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------

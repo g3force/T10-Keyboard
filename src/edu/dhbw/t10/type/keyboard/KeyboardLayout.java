@@ -53,12 +53,14 @@ public class KeyboardLayout {
 	// --------------------------------------------------------------------------
 	
 	/**
+	 * Create new KeyboardLayout with given size and scale factors
 	 * 
 	 * @param size_x
 	 * @param size_y
 	 * @param scalex
 	 * @param scaley
 	 * @param scale_font
+	 * @author NicolaiO
 	 */
 	public KeyboardLayout(int size_x, int size_y, float scalex, float scaley, float scale_font) {
 		this.size_x = size_x;
@@ -141,6 +143,7 @@ public class KeyboardLayout {
 		return new Dimension(getSize_x(), getSize_y());
 	}
 	
+	
 	public int getSize_x() {
 		return (int) (size_x * scale_x);
 	}
@@ -171,6 +174,12 @@ public class KeyboardLayout {
 	}
 	
 	
+	/**
+	 * Set all scales (x,y,font) to given scale
+	 * 
+	 * @param scale
+	 * @author NicolaiO
+	 */
 	public void setScale(float scale) {
 		this.scale_x = scale;
 		this.scale_y = scale;

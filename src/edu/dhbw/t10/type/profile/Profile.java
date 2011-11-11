@@ -52,7 +52,7 @@ public class Profile implements Serializable {
 	private boolean						autoProfileChange	= true;
 	private boolean						autoCompleting		= true;
 	private boolean						treeExpanding		= true;
-
+	
 	@SuppressWarnings("unused")
 	private static final Logger		logger				= Logger.getLogger(Profile.class);
 	
@@ -62,13 +62,25 @@ public class Profile implements Serializable {
 	// --------------------------------------------------------------------------
 	
 	
+	/**
+	 * 
+	 * TODO SebastianN, add comment!
+	 * 
+	 * @param pName
+	 * @author SebastianN
+	 */
 	public Profile(String pName) {
 		name = pName;
 		init();
 	}
 	
 	
-	
+	/**
+	 * 
+	 * TODO SebastianN, add comment!
+	 * 
+	 * @author SebastianN
+	 */
 	private void init() {
 		File file = new File("data/profiles");
 		if (!file.isDirectory()) {
@@ -149,9 +161,8 @@ public class Profile implements Serializable {
 		}
 	}
 	
-
+	
 	/**
-	 * 
 	 * Loads the (serialized) PriorityTree.
 	 * 
 	 * @author DirkK
@@ -168,7 +179,6 @@ public class Profile implements Serializable {
 	
 	
 	/**
-	 * 
 	 * Saves the PriorityTree as serialized object
 	 * 
 	 * @author DirkK
@@ -200,17 +210,17 @@ public class Profile implements Serializable {
 	// }
 	// }
 	
-
+	
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
 	
 	
 	/**
-	 * 
 	 * Gets a profile's name
 	 * 
 	 * @return name
+	 * @author SebastianN
 	 */
 	public String getName() {
 		return name;
@@ -235,15 +245,14 @@ public class Profile implements Serializable {
 	public void setPathToLayoutFile(String pathToLayoutFile) {
 		this.pathToLayoutFile = pathToLayoutFile;
 	}
-
-
+	
+	
 	/**
-	 * 
 	 * Sets a profile's name
 	 * 
 	 * @param newName - String
+	 * @author SebastianN
 	 */
-	
 	public void setName(String newName) {
 		name = newName;
 	}
@@ -317,6 +326,4 @@ public class Profile implements Serializable {
 	public void setTreeExpanding(boolean treeExpanding) {
 		this.treeExpanding = treeExpanding;
 	}
-
-	
 }

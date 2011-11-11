@@ -56,7 +56,7 @@ public class StringHelper {
 		return input;
 	}
 	
-
+	
 	/**
 	 * 
 	 * Find a Unicode in a given String and returns a List with the indices.
@@ -79,7 +79,7 @@ public class StringHelper {
 		return unicodeStart;
 	}
 	
-
+	
 	/**
 	 * Converts a given String to a String, where non-ASCII chars a replaced by a Unicode Sequence.
 	 * 

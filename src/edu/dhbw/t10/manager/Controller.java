@@ -47,8 +47,7 @@ import edu.dhbw.t10.view.panels.MainPanel;
  * Here all Managers and the view is initialized...<br>
  * It provides overwritten methods to handles actionEvents...<br>
  * 
- * @author FelixP, DanielAl, NicolaiO
- * 
+ * @author NicolaiO, DirkK, FelixP, SebastianN, DanielAl
  */
 public class Controller implements ActionListener, WindowListener {
 	// --------------------------------------------------------------------------
@@ -86,18 +85,18 @@ public class Controller implements ActionListener, WindowListener {
 		typedWord = "";
 		suggest = "";
 		profileMan = new ProfileManager();
-
+		
 		mainPanel.setKbdLayout(profileMan.getActive().getKbdLayout());
 		profileMan.addAllProfilesToDDL();
-
-
+		
+		
 		mainPanel.addComponentListener(mainPanel);
 		resizeWindow(profileMan.getActive().getKbdLayout().getSize());
 		statusPane.enqueueMessage("Keyboard initialized.", StatusPane.LEFT);
 		logger.debug("initialized.");
 	}
 	
-
+	
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
@@ -113,7 +112,7 @@ public class Controller implements ActionListener, WindowListener {
 		profileMan.createProfile(name);
 	}
 	
-
+	
 	/**
 	 * Deletes a profile by name.
 	 * 
@@ -123,27 +122,27 @@ public class Controller implements ActionListener, WindowListener {
 	public void deleteProfile(String name) {
 		profileMan.deleteProfile(name);
 	}
-
-
-	@Override
+	
+	
 	/**
 	 * Starts the right activities for a specific event...
 	 * 
 	 * @param e
-	 * @author ALL
+	 * @author NicolaiO, DirkK, FelixP, SebastianN, DanielAl
 	 */
+	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() instanceof Button) {
 			logger.debug("Normal Button pressed.");
 			eIsButton((Button) e.getSource());
 		}
-
+		
 		if (e.getSource() instanceof ModeButton) {
 			logger.debug("ModeButton pressed.");
 			ModeButton modeB = (ModeButton) e.getSource();
 			modeB.push();
 		}
-
+		
 		if (e.getSource() instanceof MuteButton) {
 			logger.debug("MuteButton pressed.");
 			eIsMuteButton((MuteButton) e.getSource());
@@ -160,9 +159,8 @@ public class Controller implements ActionListener, WindowListener {
 		}
 	}
 	
-
+	
 	/**
-	 * 
 	 * Do something, if ProfileChooser was activated. o_O
 	 * 
 	 * @param pc
@@ -170,9 +168,9 @@ public class Controller implements ActionListener, WindowListener {
 	 */
 	private void eIsProfileChooser(ProfileChooser pc) {
 		File path = pc.getSelectedFile();
-
+		
 		switch (pc.getMenuType()) {
-			// import profile
+		// import profile
 			case iImport:
 				try {
 					ImportExportManager.importProfiles(profileMan, path);
@@ -189,7 +187,7 @@ public class Controller implements ActionListener, WindowListener {
 				try {
 					ImportExportManager.exportProfiles(profileMan.getActive(), path);
 					logger.debug("Proifle exported");
-					statusPane.enqueueMessage("Profile exported", statusPane.LEFT);
+					statusPane.enqueueMessage("Profile exported", StatusPane.LEFT);
 				} catch (IOException err1) {
 					logger.error("Unable to export profile " + path.toString());
 				}
@@ -209,12 +207,12 @@ public class Controller implements ActionListener, WindowListener {
 		}
 	}
 	
-
+	
 	public void eIsInputDlg(EMenuItem menuItem, Object o) {
 		switch (menuItem) {
-			// new profile
+		// new profile
 			case iNewProfile:
-				InputDlg iDlg = (InputDlg)o;
+				InputDlg iDlg = (InputDlg) o;
 				String newProfile = iDlg.getProfileName();
 				if (!profileMan.existProfile(newProfile)) {
 					this.createProfile(newProfile);
@@ -225,7 +223,8 @@ public class Controller implements ActionListener, WindowListener {
 				break;
 		}
 	}
-
+	
+	
 	/**
 	 * Do the logic for a button event. Switch between different types, specific Keys and a Key Combination...
 	 * 
@@ -235,7 +234,7 @@ public class Controller implements ActionListener, WindowListener {
 	private void eIsButton(Button button) {
 		if (button.getSingleKey().size() == 1) {
 			Key key = (Key) button.getSingleKey().get(0);
-
+			
 			if (key.isAccept())
 				this.keyIsAccept(key);
 			else if (key.getType() == Key.CHAR)
@@ -258,11 +257,11 @@ public class Controller implements ActionListener, WindowListener {
 			outputMan.printCombi(button);
 		} else
 			logger.error("No Key List");
-
+		
 		button.unsetPressedModes();
 	}
 	
-
+	
 	/**
 	 * Switchs between the three different Mute modes...<br>
 	 * Modes are:<br>
@@ -289,7 +288,7 @@ public class Controller implements ActionListener, WindowListener {
 		logger.debug("MuteButton pressed");
 	}
 	
-
+	
 	/**
 	 * Switchs the profiles based on a Dropdownlist... <br>
 	 * 
@@ -297,7 +296,7 @@ public class Controller implements ActionListener, WindowListener {
 	 * @author DanielAl
 	 */
 	private void eIsDropDownList(DropDownList currentList) {
-
+		
 		if (currentList.getType() == DropDownList.PROFILE) {
 			Profile selectedProfile = profileMan.getProfiles().get(currentList.getSelectedIndex());
 			logger.debug("Profilename: " + selectedProfile.getName());
@@ -305,7 +304,7 @@ public class Controller implements ActionListener, WindowListener {
 		}
 	}
 	
-
+	
 	/**
 	 * Accept a suggested word, unmarks it and prints the given key.
 	 * 
@@ -348,7 +347,7 @@ public class Controller implements ActionListener, WindowListener {
 		outputMan.printSuggest(suggest, typedWord);
 	}
 	
-
+	
 	/**
 	 * If the input is a Unicode (it is a Symbol character, special chars are type char) and this will be printed. <br>
 	 * The typed Word and Suggest Word will be forgotten.<br>
@@ -361,7 +360,7 @@ public class Controller implements ActionListener, WindowListener {
 		acceptWord(typedWord);
 	}
 	
-
+	
 	/**
 	 * Handles a typed BackSpace.<br>
 	 * There are 3 options:<br>
@@ -391,7 +390,7 @@ public class Controller implements ActionListener, WindowListener {
 		}
 	}
 	
-
+	
 	/**
 	 * When Space or Enter is pressed accept the typed Word and print Space or Enter...<br>
 	 * The suggest will be declined and forgotten.<br>
@@ -420,8 +419,8 @@ public class Controller implements ActionListener, WindowListener {
 		typedWord = "";
 		suggest = "";
 	}
-
-
+	
+	
 	// Window ----------------------------
 	
 	/**
@@ -446,53 +445,53 @@ public class Controller implements ActionListener, WindowListener {
 		}
 	}
 	
-
+	
 	@Override
 	public void windowActivated(WindowEvent arg0) {
 		
 	}
 	
-
+	
 	@Override
 	public void windowClosed(WindowEvent arg0) {
 		
 	}
 	
-
+	
 	@Override
 	public void windowClosing(WindowEvent arg0) {
 		closeSuperFelix();
 	}
 	
-
+	
 	@Override
 	public void windowDeactivated(WindowEvent arg0) {
 		
 	}
 	
-
+	
 	@Override
 	public void windowDeiconified(WindowEvent arg0) {
 		
 	}
 	
-
+	
 	@Override
 	public void windowIconified(WindowEvent arg0) {
 		
 	}
 	
-
+	
 	@Override
 	public void windowOpened(WindowEvent arg0) {
 		
 	}
 	
-
+	
 	/**
 	 * Save the actual Profile and dictionary to be able to clse the application.
 	 * 
-	 * @author NicolaiO
+	 * @author DirkK
 	 */
 	private void closeSuperFelix() {
 		try {
@@ -508,18 +507,18 @@ public class Controller implements ActionListener, WindowListener {
 			logger.error("closing routine produced an error: " + e.toString());
 		}
 	}
-
-
+	
+	
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
+	
 	/**
 	 * Calls the constructor if no instance exist. Singleton Design Pattern...
 	 * 
 	 * @return Controller
 	 * @author NicolaiO
 	 */
-	
 	public static Controller getInstance() {
 		if (instance == null) {
 			instance = new Controller();

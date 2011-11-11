@@ -29,7 +29,6 @@ import edu.dhbw.t10.type.profile.Profile;
  * The profile-manager handles all profiles, including the path to its profile-file.
  * 
  * @author SebastianN
- * 
  */
 public class ProfileManager {
 	// --------------------------------------------------------------------------
@@ -41,17 +40,23 @@ public class ProfileManager {
 	private ArrayList<String>		profilePathes			= new ArrayList<String>();
 	private Profile					activeProfile;
 	private String						defaultActiveProfile	= "default";
-
 	
 	
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
+	
+	/**
+	 * 
+	 * TODO SebastianN, add comment!
+	 * 
+	 * @author SebastianN
+	 */
 	public ProfileManager() {
 		logger.debug("initializing...");
 		readConfig(); // fills activeProfileName and profilePathes with the data from the config file
 		logger.debug("configfile: activeProfileName=" + defaultActiveProfile + " profiles=" + profilePathes.size());
-		getSerializedProfiles(); // deserializes all profiles, fills profiles
+		loadSerializedProfiles(); // deserializes all profiles, fills profiles
 		// if no profiles were loaded, create a new one
 		if (profiles.size() == 0) {
 			logger.debug("No profiles loaded. New profile will be created.");
@@ -76,7 +81,6 @@ public class ProfileManager {
 	// --------------------------------------------------------------------------
 	
 	/**
-	 * 
 	 * Adds <b>ALL</b> profiles to the Profile-DropdownList
 	 * 
 	 * @author SebastianN
@@ -92,15 +96,13 @@ public class ProfileManager {
 		}
 	}
 	
-
+	
 	/**
-	 * 
 	 * Adds <b>ONE</b> profile to the dropdown list.
 	 * 
 	 * @param handle
 	 * @author SebastianN
 	 */
-	
 	public void addProfileToDDL(Profile handle) {
 		ArrayList<DropDownList> DDLs = getActive().getKbdLayout().getDdls();
 		for (int i = 0; i < DDLs.size(); i++) {
@@ -111,9 +113,8 @@ public class ProfileManager {
 		}
 	}
 	
-
+	
 	/**
-	 * 
 	 * Removes a certain profile from the DropdownList
 	 * 
 	 * @param name of the to-be deleted profile.
@@ -132,10 +133,9 @@ public class ProfileManager {
 			}
 		}
 	}
-
-
+	
+	
 	/**
-	 * 
 	 * Reads the config-file with all entrys and assigns
 	 * the read values.
 	 * 
@@ -193,7 +193,6 @@ public class ProfileManager {
 	
 	
 	/**
-	 * 
 	 * Creates a comment for config-files.
 	 * 
 	 * @param comment - String. Comment you want to add.
@@ -207,7 +206,6 @@ public class ProfileManager {
 	
 	
 	/**
-	 * 
 	 * Add an entry to the config file.
 	 * 
 	 * @param bw - Handle/Reference to a BufferedWriter
@@ -221,10 +219,9 @@ public class ProfileManager {
 			io.printStackTrace();
 		}
 	}
-
-
+	
+	
 	/**
-	 * 
 	 * Saves the name of the active profile and the path to all profile-files.
 	 * 
 	 * @author SebastianN
@@ -237,7 +234,7 @@ public class ProfileManager {
 			
 			addEntry(bw, createComment("Configfile for T10"));
 			
-
+			
 			if (activeProfile != null)
 				addEntry(bw, "ActiveProfile=" + activeProfile.getName());
 			
@@ -260,7 +257,6 @@ public class ProfileManager {
 	
 	
 	/**
-	 * 
 	 * Create a new profile
 	 * 
 	 * @param profileName - String. Name of the profile.
@@ -268,16 +264,18 @@ public class ProfileManager {
 	 * @return Handle/Pointer to the new profile.
 	 * @author SebastianN
 	 */
-	
 	public Profile createProfile(String profileName) {
-		if (getProfileByName(profileName) != null) {
-			logger.error("Profile already exists.");
-			return null;
+		Profile newProfile;
+		
+		newProfile = getProfileByName(profileName);
+		if (newProfile != null) {
+			logger.warn("Profile already exists.");
+		} else {
+			newProfile = new Profile(profileName);
+			profiles.add(newProfile);
+			if (getActive() != null)
+				addProfileToDDL(newProfile);
 		}
-		Profile newProfile = new Profile(profileName);
-		profiles.add(newProfile);
-		if (getActive() != null)
-			addProfileToDDL(newProfile);
 		return newProfile;
 	}
 	
@@ -339,7 +337,7 @@ public class ProfileManager {
 	 * Gets the Position of the wanted profile within the Profile-Arraylist
 	 * 
 	 * @param name of the profile whose position needs to be verified.
-	 * @return Position within array (int). If not found, it returns -1
+	 * @return Position within array (int). If not found, it returns 0 (so the first position is chosen)
 	 * @author SebastianN
 	 */
 	private int getPositionOfProfile(String name) {
@@ -347,10 +345,11 @@ public class ProfileManager {
 			if (profiles.get(i).equals(name))
 				return i;
 		}
-		return -1;
+		// do not return -1, but 0, because otherwise errors might occur in calling method
+		return 0;
 	}
 	
-
+	
 	/**
 	 * Marks a profile as 'active'.
 	 * 
@@ -379,7 +378,7 @@ public class ProfileManager {
 	 * Controller requests a Word suggestion with an given Startstring.
 	 * 
 	 * @param givenChars
-	 * @return
+	 * @return wordsuggest
 	 * @author DirkK
 	 */
 	public String getWordSuggest(String givenChars) {
@@ -402,7 +401,7 @@ public class ProfileManager {
 	/**
 	 * Gives a word which have to be inserted or updated in the data.
 	 * 
-	 * @param word
+	 * @param word A complete word to be inserted into tree
 	 * @author SebastianN
 	 */
 	public boolean acceptWord(String word) {
@@ -432,19 +431,18 @@ public class ProfileManager {
 			} catch (IOException io) {
 				logger.error("Not able to serialize Profiles, IOException: ");
 				io.printStackTrace();
+				// TODO SebastianN handle exception without stacktrace
 			}
 		}
 	}
 	
 	
 	/**
-	 * 
-	 * If available, getSerializedProfiles gets serialized profiles from file.
-	 * In case all files couldn't be read, a new profile-list is allocated.
+	 * Loads serialized profiles from file.
 	 * 
 	 * @author SebastianN
 	 */
-	public void getSerializedProfiles() {
+	public void loadSerializedProfiles() {
 		int counter = 0;
 		if (profiles == null) {
 			profiles = new ArrayList<Profile>();
@@ -461,14 +459,13 @@ public class ProfileManager {
 		logger.info("Deserialized " + counter + " profiles.");
 	}
 	
-
+	
 	/**
-	 * 
-	 * 
+	 * Check if the given profile name exists
 	 * 
 	 * @param profile
 	 * @return profile exists -> true ...else false
-	 * @author felix
+	 * @author FelixP
 	 */
 	public boolean existProfile(String profile) {
 		Profile p = getProfileByName(profile);
@@ -477,25 +474,41 @@ public class ProfileManager {
 		return true;
 	}
 	
-
+	
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
+	
+	
+	/**
+	 * Return all known profiles
+	 * 
+	 * @return list of all profiles
+	 * @author SebastianN
+	 */
 	public ArrayList<Profile> getProfiles() {
 		return profiles;
 	}
 	
 	
+	/**
+	 * Return currently active profile
+	 * 
+	 * @return active profile
+	 * @author SebastianN
+	 */
 	public Profile getActive() {
 		return activeProfile;
 	}
 	
 	
+	/**
+	 * Return currently active keyboard layout
+	 * 
+	 * @return
+	 * @author NicolaiO
+	 */
 	public KeyboardLayout getKbdLayout() {
 		return activeProfile.getKbdLayout();
 	}
-	
-
-	
-	
 }

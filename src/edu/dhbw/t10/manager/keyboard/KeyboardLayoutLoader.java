@@ -323,6 +323,14 @@ public class KeyboardLayoutLoader {
 	}
 	
 	
+	/**
+	 * Get all ModeButtons (Buttons on GUI, like Shift, Alt, etc.) and all ModeKeys (the different Modes, like Shift,
+	 * Alt, etc.)
+	 * 
+	 * @param modeKeys (empty) modeKey list to be filled (because return is reserved for ModeButtons)
+	 * @return list of ModeButtons
+	 * @author NicolaiO
+	 */
 	private static ArrayList<ModeButton> getModeButtons(ArrayList<ModeKey> modeKeys) {
 		ArrayList<ModeButton> modeButtons = new ArrayList<ModeButton>();
 		NodeList nList = doc.getElementsByTagName("modebutton");
@@ -380,6 +388,12 @@ public class KeyboardLayoutLoader {
 	}
 	
 	
+	/**
+	 * Get all MuteButtons. This are buttons for enabling or disabling certain functions, like saving into dictionary.
+	 * 
+	 * @return list of MuteButtons
+	 * @author NicolaiO
+	 */
 	private static ArrayList<MuteButton> getMuteButtons() {
 		ArrayList<MuteButton> muteButtons = new ArrayList<MuteButton>();
 		NodeList nList = doc.getElementsByTagName("mutebutton");
@@ -416,9 +430,9 @@ public class KeyboardLayoutLoader {
 					logger.warn("type-attribute not found/invalid in MuteButton. temp=" + temp);
 					continue;
 				}
-
-
-				// very dirty... copied following block twice... Who cares...
+				
+				
+				// following blocks are nearly equal... Not very nice implemented, but working
 				NodeList on = eElement.getElementsByTagName("on");
 				if (on.getLength() == 1) {
 					String name = on.item(0).getTextContent();
@@ -456,7 +470,7 @@ public class KeyboardLayoutLoader {
 					logger.warn("Number of on-elements is not 1: " + off.getLength());
 					continue;
 				}
-
+				
 				button.addActionListener(Controller.getInstance());
 				button.release();
 				muteButtons.add(button);
@@ -466,8 +480,15 @@ public class KeyboardLayoutLoader {
 		}
 		return muteButtons;
 	}
-
-
+	
+	
+	/**
+	 * Get size and position (bound) from a given node.
+	 * 
+	 * @param node node, containing the attributes for size and position
+	 * @return Bounds of Component in node (0-bounds, if node could not be read)
+	 * @author NicolaiO
+	 */
 	private static Bounds getBounds(Node node) {
 		if (node.getNodeType() == Node.ELEMENT_NODE) {
 			try {
@@ -477,10 +498,10 @@ public class KeyboardLayoutLoader {
 						"pos_x"), getIntAttribute(attr, "pos_y"));
 				
 			} catch (NullPointerException e) {
-				logger.warn("Could not read node as PhysicalButton. Node: " + node);
+				logger.warn("Could not read bounds from given node. Node: " + node);
 			}
 		}
-		return null;
+		return new Bounds(0, 0, 0, 0);
 	}
 	
 	
@@ -561,14 +582,35 @@ public class KeyboardLayoutLoader {
 		}
 		return defaultValue;
 	}
-
+	
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
+	
+	
+	// --------------------------------------------------------------------------
+	// --- sub-classes ----------------------------------------------------------
+	// --------------------------------------------------------------------------
+	
+	/**
+	 * Bounds describe the size and position of a Component on the GUI, such as Buttons or DDLs
+	 * 
+	 * @author NicolaiO
+	 * 
+	 */
 	private static class Bounds {
 		public int	size_x, size_y, pos_x, pos_y;
 		
 		
+		/**
+		 * Create new Bounds with given size and position
+		 * 
+		 * @param size_x
+		 * @param size_y
+		 * @param pos_x
+		 * @param pos_y
+		 * @author NicolaiO
+		 */
 		public Bounds(int size_x, int size_y, int pos_x, int pos_y) {
 			this.size_x = size_x;
 			this.size_y = size_y;

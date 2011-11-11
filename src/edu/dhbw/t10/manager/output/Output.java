@@ -24,7 +24,6 @@ import edu.dhbw.t10.type.keyboard.key.Key;
 
 
 /**
- * 
  * This class provides the functionallity of printing Strings via sending Key Strokes to the system.<br>
  * Letters, big letters and numbers are converted directly to their own java.awt.event.KeyEvent constant, which is sent.<br>
  * All other symbols are written via their Unicode.<br>
@@ -32,7 +31,6 @@ import edu.dhbw.t10.type.keyboard.key.Key;
  * Control symbols are sent via their java.awt.event.KeyEvent constant<br>
  * 
  * @author DanielAl
- * 
  */
 public class Output {
 	// --------------------------------------------------------------------------
@@ -62,6 +60,8 @@ public class Output {
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
+	
+	
 	/**
 	 * Constructor for this class with no parameters<br>
 	 * The Operating System is set. This is important for the sendUnicode(String) method, because the input of Unicode
@@ -70,7 +70,6 @@ public class Output {
 	 * 
 	 * @throws UnknownOSException
 	 * @author DanielAl
-	 * 
 	 */
 	protected Output() throws UnknownOSException {
 		String osName = System.getProperty("os.name");
@@ -92,7 +91,7 @@ public class Output {
 		combi = new Stack<Integer>();
 	}
 	
-
+	
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
@@ -108,7 +107,7 @@ public class Output {
 		return printString(c.getKeycode(), c.getType());
 	}
 	
-
+	
 	/**
 	 * 
 	 * Switch with type over different sendKey calls. <br>
@@ -129,7 +128,7 @@ public class Output {
 			return false;
 		
 		switch (type) {
-			// Print Control Symbol, like ENTER or SPACE
+		// Print Control Symbol, like ENTER or SPACE
 			case Key.CONTROL:
 				sendKey(convertKeyCode(charSequence.substring(1, length - 1)));
 				logger.info("Control Symbol printed: " + charSequence);
@@ -170,7 +169,7 @@ public class Output {
 		return true;
 	}
 	
-
+	
 	/**
 	 * Prints a combi by calling for each Key Element of the ArrayList the sendKey with function COMBI. <br>
 	 * When the List is empty, call the special mode of the COMBI Branch of sendKey to release all pressed Keys...<br>
@@ -190,14 +189,14 @@ public class Output {
 				logger.error("printCombi: " + err.getMessage());
 				state = false;
 				break;
-			} 
+			}
 		}
 		sendKey(0, COMBI);
 		logger.info("Key Combi printed");
 		return state;
 	}
 	
-
+	
 	/**
 	 * Calls convertKeyCode(code, 0)
 	 * @param String code
@@ -208,7 +207,7 @@ public class Output {
 		return convertKeyCode(code, 0);
 	}
 	
-
+	
 	/**
 	 * Converts a Stringcode into a Constant of the KeyEvent class via Reflection.<br>
 	 * These constants could be used for sending Keys.<br>
@@ -251,9 +250,8 @@ public class Output {
 		}
 	}
 	
-
+	
 	/**
-	 * 
 	 * Sends a Unicode in the Format \U+XXXX\ to the System by using a System specific Key combination. <br>
 	 * Windows and Linux are supported.<br>
 	 * For Windows compability a Registry hack is necessary. Use the install.reg to enable HexaDecimal Unicode Input in
@@ -335,9 +333,8 @@ public class Output {
 		}
 	}
 	
-
+	
 	/**
-	 * 
 	 * Calls sendKey(key, TYPE)
 	 * 
 	 * @param int key
@@ -348,7 +345,7 @@ public class Output {
 		return sendKey(key, TYPE);
 	}
 	
-
+	
 	/**
 	 * Send Key Codes to the System with a Robot and java.awt.event.KeyEvent constants. <br>
 	 * Functions:<br>
@@ -411,10 +408,10 @@ public class Output {
 		return true;
 	}
 	
-
+	
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
 	
-
+	
 }

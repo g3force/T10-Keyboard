@@ -42,8 +42,13 @@ public class Presenter extends JFrame {
 	// --------------------------------------------------------------------------
 	
 	/**
-	  * 
-	  */
+	 * Create a new presenter (the main window/JFrame of the app)
+	 * Define some attributes for the window and add mainPanel and statusPane to contentPane
+	 * 
+	 * @param mainPanel
+	 * @param statusPane
+	 * @author NicolaiO, DanielAl
+	 */
 	public Presenter(MainPanel mainPanel, StatusPane statusPane) {
 		logger.debug("Initializing...");
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -55,7 +60,7 @@ public class Presenter extends JFrame {
 		this.setFocusableWindowState(false);
 		this.setVisible(true);
 		this.addWindowListener(Controller.getInstance());
-
+		
 		// get a reference to the content pane
 		contentPane = (JPanel) getContentPane();
 		contentPane.add(mainPanel);
@@ -64,7 +69,7 @@ public class Presenter extends JFrame {
 		
 		// build GUI
 		pack();
-
+		
 		initilized = true;
 		logger.debug("Initialized.");
 	}

@@ -37,18 +37,39 @@ public class PriorityElement implements Serializable {
 	private long										lastUse;
 	private Map<Character, PriorityElement>	followers;
 	
+	@SuppressWarnings("unused")
 	private static final Logger					logger				= Logger.getLogger(PriorityElement.class);
 	
 	
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
+	
+	/**
+	 * 
+	 * TODO DirkK, add comment! (params!!)
+	 * 
+	 * @param wo
+	 * @param fa
+	 * @param fr
+	 * @author DirkK
+	 */
 	public PriorityElement(char wo, PriorityElement fa, int fr) {
 		initializer(wo, fa, this, fr, new HashMap<Character, PriorityElement>());
 		// logger.trace("PriorityElement created (1)");
 	}
 	
 	
+	/**
+	 * 
+	 * TODO DirkK, add comment!
+	 * 
+	 * @param wo
+	 * @param fa
+	 * @param su
+	 * @param fr
+	 * @author DirkK
+	 */
 	public PriorityElement(char wo, PriorityElement fa, PriorityElement su, int fr) {
 		// constructor only for root element, suggest shall not be this, but null
 		initializer(wo, fa, su, fr, new HashMap<Character, PriorityElement>());
@@ -56,12 +77,21 @@ public class PriorityElement implements Serializable {
 	}
 	
 	
-	
-	
-
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
+	
+	/**
+	 * 
+	 * TODO DirkK, add comment!
+	 * 
+	 * @param wo
+	 * @param fa
+	 * @param su
+	 * @param fr
+	 * @param fo
+	 * @author DirkK
+	 */
 	private void initializer(char wo, PriorityElement fa, PriorityElement su, int fr, Map<Character, PriorityElement> fo) {
 		letter = wo;
 		father = fa;
@@ -85,12 +115,12 @@ public class PriorityElement implements Serializable {
 	
 	
 	/**
-	 * 
 	 * Adds a new Follower to a PriorityElement
 	 * Be careful, check first that there isnt this element
 	 * 
 	 * @param c the letter which was added
 	 * @return the new Follower Element
+	 * @author DirkK
 	 */
 	public PriorityElement addFollower(char c) {
 		// logger.trace("Adding follower...");
@@ -105,6 +135,7 @@ public class PriorityElement implements Serializable {
 	 * returns of this node has a follower with the word c
 	 * @param c the letter of the follower
 	 * @return true, if the follower exists
+	 * @author DirkK
 	 */
 	public boolean hasFollower(char c) {
 		return followers.containsKey(c);
@@ -116,6 +147,7 @@ public class PriorityElement implements Serializable {
 	 * be careful, exists the follower?
 	 * @param c the letter of the follower which shall be returned
 	 * @return the follower with the word c
+	 * @author DirkK
 	 */
 	public PriorityElement getFollower(char c) {
 		if (hasFollower(c))
@@ -127,7 +159,9 @@ public class PriorityElement implements Serializable {
 	
 	/**
 	 * increases the frequency of a node, adjusts the suggests in the fathers
-	 * function is called, whenever an Priority element is created or frequency higherd
+	 * function is called, whenever an Priority element is created or frequency higher
+	 * 
+	 * @author DirkK
 	 */
 	public void increase() {
 		updateLastUse();
@@ -138,6 +172,7 @@ public class PriorityElement implements Serializable {
 	
 	/**
 	 * local method to replace the suggests in the fathers of this node after an increase
+	 * 
 	 * @author DirkK
 	 */
 	private void replaceSuggestsInFathers() {
@@ -181,6 +216,7 @@ public class PriorityElement implements Serializable {
 	 * puts alle Followers of this node into a list, beginning with itself
 	 * 
 	 * @return list of all followers
+	 * @author DirkK
 	 */
 	public LinkedList<PriorityElement> getListOfFollowers() {
 		// logger.debug("Fetching followers...");
@@ -252,7 +288,8 @@ public class PriorityElement implements Serializable {
 	 * prints the PriorityElement
 	 * structure (non-root): [word], [frequency], [lastUse], Suggest: [word_suggest] ([freq_suggest]) (Father:
 	 * [word_father])
-	 * @param pe node you want to print
+	 * 
+	 * @author DirkK
 	 */
 	public void print() {
 		if (father == null) {
@@ -329,6 +366,4 @@ public class PriorityElement implements Serializable {
 	public void setLastUse(long lastUse) {
 		this.lastUse = lastUse;
 	}
-	
-	
 }

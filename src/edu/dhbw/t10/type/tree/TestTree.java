@@ -39,8 +39,8 @@ public class TestTree {
 	 * @param args
 	 */
 	private static final Logger	logger	= Logger.getLogger(TestTree.class);
-
-
+	
+	
 	public static void main(String[] args) throws IOException {
 		// BasicConfigurator.configure();
 		File logConfFile = new File("data/conf/log4j.conf");
@@ -98,8 +98,8 @@ public class TestTree {
 		logger.error("loading the list");
 		map = ImportExportManager.importFromFile("/home/dirk/Desktop/list", true);
 		logger.error("load the list");
-
-
+		
+		
 		// System.out.println("Import completed");
 		// Profile prof = new Profile(1, "Pflichteheft", "/home/DirkK/Desktop/PFL", tree);
 		// System.out.println("starting serializsation");
