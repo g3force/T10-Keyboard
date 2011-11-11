@@ -17,6 +17,7 @@ import java.awt.event.WindowListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.zip.ZipException;
 
 import javax.swing.JFileChooser;
 
@@ -183,12 +184,25 @@ public class Controller implements ActionListener, WindowListener {
 		switch (pc.getMenuType()) {
 			// import profile
 			case iImport:
+				try {
+					ImportExportManager.importProfiles(profileMan, path);
+				} catch (ZipException err1) {
+					logger.error("unable to extract file " + path.toString());
+				} catch (IOException err1) {
+					logger.error("Error by importing Profile from " + path.toString());
+				}
 				// TODO FelixP extract selected profile and save it
 				break;
 			
 			// export profile
 			case iExport:
-				// TODO FelixP extract selected profile and save it
+				try {
+					ImportExportManager.exportProfiles(profileMan.getActive(), path);
+					logger.debug("Proifle exported");
+					statusPane.enqueueMessage("Profile exported", statusPane.LEFT);
+				} catch (IOException err1) {
+					logger.error("Unable to export profile " + path.toString());
+				}
 				break;
 			
 			// Extend Dictionary By Text
