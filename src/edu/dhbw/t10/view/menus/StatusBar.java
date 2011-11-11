@@ -33,23 +33,23 @@ public class StatusBar extends JLabel implements Runnable {
 
 	private LinkedList<String>		messageQueue;
 	private Thread						thread				= null;
-	private int							delay					= 2000;
+	private int							delay;
 	
 	
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
 	/**
-	 * Creates a StatusBar as a JLabel, sets the Border and the align.
+	 * Creates a StatusBar as a JLabel, sets the Border, the align and the delay of the messages.
 	 * 
 	 * @param align
 	 * @author DanielAl
 	 */
-	public StatusBar(int align) {
+	public StatusBar(int align, int delay) {
 		super();
-		// super.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		messageQueue = new LinkedList<String>();
 		this.setHorizontalAlignment(align);
+		this.delay = delay;
 	}
 
 

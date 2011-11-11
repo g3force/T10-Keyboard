@@ -47,8 +47,8 @@ public class StatusPane extends JPanel {
 	 * @author DanielAl
 	 */
 	public StatusPane() {
-		statusBarL = new StatusBar(JLabel.LEFT);
-		statusBarR = new StatusBar(JLabel.RIGHT);
+		statusBarL = new StatusBar(JLabel.LEFT, 2000);
+		statusBarR = new StatusBar(JLabel.RIGHT, 0);
 		this.setLayout(new GridLayout(1, 2));
 		this.add(statusBarL);
 		this.add(statusBarR);
