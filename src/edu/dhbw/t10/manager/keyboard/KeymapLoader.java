@@ -103,7 +103,7 @@ public class KeymapLoader {
 							String keycode = key.getAttributes().getNamedItem("keycode").getTextContent();
 							String name = key.getTextContent();
 							// save key in keymap
-							keymap.put(id, new Key(id, name, keycode, type));
+							keymap.put(id, new Key(id, name, keycode, type, false));
 						}
 					} catch (NullPointerException e) {
 						logger.warn("A key in keymap could not be read. j=" + j + " i=" + i);
