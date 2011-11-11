@@ -19,7 +19,6 @@ import java.io.IOException;
 import java.util.HashMap;
 
 import javax.swing.JFileChooser;
-import javax.swing.JLabel;
 
 import org.apache.log4j.Logger;
 
@@ -37,7 +36,7 @@ import edu.dhbw.t10.view.Presenter;
 import edu.dhbw.t10.view.dialogs.InputDlg;
 import edu.dhbw.t10.view.dialogs.ProfileChooser;
 import edu.dhbw.t10.view.menus.EMenuItem;
-import edu.dhbw.t10.view.menus.StatusBar;
+import edu.dhbw.t10.view.menus.StatusPane;
 import edu.dhbw.t10.view.panels.MainPanel;
 
 
@@ -63,9 +62,8 @@ public class Controller implements ActionListener, WindowListener {
 	private ProfileManager			profileMan;
 	private OutputManager			outputMan;
 	private MainPanel					mainPanel;
-	private StatusBar					statusBar;
-	private StatusBar					statusBarR;
 	private Presenter					presenter;
+	private StatusPane				statusPane;
 	
 	
 	// --------------------------------------------------------------------------
@@ -82,9 +80,8 @@ public class Controller implements ActionListener, WindowListener {
 		logger.debug("initializing...");
 		outputMan = new OutputManager();
 		mainPanel = new MainPanel();
-		statusBar = new StatusBar(JLabel.LEFT);
-		statusBarR = new StatusBar(JLabel.RIGHT);
-		presenter = new Presenter(mainPanel, statusBar, statusBarR);
+		statusPane = new StatusPane();
+		presenter = new Presenter(mainPanel, statusPane);
 		typedWord = "";
 		suggest = "";
 		profileMan = new ProfileManager();
@@ -95,8 +92,7 @@ public class Controller implements ActionListener, WindowListener {
 
 		mainPanel.addComponentListener(mainPanel);
 		resizeWindow(profileMan.getActive().getKbdLayout().getSize());
-		statusBar.enqueueMessage("Keyboard initialiezd.");
-		statusBarR.enqueueMessage("Tooltip");
+		statusPane.enqueueMessage("Keyboard initialized.", StatusPane.LEFT);
 		logger.debug("initialized.");
 	}
 	
@@ -201,10 +197,10 @@ public class Controller implements ActionListener, WindowListener {
 				try {
 					words = ImportExportManager.importFromText(path.toString());
 				} catch (IOException err) {
-					statusBar.enqueueMessage("Could not load the text file. Please choose another one.");
+					statusPane.enqueueMessage("Could not load the text file. Please choose another one.", StatusPane.LEFT);
 				}
 				profileMan.getActive().getTree().importFromHashMap(words);
-				statusBar.enqueueMessage("Text file included.");
+				statusPane.enqueueMessage("Text file included.", StatusPane.LEFT);
 				break;
 		}
 	}
@@ -415,7 +411,7 @@ public class Controller implements ActionListener, WindowListener {
 	private void acceptWord(String word) {
 		boolean success = profileMan.acceptWord(word);
 		if (success) {
-			statusBar.enqueueMessage("Word inserted: " + word);
+			statusPane.enqueueMessage("Word inserted: " + word, StatusPane.LEFT);
 		}
 		typedWord = "";
 		suggest = "";
