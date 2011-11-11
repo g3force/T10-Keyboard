@@ -138,9 +138,10 @@ public class PriorityElement implements Serializable {
 	
 	/**
 	 * local method to replace the suggests in the fathers of this node after an increase
+	 * @author DirkK
 	 */
 	private void replaceSuggestsInFathers() {
-		logger.debug("Replacing suggests (in Fathers)...");
+		// logger.debug("Replacing suggests (in Fathers)...");
 		PriorityElement node = this.getFather();
 		PriorityElement increasedNode = this;
 		// if the father is null, the node is the root element
@@ -152,7 +153,7 @@ public class PriorityElement implements Serializable {
 			node.setSuggest(increasedNode);
 			node = node.getFather();
 		}
-		logger.debug("Suggests (in Fathers) replaced");
+		// logger.debug("Suggests (in Fathers) replaced");
 	}
 	
 	
@@ -161,6 +162,7 @@ public class PriorityElement implements Serializable {
 	 * 
 	 * @param node starting node
 	 * @return the according word to the node
+	 * @author DirkK
 	 */
 	public String buildWord() {
 		// logger.trace("Building Word...");
@@ -181,13 +183,13 @@ public class PriorityElement implements Serializable {
 	 * @return list of all followers
 	 */
 	public LinkedList<PriorityElement> getListOfFollowers() {
-		logger.debug("Fetching followers...");
+		// logger.debug("Fetching followers...");
 		LinkedList<PriorityElement> ll = new LinkedList<PriorityElement>();
 		for (PriorityElement pe : followers.values()) {
 			ll.add(pe);
 			ll.addAll(pe.getListOfFollowers());
 		}
-		logger.debug("Followers fetched");
+		// logger.debug("Followers fetched");
 		return ll;
 	}
 	
@@ -221,6 +223,7 @@ public class PriorityElement implements Serializable {
 	 * takes the needed char of word by its own
 	 * 
 	 * @param word the word of the node which shall be deleted
+	 * @author DirkK
 	 */
 	public void deleteFollower(String word) {
 		int indexOfCharToDelete = buildWord().length();
@@ -231,15 +234,17 @@ public class PriorityElement implements Serializable {
 	
 	/**
 	 * resets the suggest of this item and searches again for the right one
+	 * 
+	 * @author DirkK
 	 */
 	public void resetSuggest() {
-		logger.debug("Replacing suggests (in Node)...");
+		// logger.debug("Replacing suggests (in Node)...");
 		suggest = this;
 		for (PriorityElement pe : followers.values()) {
 			if (pe.getSuggest().getFrequency() > suggest.getFrequency())
 				suggest = pe.getSuggest();
 		}
-		logger.debug("Suggests (in Node) replaced");
+		// logger.debug("Suggests (in Node) replaced");
 	}
 	
 	

@@ -33,6 +33,7 @@ import edu.dhbw.t10.type.keyboard.KeyboardLayout;
 import edu.dhbw.t10.type.keyboard.key.Button;
 import edu.dhbw.t10.type.keyboard.key.Key;
 import edu.dhbw.t10.type.keyboard.key.ModeButton;
+import edu.dhbw.t10.type.keyboard.key.ModeKey;
 import edu.dhbw.t10.type.keyboard.key.MuteButton;
 
 
@@ -109,10 +110,12 @@ public class KeyboardLayoutLoader {
 		NodeList nList;
 		
 		// ########################## read ModeButtons ########################
-		ArrayList<ModeButton> modeButtons = getModeButtons();
+		ArrayList<ModeKey> modeKeys = new ArrayList<ModeKey>();
+		ArrayList<ModeButton> modeButtons = getModeButtons(modeKeys);
 		logger.info("loaded " + modeButtons.size() + " ModeButtons.");
+		logger.info("loaded " + modeKeys.size() + " ModeKeys.");
 		// ########################## read Buttons ############################
-		ArrayList<Button> buttons = getButtons(modeButtons);
+		ArrayList<Button> buttons = getButtons(modeKeys);
 		logger.info("loaded " + buttons.size() + " Buttons.");
 		// ########################## read MuteButtons ###########################
 		ArrayList<MuteButton> muteButtons = getMuteButtons();
@@ -161,8 +164,9 @@ public class KeyboardLayoutLoader {
 		}
 		
 		// add everything to layout and rescale layout to set button sizes correctly (scale!)
-		kbdLayout.setModeButtons(modeButtons);
+		kbdLayout.setModeKeys(modeKeys);
 		kbdLayout.setButtons(buttons);
+		kbdLayout.setModeButtons(modeButtons);
 		kbdLayout.setMuteButtons(muteButtons);
 		kbdLayout.setDdls(ddls);
 		kbdLayout.setFont(new Font(fname, fstyle, fsize));
@@ -219,11 +223,11 @@ public class KeyboardLayoutLoader {
 	 * references to the mode keys
 	 * 
 	 * @param doc document
-	 * @param modeButtons available modebuttons, which are needed for reference in button-modes
+	 * @param modeKeys available modebuttons, which are needed for reference in button-modes
 	 * @return list of all buttons
 	 * @author NicolaiO
 	 */
-	private static ArrayList<Button> getButtons(ArrayList<ModeButton> modeButtons) {
+	private static ArrayList<Button> getButtons(ArrayList<ModeKey> modeKeys) {
 		ArrayList<Button> buttons = new ArrayList<Button>();
 		NodeList nList = doc.getElementsByTagName("button");
 		
@@ -246,7 +250,7 @@ public class KeyboardLayoutLoader {
 				if (defkey.getLength() == 1) {
 					try {
 						int id = Integer.parseInt(defkey.item(0).getTextContent());
-						Key key = keymap.get(id);
+						Key key = keymap.get(id).clone();
 						if (key == null) {
 							logger.warn("key not found in keymap. temp=" + temp + " id=" + id);
 							continue;
@@ -294,8 +298,8 @@ public class KeyboardLayoutLoader {
 								logger.warn("key not found in keymap. key content=" + item.getTextContent());
 							}
 							key.setAccept(accept);
-							for (ModeButton mb : modeButtons) {
-								if (mb.getModeKey().getId() == iModeName) {
+							for (ModeKey mb : modeKeys) {
+								if (mb.getId() == iModeName) {
 									button.addMode(mb, key);
 								}
 							}
@@ -319,7 +323,7 @@ public class KeyboardLayoutLoader {
 	}
 	
 	
-	private static ArrayList<ModeButton> getModeButtons() {
+	private static ArrayList<ModeButton> getModeButtons(ArrayList<ModeKey> modeKeys) {
 		ArrayList<ModeButton> modeButtons = new ArrayList<ModeButton>();
 		NodeList nList = doc.getElementsByTagName("modebutton");
 		
@@ -334,16 +338,29 @@ public class KeyboardLayoutLoader {
 				}
 				
 				Element eElement = (Element) nNode;
-				Key key = null;
+				ModeKey modeKey = null;
 				// receive default key
 				NodeList defkey = eElement.getElementsByTagName("key");
 				if (defkey.getLength() == 1) {
 					try {
-						key = keymap.get(Integer.parseInt(defkey.item(0).getTextContent()));
+						Key tempModeKey = keymap.get(Integer.parseInt(defkey.item(0).getTextContent()));
+						boolean exists = false;
+						for (ModeKey mk : modeKeys) {
+							if (mk.getName().equals(tempModeKey.getName())) {
+								exists = true;
+								modeKey = mk;
+								break;
+							}
+						}
+						if (!exists) {
+							modeKey = new ModeKey(tempModeKey);
+							modeKeys.add(modeKey);
+							logger.trace("New ModeKey found: " + modeKey.getName());
+						}
 					} catch (NumberFormatException e) {
 						logger.warn("Could not parse key: " + defkey.item(0).getTextContent());
 					}
-					if (key == null) {
+					if (modeKey == null) {
 						logger.warn("Could not find key in keymap: " + defkey.item(0).getTextContent());
 						continue;
 					}
@@ -352,9 +369,9 @@ public class KeyboardLayoutLoader {
 					continue;
 				}
 				Bounds b = getBounds(nNode);
-				ModeButton button = new ModeButton(key, b.size_x, b.size_y, b.pos_x, b.pos_y);
-				button.addActionListener(Controller.getInstance());
-				modeButtons.add(button);
+				ModeButton modeButton = new ModeButton(modeKey, b.size_x, b.size_y, b.pos_x, b.pos_y);
+				modeButton.addActionListener(Controller.getInstance());
+				modeButtons.add(modeButton);
 			} catch (NullPointerException e) {
 				logger.warn("A ModeButton could not be read.");
 			}

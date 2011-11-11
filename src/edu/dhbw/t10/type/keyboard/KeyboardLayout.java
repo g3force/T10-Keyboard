@@ -18,6 +18,7 @@ import org.apache.log4j.Logger;
 
 import edu.dhbw.t10.type.keyboard.key.Button;
 import edu.dhbw.t10.type.keyboard.key.ModeButton;
+import edu.dhbw.t10.type.keyboard.key.ModeKey;
 import edu.dhbw.t10.type.keyboard.key.MuteButton;
 import edu.dhbw.t10.type.keyboard.key.PhysicalButton;
 
@@ -37,6 +38,7 @@ public class KeyboardLayout {
 	private ArrayList<Button>			buttons		= new ArrayList<Button>();
 	private ArrayList<ModeButton>		modeButtons	= new ArrayList<ModeButton>();
 	private ArrayList<MuteButton>		muteButtons	= new ArrayList<MuteButton>();
+	private ArrayList<ModeKey>			modeKeys		= new ArrayList<ModeKey>();
 	private ArrayList<DropDownList>	ddls			= new ArrayList<DropDownList>();
 	private int								size_x		= 0;
 	private int								size_y		= 0;
@@ -259,6 +261,16 @@ public class KeyboardLayout {
 	
 	public void setDdls(ArrayList<DropDownList> ddls) {
 		this.ddls = ddls;
+	}
+	
+	
+	public ArrayList<ModeKey> getModeKeys() {
+		return modeKeys;
+	}
+	
+	
+	public void setModeKeys(ArrayList<ModeKey> modekeys) {
+		this.modeKeys = modekeys;
 	}
 	
 	
