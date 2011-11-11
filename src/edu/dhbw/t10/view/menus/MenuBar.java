@@ -171,7 +171,7 @@ public class MenuBar extends JMenuBar {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// Controller.getInstance().deleteProfile("Profile3");
+				Controller.getInstance().deleteProfile("Profile2");
 			}
 		});
 	}
