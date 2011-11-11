@@ -43,6 +43,15 @@ public class Button extends PhysicalButton implements MouseListener {
 	// --------------------------------------------------------------------------
 
 
+	/**
+	 * Create a new Button with given size and position
+	 * 
+	 * @param size_x
+	 * @param size_y
+	 * @param pos_x
+	 * @param pos_y
+	 * @author NicolaiO
+	 */
 	public Button(int size_x, int size_y, int pos_x, int pos_y) {
 		super(size_x, size_y, pos_x, pos_y);
 		addMouseListener(this);
@@ -147,8 +156,65 @@ public class Button extends PhysicalButton implements MouseListener {
 			b.release();
 		}
 	}
-
-
+	
+	
+	@Override
+	public void mousePressed(MouseEvent e) {
+		/**
+		 * visualize pressing button for right mouse click
+		 */
+		if (e.getButton() == MouseEvent.BUTTON3) {
+			if (e.getSource() instanceof JButton) {
+				JButton b = (JButton) e.getSource();
+				b.getModel().setPressed(true);
+			}
+		}
+	}
+	
+	
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		/**
+		 * visualize pressing button for right mouse click
+		 */
+		if (e.getButton() == MouseEvent.BUTTON3) {
+			if (e.getSource() instanceof JButton) {
+				for (ModeKey mb : modes.keySet()) {
+					if (mb.getName().toLowerCase().equals("shift")) {
+						this.addCurrentMode(mb);
+						break;
+					}
+				}
+				this.actionListener.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, this
+						.getActionCommand(), ActionEvent.SHIFT_MASK));
+				for (ModeKey mb : modes.keySet()) {
+					if (mb.getName().toLowerCase().equals("shift")) {
+						this.rmCurrentMode(mb);
+						break;
+					}
+				}
+				JButton b = (JButton) e.getSource();
+				b.getModel().setPressed(false);
+			}
+		}
+	}
+	
+	
+	@Override
+	public void mouseClicked(MouseEvent e) {
+	}
+	
+	
+	@Override
+	public void mouseEntered(MouseEvent e) {
+	}
+	
+	
+	@Override
+	public void mouseExited(MouseEvent e) {
+	}
+	
+	
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
@@ -179,58 +245,5 @@ public class Button extends PhysicalButton implements MouseListener {
 		setText(key.getName());
 	}
 	
-	
-	@Override
-	public void mousePressed(MouseEvent e) {
-		/**
-		 * visualize pressing button for right mouse click
-		 */
-		if (e.getButton() == MouseEvent.BUTTON3) {
-			if (e.getSource() instanceof JButton) {
-				JButton b = (JButton) e.getSource();
-				b.getModel().setPressed(true);
-			}
-		}
-	}
-	
-	
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		/**
-		 * visualize pressing button for right mouse click
-		 */
-		if (e.getButton() == MouseEvent.BUTTON3) {
-			if (e.getSource() instanceof JButton) {
-				for (ModeKey mb : modes.keySet()) {
-					if (mb.getName().toLowerCase().equals("shift")) {
-						this.addCurrentMode(mb);
-					} else {
-						logger.trace(mb.getName());
-					}
-				}
-				this.actionListener.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, this
-						.getActionCommand(), ActionEvent.SHIFT_MASK));
-				JButton b = (JButton) e.getSource();
-				b.getModel().setPressed(false);
-			}
-		}
-	}
-	
-	
-	@Override
-	public void mouseClicked(MouseEvent e) {
-	}
-	
-	
-	@Override
-	public void mouseEntered(MouseEvent e) {
-	}
-	
-	
-	@Override
-	public void mouseExited(MouseEvent e) {
-	}
-	
-
 
 }
