@@ -62,6 +62,7 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	
 	private String						typedWord;
 	private String						suggest;
+	private String						datapath;
 	
 	private ProfileManager			profileMan;
 	private OutputManager			outputMan;
@@ -85,6 +86,12 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	private Controller() {
 		instance = this;
 		logger.debug("initializing...");
+		datapath = System.getProperty("user.home") + "/.t10keyboard";
+		File tf = new File(datapath);
+		if (!tf.exists()) {
+			tf.mkdirs();
+		}
+		logger.trace(datapath);
 		outputMan = new OutputManager();
 		mainPanel = new MainPanel();
 		statusPane = new StatusPane();
@@ -562,24 +569,6 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 		return profileMan.existProfile(name);
 	}
 	
-
-	// --------------------------------------------------------------------------
-	// --- getter/setter --------------------------------------------------------
-	// --------------------------------------------------------------------------
-	
-	/**
-	 * Calls the constructor if no instance exist. Singleton Design Pattern...
-	 * 
-	 * @return Controller
-	 * @author NicolaiO
-	 */
-	public static Controller getInstance() {
-		if (instance == null) {
-			instance = new Controller();
-		}
-		return instance;
-	}
-	
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
@@ -615,5 +604,33 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	
 	public boolean isReadyForActionEvents() {
 		return readyForActionEvents;
+	}
+	
+	
+	// --------------------------------------------------------------------------
+	// --- getter/setter --------------------------------------------------------
+	// --------------------------------------------------------------------------
+	
+	/**
+	 * Calls the constructor if no instance exist. Singleton Design Pattern...
+	 * 
+	 * @return Controller
+	 * @author NicolaiO
+	 */
+	public static Controller getInstance() {
+		if (instance == null) {
+			instance = new Controller();
+		}
+		return instance;
+	}
+	
+	
+	public String getDatapath() {
+		return datapath;
+	}
+	
+	
+	public void setDatapath(String datapath) {
+		this.datapath = datapath;
 	}
 }

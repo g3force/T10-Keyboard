@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import org.apache.log4j.Logger;
 
 import edu.dhbw.t10.helper.StringHelper;
+import edu.dhbw.t10.manager.Controller;
 import edu.dhbw.t10.type.keyboard.DropDownList;
 import edu.dhbw.t10.type.keyboard.KeyboardLayout;
 import edu.dhbw.t10.type.profile.Profile;
@@ -35,7 +36,7 @@ public class ProfileManager {
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
 	private static final Logger	logger					= Logger.getLogger(ProfileManager.class);
-	private static final String	configFile				= "data/t10keyboard.conf";
+	private String						configFile				= "t10keyboard.conf";
 	private ArrayList<Profile>		profiles					= new ArrayList<Profile>();
 	private ArrayList<String>		profilePathes			= new ArrayList<String>();
 	private Profile					activeProfile;
@@ -162,7 +163,7 @@ public class ProfileManager {
 	 */
 	public void readConfig() {
 		try {
-			File confFile = new File(configFile);
+			File confFile = new File(Controller.getInstance().getDatapath() + "/" + configFile);
 			if (confFile.exists()) {
 				FileReader fr = new FileReader(confFile);
 				BufferedReader br = new BufferedReader(fr);
@@ -199,6 +200,7 @@ public class ProfileManager {
 				}
 				br.close();
 			} else {
+				// TODO SebastianN create a new default config file with default values :)
 				logger.error("Config file could not be found.");
 			}
 		} catch (IOException io) {
@@ -247,7 +249,7 @@ public class ProfileManager {
 	 */
 	public void saveConfig() {
 		try {
-			File confFile = new File("data/config");
+			File confFile = new File(Controller.getInstance().getDatapath() + "/" + configFile);
 			FileWriter fw = new FileWriter(confFile);
 			BufferedWriter bw = new BufferedWriter(fw);
 			
@@ -264,6 +266,7 @@ public class ProfileManager {
 				}
 				addEntry(bw, "ProfilePath=" + profiles.get(i).getPathToProfile());
 			}
+			logger.info("Config file saved");
 			bw.close();
 		} catch (IOException io) {
 			logger.debug("IOException in readConfig()");
