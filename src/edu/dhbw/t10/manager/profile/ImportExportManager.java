@@ -250,7 +250,7 @@ public class ImportExportManager {
 	public static void exportProfiles(Profile prof, File folder) throws IOException {
 		logger.debug("Exporting profile " + prof.getName());
 		BufferedInputStream origin = null;
-		String zipFile = folder.toString() + "/" + prof.getName() + ".zip";
+		String zipFile = folder.toString();
 		logger.debug("Exporting to " + zipFile);
 		FileOutputStream dest = new FileOutputStream(zipFile);
 		ZipOutputStream out = new ZipOutputStream(new BufferedOutputStream(dest));
@@ -265,7 +265,7 @@ public class ImportExportManager {
 			logger.debug("Writing to zip file: " + files[i]);
 			FileInputStream fi = new FileInputStream(files[i]);
 			origin = new BufferedInputStream(fi, BUFFER);
-			ZipEntry entry = new ZipEntry(files[i].toString());
+			ZipEntry entry = new ZipEntry(files[i].getName().toString());
 			out.putNextEntry(entry);
 			int count;
 			while ((count = origin.read(data, 0, BUFFER)) != -1) {
