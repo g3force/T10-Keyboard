@@ -47,32 +47,32 @@ public class PriorityElement implements Serializable {
 	
 	/**
 	 * 
-	 * TODO DirkK, add comment! (params!!)
+	 * Constructor for creating a Priority Element without suggest
 	 * 
-	 * @param wo
-	 * @param fa
-	 * @param fr
+	 * @param letter see initializer
+	 * @param father see initializer
+	 * @param fr see initializer
 	 * @author DirkK
 	 */
-	public PriorityElement(char wo, PriorityElement fa, int fr) {
-		initializer(wo, fa, this, fr, new HashMap<Character, PriorityElement>());
+	public PriorityElement(char letter, PriorityElement father, int fr) {
+		initializer(letter, father, this, fr, new HashMap<Character, PriorityElement>());
 		// logger.trace("PriorityElement created (1)");
 	}
 	
 	
 	/**
 	 * 
-	 * TODO DirkK, add comment!
+	 * constructor for creating a Priority Element with suggest
 	 * 
-	 * @param wo
-	 * @param fa
-	 * @param su
-	 * @param fr
+	 * @param letter see initializer
+	 * @param father see initializer
+	 * @param suggest see initializer
+	 * @param fr see initializer
 	 * @author DirkK
 	 */
-	public PriorityElement(char wo, PriorityElement fa, PriorityElement su, int fr) {
+	public PriorityElement(char letter, PriorityElement father, PriorityElement suggest, int fr) {
 		// constructor only for root element, suggest shall not be this, but null
-		initializer(wo, fa, su, fr, new HashMap<Character, PriorityElement>());
+		initializer(letter, father, suggest, fr, new HashMap<Character, PriorityElement>());
 		// logger.trace("PriorityElement created (2)");
 	}
 	
@@ -83,21 +83,22 @@ public class PriorityElement implements Serializable {
 	
 	/**
 	 * 
-	 * TODO DirkK, add comment!
+	 * called by the constructors, initializes a Priority Element
 	 * 
-	 * @param wo
-	 * @param fa
-	 * @param su
-	 * @param fr
-	 * @param fo
+	 * @param letter the letter which is repesented by this element
+	 * @param father the father PriorityElement
+	 * @param suggest the suggest contained in this element
+	 * @param frequency how often the word repesented by this element was typed
+	 * @param followers all following letters
 	 * @author DirkK
 	 */
-	private void initializer(char wo, PriorityElement fa, PriorityElement su, int fr, Map<Character, PriorityElement> fo) {
-		letter = wo;
-		father = fa;
-		suggest = su;
-		frequency = fr;
-		followers = fo;
+	private void initializer(char letter, PriorityElement father, PriorityElement suggest, int frequency,
+			Map<Character, PriorityElement> followers) {
+		this.letter = letter;
+		this.father = father;
+		this.suggest = suggest;
+		this.frequency = frequency;
+		this.followers = followers;
 		updateLastUse();
 	}
 	

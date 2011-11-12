@@ -220,11 +220,10 @@ public class KeyboardLayoutSaver {
 	
 	
 	/**
+	 * converts a XML document to a string, which can be written to a text file
 	 * 
-	 * TODO DirkK, add comment!
-	 * 
-	 * @param doc
-	 * @return
+	 * @param doc the input xml document
+	 * @return the document as a string
 	 * @author DirkK
 	 */
 	private static String convertDocToString(Document doc) {
@@ -259,11 +258,10 @@ public class KeyboardLayoutSaver {
 	
 	
 	/**
-	 * 
-	 * TODO DirkK, add comment!
+	 * prints the keyboard string to a given file
 	 * 
 	 * @param xmlString
-	 * @param file
+	 * @param file path where the xml file shall be saved
 	 * @author DirkK
 	 */
 	private static void printToPath(String xmlString, String file) {
@@ -290,10 +288,10 @@ public class KeyboardLayoutSaver {
 	
 	/**
 	 * 
-	 * TODO DirkK, add comment!
+	 * sets the size values of a physical buttons, these values are for all button types the same
 	 * 
-	 * @param el
-	 * @param button
+	 * @param el the element shall get the size attributes
+	 * @param button the origin physicalButton
 	 * @author DirkK
 	 */
 	private static void setSizeOfPhysicalButton(Element el, PhysicalButton button) {

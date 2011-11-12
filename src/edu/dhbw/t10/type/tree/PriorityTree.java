@@ -47,9 +47,9 @@ public class PriorityTree implements Serializable {
 	
 	/**
 	 * 
-	 * TODO DirkK, add comment!
+	 * PriorityTree is a tree which contains all words which were typed and their frequency
 	 * 
-	 * @param chars
+	 * @param chars the path to the allowed according ".chars" file
 	 * @author DirkK
 	 */
 	public PriorityTree(String chars) {

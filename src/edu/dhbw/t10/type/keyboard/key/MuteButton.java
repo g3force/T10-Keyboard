@@ -161,9 +161,7 @@ public class MuteButton extends PhysicalButton {
 	
 	/**
 	 * 
-	 * TODO DirkK, add comment!
-	 * - What should this type do (in one sentence)?
-	 * - If not intuitive: A simple example how to use this class
+	 * container class for all attributes for a state like on and off
 	 * 
 	 * @author DirkK
 	 * 
