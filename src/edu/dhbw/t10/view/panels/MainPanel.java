@@ -51,6 +51,7 @@ public class MainPanel extends JPanel implements ComponentListener {
 	public MainPanel() {
 		logger.debug("Initializing...");
 		this.setLayout(null);
+		this.addComponentListener(this);
 		logger.debug("Initializied.");
 	}
 	
@@ -68,6 +69,7 @@ public class MainPanel extends JPanel implements ComponentListener {
 	public void setKbdLayout(KeyboardLayout kbd) {
 		logger.debug("adding Layout...");
 		this.setPreferredSize(new Dimension(kbd.getSize_x(), kbd.getSize_y()));
+		this.removeAll();
 		for (PhysicalButton button : kbd.getAllPhysicalButtons()) {
 			this.add(button);
 		}

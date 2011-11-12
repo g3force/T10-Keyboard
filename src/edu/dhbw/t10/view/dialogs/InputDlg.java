@@ -12,6 +12,8 @@ package edu.dhbw.t10.view.dialogs;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -60,6 +62,7 @@ public class InputDlg extends JDialog {
 	public InputDlg(final EMenuItem menuItem, String title, String text) {
 		this.setTitle(title);
 		this.setModalityType(null);
+		this.setAlwaysOnTop(true);
 		this.mhhh = this;
 		
 		this.menuItem = menuItem;
@@ -80,6 +83,27 @@ public class InputDlg extends JDialog {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
+			}
+		});
+		
+		textField.addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyTyped(KeyEvent e) {
+			}
+			
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
+			}
+			
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+				System.out.println("blubb");
+				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+					Controller.getInstance().eIsInputDlg(menuItem, mhhh);
+				}
 			}
 		});
 		
