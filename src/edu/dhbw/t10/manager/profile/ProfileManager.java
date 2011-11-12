@@ -280,6 +280,7 @@ public class ProfileManager {
 			if (getActive() != null)
 				addProfileToDDL(newProfile);
 		}
+		serializeProfiles();
 		return newProfile;
 	}
 	
