@@ -1,3 +1,4 @@
 //Configfile for T10
 ActiveProfile=default
 ProfilePath=data/profiles/default.profile
+ProfilePath=data/profiles/output.profile

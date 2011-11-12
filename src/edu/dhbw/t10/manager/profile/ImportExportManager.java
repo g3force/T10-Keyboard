@@ -299,17 +299,17 @@ public class ImportExportManager {
 	 * @throws IOException
 	 * @author dirk
 	 */
-	public static void importProfiles(ProfileManager profM, File zipFile) throws ZipException, IOException {
+	public static void importProfiles(File zipFile) throws ZipException, IOException {
 		logger.debug("Extracting zip file " + zipFile.toString());
 		String profileName = zipFile.getName();
 		profileName = profileName.replace(".zip", "");
 		int counter = 0;
-		while (profM.existProfile(profileName)) {
+		while (Controller.getInstance().existProfile(profileName)) {
 			counter++;
-			if (counter == 0)
+			if (counter == 1)
 				profileName += counter;
 			else
-				profileName += profileName.substring(0, profileName.length() - 1) + counter;
+				profileName = profileName.substring(0, profileName.length() - 1) + counter;
 		}
 		logger.debug("Profile " + profileName + " created");
 		BufferedOutputStream dest = null;
