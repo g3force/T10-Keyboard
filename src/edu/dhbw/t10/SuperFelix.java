@@ -24,9 +24,9 @@ import edu.dhbw.t10.manager.Controller;
  * 
  * TODO OPTIONAL ALL graphical buttons (keys) e.g. pause- and arrow keys
  * TODO FelixP menus
- * TODO OPTIONAL ALL StatusBar
+ * TODO ALL question: insert word that is smaller than an existing one?!
  * 
- * @author NicolaiO
+ * @author NicolaiO, DanielAl, FelixP, DirkK, SebastianN
  * 
  */
 public class SuperFelix {
@@ -35,7 +35,7 @@ public class SuperFelix {
 	// --------------------------------------------------------------------------
 	private static final Logger	logger	= Logger.getLogger(SuperFelix.class);
 	
-
+	
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
@@ -46,7 +46,10 @@ public class SuperFelix {
 	// --------------------------------------------------------------------------
 	
 	/**
+	 * Initialize the logger and start the application
+	 * 
 	 * @param args
+	 * @author NicolaiO
 	 */
 	public static void main(String[] args) {
 		/*

@@ -15,7 +15,7 @@ import org.apache.log4j.Logger;
 /**
  * button for the different modes like shift, strg pressed
  * 
- * @author DirkK
+ * @author DirkK, NicolaiO
  * 
  */
 public class ModeButton extends PhysicalButton {
@@ -31,6 +31,17 @@ public class ModeButton extends PhysicalButton {
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
+	
+	/**
+	 * Create a new ModeButton with given ModeKey and bounds
+	 * 
+	 * @param modeKey
+	 * @param size_x
+	 * @param size_y
+	 * @param pos_x
+	 * @param pos_y
+	 * @author NicolaiO
+	 */
 	public ModeButton(ModeKey modeKey, int size_x, int size_y, int pos_x, int pos_y) {
 		super(size_x, size_y, pos_x, pos_y);
 		this.modeKey = modeKey;
@@ -43,18 +54,25 @@ public class ModeButton extends PhysicalButton {
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
 	
+	/**
+	 * Push the button. The event will be transmitted to the occording ModeKey and thus to all other ModeButtons with
+	 * same ModeKey (e.g. to all Shift Buttons)
+	 * 
+	 * @author NicolaiO
+	 */
 	public void push() {
 		modeKey.push();
 	}
-
+	
+	
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
 	public String getModeName() {
 		return modeKey.getName();
 	}
-
-
+	
+	
 	public Key getModeKey() {
 		return modeKey;
 	}

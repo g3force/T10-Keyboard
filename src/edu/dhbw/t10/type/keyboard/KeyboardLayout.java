@@ -53,12 +53,14 @@ public class KeyboardLayout {
 	// --------------------------------------------------------------------------
 	
 	/**
+	 * Create new KeyboardLayout with given size and scale factors
 	 * 
 	 * @param size_x
 	 * @param size_y
 	 * @param scalex
 	 * @param scaley
 	 * @param scale_font
+	 * @author NicolaiO
 	 */
 	public KeyboardLayout(int size_x, int size_y, float scalex, float scaley, float scale_font) {
 		this.size_x = size_x;
@@ -91,12 +93,12 @@ public class KeyboardLayout {
 	 * @author NicolaiO
 	 */
 	public void rescale() {
-		for (PhysicalButton k : getAllPhysicalButtons()) {
-			Rectangle rect = k.getBounds();
-			rect.setBounds((int) (k.getPos_x() * scale_x), (int) (k.getPos_y() * scale_y),
-					(int) (k.getOrigSize().width * scale_x), (int) (k.getOrigSize().height * scale_y));
-			k.setBounds(rect);
-			k.setFont(new Font(font.getName(), font.getStyle(), (int) (font.getSize() * scale_font)));
+		for (PhysicalButton pb : getAllPhysicalButtons()) {
+			Rectangle rect = pb.getBounds();
+			rect.setBounds((int) (pb.getPos_x() * scale_x), (int) (pb.getPos_y() * scale_y),
+					(int) (pb.getOrigSize().width * scale_x), (int) (pb.getOrigSize().height * scale_y));
+			pb.setBounds(rect);
+			pb.setFont(new Font(font.getName(), font.getStyle(), (int) (font.getSize() * scale_font)));
 		}
 		for (DropDownList ddl : ddls) {
 			Rectangle rect = ddl.getBounds();
@@ -108,6 +110,35 @@ public class KeyboardLayout {
 	}
 	
 	
+	/**
+	 * Unset/release all currently active ModeButtons
+	 * 
+	 * @author NicolaiO
+	 */
+	public void unsetPressedModes() {
+		ArrayList<ModeKey> tactiveModes = new ArrayList<ModeKey>();
+		for (ModeKey b : modeKeys) {
+			if (b.getState() == ModeKey.PRESSED) {
+				tactiveModes.add(b);
+			}
+		}
+		for (ModeKey b : tactiveModes) {
+			b.release();
+		}
+	}
+	
+	
+	public ArrayList<ModeKey> getPressedModeKeys() {
+		ArrayList<ModeKey> pmk = new ArrayList<ModeKey>();
+		for (ModeKey mk : modeKeys) {
+			if (mk.getState() == ModeKey.PRESSED || mk.getState() == ModeKey.HOLD) {
+				pmk.add(mk);
+			}
+		}
+		return pmk;
+	}
+
+
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
@@ -141,6 +172,7 @@ public class KeyboardLayout {
 		return new Dimension(getSize_x(), getSize_y());
 	}
 	
+	
 	public int getSize_x() {
 		return (int) (size_x * scale_x);
 	}
@@ -171,6 +203,12 @@ public class KeyboardLayout {
 	}
 	
 	
+	/**
+	 * Set all scales (x,y,font) to given scale
+	 * 
+	 * @param scale
+	 * @author NicolaiO
+	 */
 	public void setScale(float scale) {
 		this.scale_x = scale;
 		this.scale_y = scale;

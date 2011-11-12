@@ -43,6 +43,11 @@ public class MainPanel extends JPanel implements ComponentListener {
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
 	
+	/**
+	 * Create a new empty MainPanel
+	 * 
+	 * @author NicolaiO
+	 */
 	public MainPanel() {
 		logger.debug("Initializing...");
 		this.setLayout(null);

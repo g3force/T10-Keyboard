@@ -37,12 +37,21 @@ public class Button extends PhysicalButton implements MouseListener {
 	private Key							key;
 	private ArrayList<ModeKey>		activeModes			= new ArrayList<ModeKey>();
 	
-
+	
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
-
-
+	
+	
+	/**
+	 * Create a new Button with given size and position
+	 * 
+	 * @param size_x
+	 * @param size_y
+	 * @param pos_x
+	 * @param pos_y
+	 * @author NicolaiO
+	 */
 	public Button(int size_x, int size_y, int pos_x, int pos_y) {
 		super(size_x, size_y, pos_x, pos_y);
 		addMouseListener(this);
@@ -113,9 +122,10 @@ public class Button extends PhysicalButton implements MouseListener {
 	 * Return all keys, that are currently pressed, including mode keys!
 	 * 
 	 * @return
-	 * @author Dirk
+	 * @author DirkK
 	 */
-	public ArrayList<Key> getSingleKey() {
+	@Deprecated
+	public ArrayList<Key> getPressedKeys() {
 		ArrayList<Key> output = new ArrayList<Key>();
 		if (activeModes.size() == 0) {
 			output.add(key);
@@ -123,14 +133,31 @@ public class Button extends PhysicalButton implements MouseListener {
 			output.add(modes.get(activeModes.get(0)));
 		} else {
 			for (ModeKey modeKey : activeModes) {
-				output.add(modeKey);
+				output.add((Key) modeKey);
+				logger.trace(modeKey);
 			}
-			output.add(modes.get("default"));
+			output.add(key);
+			logger.trace(key);
 		}
 		return output;
 	}
 	
 	
+	/**
+	 * Return the currently pressed key, depending on the active Mode.
+	 * If <b>one</b> mode is active, the according key will be returned, else the default key will be returned
+	 * 
+	 * @return currently pressed key
+	 * @author NicolaiO
+	 */
+	public Key getPressedKey() {
+		if (activeModes.size() == 1 && modes.containsKey(activeModes.get(0))) {
+			return modes.get(activeModes.get(0));
+		}
+		return key;
+	}
+
+
 	/**
 	 * Unset/release all currently active ModeButtons
 	 * 
@@ -147,8 +174,68 @@ public class Button extends PhysicalButton implements MouseListener {
 			b.release();
 		}
 	}
-
-
+	
+	
+	@Override
+	public void mousePressed(MouseEvent e) {
+		/**
+		 * visualize pressing button for right mouse click
+		 */
+		if (e.getButton() == MouseEvent.BUTTON3) {
+			if (e.getSource() instanceof JButton) {
+				JButton b = (JButton) e.getSource();
+				b.getModel().setPressed(true);
+			}
+		}
+	}
+	
+	
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		/**
+		 * visualize pressing button for right mouse click
+		 */
+		if (e.getButton() == MouseEvent.BUTTON3) {
+			if (e.getSource() instanceof JButton) {
+				// press shift
+				for (ModeKey mb : modes.keySet()) {
+					if (mb.getName().toLowerCase().equals("shift")) {
+						this.addCurrentMode(mb);
+						break;
+					}
+				}
+				// press key button (SHIFT_MASK not really used)
+				this.actionListener.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, this
+						.getActionCommand(), ActionEvent.SHIFT_MASK));
+				// release shift
+				for (ModeKey mb : modes.keySet()) {
+					if (mb.getName().toLowerCase().equals("shift")) {
+						this.rmCurrentMode(mb);
+						break;
+					}
+				}
+				JButton b = (JButton) e.getSource();
+				b.getModel().setPressed(false);
+			}
+		}
+	}
+	
+	
+	@Override
+	public void mouseClicked(MouseEvent e) {
+	}
+	
+	
+	@Override
+	public void mouseEntered(MouseEvent e) {
+	}
+	
+	
+	@Override
+	public void mouseExited(MouseEvent e) {
+	}
+	
+	
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
@@ -178,59 +265,4 @@ public class Button extends PhysicalButton implements MouseListener {
 		this.key = key;
 		setText(key.getName());
 	}
-	
-	
-	@Override
-	public void mousePressed(MouseEvent e) {
-		/**
-		 * visualize pressing button for right mouse click
-		 */
-		if (e.getButton() == MouseEvent.BUTTON3) {
-			if (e.getSource() instanceof JButton) {
-				JButton b = (JButton) e.getSource();
-				b.getModel().setPressed(true);
-			}
-		}
-	}
-	
-	
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		/**
-		 * visualize pressing button for right mouse click
-		 */
-		if (e.getButton() == MouseEvent.BUTTON3) {
-			if (e.getSource() instanceof JButton) {
-				for (ModeKey mb : modes.keySet()) {
-					if (mb.getName().toLowerCase().equals("shift")) {
-						this.addCurrentMode(mb);
-					} else {
-						logger.trace(mb.getName());
-					}
-				}
-				this.actionListener.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, this
-						.getActionCommand(), ActionEvent.SHIFT_MASK));
-				JButton b = (JButton) e.getSource();
-				b.getModel().setPressed(false);
-			}
-		}
-	}
-	
-	
-	@Override
-	public void mouseClicked(MouseEvent e) {
-	}
-	
-	
-	@Override
-	public void mouseEntered(MouseEvent e) {
-	}
-	
-	
-	@Override
-	public void mouseExited(MouseEvent e) {
-	}
-	
-
-
 }

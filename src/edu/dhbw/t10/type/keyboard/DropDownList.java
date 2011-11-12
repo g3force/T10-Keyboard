@@ -36,20 +36,17 @@ public class DropDownList extends JComboBox {
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
 	/**
+	 * Create a new DropDownList with given type and bounds.
 	 * 
 	 * @param type
 	 * @param size_x
 	 * @param size_y
 	 * @param pos_x
 	 * @param pos_y
+	 * @author NicolaiO
 	 */
 	public DropDownList(int type, int size_x, int size_y, int pos_x, int pos_y) {
-		this.origSize = new Dimension(size_x, size_y);
-		this.pos_x = pos_x;
-		this.pos_y = pos_y;
-		setLayout(null);
-		this.type = type;
-		setBounds(getPos_x(), getPos_y(), getSize().width, getSize().height);
+		init(this.type, size_x, size_y, pos_x, pos_y);
 	}
 	
 	
@@ -62,20 +59,35 @@ public class DropDownList extends JComboBox {
 	 * @param pos_y
 	 */
 	public DropDownList(String type, int size_x, int size_y, int pos_x, int pos_y) {
-		this.origSize = new Dimension(size_x, size_y);
-		this.pos_x = pos_x;
-		this.pos_y = pos_y;
-		setLayout(null);
-		setBounds(getPos_x(), getPos_y(), getSize().width, getSize().height);
 		if (type.equals("profile")) {
 			this.type = PROFILE;
 		}
+		init(this.type, size_x, size_y, pos_x, pos_y);
 	}
 	
 	
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
+	
+	/**
+	 * Initialize DDL with type, size and position
+	 * 
+	 * @param type
+	 * @param size_x
+	 * @param size_y
+	 * @param pos_x
+	 * @param pos_y
+	 * @author NicolaiO
+	 */
+	private void init(int type, int size_x, int size_y, int pos_x, int pos_y) {
+		this.type = type;
+		this.origSize = new Dimension(size_x, size_y);
+		this.pos_x = pos_x;
+		this.pos_y = pos_y;
+		setLayout(null);
+		setBounds(getPos_x(), getPos_y(), getSize().width, getSize().height);
+	}
 	
 	
 	// --------------------------------------------------------------------------
@@ -97,7 +109,7 @@ public class DropDownList extends JComboBox {
 			return "profile";
 		return "";
 	}
-
+	
 	
 	public Dimension getOrigSize() {
 		return origSize;

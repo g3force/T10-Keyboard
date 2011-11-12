@@ -17,6 +17,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
+import edu.dhbw.t10.manager.Controller;
 import edu.dhbw.t10.view.dialogs.DialogContainer;
 import edu.dhbw.t10.view.dialogs.InputDlg;
 
@@ -33,13 +34,17 @@ public class MenuBar extends JMenuBar {
 	// --------------------------------------------------------------------------
 	private static final long			serialVersionUID	= -2903181098465204289L;
 	protected static final Object[]	eventCache			= null;
-	// TODO FelixP unused variable
-	private static int					inc					= 1;
 	
 	
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
+	
+	/**
+	 * Create a MenuBar with all its items and define action events
+	 * 
+	 * @author NicolaiO
+	 */
 	public MenuBar() {
 		// File Menu
 		JMenu mFile = new JMenu("File");
@@ -70,23 +75,20 @@ public class MenuBar extends JMenuBar {
 		mProfile.add(iD2F);
 		mProfile.add(iClean);
 		mProfile.add(iDelete);
-
+		
 		
 		// Action Listener for menu items
 		iChange.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
+				
 			}
 		});
-
+		
 		iNewProfile.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// Object response = JOptionPane.showInputDialog((Component) e.getSource(),
-				// "Geben Sie den Namen des neuen Profils an.", "Neues Profil anlegen", JOptionPane.PLAIN_MESSAGE, null,
-				// eventCache, "");
-				new InputDlg("New Profile", "Name of profile:");
+				new InputDlg(EMenuItem.iNewProfile, "New Profile", "Name of profile:");
 			}
 		});
 		
@@ -105,7 +107,7 @@ public class MenuBar extends JMenuBar {
 				new DialogContainer(EMenuItem.iExport);
 			}
 		});
-
+		
 		iClose.addActionListener(new ActionListener() {
 			
 			@Override
@@ -126,7 +128,7 @@ public class MenuBar extends JMenuBar {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
+				
 				new DialogContainer(EMenuItem.iT2D);
 			}
 		});
@@ -159,7 +161,7 @@ public class MenuBar extends JMenuBar {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// Controller.getInstance().deleteProfile("Profile3");
+				Controller.getInstance().deleteProfile("Profile2");
 			}
 		});
 	}

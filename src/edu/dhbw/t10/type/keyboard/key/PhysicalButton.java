@@ -9,10 +9,8 @@
  */
 package edu.dhbw.t10.type.keyboard.key;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Insets;
-import java.lang.reflect.Field;
 
 import javax.swing.JButton;
 
@@ -24,7 +22,7 @@ import org.apache.log4j.Logger;
  * extends JButton and consists position and such stuff
  * is never created itself, only extended
  * 
- * @author DirkK
+ * @author DirkK, NicolaiO
  * 
  */
 public abstract class PhysicalButton extends JButton {
@@ -44,25 +42,20 @@ public abstract class PhysicalButton extends JButton {
 	// --------------------------------------------------------------------------
 	/**
 	 * Create a new Key file with given size and position
+	 * 
 	 * @param size_x Size of the key button
 	 * @param size_y Size of the key button
 	 * @param pos_x Position of the key button
 	 * @param pos_y Position of the key button
+	 * @author NicolaiO
 	 */
 	public PhysicalButton(int size_x, int size_y, int pos_x, int pos_y) {
 		this.origSize = new Dimension(size_x, size_y);
 		this.pos_x = pos_x;
 		this.pos_y = pos_y;
 		setBounds(getPos_x(), getPos_y(), getSize().width, getSize().height);
-		init();
-	}
-	
-	
-	/**
-	 * This constructor is only for compatibility and to avoid nullPointerExceptions...
-	 */
-	public PhysicalButton() {
-		init();
+		setLayout(null);
+		setMargin(new Insets(0, 0, 0, 0));
 	}
 	
 	
@@ -70,40 +63,7 @@ public abstract class PhysicalButton extends JButton {
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
 	
-	private void init() {
-		setLayout(null);
-		setMargin(new Insets(0, 0, 0, 0));
-	}
-
-
-	/**
-	 * @param bgColor
-	 * @return
-	 * @author NicolaiO
-	 */
-	public Color getColorFromString(String bgColor) {
-		Color color;
-		try {
-			Field field = Class.forName("java.awt.Color").getField(bgColor);
-			color = (Color) field.get(null);
-		} catch (Exception e) {
-			color = null;
-		}
-		return color;
-	}
 	
-	
-	public String getStringFromColor(Color bgColor) {
-		String color;
-		try {
-			color = bgColor.toString();
-		} catch (Exception e) {
-			color = null;
-		}
-		return color;
-	}
-	
-
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------

@@ -29,8 +29,8 @@ public class StatusBar extends JLabel implements Runnable {
 	/**  */
 	private static final long		serialVersionUID	= 5692213469714617751L;
 	private static final Logger	logger				= Logger.getLogger(StatusBar.class);
-
-
+	
+	
 	private LinkedList<String>		messageQueue;
 	private Thread						thread				= null;
 	private int							delay;
@@ -51,8 +51,8 @@ public class StatusBar extends JLabel implements Runnable {
 		this.setHorizontalAlignment(align);
 		this.delay = delay;
 	}
-
-
+	
+	
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
@@ -63,10 +63,17 @@ public class StatusBar extends JLabel implements Runnable {
 	 * @author DanielAl
 	 */
 	public void enqueueMessage(String message) {
-		messageQueue.add(message);
-		processQueue();
+		switch (delay) {
+			case 0:
+				setMessage(message);
+				break;
+			default:
+				messageQueue.add(message);
+				processQueue();
+		}
+		
 	}
-
+	
 	
 	/**
 	 * Starts a new thread for processing the Queue (run()), if no Thread exist. Otherwise it do nothing.<br>
@@ -79,7 +86,7 @@ public class StatusBar extends JLabel implements Runnable {
 			thread.start();
 		}
 	}
-
+	
 	
 	/**
 	 * Process the messageQueue and set text of the Statusbar.<br>
@@ -104,12 +111,12 @@ public class StatusBar extends JLabel implements Runnable {
 		setMessage("");
 		Thread.yield();
 	}
-
-
+	
+	
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
-
+	
 	/**
 	 * Set the text of the StatusBar.
 	 * 

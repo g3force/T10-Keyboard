@@ -38,11 +38,14 @@ public class Key {
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
 	/**
+	 * Create new Key.
 	 * 
-	 * @param id
-	 * @param name
-	 * @param keycode
-	 * @param type see constants
+	 * @param id unique identification (mostly for keymap file)
+	 * @param name visible name on keyboard
+	 * @param keycode code for internal usage (from keymap)
+	 * @param type one of UNKNOWN, CONTROL, UNICODE, CHAR
+	 * @param accept is this key an accept key? (save word after entering key)
+	 * @author NicolaiO
 	 */
 	public Key(int id, String name, String keycode, int type, boolean accept) {
 		this.id = id;
@@ -57,19 +60,23 @@ public class Key {
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
 	
+	
 	public Key clone() {
 		Key nk = new Key(id, name, keycode, type, accept);
 		return nk;
 	}
-
-
+	
+	
 	public String toString() {
 		return "id:" + id + " n:" + name + " kc:" + keycode + " t:" + type;
 	}
 	
+	
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
+	
+	
 	public int getId() {
 		return id;
 	}
@@ -109,7 +116,6 @@ public class Key {
 		this.type = type;
 	}
 	
-
 	
 	public boolean isAccept() {
 		return accept;
@@ -119,6 +125,6 @@ public class Key {
 	public void setAccept(boolean accept) {
 		this.accept = accept;
 	}
-
+	
 	
 }
