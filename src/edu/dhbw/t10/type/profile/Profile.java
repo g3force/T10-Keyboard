@@ -99,6 +99,11 @@ public class Profile implements Serializable {
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
 	
+	public String toString() {
+		return getName();
+	}
+
+
 	/**
 	 * Load layout and tree from file
 	 * 

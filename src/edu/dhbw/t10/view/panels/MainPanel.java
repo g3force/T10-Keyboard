@@ -95,7 +95,8 @@ public class MainPanel extends JPanel implements ComponentListener {
 	@Override
 	public void componentResized(ComponentEvent e) {
 		// do not resize if (0,0)
-		if (e.getComponent().getSize().height != 0 && e.getComponent().getSize().width != 0) {
+		if (Controller.getInstance().isReadyForActionEvents() && e.getComponent().getSize().height != 0
+				&& e.getComponent().getSize().width != 0) {
 			logger.debug("Window resized handler called");
 			Controller.getInstance().resizeWindow(e.getComponent().getSize());
 		}

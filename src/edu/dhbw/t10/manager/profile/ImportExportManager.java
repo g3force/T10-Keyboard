@@ -334,7 +334,7 @@ public class ImportExportManager {
 			dest.close();
 			is.close();
 		}
-		Controller.getInstance().createProfile(profileName);
+		Controller.getInstance().addNewProfile(profileName);
 	}
 	
 	
