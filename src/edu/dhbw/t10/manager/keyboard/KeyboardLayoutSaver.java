@@ -46,7 +46,6 @@ import edu.dhbw.t10.type.keyboard.key.PhysicalButton;
  * This class loads a layout file. It needs a keymap to map the buttons to their according keys!
  * 
  * @author NicolaiO
- * 
  */
 public class KeyboardLayoutSaver {
 	// --------------------------------------------------------------------------
@@ -58,6 +57,12 @@ public class KeyboardLayoutSaver {
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
+	
+	/**
+	 * This is a static class and should not be instantiated
+	 * 
+	 * @author DirkK
+	 */
 	private KeyboardLayoutSaver() {
 		throw new AssertionError();
 	}
@@ -202,7 +207,7 @@ public class KeyboardLayoutSaver {
 				
 				layout.appendChild(modeButtonEl);
 			}
-
+			
 			String xml = convertDocToString(doc);
 			printToPath(xml, filePath);
 			
@@ -214,6 +219,14 @@ public class KeyboardLayoutSaver {
 	}
 	
 	
+	/**
+	 * 
+	 * TODO DirkK, add comment!
+	 * 
+	 * @param doc
+	 * @return
+	 * @author DirkK
+	 */
 	private static String convertDocToString(Document doc) {
 		// OUTPUT TO FILE
 		TransformerFactory transfac = TransformerFactory.newInstance();
@@ -245,6 +258,14 @@ public class KeyboardLayoutSaver {
 	}
 	
 	
+	/**
+	 * 
+	 * TODO DirkK, add comment!
+	 * 
+	 * @param xmlString
+	 * @param file
+	 * @author DirkK
+	 */
 	private static void printToPath(String xmlString, String file) {
 		File confFile = new File(file);
 		FileWriter fw;
@@ -267,6 +288,14 @@ public class KeyboardLayoutSaver {
 	}
 	
 	
+	/**
+	 * 
+	 * TODO DirkK, add comment!
+	 * 
+	 * @param el
+	 * @param button
+	 * @author DirkK
+	 */
 	private static void setSizeOfPhysicalButton(Element el, PhysicalButton button) {
 		el.setAttribute("size_x", ((int) button.getOrigSize().getWidth()) + "");
 		el.setAttribute("size_y", ((int) button.getOrigSize().getHeight()) + "");

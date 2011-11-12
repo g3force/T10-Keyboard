@@ -12,10 +12,13 @@ package edu.dhbw.t10.manager;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.zip.ZipException;
 
@@ -31,9 +34,11 @@ import edu.dhbw.t10.type.keyboard.KeyboardLayout;
 import edu.dhbw.t10.type.keyboard.key.Button;
 import edu.dhbw.t10.type.keyboard.key.Key;
 import edu.dhbw.t10.type.keyboard.key.ModeButton;
+import edu.dhbw.t10.type.keyboard.key.ModeKey;
 import edu.dhbw.t10.type.keyboard.key.MuteButton;
 import edu.dhbw.t10.type.profile.Profile;
 import edu.dhbw.t10.view.Presenter;
+import edu.dhbw.t10.view.dialogs.InputDlg;
 import edu.dhbw.t10.view.dialogs.ProfileChooser;
 import edu.dhbw.t10.view.menus.EMenuItem;
 import edu.dhbw.t10.view.menus.StatusPane;
@@ -41,15 +46,14 @@ import edu.dhbw.t10.view.panels.MainPanel;
 
 
 /**
- * The Controller Class provides the central interface to combine the functionallity of the porgramm. the data flows
+ * The Controller Class provides the central interface to combine the functionality of the program. the data flows
  * through it. <br>
  * Here all Managers and the view is initialized...<br>
  * It provides overwritten methods to handles actionEvents...<br>
  * 
- * @author FelixP, DanielAl, NicolaiO
- * 
+ * @author NicolaiO, DirkK, FelixP, SebastianN, DanielAl
  */
-public class Controller implements ActionListener, WindowListener {
+public class Controller implements ActionListener, WindowListener, MouseListener {
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
@@ -70,7 +74,7 @@ public class Controller implements ActionListener, WindowListener {
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
 	/**
-	 * This Constructor instanciate all other objects... The Application is loaded...<br>
+	 * This Constructor instantiate all other objects... The Application is loaded...<br>
 	 * The Controller is implemented as a Singleton<br>
 	 * 
 	 * @author NicolaiO, DirkK, FelixP, SebastianN, DanielAl
@@ -84,19 +88,21 @@ public class Controller implements ActionListener, WindowListener {
 		presenter = new Presenter(mainPanel, statusPane);
 		typedWord = "";
 		suggest = "";
+		// This message is important! Otherwise, The StatusPane has a wrong height and the layout will be decreased
+		// meaning, it gets smaller with each start...
+		statusPane.enqueueMessage("Keyboard initializing...", StatusPane.LEFT);
 		profileMan = new ProfileManager();
-
+		
 		mainPanel.setKbdLayout(profileMan.getActive().getKbdLayout());
 		profileMan.addAllProfilesToDDL();
-
-
+		
 		mainPanel.addComponentListener(mainPanel);
 		resizeWindow(profileMan.getActive().getKbdLayout().getSize());
 		statusPane.enqueueMessage("Keyboard initialized.", StatusPane.LEFT);
 		logger.debug("initialized.");
 	}
 	
-
+	
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
@@ -109,10 +115,12 @@ public class Controller implements ActionListener, WindowListener {
 	 * @author SebastianN
 	 */
 	public void createProfile(String name) {
-		profileMan.createProfile(name);
+		Profile newProfile = profileMan.createProfile(name);
+		if (newProfile != null)
+			profileMan.addProfileToDDL(newProfile);
 	}
 	
-
+	
 	/**
 	 * Deletes a profile by name.
 	 * 
@@ -122,27 +130,27 @@ public class Controller implements ActionListener, WindowListener {
 	public void deleteProfile(String name) {
 		profileMan.deleteProfile(name);
 	}
-
-
-	@Override
+	
+	
 	/**
 	 * Starts the right activities for a specific event...
 	 * 
 	 * @param e
-	 * @author ALL
+	 * @author NicolaiO, DirkK, FelixP, SebastianN, DanielAl
 	 */
+	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() instanceof Button) {
 			logger.debug("Normal Button pressed.");
 			eIsButton((Button) e.getSource());
 		}
-
+		
 		if (e.getSource() instanceof ModeButton) {
 			logger.debug("ModeButton pressed.");
 			ModeButton modeB = (ModeButton) e.getSource();
 			modeB.push();
 		}
-
+		
 		if (e.getSource() instanceof MuteButton) {
 			logger.debug("MuteButton pressed.");
 			eIsMuteButton((MuteButton) e.getSource());
@@ -157,21 +165,10 @@ public class Controller implements ActionListener, WindowListener {
 			if (e.getActionCommand().equals(JFileChooser.APPROVE_SELECTION))
 				eIsProfileChooser((ProfileChooser) e.getSource());
 		}
-
-		// FIXME NicolaiO reference to Shift Mode Button?? => problem, any idea??
-		/**
-		 * SHIFT_MASK modifier is set, when a button is clicked with right mouse button.
-		 * How can I tell that shift should be pressed?! with ModeButton Shift or is there another way?
-		 * TODO DanielAl send shift signal to Output
-		 */
-		if (e.getModifiers() == ActionEvent.SHIFT_MASK) {
-			logger.debug("shift modifier is pressed. No action yet...");
-		}
 	}
 	
-
+	
 	/**
-	 * 
 	 * Do something, if ProfileChooser was activated. o_O
 	 * 
 	 * @param pc
@@ -179,9 +176,9 @@ public class Controller implements ActionListener, WindowListener {
 	 */
 	private void eIsProfileChooser(ProfileChooser pc) {
 		File path = pc.getSelectedFile();
-
+		
 		switch (pc.getMenuType()) {
-			// import profile
+		// import profile
 			case iImport:
 				try {
 					ImportExportManager.importProfiles(profileMan, path);
@@ -198,7 +195,7 @@ public class Controller implements ActionListener, WindowListener {
 				try {
 					ImportExportManager.exportProfiles(profileMan.getActive(), path);
 					logger.debug("Proifle exported");
-					statusPane.enqueueMessage("Profile exported", statusPane.LEFT);
+					statusPane.enqueueMessage("Profile exported", StatusPane.LEFT);
 				} catch (IOException err1) {
 					logger.error("Unable to export profile " + path.toString());
 				}
@@ -218,18 +215,24 @@ public class Controller implements ActionListener, WindowListener {
 		}
 	}
 	
-
-	private void eIsMenuItem(EMenuItem menuItem, Object o) {
+	
+	public void eIsInputDlg(EMenuItem menuItem, Object o) {
 		switch (menuItem) {
-			// new profile
+		// new profile
 			case iNewProfile:
-				if (!profileMan.existProfile((String) o)) {
-					this.createProfile((String) o);
+				InputDlg iDlg = (InputDlg) o;
+				String newProfile = iDlg.getProfileName();
+				if (!profileMan.existProfile(newProfile)) {
+					this.createProfile(newProfile);
+					iDlg.setVisible(false);
+				} else {
+					iDlg.setLblText("Profile exisiert bereits :-(");
 				}
 				break;
 		}
 	}
-
+	
+	
 	/**
 	 * Do the logic for a button event. Switch between different types, specific Keys and a Key Combination...
 	 * 
@@ -237,9 +240,13 @@ public class Controller implements ActionListener, WindowListener {
 	 * @author DanielAl
 	 */
 	private void eIsButton(Button button) {
-		if (button.getSingleKey().size() == 1) {
-			Key key = (Key) button.getSingleKey().get(0);
-
+		// get all currently pressed Modekeys
+		ArrayList<ModeKey> pressedModeKeys = profileMan.getActive().getKbdLayout().getPressedModeKeys();
+		
+		// Print the key iff zero or one ModeKeys is pressed
+		if (pressedModeKeys.size() - button.getActiveModes().size() < 1) {
+			Key key = (Key) button.getPressedKey();
+			
 			if (key.isAccept())
 				this.keyIsAccept(key);
 			else if (key.getType() == Key.CHAR)
@@ -256,17 +263,26 @@ public class Controller implements ActionListener, WindowListener {
 			} else if (key.getType() == Key.CONTROL)
 				this.keyIsControl(key);
 			logger.debug("Key pressed: " + key.toString());
-		} else if (button.getSingleKey().size() > 1) {
-			// FIXME NicolaiO, DanielAl Combi auslesen und weitergeben...
-			logger.warn("More than one modeButton pressed. Not handeld correct...");
-			outputMan.printCombi(button);
-		} else
-			logger.error("No Key List");
-
-		button.unsetPressedModes();
+		} else {
+			// print the key combi else
+			outputMan.printCombi(pressedModeKeys, button.getKey());
+		}
+		
+		/*
+		 * TODO DanielAl read and delete
+		 * --> Also werden nur combis mit einem Key unterstüzt? Nicht sowas wo man ALT gedrückt hält und dann
+		 * nacheinander verschiedene tasten drückt (und loslässt), wie bei Unicode??
+		 * 
+		 * => sobald ein Button gedrückt wird, wird das ActionEvent getriggert... dann muss auch was ausgegeben werden!
+		 * Um mehrere Tasten hintereinander zu drücken, sollte man die entsprechenden ModeButton auf HOLD stellen und dann
+		 * die Buchstaben tippen, das sollte klappen oder?
+		 */
+		
+		// unset all ModeButtons, that are in PRESSED state
+		profileMan.getActive().getKbdLayout().unsetPressedModes();
 	}
 	
-
+	
 	/**
 	 * Switchs between the three different Mute modes...<br>
 	 * Modes are:<br>
@@ -293,7 +309,7 @@ public class Controller implements ActionListener, WindowListener {
 		logger.debug("MuteButton pressed");
 	}
 	
-
+	
 	/**
 	 * Switchs the profiles based on a Dropdownlist... <br>
 	 * 
@@ -301,7 +317,7 @@ public class Controller implements ActionListener, WindowListener {
 	 * @author DanielAl
 	 */
 	private void eIsDropDownList(DropDownList currentList) {
-
+		
 		if (currentList.getType() == DropDownList.PROFILE) {
 			Profile selectedProfile = profileMan.getProfiles().get(currentList.getSelectedIndex());
 			logger.debug("Profilename: " + selectedProfile.getName());
@@ -309,7 +325,7 @@ public class Controller implements ActionListener, WindowListener {
 		}
 	}
 	
-
+	
 	/**
 	 * Accept a suggested word, unmarks it and prints the given key.
 	 * 
@@ -352,7 +368,7 @@ public class Controller implements ActionListener, WindowListener {
 		outputMan.printSuggest(suggest, typedWord);
 	}
 	
-
+	
 	/**
 	 * If the input is a Unicode (it is a Symbol character, special chars are type char) and this will be printed. <br>
 	 * The typed Word and Suggest Word will be forgotten.<br>
@@ -365,7 +381,7 @@ public class Controller implements ActionListener, WindowListener {
 		acceptWord(typedWord);
 	}
 	
-
+	
 	/**
 	 * Handles a typed BackSpace.<br>
 	 * There are 3 options:<br>
@@ -395,7 +411,7 @@ public class Controller implements ActionListener, WindowListener {
 		}
 	}
 	
-
+	
 	/**
 	 * When Space or Enter is pressed accept the typed Word and print Space or Enter...<br>
 	 * The suggest will be declined and forgotten.<br>
@@ -424,8 +440,8 @@ public class Controller implements ActionListener, WindowListener {
 		typedWord = "";
 		suggest = "";
 	}
-
-
+	
+	
 	// Window ----------------------------
 	
 	/**
@@ -450,53 +466,53 @@ public class Controller implements ActionListener, WindowListener {
 		}
 	}
 	
-
+	
 	@Override
 	public void windowActivated(WindowEvent arg0) {
 		
 	}
 	
-
+	
 	@Override
 	public void windowClosed(WindowEvent arg0) {
 		
 	}
 	
-
+	
 	@Override
 	public void windowClosing(WindowEvent arg0) {
 		closeSuperFelix();
 	}
 	
-
+	
 	@Override
 	public void windowDeactivated(WindowEvent arg0) {
 		
 	}
 	
-
+	
 	@Override
 	public void windowDeiconified(WindowEvent arg0) {
 		
 	}
 	
-
+	
 	@Override
 	public void windowIconified(WindowEvent arg0) {
 		
 	}
 	
-
+	
 	@Override
 	public void windowOpened(WindowEvent arg0) {
 		
 	}
 	
-
+	
 	/**
 	 * Save the actual Profile and dictionary to be able to clse the application.
 	 * 
-	 * @author NicolaiO
+	 * @author DirkK
 	 */
 	private void closeSuperFelix() {
 		try {
@@ -512,22 +528,54 @@ public class Controller implements ActionListener, WindowListener {
 			logger.error("closing routine produced an error: " + e.toString());
 		}
 	}
-
-
+	
+	
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
+	
 	/**
 	 * Calls the constructor if no instance exist. Singleton Design Pattern...
 	 * 
 	 * @return Controller
 	 * @author NicolaiO
 	 */
-	
 	public static Controller getInstance() {
 		if (instance == null) {
 			instance = new Controller();
 		}
 		return instance;
+	}
+	
+	
+	@Override
+	public void mouseClicked(MouseEvent e) {
+	}
+	
+	
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		logger.debug("Mouse moved into a tooltip area");
+		if (e.getSource() instanceof MuteButton) {
+			MuteButton pb = (MuteButton) e.getSource();
+			statusPane.enqueueMessage(pb.getMode().getTooltip(), StatusPane.RIGHT);
+		}
+	}
+	
+	
+	@Override
+	public void mouseExited(MouseEvent e) {
+		logger.debug("Mouse left tooltip area");
+		statusPane.enqueueMessage("", StatusPane.RIGHT);
+	}
+	
+	
+	@Override
+	public void mousePressed(MouseEvent e) {
+	}
+	
+	
+	@Override
+	public void mouseReleased(MouseEvent e) {
 	}
 }

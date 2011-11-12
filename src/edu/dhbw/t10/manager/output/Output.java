@@ -24,7 +24,6 @@ import edu.dhbw.t10.type.keyboard.key.Key;
 
 
 /**
- * 
  * This class provides the functionallity of printing Strings via sending Key Strokes to the system.<br>
  * Letters, big letters and numbers are converted directly to their own java.awt.event.KeyEvent constant, which is sent.<br>
  * All other symbols are written via their Unicode.<br>
@@ -32,7 +31,6 @@ import edu.dhbw.t10.type.keyboard.key.Key;
  * Control symbols are sent via their java.awt.event.KeyEvent constant<br>
  * 
  * @author DanielAl
- * 
  */
 public class Output {
 	// --------------------------------------------------------------------------
@@ -44,8 +42,8 @@ public class Output {
 	public static final int			LINUX		= 1;
 	public static final int			WINDOWS	= 2;
 	// SendKey Function Constants
-	public static final int			TYPE		= 0;
-	public static final int			PRESS		= 1;
+	public static final int			PRESS		= 0;
+	public static final int			HOLD		= 1;
 	public static final int			RELEASE	= 2;
 	public static final int			COMBI		= 3;
 	public static final int			SHIFT		= 10;
@@ -62,6 +60,8 @@ public class Output {
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
+	
+	
 	/**
 	 * Constructor for this class with no parameters<br>
 	 * The Operating System is set. This is important for the sendUnicode(String) method, because the input of Unicode
@@ -70,7 +70,6 @@ public class Output {
 	 * 
 	 * @throws UnknownOSException
 	 * @author DanielAl
-	 * 
 	 */
 	protected Output() throws UnknownOSException {
 		String osName = System.getProperty("os.name");
@@ -92,7 +91,7 @@ public class Output {
 		combi = new Stack<Integer>();
 	}
 	
-
+	
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
@@ -108,7 +107,7 @@ public class Output {
 		return printString(c.getKeycode(), c.getType());
 	}
 	
-
+	
 	/**
 	 * 
 	 * Switch with type over different sendKey calls. <br>
@@ -129,7 +128,7 @@ public class Output {
 			return false;
 		
 		switch (type) {
-			// Print Control Symbol, like ENTER or SPACE
+		// Print Control Symbol, like ENTER or SPACE
 			case Key.CONTROL:
 				sendKey(convertKeyCode(charSequence.substring(1, length - 1)));
 				logger.info("Control Symbol printed: " + charSequence);
@@ -156,7 +155,7 @@ public class Output {
 						sendKey(convertKeyCode(charSequence.substring(i, i + 1)), SHIFT);
 						// Small letters
 					} else {
-						sendKey(convertKeyCode(charSequence.substring(i, i + 1)), TYPE);
+						sendKey(convertKeyCode(charSequence.substring(i, i + 1)), PRESS);
 					}
 				}
 				logger.info("String printed: " + charSequence);
@@ -170,34 +169,55 @@ public class Output {
 		return true;
 	}
 	
-
+	
 	/**
 	 * Prints a combi by calling for each Key Element of the ArrayList the sendKey with function COMBI. <br>
+	 * Now press Keys while the others are hold. <br>
 	 * When the List is empty, call the special mode of the COMBI Branch of sendKey to release all pressed Keys...<br>
+	 * FIXME DanielAl unsauber programmiert
 	 * 
-	 * 
-	 * @param Button b
+	 * @param hold ArrayList<Key> set all Keys which have to be hold during the Combi
+	 * @param press ArrayList<Key> set all Keys which have to be pressed during the Combi
 	 * @return boolean
 	 * @author DanielAl
 	 */
-	protected boolean printCombi(ArrayList<Key> b) {
+	protected boolean printCombi(ArrayList<Key> hold, ArrayList<Key> press) {
 		boolean state = true;
-		sendKey(KeyEvent.VK_SHIFT, COMBI);
-		for (Key key : b) {
-			try {
-				printChar(key);
-			} catch (Exception err) {
-				logger.error("printCombi: " + err.getMessage());
-				state = false;
-				break;
-			} 
+		// sendKey(KeyEvent.VK_SHIFT, COMBI);
+		// Process the List which Keys are pressed and hold during the Key Combi
+		if (!hold.isEmpty()) {
+			for (Key key : hold) {
+				try {
+					sendKey(convertKeyCode(key.getKeycode().substring(1, key.getKeycode().length() - 1)), COMBI);
+				} catch (Exception err) {
+					logger.error("printCombi: " + err.getMessage());
+					state = false;
+					break;
+				}
+			}
 		}
+		// Process the List which Keys are typed during the Key Combi
+		if (!press.isEmpty()) {
+			for (Key key : press) {
+				try {
+					printChar(key);
+				} catch (Exception err) {
+					logger.error("printCombi: " + err.getMessage());
+					state = false;
+					break;
+				}
+			}
+		}
+		// Releases the holded Keys
 		sendKey(0, COMBI);
-		logger.info("Key Combi printed");
+		if (state)
+			logger.debug("Key Combi printed");
+		else
+			logger.debug("Key Combi not printed");
 		return state;
 	}
 	
-
+	
 	/**
 	 * Calls convertKeyCode(code, 0)
 	 * @param String code
@@ -208,7 +228,7 @@ public class Output {
 		return convertKeyCode(code, 0);
 	}
 	
-
+	
 	/**
 	 * Converts a Stringcode into a Constant of the KeyEvent class via Reflection.<br>
 	 * These constants could be used for sending Keys.<br>
@@ -251,9 +271,8 @@ public class Output {
 		}
 	}
 	
-
+	
 	/**
-	 * 
 	 * Sends a Unicode in the Format \U+XXXX\ to the System by using a System specific Key combination. <br>
 	 * Windows and Linux are supported.<br>
 	 * For Windows compability a Registry hack is necessary. Use the install.reg to enable HexaDecimal Unicode Input in
@@ -276,16 +295,16 @@ public class Output {
 		
 		switch (os) {
 			case LINUX:
-				sendKey(KeyEvent.VK_CONTROL, PRESS);
-				sendKey(KeyEvent.VK_SHIFT, PRESS);
-				sendKey(KeyEvent.VK_U, TYPE);
+				sendKey(KeyEvent.VK_CONTROL, HOLD);
+				sendKey(KeyEvent.VK_SHIFT, HOLD);
+				sendKey(KeyEvent.VK_U, PRESS);
 				sendKey(KeyEvent.VK_SHIFT, RELEASE);
 				sendKey(KeyEvent.VK_CONTROL, RELEASE);
-				sendKey(convertKeyCode(uniArr[0] + ""), TYPE);
-				sendKey(convertKeyCode(uniArr[1] + ""), TYPE);
-				sendKey(convertKeyCode(uniArr[2] + ""), TYPE);
-				sendKey(convertKeyCode(uniArr[3] + ""), TYPE);
-				sendKey(KeyEvent.VK_ENTER, TYPE);
+				sendKey(convertKeyCode(uniArr[0] + ""), PRESS);
+				sendKey(convertKeyCode(uniArr[1] + ""), PRESS);
+				sendKey(convertKeyCode(uniArr[2] + ""), PRESS);
+				sendKey(convertKeyCode(uniArr[3] + ""), PRESS);
+				sendKey(KeyEvent.VK_ENTER, PRESS);
 				return true;
 				
 			case WINDOWS:
@@ -298,32 +317,32 @@ public class Output {
 					logger.info((num_lock ? "Num Lock is on" : "Num Lock is off"));
 					// If Num_Lock is off, turn it on
 					if (!num_lock) {
-						sendKey(KeyEvent.VK_NUM_LOCK, TYPE);
+						sendKey(KeyEvent.VK_NUM_LOCK, PRESS);
 					}
 					
 					// Sending KeyCombination for Unicode input to Windows (Hold ALT and press ADD and the digits, then
 					// release ALT)
-					sendKey(KeyEvent.VK_ALT, PRESS);
-					sendKey(KeyEvent.VK_ADD, TYPE);
+					sendKey(KeyEvent.VK_ALT, HOLD);
+					sendKey(KeyEvent.VK_ADD, PRESS);
 					// send the Hexa Decimal number with digits as a numpad key and the chars from the normal keyboard...
 					sendKey(
 							Character.isDigit(uniArr[0]) ? convertKeyCode(uniArr[0] + "", 1) : convertKeyCode(uniArr[0] + "",
-									0), TYPE);
+									0), PRESS);
 					sendKey(
 							Character.isDigit(uniArr[1]) ? convertKeyCode(uniArr[1] + "", 1) : convertKeyCode(uniArr[1] + "",
-									0), TYPE);
+									0), PRESS);
 					sendKey(
 							Character.isDigit(uniArr[2]) ? convertKeyCode(uniArr[2] + "", 1) : convertKeyCode(uniArr[2] + "",
-									0), TYPE);
+									0), PRESS);
 					sendKey(
 							Character.isDigit(uniArr[3]) ? convertKeyCode(uniArr[3] + "", 1) : convertKeyCode(uniArr[3] + "",
-									0), TYPE);
+									0), PRESS);
 					
 					sendKey(KeyEvent.VK_ALT, RELEASE);
 					
 					// If Num_Lock was off, turn it off again, so that you have the same status as before...
 					if (!num_lock) {
-						sendKey(KeyEvent.VK_NUM_LOCK, TYPE);
+						sendKey(KeyEvent.VK_NUM_LOCK, PRESS);
 					}
 				} catch (UnsupportedOperationException err) {
 					logger.error("Unsupported Operation: Check Num_Lock state; can't write Unicode" + uniArr.toString());
@@ -335,9 +354,8 @@ public class Output {
 		}
 	}
 	
-
+	
 	/**
-	 * 
 	 * Calls sendKey(key, TYPE)
 	 * 
 	 * @param int key
@@ -345,15 +363,15 @@ public class Output {
 	 * @author DanielAl
 	 */
 	private boolean sendKey(int key) {
-		return sendKey(key, TYPE);
+		return sendKey(key, PRESS);
 	}
 	
-
+	
 	/**
 	 * Send Key Codes to the System with a Robot and java.awt.event.KeyEvent constants. <br>
 	 * Functions:<br>
-	 * - TYPE for type a Key<br>
-	 * - PRESS for pressing and holding a key<br>
+	 * - PRESS for type a Key<br>
+	 * - HOLD for pressing and holding a key<br>
 	 * - RELEASE for releasing a key<br>
 	 * - COMBI for Key COmbination functionallity; used in printCombi()<br>
 	 * - SHIFT for shift a Key to its Uppercase and type it...<br>
@@ -370,12 +388,12 @@ public class Output {
 		}
 		keyRobot.delay(delay);
 		switch (function) {
-			case TYPE:
+			case PRESS:
 				keyRobot.keyPress(key);
 				keyRobot.keyRelease(key);
 				logger.trace("sendKey: Key sent: " + key);
 				break;
-			case PRESS:
+			case HOLD:
 				keyRobot.keyPress(key);
 				logger.trace("sendKey: Key pressed: " + key);
 				break;
@@ -396,7 +414,7 @@ public class Output {
 						}
 						break;
 					default:
-						sendKey((int) key, PRESS);
+						sendKey((int) key, HOLD);
 						combi.push(key);
 				}
 				break;
@@ -411,10 +429,10 @@ public class Output {
 		return true;
 	}
 	
-
+	
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
 	
-
+	
 }

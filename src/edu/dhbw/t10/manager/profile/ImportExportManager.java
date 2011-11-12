@@ -50,7 +50,13 @@ public class ImportExportManager {
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
-	public ImportExportManager() {
+	
+	/**
+	 * Static class!
+	 * 
+	 * @author DirkK
+	 */
+	private ImportExportManager() {
 	}
 	
 	
@@ -143,7 +149,7 @@ public class ImportExportManager {
 	
 	
 	// -------------------------------TREE----------------------------------
-
+	
 	/**
 	 * takes an arbitrary text files and inserts all contained words in the tree
 	 * Tree cleaning recommended after this
@@ -247,6 +253,15 @@ public class ImportExportManager {
 	static final int	BUFFER	= 2048;
 	
 	
+	/**
+	 * 
+	 * TODO DirkK, add comment!
+	 * 
+	 * @param prof
+	 * @param folder
+	 * @throws IOException
+	 * @author DirkK
+	 */
 	public static void exportProfiles(Profile prof, File folder) throws IOException {
 		logger.debug("Exporting profile " + prof.getName());
 		BufferedInputStream origin = null;
@@ -286,7 +301,6 @@ public class ImportExportManager {
 	 * @throws IOException
 	 * @author dirk
 	 */
-	
 	public static void importProfiles(ProfileManager profM, File zipFile) throws ZipException, IOException {
 		logger.debug("Extracting zip file " + zipFile.toString());
 		String profileName = zipFile.getName();
@@ -324,7 +338,7 @@ public class ImportExportManager {
 		}
 		Controller.getInstance().createProfile(profileName);
 	}
-
+	
 	
 	// --------------------------------------------------------------------------
 	// --- unused methods --------------------------------------------------------
@@ -377,7 +391,7 @@ public class ImportExportManager {
 	// }
 	// logger.error("saved to file");
 	// }
-
+	
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------

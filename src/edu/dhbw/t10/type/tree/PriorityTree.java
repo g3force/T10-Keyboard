@@ -44,6 +44,14 @@ public class PriorityTree implements Serializable {
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
+	
+	/**
+	 * 
+	 * TODO DirkK, add comment!
+	 * 
+	 * @param chars
+	 * @author DirkK
+	 */
 	public PriorityTree(String chars) {
 		pathToAllowedChars = chars;
 		allowedChars = new LinkedList<int[]>();
@@ -59,7 +67,9 @@ public class PriorityTree implements Serializable {
 	/**
 	 * inserts a word to the tree
 	 * if the word already exist, frequency is increased by one and suggests are adujsted
+	 * 
 	 * @param word the word that should be inserted
+	 * @author DirkK
 	 */
 	public boolean insert(String word) {
 		return insert(word, 1, false);
@@ -69,8 +79,10 @@ public class PriorityTree implements Serializable {
 	/**
 	 * inserts a word to the tree
 	 * if the word already exist, frequency is increased by one and suggests are adjusted
+	 * 
 	 * @param word the word that should be inserted
 	 * @param frequency the start frequency of the inserting word
+	 * @author DirkK
 	 */
 	private boolean insert(String word, int frequency, boolean setFreq) {
 		if (inputValid(word)) {
@@ -116,6 +128,7 @@ public class PriorityTree implements Serializable {
 	 * 
 	 * @param wordPart beginning of a word
 	 * @return suggested Word
+	 * @author DirkK
 	 */
 	public String getSuggest(String wordPart) {
 		// logger.debug("Creating suggest for " + wordPart + "...");
@@ -138,6 +151,7 @@ public class PriorityTree implements Serializable {
 	 * suggests are adjusted in both cases
 	 * 
 	 * @param word the word to be deleted
+	 * @author DirkK
 	 */
 	public void delete(String word) {
 		// logger.debug("Deleting Node...");
@@ -170,6 +184,7 @@ public class PriorityTree implements Serializable {
 	 * 
 	 * @param word according word
 	 * @return the according PriorityElement
+	 * @author DirkK
 	 */
 	private PriorityElement getElement(String word) {
 		PriorityElement node = root;
@@ -194,6 +209,8 @@ public class PriorityTree implements Serializable {
 	
 	/**
 	 * prints the tree
+	 * 
+	 * @author DirkK
 	 */
 	public void printTree() {
 		printTree(true, "");
@@ -202,7 +219,9 @@ public class PriorityTree implements Serializable {
 	
 	/**
 	 * print subtree starting at a PrirorityElement specified through the according word
+	 * 
 	 * @param rootElement
+	 * @author DirkK
 	 */
 	public void printTree(String rootElement) {
 		printTree(false, rootElement);
@@ -212,8 +231,10 @@ public class PriorityTree implements Serializable {
 	/**
 	 * helper method for printTree, does the work
 	 * and yes, i know that takeRoot is useless, but I do not know the word of root
+	 * 
 	 * @param takeRoot decides whether the root element should be took or the given attribute
 	 * @param rootElement the element which shall be took, if takeRoot is false
+	 * @author DirkK
 	 */
 	private void printTree(boolean takeRoot, String rootElement) {
 		PriorityElement start = root;
@@ -234,7 +255,9 @@ public class PriorityTree implements Serializable {
 	
 	/**
 	 * inserts a list of words to a tree
+	 * 
 	 * @param input HashMap referencing a word (String) to its frequency (int)
+	 * @author DirkK
 	 */
 	public void importFromHashMap(HashMap<String, Integer> input) {
 		for (Entry<String, Integer> entry : input.entrySet()) {
@@ -246,7 +269,9 @@ public class PriorityTree implements Serializable {
 	
 	/**
 	 * exports the dictionary tree as a HashMap
+	 * 
 	 * @return the dictionary tree as a HashMap
+	 * @author DirkK
 	 */
 	public HashMap<String, Integer> exportToHashMap() {
 		logger.debug("exporting to HashMap");
@@ -264,6 +289,7 @@ public class PriorityTree implements Serializable {
 	/**
 	 * just a testing method for Kruse
 	 * TODO DirkK delete
+	 * 
 	 * @param in
 	 * @return
 	 * @author DirkK
@@ -272,7 +298,7 @@ public class PriorityTree implements Serializable {
 		String word = "";
 		int amount = 0;
 		for (Entry<String, Integer> entry : words.entrySet()) {
-			if(entry.getKey().length()>=in.length())
+			if (entry.getKey().length() >= in.length())
 				if (entry.getKey().substring(0, in.length()).equals(in) && entry.getValue() > amount) {
 					word = entry.getKey();
 					amount = entry.getValue();
@@ -329,7 +355,7 @@ public class PriorityTree implements Serializable {
 			// boolean sorted = false;
 			if (ll.isEmpty())
 				ll.add(pe);
-			if(ll.size()==1) {
+			if (ll.size() == 1) {
 				if (ll.get(0).getFrequency() < pe.getFrequency())
 					ll.push(pe);
 				else
@@ -388,7 +414,7 @@ public class PriorityTree implements Serializable {
 				return false;
 		}
 		return true;
-
+		
 	}
 	
 	
@@ -428,7 +454,7 @@ public class PriorityTree implements Serializable {
 			ex.printStackTrace();
 		}
 	}
-
+	
 	
 	public HashMap<String, Integer> getWords() {
 		return words;
@@ -438,7 +464,7 @@ public class PriorityTree implements Serializable {
 	public void setWords(HashMap<String, Integer> words) {
 		this.words = words;
 	}
-
+	
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------

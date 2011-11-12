@@ -13,13 +13,14 @@ import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
 
-import edu.dhbw.t10.type.keyboard.key.Button;
 import edu.dhbw.t10.type.keyboard.key.Key;
+import edu.dhbw.t10.type.keyboard.key.ModeKey;
 
 
 /**
  * The OutputManager provides the interface between the controller and Output. <br>
  * It gives different meta methods for a better handling in the Output. <br>
+ * 
  * @author DanielAl
  */
 public class OutputManager {
@@ -31,7 +32,7 @@ public class OutputManager {
 	// Output instance
 	Output								out;
 	
-
+	
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
@@ -40,7 +41,6 @@ public class OutputManager {
 	 * Instanciate Output. If this fails with an UnknownOSException, the Keyboard is closed.
 	 * 
 	 * @author DanielAl
-	 * 
 	 */
 	public OutputManager() {
 		try {
@@ -52,7 +52,7 @@ public class OutputManager {
 		}
 	}
 	
-
+	
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
@@ -67,6 +67,7 @@ public class OutputManager {
 	public boolean printChar(Key c) {
 		return out.printChar(c);
 	}
+	
 	
 	/**
 	 * Deletes 'num' chars via sending so many Back_Spaces...
@@ -86,6 +87,7 @@ public class OutputManager {
 		}
 	}
 	
+	
 	/**
 	 * Marks 'num' chars backwards via holding SHIFT and press the LEFT Key.
 	 * 
@@ -95,19 +97,20 @@ public class OutputManager {
 	 */
 	public boolean mark(int num) {
 		// Use a ArrayList to be able to use the printCombi
-		ArrayList<Key> markCombi = new ArrayList<Key>();
-		// Keycode is here not like the standard CONTROL code between two \\ \\, because this minimizes calculation of
-		// strings in the called out.printCombi function...
-		for (int j = 0; j < num; j++) {
+		ArrayList<Key> markCombiHold = new ArrayList<Key>();
+		ArrayList<Key> markCombiPress = new ArrayList<Key>();
+		markCombiHold.add(new Key(0, "Shift", "\\SHIFT\\", Key.CONTROL, false));
+		for (int j = 1; j < num + 1; j++) {
 			// Add one marked char via one LEFT Key...
-			markCombi.add(new Key(j, "Left", "\\LEFT\\", Key.CONTROL, false));
+			markCombiPress.add(new Key(j, "Left", "\\LEFT\\", Key.CONTROL, false));
 			logger.trace("Added one mark...");
 		}
-		boolean mark = out.printCombi(markCombi);
+		boolean mark = out.printCombi(markCombiHold, markCombiPress);
 		logger.info(num + " Symboly marked");
 		return mark;
 	}
-
+	
+	
 	/**
 	 * Unmark all things via pressing the RIGHT Key
 	 * 
@@ -117,7 +120,7 @@ public class OutputManager {
 		out.printString("\\RIGHT\\", Key.CONTROL);
 	}
 	
-
+	
 	/**
 	 * Prints a new Suggest for given chars and mark the suggested chars, which aren't yet typed.<br>
 	 * 
@@ -132,17 +135,27 @@ public class OutputManager {
 		}
 	}
 	
-
-	/**
-	 * Prints a Key Combination...
-	 * 
-	 * @param Button b
-	 * @author DanielAl
-	 */
-	public void printCombi(Button b) {
-		out.printCombi(b.getSingleKey());
-	}
 	
+	/**
+	 * Print a combination of keys, given by a list of ModeKeys and a finishing key
+	 * 
+	 * @param mks list of ModeKeys to be pressed
+	 * @param key key to be pressed at the end
+	 * @author NicolaiO
+	 */
+	public void printCombi(ArrayList<ModeKey> mks, Key key) {
+		ArrayList<Key> pressed = new ArrayList<Key>();
+		ArrayList<Key> hold = new ArrayList<Key>();
+
+		for (ModeKey mk : mks) {
+			if (mk.getState() != ModeKey.DEFAULT) {
+				hold.add((Key) mk);
+			}
+		}
+		pressed.add(key);
+		out.printCombi(hold, pressed);
+	}
+
 
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
