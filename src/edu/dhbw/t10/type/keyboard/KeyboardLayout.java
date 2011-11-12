@@ -93,12 +93,12 @@ public class KeyboardLayout {
 	 * @author NicolaiO
 	 */
 	public void rescale() {
-		for (PhysicalButton k : getAllPhysicalButtons()) {
-			Rectangle rect = k.getBounds();
-			rect.setBounds((int) (k.getPos_x() * scale_x), (int) (k.getPos_y() * scale_y),
-					(int) (k.getOrigSize().width * scale_x), (int) (k.getOrigSize().height * scale_y));
-			k.setBounds(rect);
-			k.setFont(new Font(font.getName(), font.getStyle(), (int) (font.getSize() * scale_font)));
+		for (PhysicalButton pb : getAllPhysicalButtons()) {
+			Rectangle rect = pb.getBounds();
+			rect.setBounds((int) (pb.getPos_x() * scale_x), (int) (pb.getPos_y() * scale_y),
+					(int) (pb.getOrigSize().width * scale_x), (int) (pb.getOrigSize().height * scale_y));
+			pb.setBounds(rect);
+			pb.setFont(new Font(font.getName(), font.getStyle(), (int) (font.getSize() * scale_font)));
 		}
 		for (DropDownList ddl : ddls) {
 			Rectangle rect = ddl.getBounds();
@@ -125,6 +125,17 @@ public class KeyboardLayout {
 		for (ModeKey b : tactiveModes) {
 			b.release();
 		}
+	}
+	
+	
+	public ArrayList<ModeKey> getPressedModeKeys() {
+		ArrayList<ModeKey> pmk = new ArrayList<ModeKey>();
+		for (ModeKey mk : modeKeys) {
+			if (mk.getState() == ModeKey.PRESSED || mk.getState() == ModeKey.HOLD) {
+				pmk.add(mk);
+			}
+		}
+		return pmk;
 	}
 
 

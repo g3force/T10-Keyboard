@@ -24,11 +24,11 @@ import edu.dhbw.t10.view.menus.EMenuItem;
 
 
 /**
- * TODO felix, add comment!
+ * TODO FelixP, add comment!
  * - What should this type do (in one sentence)?
  * - If not intuitive: A simple example how to use this class
  * 
- * @author felix
+ * @author FelixP
  * 
  */
 public class InputDlg extends JDialog {

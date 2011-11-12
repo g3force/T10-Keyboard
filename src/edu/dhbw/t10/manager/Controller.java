@@ -74,7 +74,7 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
 	/**
-	 * This Constructor instanciate all other objects... The Application is loaded...<br>
+	 * This Constructor instantiate all other objects... The Application is loaded...<br>
 	 * The Controller is implemented as a Singleton<br>
 	 * 
 	 * @author NicolaiO, DirkK, FelixP, SebastianN, DanielAl
@@ -88,11 +88,13 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 		presenter = new Presenter(mainPanel, statusPane);
 		typedWord = "";
 		suggest = "";
+		// This message is important! Otherwise, The StatusPane has a wrong height and the layout will be decreased
+		// meaning, it gets smaller with each start...
+		statusPane.enqueueMessage("Keyboard initializing...", StatusPane.LEFT);
 		profileMan = new ProfileManager();
 		
 		mainPanel.setKbdLayout(profileMan.getActive().getKbdLayout());
 		profileMan.addAllProfilesToDDL();
-		
 		
 		mainPanel.addComponentListener(mainPanel);
 		resizeWindow(profileMan.getActive().getKbdLayout().getSize());
@@ -238,13 +240,13 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	 * @author DanielAl
 	 */
 	private void eIsButton(Button button) {
-		ArrayList<ModeKey> modeKeys = profileMan.getActive().getKbdLayout().getModeKeys();
-		if (modeKeys.size() > 1) {
-			outputMan.printCombi(modeKeys, button.getKey());
-		} else if (button.getPressedKeys().size() == 1) {
-			Key key = (Key) button.getPressedKeys().get(0);
+		// get all currently pressed Modekeys
+		ArrayList<ModeKey> pressedModeKeys = profileMan.getActive().getKbdLayout().getPressedModeKeys();
+		
+		// Print the key iff zero or one ModeKeys is pressed
+		if (pressedModeKeys.size() - button.getActiveModes().size() < 1) {
+			Key key = (Key) button.getPressedKey();
 			
-			logger.trace("buttons: " + button.getPressedKeys().size() + "   " + button.getPressedKeys());
 			if (key.isAccept())
 				this.keyIsAccept(key);
 			else if (key.getType() == Key.CHAR)
@@ -261,29 +263,22 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 			} else if (key.getType() == Key.CONTROL)
 				this.keyIsControl(key);
 			logger.debug("Key pressed: " + key.toString());
-		} else if (button.getPressedKeys().size() > 1) {
-			/*
-			 * FIXME NicolaiO delete me after reading
-			 * es wird keine Combi übergeben (z.B. CRTL+SHIFT+u ergibt U und nicht u (unicode))...
-			 * die Methode printCombi funktioniert an sich (nur unsauber programmiert)
-			 * => habe es oben eingefügt, so wie es war, hat alles keinen Sinn gemacht... deine Methode war auch
-			 * fehlerhaft, habe ich neu geschrieben (siehe printCombi(ArrayList<ModeKey> mks, Key key) in OutputManager)
-			 * die alte Methode darüber kann dann weg...
-			 * 
-			 * Wie kann man Combis auf der Tastatur eintippen? => Mode Tasten nacheinander drücken und dann einen Button
-			 * => Habe es mit Strg + c/v und Strg+Shift+f probiert => funzt
-			 * das ist extra auf Deutsch damit es schnell von dir behandelt wird :P)
-			 * 
-			 * --> Also werden nur combis mit einem Key unterstüzt? Nicht sowas wo man ALT gedrückt hält und dann
-			 * nacheinander verschiedene tasten drückt (und loslässt), wie bei Unicode??
-			 * 
-			 * FIXME NicolaiO jetzt wird alles als KeyCombi interpretiert...
-			 */
-			logger.error("You just reached one of the famouse parts of code, that were never be supposed to be reached :O");
-		} else
-			logger.error("No Key List");
+		} else {
+			// print the key combi else
+			outputMan.printCombi(pressedModeKeys, button.getKey());
+		}
 		
-		// button.unsetPressedModes();
+		/*
+		 * TODO DanielAl read and delete
+		 * --> Also werden nur combis mit einem Key unterstüzt? Nicht sowas wo man ALT gedrückt hält und dann
+		 * nacheinander verschiedene tasten drückt (und loslässt), wie bei Unicode??
+		 * 
+		 * => sobald ein Button gedrückt wird, wird das ActionEvent getriggert... dann muss auch was ausgegeben werden!
+		 * Um mehrere Tasten hintereinander zu drücken, sollte man die entsprechenden ModeButton auf HOLD stellen und dann
+		 * die Buchstaben tippen, das sollte klappen oder?
+		 */
+		
+		// unset all ModeButtons, that are in PRESSED state
 		profileMan.getActive().getKbdLayout().unsetPressedModes();
 	}
 	

@@ -197,7 +197,6 @@ public class KeyboardLayoutLoader {
 					DropDownList cb = new DropDownList(getAttribute(attr, "type"), getIntAttribute(attr, "size_x"),
 							getIntAttribute(attr, "size_y"), getIntAttribute(attr, "pos_x"), getIntAttribute(attr, "pos_y"));
 					ddls.add(cb);
-					logger.trace("ddl: " + getIntAttribute(attr, "pos_x"));
 					cb.addActionListener(Controller.getInstance());
 				}
 			} catch (NullPointerException e) {
