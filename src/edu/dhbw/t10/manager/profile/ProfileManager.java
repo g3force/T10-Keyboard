@@ -289,6 +289,7 @@ public class ProfileManager {
 				loadDDLs();
 			}
 		}
+		serializeProfiles();
 		return newProfile;
 	}
 	
