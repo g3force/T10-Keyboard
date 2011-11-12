@@ -35,7 +35,7 @@ public class ProfileManager {
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
 	private static final Logger	logger					= Logger.getLogger(ProfileManager.class);
-	private static final String	configFile				= "data/config";
+	private static final String	configFile				= "data/t10keyboard.conf";
 	private ArrayList<Profile>		profiles					= new ArrayList<Profile>();
 	private ArrayList<String>		profilePathes			= new ArrayList<String>();
 	private Profile					activeProfile;
@@ -50,9 +50,10 @@ public class ProfileManager {
 	 * 
 	 * TODO SebastianN, add comment!
 	 * 
-	 * @author SebastianN
+	 * @author SebastianN, NicolaiO
 	 */
 	public ProfileManager() {
+		Profile newActiveProfile;
 		logger.debug("initializing...");
 		readConfig(); // fills activeProfileName and profilePathes with the data from the config file
 		logger.debug("configfile: activeProfileName=" + defaultActiveProfile + " profiles=" + profilePathes.size());
@@ -64,14 +65,14 @@ public class ProfileManager {
 		}
 		// set active profile by defauleActiveProfile which was either loaded from config file or is set to a default
 		// value
-		activeProfile = getProfileByName(defaultActiveProfile);
+		newActiveProfile = getProfileByName(defaultActiveProfile);
 		// if the defaultActiveProfile in the config file references a non existent profile, create a new profile with the
 		// given name
-		if (activeProfile == null) {
-			activeProfile = createProfile(defaultActiveProfile);
+		if (newActiveProfile == null) {
+			newActiveProfile = createProfile(defaultActiveProfile);
 		}
 		// now, active profile is hopefully set to any profile...
-		activeProfile.load();
+		setActive(newActiveProfile);
 		logger.debug("initialized.");
 	}
 	
@@ -88,13 +89,19 @@ public class ProfileManager {
 	 */
 	public void loadDDLs() {
 		ArrayList<DropDownList> DDLs = getActive().getKbdLayout().getDdls();
+		logger.trace("blubb1");
 		for (DropDownList ddl : DDLs) {
 			switch (ddl.getType()) {
 				case DropDownList.PROFILE:
 					ddl.removeAllItems();
+					logger.trace("blubb2");
 					for (Profile p : profiles) {
-						ddl.addItem(p.getName());
+						ddl.addItem(p);
+						logger.trace("blubb3");
 					}
+					logger.debug("loaded " + ddl.getItemCount() + " items in profile-ddl");
+					ddl.setSelectedItem(getActive());
+					logger.debug("Selected item is: " + getActive());
 					ddl.revalidate();
 					break;
 				default:
@@ -110,6 +117,7 @@ public class ProfileManager {
 	 * @param handle
 	 * @author SebastianN
 	 */
+	@Deprecated
 	public void addProfileToDDL(Profile handle) {
 		ArrayList<DropDownList> DDLs = getActive().getKbdLayout().getDdls();
 		for (int i = 0; i < DDLs.size(); i++) {
@@ -127,7 +135,8 @@ public class ProfileManager {
 	 * @param name of the to-be deleted profile.
 	 * @author SebastianN
 	 */
-	private void removeProfileFromDDL(String name) {
+	@Deprecated
+	public void removeProfileFromDDL(String name) {
 		ArrayList<DropDownList> DDLs = getActive().getKbdLayout().getDdls();
 		for (int i = 0; i < DDLs.size(); i++) {
 			if (DDLs.get(i).getType() == DropDownList.PROFILE) {
@@ -286,7 +295,7 @@ public class ProfileManager {
 			if (getActive() == null) {
 				logger.error("The famouse case, that should never occure, just did exactly this :D");
 			} else {
-				loadDDLs();
+				// loadDDLs();
 			}
 		}
 		serializeProfiles();
@@ -340,7 +349,7 @@ public class ProfileManager {
 			if (curProfile == toDelete) {
 				logger.debug("Delete profile: " + toDelete.getName());
 				profiles.remove(i);
-				removeProfileFromDDL(toDelete.getName());
+				loadDDLs();
 				break;
 			}
 		}
@@ -355,6 +364,8 @@ public class ProfileManager {
 	 * @return Position within array (int). If not found, it returns 0 (so the first position is chosen)
 	 * @author SebastianN
 	 */
+	@SuppressWarnings("unused")
+	@Deprecated
 	private int getPositionOfProfile(String name) {
 		for (int i = 0; i < profiles.size(); i++) {
 			if (profiles.get(i).equals(name))
@@ -372,20 +383,21 @@ public class ProfileManager {
 	 * @author SebastianN
 	 */
 	public void setActive(Profile newActive) {
+		// do nothing, if profile is already active
 		if (newActive == activeProfile) {
 			return;
 		}
+		
+		logger.info("Setting profile " + newActive + " active.");
+
+		// save currently active profile
 		if (activeProfile != null) {
 			activeProfile.save();
 		}
-		ArrayList<DropDownList> DDLs = getActive().getKbdLayout().getDdls();
-		for (int i = 0; i < DDLs.size(); i++) {
-			if (DDLs.get(i).getType() == DropDownList.PROFILE) {
-				DDLs.get(i).setSelectedItem(this.getPositionOfProfile(newActive.getName()));
-			}
-		}
+		// set and load new active profile
 		activeProfile = newActive;
 		activeProfile.load();
+		logger.info("Profile now active: " + getActive());
 		loadDDLs();
 	}
 	

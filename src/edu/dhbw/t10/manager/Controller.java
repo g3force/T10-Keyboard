@@ -57,7 +57,7 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
-	private static final Logger	logger	= Logger.getLogger(Controller.class);
+	private static final Logger	logger					= Logger.getLogger(Controller.class);
 	private static Controller		instance;
 	
 	private String						typedWord;
@@ -70,8 +70,9 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	private StatusPane				statusPane;
 	
 	private boolean					readyForActionEvents	= false;
-
+	private boolean					changeProfileBlocked		= false;
 	
+
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
@@ -96,7 +97,6 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 		profileMan = new ProfileManager();
 		
 		changeProfile(profileMan.getActive());
-		// profileMan.addAllProfilesToDDL();
 		
 		readyForActionEvents = true;
 		statusPane.enqueueMessage("Keyboard initialized.", StatusPane.LEFT);
@@ -115,9 +115,13 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	 * @param String name
 	 * @author SebastianN
 	 */
-	public void createProfile(String name) {
-		profileMan.createProfile(name);
-
+	public void addNewProfile(String name) {
+		Profile profile = profileMan.createProfile(name);
+		if (profile != null) {
+			changeProfile(profile);
+		} else {
+			logger.error("can not add new profile, it could not be created!");
+		}
 	}
 	
 	
@@ -140,9 +144,13 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	 * @author NicolaiO
 	 */
 	public void changeProfile(Profile profile) {
-		profileMan.setActive(profile);
-		mainPanel.setKbdLayout(profileMan.getActive().getKbdLayout());
-		resizeWindow(profileMan.getActive().getKbdLayout().getSize());
+		if (!changeProfileBlocked) {
+			changeProfileBlocked = true;
+			profileMan.setActive(profile);
+			mainPanel.setKbdLayout(profileMan.getActive().getKbdLayout());
+			resizeWindow(profileMan.getActive().getKbdLayout().getSize());
+			changeProfileBlocked = false;
+		}
 	}
 
 
@@ -243,7 +251,7 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 				InputDlg iDlg = (InputDlg) o;
 				String newProfile = iDlg.getProfileName();
 				if (!profileMan.existProfile(newProfile)) {
-					this.createProfile(newProfile);
+					this.addNewProfile(newProfile);
 					iDlg.setVisible(false);
 				} else {
 					iDlg.setLblText("Profile already exists :-(");
@@ -331,15 +339,15 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	
 	
 	/**
-	 * Switchs the profiles based on a Dropdownlist... <br>
+	 * Switches the profiles based on a Dropdownlist... <br>
 	 * 
 	 * @param currentDdl
-	 * @author DanielAl
+	 * @author DanielAl, NicolaiO
 	 */
 	private void eIsDropDownList(DropDownList currentDdl) {
 		if (currentDdl.getType() == DropDownList.PROFILE) {
-			Profile selectedProfile = profileMan.getProfiles().get(currentDdl.getSelectedIndex());
-			logger.debug("Profilename: " + selectedProfile.getName());
+			Profile selectedProfile = (Profile) currentDdl.getSelectedItem();
+			logger.debug("profile ddls: selected Profilename: " + selectedProfile.getName());
 			changeProfile(selectedProfile);
 		}
 	}
@@ -553,8 +561,8 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	public boolean existProfile(String name) {
 		return profileMan.existProfile(name);
 	}
-
 	
+
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
@@ -602,5 +610,10 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	
 	@Override
 	public void mouseReleased(MouseEvent e) {
+	}
+	
+	
+	public boolean isReadyForActionEvents() {
+		return readyForActionEvents;
 	}
 }
