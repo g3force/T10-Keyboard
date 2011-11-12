@@ -263,7 +263,7 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 			logger.debug("Key pressed: " + key.toString());
 		} else if (button.getPressedKeys().size() > 1) {
 			/*
-			 * FIXME DanielAl delete me after reading
+			 * FIXME NicolaiO delete me after reading
 			 * es wird keine Combi übergeben (z.B. CRTL+SHIFT+u ergibt U und nicht u (unicode))...
 			 * die Methode printCombi funktioniert an sich (nur unsauber programmiert)
 			 * => habe es oben eingefügt, so wie es war, hat alles keinen Sinn gemacht... deine Methode war auch
@@ -273,6 +273,11 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 			 * Wie kann man Combis auf der Tastatur eintippen? => Mode Tasten nacheinander drücken und dann einen Button
 			 * => Habe es mit Strg + c/v und Strg+Shift+f probiert => funzt
 			 * das ist extra auf Deutsch damit es schnell von dir behandelt wird :P)
+			 * 
+			 * --> Also werden nur combis mit einem Key unterstüzt? Nicht sowas wo man ALT gedrückt hält und dann
+			 * nacheinander verschiedene tasten drückt (und loslässt), wie bei Unicode??
+			 * 
+			 * FIXME NicolaiO jetzt wird alles als KeyCombi interpretiert...
 			 */
 			logger.error("You just reached one of the famouse parts of code, that were never be supposed to be reached :O");
 		} else
@@ -558,7 +563,6 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 		logger.debug("Mouse moved into a tooltip area");
 		if (e.getSource() instanceof MuteButton) {
 			MuteButton pb = (MuteButton) e.getSource();
-			// FIXME DanielAl nothing to see on right statusPane
 			statusPane.enqueueMessage(pb.getMode().getTooltip(), StatusPane.RIGHT);
 		}
 	}
