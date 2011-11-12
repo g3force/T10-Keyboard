@@ -116,9 +116,8 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	 * @author SebastianN
 	 */
 	public void createProfile(String name) {
-		Profile newProfile = profileMan.createProfile(name);
-		if (newProfile != null)
-			profileMan.addProfileToDDL(newProfile);
+		profileMan.createProfile(name);
+
 	}
 	
 	
@@ -201,7 +200,7 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 		// import profile
 			case iImport:
 				try {
-					ImportExportManager.importProfiles(profileMan, path);
+					ImportExportManager.importProfiles(path);
 				} catch (ZipException err1) {
 					logger.error("unable to extract file " + path.toString());
 				} catch (IOException err1) {
@@ -214,7 +213,7 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 			case iExport:
 				try {
 					ImportExportManager.exportProfiles(profileMan.getActive(), path);
-					logger.debug("Proifle exported");
+					logger.debug("Profile exported");
 					statusPane.enqueueMessage("Profile exported", StatusPane.LEFT);
 				} catch (IOException err1) {
 					logger.error("Unable to export profile " + path.toString());
@@ -224,6 +223,7 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 			// Extend Dictionary By Text
 			case iT2D:
 				HashMap<String, Integer> words = new HashMap<String, Integer>();
+				profileMan.getActive().save();
 				try {
 					words = ImportExportManager.importFromText(path.toString());
 				} catch (IOException err) {
@@ -549,6 +549,11 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 		}
 	}
 	
+	
+	public boolean existProfile(String name) {
+		return profileMan.existProfile(name);
+	}
+
 	
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
