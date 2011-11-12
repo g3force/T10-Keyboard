@@ -354,7 +354,7 @@
 
 	<!-- Spaces -->
 	<button size_x="160" size_y="50" pos_x="240" pos_y="280">
-		<key accept="true">130</key>
+		<key accept="true">1301</key>
 	</button>
 	<button size_x="160" size_y="50" pos_x="405" pos_y="280">
 		<key>130</key>

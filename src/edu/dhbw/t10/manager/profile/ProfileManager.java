@@ -79,20 +79,26 @@ public class ProfileManager {
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
-	
+
 	/**
-	 * Adds <b>ALL</b> profiles to the Profile-DropdownList
+	 * Load the lists of all ddls. (currently only one exists)
+	 * Existing items will be removed!
 	 * 
-	 * @author SebastianN
+	 * @author NicolaiO
 	 */
-	public void addAllProfilesToDDL() {
+	public void loadDDLs() {
 		ArrayList<DropDownList> DDLs = getActive().getKbdLayout().getDdls();
-		for (int i = 0; i < DDLs.size(); i++) {
-			if (DDLs.get(i).getType() == DropDownList.PROFILE) {
-				for (int j = 0; j < profiles.size(); j++) {
-					DDLs.get(i).addItem(profiles.get(j).getName());
-					DDLs.get(i).revalidate();
-				}
+		for (DropDownList ddl : DDLs) {
+			switch (ddl.getType()) {
+				case DropDownList.PROFILE:
+					ddl.removeAllItems();
+					for (Profile p : profiles) {
+						ddl.addItem(p.getName());
+					}
+					ddl.revalidate();
+					break;
+				default:
+					logger.warn("UNKOWN DDL found!");
 			}
 		}
 	}
@@ -114,7 +120,7 @@ public class ProfileManager {
 		}
 	}
 	
-	
+
 	/**
 	 * Removes a certain profile from the DropdownList
 	 * 
@@ -277,8 +283,11 @@ public class ProfileManager {
 		} else {
 			newProfile = new Profile(profileName);
 			profiles.add(newProfile);
-			if (getActive() != null)
-				addProfileToDDL(newProfile);
+			if (getActive() == null) {
+				logger.error("The famouse case, that should never occure, just did exactly this :D");
+			} else {
+				loadDDLs();
+			}
 		}
 		return newProfile;
 	}
@@ -376,6 +385,7 @@ public class ProfileManager {
 		}
 		activeProfile = newActive;
 		activeProfile.load();
+		loadDDLs();
 	}
 	
 	

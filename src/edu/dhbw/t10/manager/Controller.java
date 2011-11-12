@@ -69,6 +69,8 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	private Presenter					presenter;
 	private StatusPane				statusPane;
 	
+	private boolean					readyForActionEvents	= false;
+
 	
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
@@ -93,11 +95,10 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 		statusPane.enqueueMessage("Keyboard initializing...", StatusPane.LEFT);
 		profileMan = new ProfileManager();
 		
-		mainPanel.setKbdLayout(profileMan.getActive().getKbdLayout());
-		profileMan.addAllProfilesToDDL();
+		changeProfile(profileMan.getActive());
+		// profileMan.addAllProfilesToDDL();
 		
-		mainPanel.addComponentListener(mainPanel);
-		resizeWindow(profileMan.getActive().getKbdLayout().getSize());
+		readyForActionEvents = true;
 		statusPane.enqueueMessage("Keyboard initialized.", StatusPane.LEFT);
 		logger.debug("initialized.");
 	}
@@ -133,6 +134,20 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	
 	
 	/**
+	 * Change profile. This does not only <b>set</b> the active profile, but also reloads the GUI!
+	 * Do not use setActive of ProfileManager alone...
+	 * 
+	 * @param profile
+	 * @author NicolaiO
+	 */
+	public void changeProfile(Profile profile) {
+		profileMan.setActive(profile);
+		mainPanel.setKbdLayout(profileMan.getActive().getKbdLayout());
+		resizeWindow(profileMan.getActive().getKbdLayout().getSize());
+	}
+
+
+	/**
 	 * Starts the right activities for a specific event...
 	 * 
 	 * @param e
@@ -140,6 +155,11 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		if (!readyForActionEvents) {
+			logger.debug("An ActionEvent was blocked, because controller is not ready yet.");
+			return;
+		}
+
 		if (e.getSource() instanceof Button) {
 			logger.debug("Normal Button pressed.");
 			eIsButton((Button) e.getSource());
@@ -226,7 +246,7 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 					this.createProfile(newProfile);
 					iDlg.setVisible(false);
 				} else {
-					iDlg.setLblText("Profile exisiert bereits :-(");
+					iDlg.setLblText("Profile already exists :-(");
 				}
 				break;
 		}
@@ -313,15 +333,14 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	/**
 	 * Switchs the profiles based on a Dropdownlist... <br>
 	 * 
-	 * @param currentList
+	 * @param currentDdl
 	 * @author DanielAl
 	 */
-	private void eIsDropDownList(DropDownList currentList) {
-		
-		if (currentList.getType() == DropDownList.PROFILE) {
-			Profile selectedProfile = profileMan.getProfiles().get(currentList.getSelectedIndex());
+	private void eIsDropDownList(DropDownList currentDdl) {
+		if (currentDdl.getType() == DropDownList.PROFILE) {
+			Profile selectedProfile = profileMan.getProfiles().get(currentDdl.getSelectedIndex());
 			logger.debug("Profilename: " + selectedProfile.getName());
-			profileMan.setActive(selectedProfile);
+			changeProfile(selectedProfile);
 		}
 	}
 	
@@ -337,6 +356,7 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 			outputMan.unMark();
 		outputMan.printChar(key);
 		acceptWord(suggest);
+		logger.trace("Word accepted");
 	}
 	
 	

@@ -68,7 +68,7 @@ public class Key {
 	
 	
 	public String toString() {
-		return "id:" + id + " n:" + name + " kc:" + keycode + " t:" + type;
+		return "id:" + id + " n:" + name + " kc:" + keycode + " t:" + type + " a:" + accept;
 	}
 	
 	

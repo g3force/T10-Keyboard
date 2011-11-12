@@ -1,3 +1,6 @@
 //Configfile for T10
-ActiveProfile=default
+ActiveProfile=blubb
 ProfilePath=data/profiles/default.profile
+ProfilePath=data/profiles/blubb.profile
+ProfilePath=data/profiles/test.profile
+ProfilePath=data/profiles/test3.profile
