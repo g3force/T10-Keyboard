@@ -322,7 +322,8 @@ public class ImportExportManager {
 			is = new BufferedInputStream(zipfile.getInputStream(entry));
 			int count;
 			byte data[] = new byte[BUFFER];
-			String file = "data/profiles/" + profileName + entry.getName().substring(entry.getName().lastIndexOf("."));
+			String file = Controller.getInstance().getDatapath() + "/profiles/" + profileName
+					+ entry.getName().substring(entry.getName().lastIndexOf("."));
 			FileOutputStream fos = new FileOutputStream(file);
 			logger.debug(file + " extracted");
 			// TODO if data folder changebale -> change here too

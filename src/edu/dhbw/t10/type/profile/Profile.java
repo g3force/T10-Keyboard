@@ -15,6 +15,7 @@ import java.io.Serializable;
 
 import org.apache.log4j.Logger;
 
+import edu.dhbw.t10.manager.Controller;
 import edu.dhbw.t10.manager.keyboard.KeyboardLayoutLoader;
 import edu.dhbw.t10.manager.keyboard.KeyboardLayoutSaver;
 import edu.dhbw.t10.manager.keyboard.KeymapLoader;
@@ -82,14 +83,15 @@ public class Profile implements Serializable {
 	 * @author SebastianN
 	 */
 	private void init() {
-		File file = new File("data/profiles");
+		String datapath = Controller.getInstance().getDatapath();
+		File file = new File(datapath + "/profiles");
 		if (!file.isDirectory()) {
 			file.mkdir();
 		}
-		pathToLayoutFile = "data/profiles/" + name + ".layout";
-		pathToProfile = "data/profiles/" + name + ".profile";
-		pathToTree = "data/profiles/" + name + ".tree";
-		pathToAllowedChars = "data/profiles/" + name + ".chars";
+		pathToLayoutFile = datapath + "/profiles/" + name + ".layout";
+		pathToProfile = datapath + "/profiles/" + name + ".profile";
+		pathToTree = datapath + "/profiles/" + name + ".tree";
+		pathToAllowedChars = datapath + "/profiles/" + name + ".chars";
 		logger.debug("Profile " + name + " created");
 		load();
 	}
