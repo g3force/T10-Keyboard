@@ -124,6 +124,7 @@ public class Button extends PhysicalButton implements MouseListener {
 	 * @return
 	 * @author DirkK
 	 */
+	@Deprecated
 	public ArrayList<Key> getPressedKeys() {
 		ArrayList<Key> output = new ArrayList<Key>();
 		if (activeModes.size() == 0) {
@@ -142,6 +143,21 @@ public class Button extends PhysicalButton implements MouseListener {
 	}
 	
 	
+	/**
+	 * Return the currently pressed key, depending on the active Mode.
+	 * If <b>one</b> mode is active, the according key will be returned, else the default key will be returned
+	 * 
+	 * @return currently pressed key
+	 * @author NicolaiO
+	 */
+	public Key getPressedKey() {
+		if (activeModes.size() == 1 && modes.containsKey(activeModes.get(0))) {
+			return modes.get(activeModes.get(0));
+		}
+		return key;
+	}
+
+
 	/**
 	 * Unset/release all currently active ModeButtons
 	 * 
