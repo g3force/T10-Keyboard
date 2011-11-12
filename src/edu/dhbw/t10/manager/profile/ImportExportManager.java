@@ -254,9 +254,7 @@ public class ImportExportManager {
 	
 	
 	/**
-	 * 
-	 * TODO DirkK, add comment!
-	 * 
+	 * this method exports a whole proflie. It puts the tree, chars and layout file into a zip archive
 	 * @param prof
 	 * @param folder
 	 * @throws IOException

@@ -37,9 +37,9 @@ public class Serializer {
 	
 	/**
 	 * 
-	 * TODO DirkK, add comment!
+	 * deserializes a arbitrary object
 	 * 
-	 * @param pathToFile
+	 * @param pathToFile the path of the serialized file
 	 * @return
 	 * @throws IOException
 	 * @author DirkK
@@ -61,10 +61,10 @@ public class Serializer {
 	
 	/**
 	 * 
-	 * TODO DirkK, add comment!
+	 * serializes a arbitrary object
 	 * 
-	 * @param toS
-	 * @param pathToFile
+	 * @param toS the object which shall be serialized
+	 * @param pathToFile the path to where the object shall be serialized
 	 * @throws IOException
 	 * @author DirkK
 	 */
