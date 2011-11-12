@@ -63,8 +63,15 @@ public class StatusBar extends JLabel implements Runnable {
 	 * @author DanielAl
 	 */
 	public void enqueueMessage(String message) {
-		messageQueue.add(message);
-		processQueue();
+		switch (delay) {
+			case 0:
+				setMessage(message);
+				break;
+			default:
+				messageQueue.add(message);
+				processQueue();
+		}
+		
 	}
 	
 	

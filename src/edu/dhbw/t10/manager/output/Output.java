@@ -42,11 +42,8 @@ public class Output {
 	public static final int			LINUX		= 1;
 	public static final int			WINDOWS	= 2;
 	// SendKey Function Constants
-	public static final int			TYPE		= 0;											// FIXME DanielAl TYPE is really really
-																										// confusing without context... MAYBE
-																										// rather use HOLD instead of PRESS and
-																										// PRESS instead of TYPE?
-	public static final int			PRESS		= 1;
+	public static final int			PRESS		= 0;
+	public static final int			HOLD		= 1;
 	public static final int			RELEASE	= 2;
 	public static final int			COMBI		= 3;
 	public static final int			SHIFT		= 10;
@@ -158,7 +155,7 @@ public class Output {
 						sendKey(convertKeyCode(charSequence.substring(i, i + 1)), SHIFT);
 						// Small letters
 					} else {
-						sendKey(convertKeyCode(charSequence.substring(i, i + 1)), TYPE);
+						sendKey(convertKeyCode(charSequence.substring(i, i + 1)), PRESS);
 					}
 				}
 				logger.info("String printed: " + charSequence);
@@ -298,16 +295,16 @@ public class Output {
 		
 		switch (os) {
 			case LINUX:
-				sendKey(KeyEvent.VK_CONTROL, PRESS);
-				sendKey(KeyEvent.VK_SHIFT, PRESS);
-				sendKey(KeyEvent.VK_U, TYPE);
+				sendKey(KeyEvent.VK_CONTROL, HOLD);
+				sendKey(KeyEvent.VK_SHIFT, HOLD);
+				sendKey(KeyEvent.VK_U, PRESS);
 				sendKey(KeyEvent.VK_SHIFT, RELEASE);
 				sendKey(KeyEvent.VK_CONTROL, RELEASE);
-				sendKey(convertKeyCode(uniArr[0] + ""), TYPE);
-				sendKey(convertKeyCode(uniArr[1] + ""), TYPE);
-				sendKey(convertKeyCode(uniArr[2] + ""), TYPE);
-				sendKey(convertKeyCode(uniArr[3] + ""), TYPE);
-				sendKey(KeyEvent.VK_ENTER, TYPE);
+				sendKey(convertKeyCode(uniArr[0] + ""), PRESS);
+				sendKey(convertKeyCode(uniArr[1] + ""), PRESS);
+				sendKey(convertKeyCode(uniArr[2] + ""), PRESS);
+				sendKey(convertKeyCode(uniArr[3] + ""), PRESS);
+				sendKey(KeyEvent.VK_ENTER, PRESS);
 				return true;
 				
 			case WINDOWS:
@@ -320,32 +317,32 @@ public class Output {
 					logger.info((num_lock ? "Num Lock is on" : "Num Lock is off"));
 					// If Num_Lock is off, turn it on
 					if (!num_lock) {
-						sendKey(KeyEvent.VK_NUM_LOCK, TYPE);
+						sendKey(KeyEvent.VK_NUM_LOCK, PRESS);
 					}
 					
 					// Sending KeyCombination for Unicode input to Windows (Hold ALT and press ADD and the digits, then
 					// release ALT)
-					sendKey(KeyEvent.VK_ALT, PRESS);
-					sendKey(KeyEvent.VK_ADD, TYPE);
+					sendKey(KeyEvent.VK_ALT, HOLD);
+					sendKey(KeyEvent.VK_ADD, PRESS);
 					// send the Hexa Decimal number with digits as a numpad key and the chars from the normal keyboard...
 					sendKey(
 							Character.isDigit(uniArr[0]) ? convertKeyCode(uniArr[0] + "", 1) : convertKeyCode(uniArr[0] + "",
-									0), TYPE);
+									0), PRESS);
 					sendKey(
 							Character.isDigit(uniArr[1]) ? convertKeyCode(uniArr[1] + "", 1) : convertKeyCode(uniArr[1] + "",
-									0), TYPE);
+									0), PRESS);
 					sendKey(
 							Character.isDigit(uniArr[2]) ? convertKeyCode(uniArr[2] + "", 1) : convertKeyCode(uniArr[2] + "",
-									0), TYPE);
+									0), PRESS);
 					sendKey(
 							Character.isDigit(uniArr[3]) ? convertKeyCode(uniArr[3] + "", 1) : convertKeyCode(uniArr[3] + "",
-									0), TYPE);
+									0), PRESS);
 					
 					sendKey(KeyEvent.VK_ALT, RELEASE);
 					
 					// If Num_Lock was off, turn it off again, so that you have the same status as before...
 					if (!num_lock) {
-						sendKey(KeyEvent.VK_NUM_LOCK, TYPE);
+						sendKey(KeyEvent.VK_NUM_LOCK, PRESS);
 					}
 				} catch (UnsupportedOperationException err) {
 					logger.error("Unsupported Operation: Check Num_Lock state; can't write Unicode" + uniArr.toString());
@@ -366,15 +363,15 @@ public class Output {
 	 * @author DanielAl
 	 */
 	private boolean sendKey(int key) {
-		return sendKey(key, TYPE);
+		return sendKey(key, PRESS);
 	}
 	
 	
 	/**
 	 * Send Key Codes to the System with a Robot and java.awt.event.KeyEvent constants. <br>
 	 * Functions:<br>
-	 * - TYPE for type a Key<br>
-	 * - PRESS for pressing and holding a key<br>
+	 * - PRESS for type a Key<br>
+	 * - HOLD for pressing and holding a key<br>
 	 * - RELEASE for releasing a key<br>
 	 * - COMBI for Key COmbination functionallity; used in printCombi()<br>
 	 * - SHIFT for shift a Key to its Uppercase and type it...<br>
@@ -391,12 +388,12 @@ public class Output {
 		}
 		keyRobot.delay(delay);
 		switch (function) {
-			case TYPE:
+			case PRESS:
 				keyRobot.keyPress(key);
 				keyRobot.keyRelease(key);
 				logger.trace("sendKey: Key sent: " + key);
 				break;
-			case PRESS:
+			case HOLD:
 				keyRobot.keyPress(key);
 				logger.trace("sendKey: Key pressed: " + key);
 				break;
@@ -417,7 +414,7 @@ public class Output {
 						}
 						break;
 					default:
-						sendKey((int) key, PRESS);
+						sendKey((int) key, HOLD);
 						combi.push(key);
 				}
 				break;
