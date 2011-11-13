@@ -43,6 +43,8 @@ public class DialogContainer extends JFrame {
 		pc = new ProfileChooser(menuType, this);
 		
 		getContentPane().add(pc, "Center");
+
+		this.setAlwaysOnTop(true);
 		pack();
 		
 		
