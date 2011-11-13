@@ -54,9 +54,9 @@ public class Presenter extends JFrame {
 		logger.debug("Initializing...");
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setLocationByPlatform(true);
-		URL logUrl = getClass().getResource("/res/icons/useacc_logo.png");
-		if (logUrl != null) {
-			this.setIconImage(Toolkit.getDefaultToolkit().getImage(logUrl.getPath()));
+		URL iconUrl = getClass().getResource("/res/icons/useacc_logo.png");
+		if (iconUrl != null) {
+			this.setIconImage(Toolkit.getDefaultToolkit().getImage(iconUrl.getPath()));
 		}
 		this.setTitle("T10 On-Screen Keyboard");
 		this.setAlwaysOnTop(true);
