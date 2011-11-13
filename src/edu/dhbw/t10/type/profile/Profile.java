@@ -226,16 +226,6 @@ public class Profile implements Serializable {
 	}
 	
 	
-	/**
-	 * unused
-	 * TODO DirkK, delete
-	 * @author DirkK
-	 */
-	// public void saveOrderedTree() {
-	// if (tree != null) {
-	// ImportExportManager.exportToSortedFile(tree.exportToHashMap(), pathToTree);
-	// }
-	// }
 	
 	
 	// --------------------------------------------------------------------------

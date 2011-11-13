@@ -287,28 +287,6 @@ public class PriorityTree implements Serializable {
 	
 	
 	/**
-	 * just a testing method for Kruse
-	 * TODO DirkK delete
-	 * 
-	 * @param in
-	 * @return
-	 * @author DirkK
-	 */
-	public String suggestInHashMap(String in) {
-		String word = "";
-		int amount = 0;
-		for (Entry<String, Integer> entry : words.entrySet()) {
-			if (entry.getKey().length() >= in.length())
-				if (entry.getKey().substring(0, in.length()).equals(in) && entry.getValue() > amount) {
-					word = entry.getKey();
-					amount = entry.getValue();
-				}
-		}
-		return word;
-	}
-	
-	
-	/**
 	 * any PriorityElement with has got a bottomBorder or less frequency is deleted
 	 * @param bottomBorder border to decide if a PriorityElement has to be deleted
 	 * @param olderThan not implemented yet
@@ -342,51 +320,6 @@ public class PriorityTree implements Serializable {
 	}
 	
 	
-	/**
-	 * prints out the dictionary, beginning with the word with the highest frequency
-	 * bad in performance
-	 * TODO DirkK delete
-	 * @author DirkK
-	 */
-	public LinkedList<PriorityElement> getFreqSortedList() {
-		logger.debug("fetching ordered list");
-		LinkedList<PriorityElement> ll = new LinkedList<PriorityElement>();
-		for (PriorityElement pe : root.getListOfFollowers()) {
-			// boolean sorted = false;
-			if (ll.isEmpty())
-				ll.add(pe);
-			if (ll.size() == 1) {
-				if (ll.get(0).getFrequency() < pe.getFrequency())
-					ll.push(pe);
-				else
-					ll.add(0, pe);
-			}
-			if (ll.size() == 2) {
-				if (ll.get(0).getFrequency() < pe.getFrequency())
-					ll.push(pe);
-				else
-					ll.add(0, pe);
-			}
-			
-			int index = 1;
-			while (ll.get(index).getFrequency() >= pe.getFrequency()
-					&& ll.get(index + 1).getFrequency() <= pe.getFrequency()) {
-				if (ll.get(index).getFrequency() > pe.getFrequency())
-					index = index / 2;
-				else
-					index = index + index / 2;
-			}
-			ll.add(index, pe);
-			// for (int i = 0; i < ll.size() && !sorted; i++) {
-			// if (ll.get(i).getFrequency() < pe.getFrequency()) {
-			// ll.add(i, pe);
-			// sorted = true;
-			// }
-			// }
-		}
-		logger.debug("fetched ordered list");
-		return ll;
-	}
 	
 	
 	/**
