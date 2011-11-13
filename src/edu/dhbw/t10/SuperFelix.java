@@ -22,8 +22,6 @@ import edu.dhbw.t10.manager.Controller;
 /**
  * This is the main class of the t10 keyboard. It only initializes the first important classes.
  * 
- * FIXME ALL Who destroys the Layout?
- * 
  * TODO OPTIONAL ALL graphical buttons (keys) e.g. pause- and arrow keys
  * TODO FelixP menus
  * TODO ALL question: insert word that is smaller than an existing one?!
