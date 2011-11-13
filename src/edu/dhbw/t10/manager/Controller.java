@@ -71,9 +71,9 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	private StatusPane				statusPane;
 	
 	private boolean					readyForActionEvents	= false;
-	private boolean					changeProfileBlocked		= false;
-	
+	private boolean					changeProfileBlocked	= false;
 
+	
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
@@ -86,9 +86,6 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	private Controller() {
 		instance = this;
 		logger.debug("initializing...");
-		// FIXME NicolaiO Windows support ?? In Windows there is an extra App-Data-Folder ("C:\Documents and
-		// Settings\Username\Application Data"). In Windows Folders don't have a leading "."
-		// Look into Output.java where I set a Flag which OS is used, maybe this helps...
 		datapath = System.getProperty("user.home") + "/.t10keyboard";
 		File tf = new File(datapath);
 		if (!tf.exists()) {
@@ -141,8 +138,22 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	 * @param String name
 	 * @author SebastianN
 	 */
-	public void deleteProfile(String name) {
-		profileMan.deleteProfile(name);
+	public void deleteActiveProfile() {
+		// get active profile to be delete
+		Profile todelete = profileMan.getActive();
+		// get potential new profile
+		Profile newProfile = profileMan.getProfiles().get(0);
+
+		if (todelete == newProfile) {
+			if (profileMan.getProfiles().size() > 1) {
+				newProfile = profileMan.getProfiles().get(0);
+			} else {
+				logger.debug("Only one or zero profiles left. Can't delete.");
+				return;
+			}
+		}
+		profileMan.deleteProfile(todelete);
+		changeProfile(newProfile);
 	}
 	
 	
