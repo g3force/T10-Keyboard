@@ -128,7 +128,6 @@ public class MenuBar extends JMenuBar {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
 				new DialogContainer(EMenuItem.iT2D);
 			}
 		});

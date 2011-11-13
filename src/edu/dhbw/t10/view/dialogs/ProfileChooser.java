@@ -11,9 +11,11 @@ package edu.dhbw.t10.view.dialogs;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.filechooser.FileFilter;
 
 import edu.dhbw.t10.manager.Controller;
 import edu.dhbw.t10.view.menus.EMenuItem;
@@ -52,9 +54,36 @@ public class ProfileChooser extends JFileChooser {
 		switch (menuType) {
 			case iImport: // import
 			case iT2D: // Extend Dictionary By Text
+			
+				this.setFileFilter(new FileFilter() {
+					@Override
+					public boolean accept(File f) {
+						return f.isDirectory() || f.getName().toLowerCase().endsWith(".zip");
+					}
+					
+					@Override
+					public String getDescription() {
+						return "zip Files";
+					}
+				});
+
 				setDialogType(JFileChooser.OPEN_DIALOG);
 				break;
 			case iExport: // export
+			
+				this.setFileFilter(new FileFilter() {
+					@Override
+					public boolean accept(File f) {
+						return f.isDirectory() || f.getName().toLowerCase().endsWith(".zip");
+					}
+					
+
+					@Override
+					public String getDescription() {
+						return "zip Files";
+					}
+				});
+
 				setDialogType(JFileChooser.SAVE_DIALOG);
 				break;
 		}
