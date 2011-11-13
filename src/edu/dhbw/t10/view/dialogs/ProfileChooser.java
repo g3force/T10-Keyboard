@@ -20,9 +20,8 @@ import edu.dhbw.t10.view.menus.EMenuItem;
 
 
 /**
- * TODO FelixP, add comment!
- * - What should this type do (in one sentence)?
- * - If not intuitive: A simple example how to use this class
+ * 
+ * Modified JFileChosser ....non-modal :-)
  * 
  * @author FelixP
  * 
@@ -42,7 +41,7 @@ public class ProfileChooser extends JFileChooser {
 	
 	/**
 	 * 
-	 * TODO FelixP, add comment!
+	 * Constructor of ProfileChosser. Need to know the Container
 	 * 
 	 * @param menuType
 	 * @param container

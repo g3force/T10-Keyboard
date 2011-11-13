@@ -224,7 +224,6 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 				} catch (IOException err1) {
 					logger.error("Error by importing Profile from " + path.toString());
 				}
-				// TODO FelixP extract selected profile and save it
 				break;
 			
 			// export profile
