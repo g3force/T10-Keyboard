@@ -86,9 +86,7 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	private Controller() {
 		instance = this;
 		logger.debug("initializing...");
-		// FIXME NicolaiO Windows support ?? In Windows there is an extra App-Data-Folder ("C:\Documents and
-		// Settings\Username\Application Data"). In Windows Folders don't have a leading "."
-		// Look into Output.java where I set a Flag which OS is used, maybe this helps...
+		// works for Windows and Linux... so the data is stored in the systems userdata folder...
 		datapath = System.getProperty("user.home") + "/.t10keyboard";
 		File tf = new File(datapath);
 		if (!tf.exists()) {
