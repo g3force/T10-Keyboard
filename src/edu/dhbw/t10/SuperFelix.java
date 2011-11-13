@@ -23,7 +23,7 @@ import edu.dhbw.t10.manager.Controller;
  * This is the main class of the t10 keyboard. It only initializes the first important classes.
  * 
  * TODO OPTIONAL ALL graphical buttons (keys) e.g. pause- and arrow keys
- * TODO FelixP menus
+ * TODO FelixP optional menu items
  * TODO ALL question: insert word that is smaller than an existing one?!
  * --> Ja, z.B. wenn Häuserkampf vorhanden ist aber Häuser noch nicht, darum ist das sinnvoll!
  * 

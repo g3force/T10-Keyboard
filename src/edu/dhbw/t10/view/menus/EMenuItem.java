@@ -10,9 +10,7 @@
 package edu.dhbw.t10.view.menus;
 
 /**
- * TODO FelixP, add comment!
- * - What should this type do (in one sentence)?
- * - If not intuitive: A simple example how to use this class
+ * Enum of all menu items of MenuBar.java
  * 
  * @author FelixP
  * 
