@@ -65,9 +65,9 @@ public class Profile implements Serializable {
 	
 	/**
 	 * 
-	 * TODO SebastianN, add comment!
+	 * Constructor of Profile.
 	 * 
-	 * @param pName
+	 * @param pName - Name of the new profile
 	 * @author SebastianN
 	 */
 	public Profile(String pName) {
@@ -78,7 +78,7 @@ public class Profile implements Serializable {
 	
 	/**
 	 * 
-	 * TODO SebastianN, add comment!
+	 * Initializes the necessary information for the profile (such as paths)
 	 * 
 	 * @author SebastianN
 	 */
