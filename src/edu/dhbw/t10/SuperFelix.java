@@ -24,6 +24,8 @@ import edu.dhbw.t10.manager.Controller;
  * 
  * TODO OPTIONAL ALL graphical buttons (keys) e.g. pause- and arrow keys
  * TODO FelixP optional menu items
+ * TODO FelixP Profile Menu -> Extend by text/export tree, simple file chooser
+ * TODO FelixP Profile Export, only zip files
  * TODO ALL question: insert word that is smaller than an existing one?!
  * --> Ja, z.B. wenn Häuserkampf vorhanden ist aber Häuser noch nicht, darum ist das sinnvoll!
  * 
