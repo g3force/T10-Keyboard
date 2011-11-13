@@ -40,7 +40,6 @@ public class InputDlg extends JDialog {
 	private JTextField			textField;
 	private JButton				okBtn;
 	private JButton				cancelBtn;
-	private EMenuItem				menuItem;
 	private InputDlg				mhhh;
 	
 	
@@ -62,8 +61,6 @@ public class InputDlg extends JDialog {
 		this.setModalityType(null);
 		this.setAlwaysOnTop(true);
 		this.mhhh = this;
-		
-		this.menuItem = menuItem;
 		
 		textLbl = new JLabel(text);
 		textField = new JTextField();
