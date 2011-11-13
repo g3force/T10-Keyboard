@@ -17,6 +17,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
+import edu.dhbw.t10.manager.Controller;
 import edu.dhbw.t10.view.dialogs.DialogContainer;
 import edu.dhbw.t10.view.dialogs.InputDlg;
 
@@ -53,27 +54,27 @@ public class MenuBar extends JMenuBar {
 		JMenuItem iClose = new JMenuItem("Close");
 		
 		// ProfileMenu
-		// JMenu mProfile = new JMenu("Profile");
+		JMenu mProfile = new JMenu("Profile");
 		// JMenuItem iChange = new JMenuItem("Modify");
-		// JMenuItem iT2D = new JMenuItem("Extend Dictionary By Text");
+		JMenuItem iT2D = new JMenuItem("Extend Dictionary By Text");
 		// JMenuItem iF2D = new JMenuItem("Extend Dictionary From File");
 		// JMenuItem iD2F = new JMenuItem("Export Dictionary To File");
 		// JMenuItem iClean = new JMenuItem("Clean Dictionary");
-		// JMenuItem iDelete = new JMenuItem("Delete");
+		JMenuItem iDelete = new JMenuItem("Delete");
 		
 		// add menus to GUI
 		add(mFile);
-		// add(mProfile);
+		add(mProfile);
 		mFile.add(iNewProfile);
 		mFile.add(iImport);
 		mFile.add(iExport);
 		mFile.add(iClose);
 		// mProfile.add(iChange);
-		// mProfile.add(iT2D);
+		mProfile.add(iT2D);
 		// mProfile.add(iF2D);
 		// mProfile.add(iD2F);
 		// mProfile.add(iClean);
-		// mProfile.add(iDelete);
+		mProfile.add(iDelete);
 		
 		
 		// Action Listener for menu items
@@ -122,16 +123,16 @@ public class MenuBar extends JMenuBar {
 		// // TOD O FelixP Menu bearbeiten(eingabe: Name und Pfad, vor ausgefüllt)
 		// }
 		// });
-		//		
-		// iT2D.addActionListener(new ActionListener() {
-		//			
-		// @Override
-		// public void actionPerformed(ActionEvent e) {
-		//				
-		// new DialogContainer(EMenuItem.iT2D);
-		// }
-		// });
-		//		
+		
+		iT2D.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				new DialogContainer(EMenuItem.iT2D);
+			}
+		});
+
 		// iF2D.addActionListener(new ActionListener() {
 		//			
 		// @Override
@@ -155,14 +156,14 @@ public class MenuBar extends JMenuBar {
 		// // TOD O FelixP Menu autoLöschen (profilliste, Datum, Wortanzahl
 		// }
 		// });
-		//		
-		// iDelete.addActionListener(new ActionListener() {
-		//			
-		// @Override
-		// public void actionPerformed(ActionEvent e) {
-		// Controller.getInstance().deleteProfile("Profile2");
-		// }
-		// });
+		
+		iDelete.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Controller.getInstance().deleteProfile("Profile2");
+			}
+		});
 	}
 	
 	
