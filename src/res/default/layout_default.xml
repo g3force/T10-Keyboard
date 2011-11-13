@@ -16,16 +16,16 @@
 
 
 	<mutebutton type="auto_completing" size_x="50" size_y="50" pos_x="845" pos_y="60">
-		<on color="green" tooltip="Turn off the Auto Completing, so you will not be corrected by T10 anymore.">T10</on>
-		<off color="red" tooltip="Turn on the Auto Completing, T10 will help you typing.">T10</off>
+		<on color="green" tooltip="Turn off T10 Auto Completing.">T10</on>
+		<off color="red" tooltip="Turn on T10 Auto Completing.">T10</off>
 	</mutebutton>
 	<!-- <mutebutton type="auto_profile_change" size_x="50" size_y="50" pos_x="845" pos_y="115">
-		<on color="green" tooltip="Turn off the Auto Profile Change. Then the profile can only be changed manually.">Auto</on>
-		<off color="red" tooltip="Turn on the Auto Profile Change. The profile will be changed automatically to the language you type. NOT IMPLEMENTED">Auto</off>
+		<on color="green" tooltip="Turn off T10 Auto Profile Change.">Auto</on>
+		<off color="red" tooltip="Turn on T10 Auto Profile Change. NOT IMPLEMENTED">Auto</off>
 	</mutebutton> -->
 	<mutebutton type="tree_expanding" size_x="50" size_y="50" pos_x="845" pos_y="115">
-		<on color="green" tooltip="Turn off the Expanding of the Tree. No words will be saved in the tree anymore.">Save</on>
-		<off color="red" tooltip="Turn on the Expanding of the Tree. Every word you type will be saved to support you.">Save</off>
+		<on color="green" tooltip="Turn off T10 Word saving.">Save</on>
+		<off color="red" tooltip="Turn on T10 Word saving.">Save</off>
 	</mutebutton>
 
 	<!-- Esc -->
