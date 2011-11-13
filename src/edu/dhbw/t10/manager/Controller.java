@@ -71,9 +71,9 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	private StatusPane				statusPane;
 	
 	private boolean					readyForActionEvents	= false;
-	private boolean					changeProfileBlocked		= false;
-	
+	private boolean					changeProfileBlocked	= false;
 
+	
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
@@ -448,6 +448,8 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	 */
 	private void keyIsSpaceOrEnter(Key key) {
 		logger.debug("Keycode " + key.getKeycode() + " " + key.getType());
+		if (typedWord.length() < suggest.length())
+			outputMan.delMark();
 		outputMan.printChar(key);
 		acceptWord(typedWord);
 	}

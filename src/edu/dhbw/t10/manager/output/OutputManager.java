@@ -122,6 +122,16 @@ public class OutputManager {
 	
 	
 	/**
+	 * Delete all marked things via pressing the DELETE Key
+	 * 
+	 * @author DanielAl
+	 */
+	public void delMark() {
+		out.printString("\\DELETE\\", Key.CONTROL);
+	}
+
+	
+	/**
 	 * Prints a new Suggest for given chars and mark the suggested chars, which aren't yet typed.<br>
 	 * 
 	 * @author DanielAl
