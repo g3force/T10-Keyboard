@@ -46,6 +46,9 @@ public class ImportExportManager {
 	// --------------------------------------------------------------------------
 	private static final Logger	logger	= Logger.getLogger(ImportExportManager.class);
 	
+	// only for creating a ZIP archive
+	static final int					BUFFER	= 2048;
+
 	
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
@@ -63,40 +66,6 @@ public class ImportExportManager {
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
-	
-	/**
-	 * import for special dictionary
-	 * TODO DirkK DELETE
-	 * @param fileName path to text file
-	 * @return importable HashMap
-	 */
-	public static HashMap<String, Integer> readFile(String fileName) {
-		HashMap<String, Integer> fileContent = new HashMap<String, Integer>();
-		try {
-			File fh = new File(fileName);
-			FileReader fr = new FileReader(fileName);
-			BufferedReader x = new BufferedReader(fr);
-			
-			int offset = 0;
-			while (offset <= fh.length()) {
-				String res = x.readLine();
-				// System.out.println("Tmpbuf: " + res);
-				
-				if (res.indexOf(" ") >= 0) {
-					int divider = res.indexOf(" ");
-					fileContent.put(res.substring(0, divider),
-							17 - Integer.parseInt(res.substring(divider + 1, res.length())));
-				} else {
-					fileContent.put(res, 0);
-				}
-				offset += res.length() + 2;
-			}
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-		return fileContent;
-	}
-	
 	
 	// ----------------------------CHARS-----------------------------
 	
@@ -250,8 +219,6 @@ public class ImportExportManager {
 	
 	
 	// ----------------------------------PROFILES----------------------------
-	static final int	BUFFER	= 2048;
-	
 	
 	/**
 	 * this method exports a whole proflie. It puts the tree, chars and layout file into a zip archive
@@ -293,7 +260,6 @@ public class ImportExportManager {
 	/**
 	 * imports a profile from file
 	 * just puts the zip files to the correct folders
-	 * TODO OPTIONAL dirty, neets ProfileManager
 	 * @param zipFile
 	 * @throws ZipException
 	 * @throws IOException
@@ -326,7 +292,6 @@ public class ImportExportManager {
 					+ entry.getName().substring(entry.getName().lastIndexOf("."));
 			FileOutputStream fos = new FileOutputStream(file);
 			logger.debug(file + " extracted");
-			// TODO if data folder changebale -> change here too
 			dest = new BufferedOutputStream(fos, BUFFER);
 			while ((count = is.read(data, 0, BUFFER)) != -1) {
 				dest.write(data, 0, count);
