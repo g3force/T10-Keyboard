@@ -302,17 +302,7 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 			// print the key combi else
 			outputMan.printCombi(pressedModeKeys, button.getKey());
 		}
-		
-		/*
-		 * TODO DanielAl read and delete
-		 * --> Also werden nur combis mit einem Key unterstüzt? Nicht sowas wo man ALT gedrückt hält und dann
-		 * nacheinander verschiedene tasten drückt (und loslässt), wie bei Unicode??
-		 * 
-		 * => sobald ein Button gedrückt wird, wird das ActionEvent getriggert... dann muss auch was ausgegeben werden!
-		 * Um mehrere Tasten hintereinander zu drücken, sollte man die entsprechenden ModeButton auf HOLD stellen und dann
-		 * die Buchstaben tippen, das sollte klappen oder?
-		 */
-		
+
 		// unset all ModeButtons, that are in PRESSED state
 		profileMan.getActive().getKbdLayout().unsetPressedModes();
 	}
