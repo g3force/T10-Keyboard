@@ -49,7 +49,9 @@ public class ProfileManager {
 	
 	/**
 	 * 
-	 * TODO SebastianN, add comment!
+	 * Constructor of the ProfileManager. <br/>
+	 * Reads the config file, deserializes all profile based on read config file
+	 * and marks one profile as active. If no profile was found, a default-profile will be created.
 	 * 
 	 * @author SebastianN, NicolaiO
 	 */
@@ -189,8 +191,12 @@ public class ProfileManager {
 						String valName = entry.substring(0, posOfEql);
 						String value = entry.substring(posOfEql + 1, entry.length());
 						if (valName.toLowerCase().equals("profilepath")) {
+							if (value.isEmpty())
+								continue;
 							profilePathes.add(value);
 						} else if (valName.toLowerCase().equals("activeprofile")) {
+							if (value.isEmpty())
+								continue;
 							defaultActiveProfile = value;
 						}
 					} catch (Exception ex) {
@@ -200,8 +206,7 @@ public class ProfileManager {
 				}
 				br.close();
 			} else {
-				// TODO SebastianN create a new default config file with default values :)
-				logger.error("Config file could not be found.");
+				logger.debug("Config file could not be found. Doesn't matter, though.");
 			}
 		} catch (IOException io) {
 			logger.debug("IOException in readConfig()");
@@ -296,7 +301,7 @@ public class ProfileManager {
 			newProfile = new Profile(profileName);
 			profiles.add(newProfile);
 			if (getActive() == null) {
-				logger.error("The famouse case, that should never occure, just did exactly this :D");
+				logger.error("The famous case, that should never occur, just did exactly this :D");
 			} else {
 				// loadDDLs();
 			}
@@ -460,9 +465,7 @@ public class ProfileManager {
 			try {
 				Serializer.serialize(cProfile, cProfile.getPathToProfile());
 			} catch (IOException io) {
-				logger.error("Not able to serialize Profiles, IOException: ");
-				io.printStackTrace();
-				// TODO SebastianN handle exception without stacktrace
+				logger.error("Not able to serialize Profiles, IOException: " + io.toString());
 			}
 		}
 	}
