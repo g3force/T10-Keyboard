@@ -86,6 +86,9 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	private Controller() {
 		instance = this;
 		logger.debug("initializing...");
+		// FIXME NicolaiO Windows support ?? In Windows there is an extra App-Data-Folder ("C:\Documents and
+		// Settings\Username\Application Data"). In Windows Folders don't have a leading "."
+		// Look into Output.java where I set a Flag which OS is used, maybe this helps...
 		datapath = System.getProperty("user.home") + "/.t10keyboard";
 		File tf = new File(datapath);
 		if (!tf.exists()) {
@@ -302,17 +305,7 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 			// print the key combi else
 			outputMan.printCombi(pressedModeKeys, button.getKey());
 		}
-		
-		/*
-		 * TODO DanielAl read and delete
-		 * --> Also werden nur combis mit einem Key unterstüzt? Nicht sowas wo man ALT gedrückt hält und dann
-		 * nacheinander verschiedene tasten drückt (und loslässt), wie bei Unicode??
-		 * 
-		 * => sobald ein Button gedrückt wird, wird das ActionEvent getriggert... dann muss auch was ausgegeben werden!
-		 * Um mehrere Tasten hintereinander zu drücken, sollte man die entsprechenden ModeButton auf HOLD stellen und dann
-		 * die Buchstaben tippen, das sollte klappen oder?
-		 */
-		
+
 		// unset all ModeButtons, that are in PRESSED state
 		profileMan.getActive().getKbdLayout().unsetPressedModes();
 	}

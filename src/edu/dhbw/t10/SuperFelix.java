@@ -9,7 +9,7 @@
  */
 package edu.dhbw.t10;
 
-import java.io.File;
+import java.net.URL;
 
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Level;
@@ -25,6 +25,7 @@ import edu.dhbw.t10.manager.Controller;
  * TODO OPTIONAL ALL graphical buttons (keys) e.g. pause- and arrow keys
  * TODO FelixP menus
  * TODO ALL question: insert word that is smaller than an existing one?!
+ * --> Ja, z.B. wenn Häuserkampf vorhanden ist aber Häuser noch nicht, darum ist das sinnvoll!
  * 
  * @author NicolaiO, DanielAl, FelixP, DirkK, SebastianN
  * 
@@ -39,8 +40,28 @@ public class SuperFelix {
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
+	private SuperFelix() {
+		/*
+		 * initialize log4j, a logger from apache.
+		 * See http://logging.apache.org/log4j/1.2/manual.html for more details
+		 * Log Levels: TRACE, DEBUG, INFO, WARN, ERROR and FATAL
+		 * 
+		 * configuration is stored in a config file. If it does not exist, use basic config
+		 */
+		URL logUrl = getClass().getResource("/res/log4j.conf");
+		if (logUrl != null) {
+			PropertyConfigurator.configure(logUrl.getPath());
+		} else {
+			// basic config with only a console appender
+			BasicConfigurator.configure();
+			logger.setLevel(Level.ALL);
+		}
+		
+		Controller.getInstance();
+		logger.info("Keyboard started.");
+	}
 	
-	
+
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
@@ -52,24 +73,9 @@ public class SuperFelix {
 	 * @author NicolaiO
 	 */
 	public static void main(String[] args) {
-		/*
-		 * initialize log4j, a logger from apache.
-		 * See http://logging.apache.org/log4j/1.2/manual.html for more details
-		 * Log Levels: TRACE, DEBUG, INFO, WARN, ERROR and FATAL
-		 * 
-		 * configuration is stored in a config file. If it does not exist, use basic config
-		 */
-		File logConfFile = new File("data/log4j.conf");
-		if (logConfFile.exists()) {
-			PropertyConfigurator.configure(logConfFile.getPath());
-		} else {
-			// basic config with only a console appender
-			BasicConfigurator.configure();
-			logger.setLevel(Level.ALL);
-		}
-		
-		Controller.getInstance();
-		logger.info("Keyboard started.");
+
+		new SuperFelix();
+
 	}
 	
 	// --------------------------------------------------------------------------

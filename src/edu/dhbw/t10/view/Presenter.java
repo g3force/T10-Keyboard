@@ -10,6 +10,7 @@
 package edu.dhbw.t10.view;
 
 import java.awt.Toolkit;
+import java.net.URL;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -53,7 +54,10 @@ public class Presenter extends JFrame {
 		logger.debug("Initializing...");
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setLocationByPlatform(true);
-		this.setIconImage(Toolkit.getDefaultToolkit().getImage("data/icons/useacc_logo.png"));
+		URL logUrl = getClass().getResource("/res/icons/useacc_logo.png");
+		if (logUrl != null) {
+			this.setIconImage(Toolkit.getDefaultToolkit().getImage(logUrl.getPath()));
+		}
 		this.setTitle("T10 On-Screen Keyboard");
 		this.setAlwaysOnTop(true);
 		// Window can't be focussed, so you can type at your current position with the On-Screen Keyboard
