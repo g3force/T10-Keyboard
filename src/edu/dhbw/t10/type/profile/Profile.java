@@ -12,6 +12,7 @@ package edu.dhbw.t10.type.profile;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
+import java.net.URL;
 
 import org.apache.log4j.Logger;
 
@@ -45,8 +46,8 @@ public class Profile implements Serializable {
 	private String							pathToAllowedChars;
 	private String							pathToLayoutFile;
 	// private String pathToKeymapFile;
-	private static final String		defaultLayoutFile	= "data/default/layout_default.xml";
-	private static final String		defaultKeymapFile	= "data/default/keymap_default.xml";
+	private String							defaultLayoutFile;
+	private String							defaultKeymapFile;
 	private transient PriorityTree	tree;
 	private transient KeyboardLayout	kbdLayout;
 	
@@ -92,6 +93,7 @@ public class Profile implements Serializable {
 		pathToProfile = datapath + "/profiles/" + name + ".profile";
 		pathToTree = datapath + "/profiles/" + name + ".tree";
 		pathToAllowedChars = datapath + "/profiles/" + name + ".chars";
+		
 		logger.debug("Profile " + name + " created");
 		load();
 	}
@@ -112,6 +114,7 @@ public class Profile implements Serializable {
 	 * @author NicolaiO
 	 */
 	public void load() {
+		loadDefaultPathes();
 		loadLayout();
 		loadTree();
 	}
@@ -138,6 +141,23 @@ public class Profile implements Serializable {
 	}
 	
 	
+	private void loadDefaultPathes() {
+		URL url;
+		url = getClass().getResource("/res/default/layout_default.xml");
+		if (url != null) {
+			defaultLayoutFile = url.getPath();
+		} else {
+			logger.error("Could not load default layout file. Program will not run well...");
+		}
+		url = getClass().getResource("/res/default/keymap_default.xml");
+		if (url != null) {
+			defaultKeymapFile = url.getPath();
+		} else {
+			logger.error("Could not load default keymap file. Program will not run well...");
+		}
+	}
+
+
 	/**
 	 * load layout from layout file
 	 * 
