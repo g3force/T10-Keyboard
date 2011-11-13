@@ -57,8 +57,8 @@ public class MenuBar extends JMenuBar {
 		JMenu mProfile = new JMenu("Profile");
 		// JMenuItem iChange = new JMenuItem("Modify");
 		JMenuItem iT2D = new JMenuItem("Extend Dictionary By Text");
-		// JMenuItem iF2D = new JMenuItem("Extend Dictionary From File");
-		// JMenuItem iD2F = new JMenuItem("Export Dictionary To File");
+		JMenuItem iF2D = new JMenuItem("Extend Dictionary From File");
+		JMenuItem iD2F = new JMenuItem("Export Dictionary To File");
 		// JMenuItem iClean = new JMenuItem("Clean Dictionary");
 		JMenuItem iDelete = new JMenuItem("Delete");
 		
@@ -71,8 +71,8 @@ public class MenuBar extends JMenuBar {
 		mFile.add(iClose);
 		// mProfile.add(iChange);
 		mProfile.add(iT2D);
-		// mProfile.add(iF2D);
-		// mProfile.add(iD2F);
+		mProfile.add(iF2D);
+		mProfile.add(iD2F);
 		// mProfile.add(iClean);
 		mProfile.add(iDelete);
 		
@@ -132,22 +132,22 @@ public class MenuBar extends JMenuBar {
 			}
 		});
 
-		// iF2D.addActionListener(new ActionListener() {
-		//			
-		// @Override
-		// public void actionPerformed(ActionEvent e) {
-		// // TOD O FelixP Menu
-		// }
-		// });
-		//		
-		// iD2F.addActionListener(new ActionListener() {
-		//			
-		// @Override
-		// public void actionPerformed(ActionEvent e) {
-		// // TOD O FelixP Menu
-		// }
-		// });
-		//		
+		iF2D.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new DialogContainer(EMenuItem.iF2D);
+			}
+		});
+
+		iD2F.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new DialogContainer(EMenuItem.iD2F);
+			}
+		});
+
 		// iClean.addActionListener(new ActionListener() {
 		//			
 		// @Override

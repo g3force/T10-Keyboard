@@ -261,6 +261,17 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 				profileMan.getActive().getTree().importFromHashMap(words);
 				statusPane.enqueueMessage("Text file included.", StatusPane.LEFT);
 				break;
+			
+			// Extend Dictionary From File
+			case iF2D:
+				// TODO DirkK Extend Dictionary From File
+				// Filter ist auf .tree gesetzt.
+				break;
+			
+			// Export Dictionary To File
+			case iD2F:
+				// TODO DirkK Export Dictionary To File
+				break;
 		}
 	}
 	
