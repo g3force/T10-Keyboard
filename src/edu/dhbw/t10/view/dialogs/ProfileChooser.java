@@ -52,7 +52,6 @@ public class ProfileChooser extends JFileChooser {
 	public ProfileChooser(EMenuItem menuType, final JFrame container) {
 		type = menuType;
 		switch (menuType) {
-			case iImport: // import
 			case iT2D: // Extend Dictionary By Text
 			
 				this.setFileFilter(new FileFilter() {
@@ -66,7 +65,11 @@ public class ProfileChooser extends JFileChooser {
 						return "zip Files";
 					}
 				});
+				
+				setDialogType(JFileChooser.OPEN_DIALOG);
+				break;
 
+			case iImport: // import
 				setDialogType(JFileChooser.OPEN_DIALOG);
 				break;
 			case iExport: // export
@@ -83,7 +86,23 @@ public class ProfileChooser extends JFileChooser {
 						return "zip Files";
 					}
 				});
+				setDialogType(JFileChooser.SAVE_DIALOG);
+				break;
 
+			case iF2D:
+				this.setFileFilter(new FileFilter() {
+					@Override
+					public boolean accept(File f) {
+						return f.isDirectory() || f.getName().toLowerCase().endsWith(".tree");
+					}
+					
+
+					@Override
+					public String getDescription() {
+						return "tree Files";
+					}
+				});
+				
 				setDialogType(JFileChooser.SAVE_DIALOG);
 				break;
 		}
