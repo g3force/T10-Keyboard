@@ -55,11 +55,11 @@ public class MenuBar extends JMenuBar {
 		
 		// ProfileMenu
 		JMenu mProfile = new JMenu("Profile");
-		JMenuItem iChange = new JMenuItem("Modify");
+		// JMenuItem iChange = new JMenuItem("Modify");
 		JMenuItem iT2D = new JMenuItem("Extend Dictionary By Text");
-		JMenuItem iF2D = new JMenuItem("Extend Dictionary From File");
-		JMenuItem iD2F = new JMenuItem("Export Dictionary To File");
-		JMenuItem iClean = new JMenuItem("Clean Dictionary");
+		// JMenuItem iF2D = new JMenuItem("Extend Dictionary From File");
+		// JMenuItem iD2F = new JMenuItem("Export Dictionary To File");
+		// JMenuItem iClean = new JMenuItem("Clean Dictionary");
 		JMenuItem iDelete = new JMenuItem("Delete");
 		
 		// add menus to GUI
@@ -69,20 +69,20 @@ public class MenuBar extends JMenuBar {
 		mFile.add(iImport);
 		mFile.add(iExport);
 		mFile.add(iClose);
-		mProfile.add(iChange);
+		// mProfile.add(iChange);
 		mProfile.add(iT2D);
-		mProfile.add(iF2D);
-		mProfile.add(iD2F);
-		mProfile.add(iClean);
+		// mProfile.add(iF2D);
+		// mProfile.add(iD2F);
+		// mProfile.add(iClean);
 		mProfile.add(iDelete);
 		
 		
 		// Action Listener for menu items
-		iChange.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-			}
-		});
+		// iChange.addActionListener(new ActionListener() {
+		// public void actionPerformed(ActionEvent e) {
+		//				
+		// }
+		// });
 		
 		iNewProfile.addActionListener(new ActionListener() {
 			
@@ -116,13 +116,13 @@ public class MenuBar extends JMenuBar {
 			}
 		});
 		
-		iChange.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO FelixP Menu bearbeiten(eingabe: Name und Pfad, vor ausgefüllt)
-			}
-		});
+		// iChange.addActionListener(new ActionListener() {
+		//			
+		// @Override
+		// public void actionPerformed(ActionEvent e) {
+		// // TOD O FelixP Menu bearbeiten(eingabe: Name und Pfad, vor ausgefüllt)
+		// }
+		// });
 		
 		iT2D.addActionListener(new ActionListener() {
 			
@@ -132,30 +132,30 @@ public class MenuBar extends JMenuBar {
 				new DialogContainer(EMenuItem.iT2D);
 			}
 		});
-		
-		iF2D.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO FelixP Menu
-			}
-		});
-		
-		iD2F.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO FelixP Menu
-			}
-		});
-		
-		iClean.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO FelixP Menu autoLöschen (profilliste, Datum, Wortanzahl
-			}
-		});
+
+		// iF2D.addActionListener(new ActionListener() {
+		//			
+		// @Override
+		// public void actionPerformed(ActionEvent e) {
+		// // TOD O FelixP Menu
+		// }
+		// });
+		//		
+		// iD2F.addActionListener(new ActionListener() {
+		//			
+		// @Override
+		// public void actionPerformed(ActionEvent e) {
+		// // TOD O FelixP Menu
+		// }
+		// });
+		//		
+		// iClean.addActionListener(new ActionListener() {
+		//			
+		// @Override
+		// public void actionPerformed(ActionEvent e) {
+		// // TOD O FelixP Menu autoLöschen (profilliste, Datum, Wortanzahl
+		// }
+		// });
 		
 		iDelete.addActionListener(new ActionListener() {
 			

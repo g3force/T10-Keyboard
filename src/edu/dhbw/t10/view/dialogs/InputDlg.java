@@ -26,9 +26,7 @@ import edu.dhbw.t10.view.menus.EMenuItem;
 
 
 /**
- * TODO FelixP, add comment!
- * - What should this type do (in one sentence)?
- * - If not intuitive: A simple example how to use this class
+ * Class for a non-modal input dialog with textfield, input area, ok-button and cancel-button.
  * 
  * @author FelixP
  * 
@@ -52,7 +50,7 @@ public class InputDlg extends JDialog {
 	
 	/**
 	 * 
-	 * TODO FelixP, add comment!
+	 * Class for a non-modal input dialog with textfield, input area, ok-button and cancel-button.
 	 * 
 	 * @param menuItem
 	 * @param title
