@@ -86,6 +86,7 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	private Controller() {
 		instance = this;
 		logger.debug("initializing...");
+		// works for Windows and Linux... so the data is stored in the systems userdata folder...
 		datapath = System.getProperty("user.home") + "/.t10keyboard";
 		File tf = new File(datapath);
 		if (!tf.exists()) {
@@ -235,7 +236,6 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 				} catch (IOException err1) {
 					logger.error("Error by importing Profile from " + path.toString());
 				}
-				// TODO FelixP extract selected profile and save it
 				break;
 			
 			// export profile
@@ -460,6 +460,8 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	 */
 	private void keyIsSpaceOrEnter(Key key) {
 		logger.debug("Keycode " + key.getKeycode() + " " + key.getType());
+		if (typedWord.length() < suggest.length())
+			outputMan.delMark();
 		outputMan.printChar(key);
 		acceptWord(typedWord);
 	}

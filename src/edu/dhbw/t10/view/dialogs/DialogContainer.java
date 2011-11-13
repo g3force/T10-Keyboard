@@ -15,9 +15,7 @@ import edu.dhbw.t10.view.menus.EMenuItem;
 
 
 /**
- * TODO FelixP, add comment!
- * - What should this type do (in one sentence)?
- * - If not intuitive: A simple example how to use this class
+ * Container for ProfileChosser. Only important for event handling.
  * 
  * @author FelixP
  * 
@@ -36,7 +34,7 @@ public class DialogContainer extends JFrame {
 	
 	/**
 	 * 
-	 * TODO FelixP, add comment!
+	 * Constructor for DialogContainer...
 	 * 
 	 * @param menuType
 	 * @author FelixP
@@ -45,6 +43,8 @@ public class DialogContainer extends JFrame {
 		pc = new ProfileChooser(menuType, this);
 		
 		getContentPane().add(pc, "Center");
+
+		this.setAlwaysOnTop(true);
 		pack();
 		
 		

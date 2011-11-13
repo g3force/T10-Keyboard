@@ -23,7 +23,9 @@ import edu.dhbw.t10.manager.Controller;
  * This is the main class of the t10 keyboard. It only initializes the first important classes.
  * 
  * TODO OPTIONAL ALL graphical buttons (keys) e.g. pause- and arrow keys
- * TODO FelixP menus
+ * TODO FelixP optional menu items
+ * TODO FelixP Profile Menu -> Extend by text/export tree, simple file chooser
+ * TODO FelixP Profile Export, only zip files
  * 
  * @author NicolaiO, DanielAl, FelixP, DirkK, SebastianN
  * 
