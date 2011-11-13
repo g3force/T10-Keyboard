@@ -34,8 +34,8 @@
 		<key id="128" keycode="\DOWN\">Down</key>
 		<key id="129" keycode="\RIGHT\">Right</key>
 		
-		<key id="130" keycode="\SPACE\">accept</key>
-		<key id="1301" keycode="\SPACE\"></key>
+		<key id="130" keycode="\SPACE\"></key>
+		<key id="1301" keycode="\SPACE\">accept</key>
 		<key id="131" keycode="\END\">End</key>
 		<key id="132" keycode="\HOME\">Pos1</key>
 		<key id="133" keycode="\PAGE_UP\">BiHo</key>

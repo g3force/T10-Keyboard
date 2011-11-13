@@ -139,8 +139,22 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	 * @param String name
 	 * @author SebastianN
 	 */
-	public void deleteProfile(String name) {
-		profileMan.deleteProfile(name);
+	public void deleteActiveProfile() {
+		// get active profile to be delete
+		Profile todelete = profileMan.getActive();
+		// get potential new profile
+		Profile newProfile = profileMan.getProfiles().get(0);
+
+		if (todelete == newProfile) {
+			if (profileMan.getProfiles().size() > 1) {
+				newProfile = profileMan.getProfiles().get(0);
+			} else {
+				logger.debug("Only one or zero profiles left. Can't delete.");
+				return;
+			}
+		}
+		profileMan.deleteProfile(todelete);
+		changeProfile(newProfile);
 	}
 	
 	

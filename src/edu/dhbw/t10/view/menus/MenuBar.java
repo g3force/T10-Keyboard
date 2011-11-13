@@ -160,7 +160,7 @@ public class MenuBar extends JMenuBar {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Controller.getInstance().deleteProfile("Profile2");
+				Controller.getInstance().deleteActiveProfile();
 			}
 		});
 	}

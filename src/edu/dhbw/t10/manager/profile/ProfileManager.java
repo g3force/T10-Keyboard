@@ -92,15 +92,12 @@ public class ProfileManager {
 	 */
 	public void loadDDLs() {
 		ArrayList<DropDownList> DDLs = getActive().getKbdLayout().getDdls();
-		logger.trace("blubb1");
 		for (DropDownList ddl : DDLs) {
 			switch (ddl.getType()) {
 				case DropDownList.PROFILE:
 					ddl.removeAllItems();
-					logger.trace("blubb2");
 					for (Profile p : profiles) {
 						ddl.addItem(p);
-						logger.trace("blubb3");
 					}
 					logger.debug("loaded " + ddl.getItemCount() + " items in profile-ddl");
 					ddl.setSelectedItem(getActive());
@@ -339,28 +336,22 @@ public class ProfileManager {
 	 * 
 	 * @param id - int. ID of the profile you want to delete.
 	 */
-	public void deleteProfile(String toDel) {
-		Profile toDelete = getProfileByName(toDel);
-		if (profiles.size() <= 0) {
-			logger.debug("profiles.size()==0 at delete");
-			return;
-		} else if (toDelete == null) {
-			logger.debug("toDelete==null at delete");
-			return;
-		} else if (toDelete == activeProfile) {
-			logger.debug("toDelete = activeProfile");
+	public void deleteProfile(Profile profile) {
+		// Profile toDelete = getProfileByName(toDel);
+		if (profiles.size() <= 1) {
+			logger.debug("Only one or zero profiles left. Can't delete.");
 			return;
 		}
-		Profile curProfile = null;
-		for (int i = 0; i < profiles.size(); i++) {
-			curProfile = profiles.get(i);
-			if (curProfile == toDelete) {
-				logger.debug("Delete profile: " + toDelete.getName());
-				profiles.remove(i);
-				loadDDLs();
-				break;
-			}
-		}
+		profiles.remove(profile);
+		// for (int i = 0; i < profiles.size(); i++) {
+		// curProfile = profiles.get(i);
+		// if (curProfile == toDelete) {
+		// logger.debug("Delete profile: " + toDelete.getName());
+		// profiles.remove(i);
+		// loadDDLs();
+		// break;
+		// }
+		// }
 	}
 	
 	
