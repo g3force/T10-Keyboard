@@ -174,7 +174,6 @@ public class Output {
 	 * Prints a combi by calling for each Key Element of the ArrayList the sendKey with function COMBI. <br>
 	 * Now press Keys while the others are hold. <br>
 	 * When the List is empty, call the special mode of the COMBI Branch of sendKey to release all pressed Keys...<br>
-	 * FIXME DanielAl unsauber programmiert
 	 * 
 	 * @param hold ArrayList<Key> set all Keys which have to be hold during the Combi
 	 * @param press ArrayList<Key> set all Keys which have to be pressed during the Combi
@@ -183,27 +182,30 @@ public class Output {
 	 */
 	protected boolean printCombi(ArrayList<Key> hold, ArrayList<Key> press) {
 		boolean state = true;
-		// sendKey(KeyEvent.VK_SHIFT, COMBI);
 		// Process the List which Keys are pressed and hold during the Key Combi
-		if (!hold.isEmpty()) {
+		if (!hold.isEmpty() && state) {
 			for (Key key : hold) {
 				try {
 					sendKey(convertKeyCode(key.getKeycode().substring(1, key.getKeycode().length() - 1)), COMBI);
 				} catch (Exception err) {
 					logger.error("printCombi: " + err.getMessage());
 					state = false;
+					// On Error release all Keys
+					sendKey(0, COMBI);
 					break;
 				}
 			}
 		}
 		// Process the List which Keys are typed during the Key Combi
-		if (!press.isEmpty()) {
+		if (!press.isEmpty() && state) {
 			for (Key key : press) {
 				try {
 					printChar(key);
 				} catch (Exception err) {
 					logger.error("printCombi: " + err.getMessage());
 					state = false;
+					// On Error release all Keys
+					sendKey(0, COMBI);
 					break;
 				}
 			}
@@ -277,6 +279,7 @@ public class Output {
 	 * Windows and Linux are supported.<br>
 	 * For Windows compability a Registry hack is necessary. Use the install.reg to enable HexaDecimal Unicode Input in
 	 * Windows and restart your System. <br>
+	 * Implemented directly with a sequence of sendKey() methods and not with the printCombi function
 	 * 
 	 * @param String uni
 	 * @return boolean
