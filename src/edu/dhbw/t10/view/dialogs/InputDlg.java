@@ -95,7 +95,6 @@ public class InputDlg extends JDialog {
 			
 			@Override
 			public void keyPressed(KeyEvent e) {
-				System.out.println("blubb");
 				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
 					Controller.getInstance().eIsInputDlg(menuItem, mhhh);
 				}

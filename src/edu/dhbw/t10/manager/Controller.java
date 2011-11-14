@@ -92,6 +92,7 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 		if (!tf.exists()) {
 			tf.mkdirs();
 		}
+
 		logger.trace(datapath);
 		outputMan = new OutputManager();
 		mainPanel = new MainPanel();
