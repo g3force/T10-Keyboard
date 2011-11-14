@@ -12,11 +12,14 @@ package edu.dhbw.t10.view.dialogs;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Calendar;
+import java.util.Date;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
+import javax.swing.SpinnerDateModel;
 import javax.swing.SpinnerNumberModel;
 
 import edu.dhbw.t10.manager.Controller;
@@ -30,20 +33,32 @@ import edu.dhbw.t10.view.menus.EMenuItem;
  * 
  */
 public class ProfileCleanerDlg extends JDialog {
+	private static final long			serialVersionUID	= -8794372924172644219L;
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
-	private JSpinner	spinField;
-	private JButton	okBtn;
-	private JButton	cancelBtn;
+	private JSpinner						dateField;
+	private JSpinner						spinField;
+	private JButton						okBtn;
+	private JButton						cancelBtn;
 	private final ProfileCleanerDlg	mhh;
+	private Calendar						calendar;
 
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
 	public ProfileCleanerDlg() {
-		SpinnerNumberModel spinModel = new SpinnerNumberModel(5, 0, Integer.MAX_VALUE, 1);
-		spinField = new JSpinner(spinModel);
+		calendar = Calendar.getInstance();
+		Date initDate = calendar.getTime();
+		calendar.add(Calendar.YEAR, -100);
+		Date earliestDate = calendar.getTime();
+		SpinnerDateModel dateModel = new SpinnerDateModel(initDate, earliestDate, initDate, Calendar.YEAR);
+		dateField = new JSpinner(dateModel);
+		dateField.setEditor(new JSpinner.DateEditor(dateField, "d.MM.yyyy"));
+
+		SpinnerNumberModel numModel = new SpinnerNumberModel(5, 0, Integer.MAX_VALUE, 1);
+		spinField = new JSpinner(numModel);
+
 
 		okBtn = new JButton("Ok");
 		cancelBtn = new JButton("Cancel");
@@ -65,12 +80,13 @@ public class ProfileCleanerDlg extends JDialog {
 			}
 		});
 
-		JPanel p = new JPanel();
-		p.add(okBtn, BorderLayout.WEST);
-		p.add(cancelBtn, BorderLayout.EAST);
+		JPanel p1 = new JPanel();
+		p1.add(okBtn, BorderLayout.WEST);
+		p1.add(cancelBtn, BorderLayout.EAST);
 
+		this.add(dateField, BorderLayout.NORTH);
 		this.add(spinField, BorderLayout.CENTER);
-		this.add(p, BorderLayout.SOUTH);
+		this.add(p1, BorderLayout.SOUTH);
 		
 		this.setTitle("Clean Dictionary");
 
@@ -90,5 +106,10 @@ public class ProfileCleanerDlg extends JDialog {
 	public Integer getFrequency() {
 		Integer i = (Integer) spinField.getValue();
 		return i;
+	}
+	
+
+	public Date getDate() {
+		return (Date) dateField.getValue();
 	}
 }
