@@ -28,7 +28,7 @@ import edu.dhbw.t10.manager.profile.ImportExportManager;
  */
 public class PriorityTree implements Serializable {
 	/**  */
-	private static final long				serialVersionUID	= 662040913098286336L;
+	private static final long				serialVersionUID		= 662040913098286337L;
 	
 	public static int							ONLY_BOTTOM_BORDER	= 0;
 	public static int							ONLY_OLDER_THAN		= 1;
