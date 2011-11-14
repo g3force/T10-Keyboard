@@ -19,6 +19,7 @@ import java.awt.event.WindowListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.zip.ZipException;
 
@@ -309,6 +310,7 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 			case iClean:
 				ProfileCleanerDlg iCleanDlg = (ProfileCleanerDlg) o;
 				Integer freq = iCleanDlg.getFrequency();
+				Date date = iCleanDlg.getDate();
 				profileMan.getActive().getTree().autoCleaning(freq, 0, PriorityTree.ONLY_BOTTOM_BORDER);
 				statusPane.enqueueMessage("Dictionary cleaned.", StatusPane.LEFT);
 				break;
