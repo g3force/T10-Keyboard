@@ -9,8 +9,8 @@
  */
 package edu.dhbw.t10.manager.keyboard;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -67,15 +67,14 @@ public class KeymapLoader {
 	 * @return HashMap with id->SingleKey
 	 * @author NicolaiO
 	 */
-	public static HashMap<Integer, Key> load(String filePath) {
+	public static HashMap<Integer, Key> load(InputStream filePath) {
 		logger.debug("Loadung keymap...");
 		// do everything in a try and return only empty keymap, if XML could not be loaded
 		try {
 			// load file and initialize document builder factory for XML parsing
-			File layoutFile = new File(filePath);
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-			Document doc = dBuilder.parse(layoutFile);
+			Document doc = dBuilder.parse(filePath);
 			doc.getDocumentElement().normalize();
 			
 			// create keymap that will be returned
