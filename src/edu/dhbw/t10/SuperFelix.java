@@ -22,7 +22,6 @@ import edu.dhbw.t10.manager.Controller;
 /**
  * This is the main class of the t10 keyboard. It only initializes the first important classes.
  * 
- * TODO OPTIONAL ALL graphical buttons --> resize is not implemented...
  * TODO FelixP optional menu item "Modify"
  * TODO FelixP Export Profile nach Profile verschieben (gehört schließlich zum aktuellen profile)
  * TODO ALL Read: Ich habe die Symphony Kompatibilität hergestellt. allerdings geht das auf Kosten von Performance...
