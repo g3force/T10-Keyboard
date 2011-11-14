@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?><project default="javadoc">
+    <target name="javadoc">
+        <javadoc access="private" author="true" classpath="lib/log4j-1.2.16.jar" destdir="doc" nodeprecated="false" nodeprecatedlist="false" noindex="false" nonavbar="false" notree="false" packagenames="edu.dhbw.t10.manager,edu.dhbw.t10.type.keyboard.key,edu.dhbw.t10,edu.dhbw.t10.manager.output,edu.dhbw.t10.helper,edu.dhbw.t10.view.dialogs,edu.dhbw.t10.type.profile,edu.dhbw.t10.manager.keyboard,edu.dhbw.t10.view.panels,edu.dhbw.t10.type.tree,edu.dhbw.t10.view.menus,edu.dhbw.t10.type.keyboard,edu.dhbw.t10.view,edu.dhbw.t10.manager.profile" source="1.6" sourcepath="src" splitindex="true" use="true" version="true"/>
+    </target>
+</project>
