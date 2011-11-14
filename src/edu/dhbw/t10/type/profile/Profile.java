@@ -36,7 +36,7 @@ import edu.dhbw.t10.type.tree.PriorityTree;
  */
 public class Profile implements Serializable {
 	/**  */
-	private static final long			serialVersionUID	= 5085464540715301875L;
+	private static final long			serialVersionUID	= 5085464540715301876L;
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
@@ -46,8 +46,8 @@ public class Profile implements Serializable {
 	private String							pathToAllowedChars;
 	private String							pathToLayoutFile;
 	// private String pathToKeymapFile;
-	private InputStream					defaultLayoutXML;
-	private InputStream					defaultKeymapXML;
+	private transient InputStream		defaultLayoutXML;
+	private transient InputStream		defaultKeymapXML;
 	private transient PriorityTree	tree;
 	private transient KeyboardLayout	kbdLayout;
 	
