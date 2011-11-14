@@ -45,7 +45,7 @@ public class ProfileCleanerDlg extends JDialog {
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
 	public ProfileCleanerDlg() {
-		SpinnerNumberModel spinModel = new SpinnerNumberModel(20, 0, Integer.MAX_VALUE, 5);
+		SpinnerNumberModel spinModel = new SpinnerNumberModel(5, 0, Integer.MAX_VALUE, 1);
 		spinField = new JSpinner(spinModel);
 
 		okBtn = new JButton("Ok");
