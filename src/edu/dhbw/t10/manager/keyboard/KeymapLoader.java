@@ -101,12 +101,16 @@ public class KeymapLoader {
 						if (key.getNodeName().equals("key")) {
 							int id = Integer.parseInt(key.getAttributes().getNamedItem("id").getTextContent());
 							String keycode = key.getAttributes().getNamedItem("keycode").getTextContent();
+							String iconUrl = "";
+							if (key.getAttributes().getNamedItem("icon") != null)
+								iconUrl = key.getAttributes().getNamedItem("icon").getTextContent();
 							String name = key.getTextContent();
 							// save key in keymap
-							keymap.put(id, new Key(id, name, keycode, type, false));
+							keymap.put(id, new Key(id, name, keycode, type, false, iconUrl));
 						}
 					} catch (NullPointerException e) {
 						logger.warn("A key in keymap could not be read. j=" + j + " i=" + i);
+						e.printStackTrace();
 					} catch (NumberFormatException e) {
 						logger.warn("A key in keymap had a bad number format. j=" + j + " i=" + i);
 					}
