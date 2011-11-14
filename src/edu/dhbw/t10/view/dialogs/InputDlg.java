@@ -70,7 +70,7 @@ public class InputDlg extends JDialog {
 		okBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Controller.getInstance().eIsInputDlg(menuItem, mhhh);
+				Controller.getInstance().eIsDlg(menuItem, mhhh);
 			}
 		});
 		
@@ -96,7 +96,7 @@ public class InputDlg extends JDialog {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
-					Controller.getInstance().eIsInputDlg(menuItem, mhhh);
+					Controller.getInstance().eIsDlg(menuItem, mhhh);
 				}
 			}
 		});

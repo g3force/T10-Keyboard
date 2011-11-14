@@ -19,6 +19,7 @@ import java.awt.event.WindowListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.zip.ZipException;
 
@@ -40,6 +41,7 @@ import edu.dhbw.t10.type.profile.Profile;
 import edu.dhbw.t10.view.Presenter;
 import edu.dhbw.t10.view.dialogs.InputDlg;
 import edu.dhbw.t10.view.dialogs.ProfileChooser;
+import edu.dhbw.t10.view.dialogs.ProfileCleanerDlg;
 import edu.dhbw.t10.view.menus.EMenuItem;
 import edu.dhbw.t10.view.menus.StatusPane;
 import edu.dhbw.t10.view.panels.MainPanel;
@@ -226,6 +228,7 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	 */
 	private void eIsProfileChooser(ProfileChooser pc) {
 		File path = pc.getSelectedFile();
+		HashMap<String, Integer> words = new HashMap<String, Integer>();
 		
 		switch (pc.getMenuType()) {
 		// import profile
@@ -241,18 +244,24 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 			
 			// export profile
 			case iExport:
+				String ending = "";
+				String pathToFile = path.toString();
+				if(path.toString().lastIndexOf(".")>0) {
+					ending = path.toString().substring(path.toString().lastIndexOf("."), path.toString().length());
+				}
+				if (!ending.equals(".zip"))
+					pathToFile += ".zip";
 				try {
-					ImportExportManager.exportProfiles(profileMan.getActive(), path);
+					ImportExportManager.exportProfiles(profileMan.getActive(), new File(pathToFile));
 					logger.debug("Profile exported");
 					statusPane.enqueueMessage("Profile exported", StatusPane.LEFT);
 				} catch (IOException err1) {
-					logger.error("Unable to export profile " + path.toString());
+					logger.error("Unable to export profile " + pathToFile);
 				}
 				break;
 			
 			// Extend Dictionary By Text
 			case iT2D:
-				HashMap<String, Integer> words = new HashMap<String, Integer>();
 				profileMan.getActive().save();
 				try {
 					words = ImportExportManager.importFromText(path.toString());
@@ -265,21 +274,34 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 			
 			// Extend Dictionary From File
 			case iF2D:
-				// TODO DirkK Extend Dictionary From File
-				// Filter ist auf .tree gesetzt.
+				try {
+					words = ImportExportManager.importFromFile(path.toString(), true);
+				} catch (IOException err) {
+					statusPane.enqueueMessage("Could not load the text file. Please choose another one.", StatusPane.LEFT);
+				}
+				profileMan.getActive().getTree().importFromHashMap(words);
+				statusPane.enqueueMessage("Dictionary file included.", StatusPane.LEFT);
+
 				break;
 			
 			// Export Dictionary To File
 			case iD2F:
-				// TODO DirkK Export Dictionary To File
+				words = profileMan.getActive().getTree().exportToHashMap();
+				try {
+					ImportExportManager.exportToFile(words, path.toString());
+				} catch (IOException err) {
+					statusPane.enqueueMessage("Could not create the dictionary file. Please choose another path.",
+							StatusPane.LEFT);
+				}
+				statusPane.enqueueMessage("Dictionary file exported.", StatusPane.LEFT);
 				break;
 		}
 	}
 	
 	
-	public void eIsInputDlg(EMenuItem menuItem, Object o) {
+	public void eIsDlg(EMenuItem menuItem, Object o) {
 		switch (menuItem) {
-		// new profile
+			// new profile
 			case iNewProfile:
 				InputDlg iDlg = (InputDlg) o;
 				String newProfile = iDlg.getProfileName();
@@ -289,6 +311,15 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 				} else {
 					iDlg.setLblText("Profile already exists :-(");
 				}
+				break;
+			
+			// Clean Dictionary
+			case iClean:
+				ProfileCleanerDlg iCleanDlg = (ProfileCleanerDlg) o;
+				Integer freq = iCleanDlg.getFrequency();
+				Date date = iCleanDlg.getDate();
+				profileMan.getActive().getTree().autoCleaning(freq, date.getTime(), 2);
+				statusPane.enqueueMessage("Dictionary cleaned.", StatusPane.LEFT);
 				break;
 		}
 	}
@@ -400,7 +431,7 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	 */
 	private void keyIsControl(Key key) {
 		if (suggest.length() > typedWord.length())
-			outputMan.printChar(new Key(0, "Delete", "\\DELETE\\", Key.CONTROL, false));
+			outputMan.printChar(new Key(0, "Delete", "\\DELETE\\", Key.CONTROL, false, ""));
 		outputMan.printChar(key);
 		typedWord = "";
 		suggest = "";
