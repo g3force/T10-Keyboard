@@ -417,7 +417,8 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	 */
 	private void keyIsAccept(Key key) {
 		if (suggest.length() > typedWord.length())
-			outputMan.unMark();
+			// outputMan.unMark();
+			outputMan.printSuggest(suggest, typedWord, 1);
 		outputMan.printChar(key);
 		acceptWord(suggest);
 		logger.trace("Word accepted");
