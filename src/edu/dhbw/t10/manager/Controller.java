@@ -230,6 +230,7 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	private void eIsProfileChooser(ProfileChooser pc) {
 		File path = pc.getSelectedFile();
 		HashMap<String, Integer> words = new HashMap<String, Integer>();
+		pc.setVisible(false);
 		
 		switch (pc.getMenuType()) {
 		// import profile
