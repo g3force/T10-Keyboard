@@ -1,10 +1,10 @@
-/*
+/* 
  * *********************************************************
  * Copyright (c) 2011 - 2011, DHBW Mannheim
  * Project: T10 On-Screen Keyboard
- * Date: 11.11.2011
+ * Date: 14.11.2011
  * Author(s): felix
- * 
+ *
  * *********************************************************
  */
 package edu.dhbw.t10.view.dialogs;
@@ -12,126 +12,81 @@ package edu.dhbw.t10.view.dialogs;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
 
 import edu.dhbw.t10.manager.Controller;
 import edu.dhbw.t10.view.menus.EMenuItem;
 
 
 /**
- * Class for a non-modal input dialog with textfield, input area, ok-button and cancel-button.
+ * TODO felix, add comment!
+ * - What should this type do (in one sentence)?
+ * - If not intuitive: A simple example how to use this class
  * 
- * @author FelixP
+ * @author felix
  * 
  */
-public class InputDlg extends JDialog {
+public class ProfileCleanerDlg extends JDialog {
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
-	private static final long	serialVersionUID	= -7212140066266985858L;
-	private JLabel					textLbl;
-	private JTextField			textField;
-	private JButton				okBtn;
-	private JButton				cancelBtn;
-	private InputDlg				mhhh;
-	
-	
+	private JSpinner	spinField;
+	private JButton	okBtn;
+	private JButton	cancelBtn;
+	private final ProfileCleanerDlg	mhh;
+
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
-	
-	/**
-	 * 
-	 * Class for a non-modal input dialog with textfield, input area, ok-button and cancel-button.
-	 * 
-	 * @param menuItem
-	 * @param title
-	 * @param text
-	 * @author FelixP
-	 */
-	public InputDlg(final EMenuItem menuItem, String title, String text) {
-		this.setTitle(title);
-		this.setModalityType(null);
-		this.setAlwaysOnTop(true);
-		this.mhhh = this;
-		
-		textLbl = new JLabel(text);
-		textField = new JTextField();
+	public ProfileCleanerDlg() {
+		SpinnerNumberModel spinModel = new SpinnerNumberModel(20, 0, Integer.MAX_VALUE, 5);
+		spinField = new JSpinner(spinModel);
+
 		okBtn = new JButton("Ok");
 		cancelBtn = new JButton("Cancel");
 		
+		mhh = this;
+		
 		okBtn.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
-				Controller.getInstance().eIsDlg(menuItem, mhhh);
+			public void actionPerformed(ActionEvent arg0) {
+				Controller.getInstance().eIsDlg(EMenuItem.iClean, mhh);
+				setVisible(false);
 			}
 		});
 		
 		cancelBtn.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent arg0) {
 				setVisible(false);
 			}
 		});
-		
-		textField.addKeyListener(new KeyListener() {
-			
-			@Override
-			public void keyTyped(KeyEvent e) {
-			}
-			
-			
-			@Override
-			public void keyReleased(KeyEvent e) {
-			}
-			
-			
-			@Override
-			public void keyPressed(KeyEvent e) {
-				System.out.println("blubb");
-				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
-					Controller.getInstance().eIsDlg(menuItem, mhhh);
-				}
-			}
-		});
-		
-		this.add(textLbl, BorderLayout.NORTH);
-		this.add(textField, BorderLayout.CENTER);
-		
+
 		JPanel p = new JPanel();
 		p.add(okBtn, BorderLayout.WEST);
 		p.add(cancelBtn, BorderLayout.EAST);
+
+		this.add(spinField, BorderLayout.CENTER);
 		this.add(p, BorderLayout.SOUTH);
 		
+		this.setTitle("Clean Dictionary");
+
 		this.pack();
+		this.setAlwaysOnTop(true);
 		this.setVisible(true);
 	}
-	
-	
+
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
-	public void addActionListener(ActionListener al) {
-		
-	}
 	
-	
+
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
-	public String getProfileName() {
-		return textField.getText();
-	}
-	
-	
-	public void setLblText(String text) {
-		textLbl.setText(text);
-	}
 }

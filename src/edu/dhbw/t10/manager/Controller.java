@@ -276,7 +276,7 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	}
 	
 	
-	public void eIsInputDlg(EMenuItem menuItem, Object o) {
+	public void eIsDlg(EMenuItem menuItem, Object o) {
 		switch (menuItem) {
 		// new profile
 			case iNewProfile:
