@@ -99,10 +99,10 @@ public class OutputManager {
 		// Use a ArrayList to be able to use the printCombi
 		ArrayList<Key> markCombiHold = new ArrayList<Key>();
 		ArrayList<Key> markCombiPress = new ArrayList<Key>();
-		markCombiHold.add(new Key(0, "Shift", "\\SHIFT\\", Key.CONTROL, false));
+		markCombiHold.add(new Key(0, "Shift", "\\SHIFT\\", Key.CONTROL, false, ""));
 		for (int j = 1; j < num + 1; j++) {
 			// Add one marked char via one LEFT Key...
-			markCombiPress.add(new Key(j, "Left", "\\LEFT\\", Key.CONTROL, false));
+			markCombiPress.add(new Key(j, "Left", "\\LEFT\\", Key.CONTROL, false, ""));
 			logger.trace("Added one mark...");
 		}
 		boolean mark = out.printCombi(markCombiHold, markCombiPress);

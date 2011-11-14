@@ -49,7 +49,7 @@ public class ModeKey extends Key {
 	 * @author NicolaiO
 	 */
 	public ModeKey(Key key) {
-		super(key.getId(), key.getName(), key.getKeycode(), key.getType(), key.isAccept());
+		super(key.getId(), key.getName(), key.getKeycode(), key.getType(), key.isAccept(), key.getIcon());
 	}
 	
 	
