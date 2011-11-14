@@ -319,7 +319,7 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 				Integer freq = iCleanDlg.getFrequency();
 				Date date = iCleanDlg.getDate(); // TODO DirkK Clean Dictionary; Standard ist immer das aktuelle Datum -> OR
 															// Verknüpfung von date und freq(uency)
-				profileMan.getActive().getTree().autoCleaning(freq, 0, PriorityTree.ONLY_BOTTOM_BORDER);
+				profileMan.getActive().getTree().autoCleaning(freq, date.getTime(), PriorityTree.ONLY_BOTTOM_BORDER);
 				statusPane.enqueueMessage("Dictionary cleaned.", StatusPane.LEFT);
 				break;
 		}
