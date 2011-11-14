@@ -24,11 +24,9 @@ import edu.dhbw.t10.view.menus.EMenuItem;
 
 
 /**
- * TODO felix, add comment!
- * - What should this type do (in one sentence)?
- * - If not intuitive: A simple example how to use this class
+ * Non-Modal dialog for menu item: "Clean Dictionary".
  * 
- * @author felix
+ * @author FelixP
  * 
  */
 public class ProfileCleanerDlg extends JDialog {
