@@ -12,9 +12,11 @@ package edu.dhbw.t10.type.keyboard.key;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
 import org.apache.log4j.Logger;
@@ -263,6 +265,11 @@ public class Button extends PhysicalButton implements MouseListener {
 	
 	public void setKey(Key key) {
 		this.key = key;
-		setText(key.getName());
+		if (!key.getIcon().equals("")) {
+			URL iconUrl;
+			iconUrl = getClass().getResource(key.getIcon());
+			setIcon(new ImageIcon(iconUrl.getPath()));
+		} else
+			setText(key.getName());
 	}
 }

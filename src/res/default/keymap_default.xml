@@ -15,10 +15,10 @@
 		<key id="12" keycode="\F12\">F12</key>
 		<key id="13" keycode="\PRINTSCREEN\">Druck</key>
 		<key id="14" keycode="\PAUSE\">Pause</key>
-		<key id="28" keycode="\BACK_SPACE\">Backspace</key>
+		<key id="28" keycode="\BACK_SPACE\" icon="/res/icons/keys/left.png">Backspace</key>
 		
-		<key id="1000" keycode="\CAPS_LOCK\">Caps</key>
-		<key id="1001" keycode="\SHIFT\">Shift</key>
+		<key id="1000" keycode="\CAPS_LOCK\" icon="/res/icons/keys/caps.png">Caps</key>
+		<key id="1001" keycode="\SHIFT\" icon="/res/icons/keys/shift.png">Shift</key>
 		<key id="1002" keycode="\CONTROL\">Strg</key>
 		<key id="1003" keycode="\WINDOWS\">Super</key>
 		<key id="1004" keycode="\ALT\">Alt</key>
@@ -26,13 +26,13 @@
 		<key id="1008" keycode="\CONTEXT_MENU\">Menu</key>
 		<key id="1009" keycode="\CONTROL\">Strg</key>
 		
-		<key id="50" keycode="\TAB\">TAB</key>
-		<key id="63" keycode="\ENTER\">Enter</key>
+		<key id="50" keycode="\TAB\" icon="/res/icons/keys/tab.png">TAB</key>
+		<key id="63" keycode="\ENTER\" icon="/res/icons/keys/enter.png">Enter</key>
 		
-		<key id="126" keycode="\UP\">Up</key>
-		<key id="127" keycode="\LEFT\">Left</key>
-		<key id="128" keycode="\DOWN\">Down</key>
-		<key id="129" keycode="\RIGHT\">Right</key>
+		<key id="126" keycode="\UP\" icon="/res/icons/keys/up.png">Up</key>
+		<key id="127" keycode="\LEFT\" icon="/res/icons/keys/left.png">Left</key>
+		<key id="128" keycode="\DOWN\" icon="/res/icons/keys/down.png">Down</key>
+		<key id="129" keycode="\RIGHT\" icon="/res/icons/keys/right.png">Right</key>
 		
 		<key id="130" keycode="\SPACE\"></key>
 		<key id="1301" keycode="\SPACE\">accept</key>
