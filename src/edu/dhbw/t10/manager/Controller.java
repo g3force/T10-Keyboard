@@ -38,6 +38,7 @@ import edu.dhbw.t10.type.keyboard.key.ModeButton;
 import edu.dhbw.t10.type.keyboard.key.ModeKey;
 import edu.dhbw.t10.type.keyboard.key.MuteButton;
 import edu.dhbw.t10.type.profile.Profile;
+import edu.dhbw.t10.type.tree.PriorityTree;
 import edu.dhbw.t10.view.Presenter;
 import edu.dhbw.t10.view.dialogs.InputDlg;
 import edu.dhbw.t10.view.dialogs.ProfileChooser;
@@ -231,6 +232,7 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	private void eIsProfileChooser(ProfileChooser pc) {
 		File path = pc.getSelectedFile();
 		HashMap<String, Integer> words = new HashMap<String, Integer>();
+		pc.setVisible(false);
 		
 		switch (pc.getMenuType()) {
 		// import profile
@@ -320,7 +322,7 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 				ProfileCleanerDlg iCleanDlg = (ProfileCleanerDlg) o;
 				Integer freq = iCleanDlg.getFrequency();
 				Date date = iCleanDlg.getDate();
-				profileMan.getActive().getTree().autoCleaning(freq, date.getTime(), 2);
+				profileMan.getActive().getTree().autoCleaning(freq, date.getTime(), PriorityTree.BOTTOM_OR_OLDER);
 				statusPane.enqueueMessage("Dictionary cleaned.", StatusPane.LEFT);
 				break;
 		}
@@ -421,7 +423,8 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	 */
 	private void keyIsAccept(Key key) {
 		if (suggest.length() > typedWord.length())
-			outputMan.unMark();
+			// outputMan.unMark();
+			outputMan.printSuggest(suggest, typedWord, 1);
 		outputMan.printChar(key);
 		acceptWord(suggest);
 		logger.trace("Word accepted");
