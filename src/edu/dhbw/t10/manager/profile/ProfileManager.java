@@ -286,12 +286,11 @@ public class ProfileManager {
 	 * @param profileName - String. Name of the profile.
 	 * @param pathToNewProfile - String. Path to the new profile.
 	 * @return Handle/Pointer to the new profile.
-	 * @author SebastianN
+	 * @author SebastianN, NicolaiO
 	 */
 	public Profile createProfile(String profileName) {
-		Profile newProfile;
+		Profile newProfile = getProfileByName(profileName);
 		
-		newProfile = getProfileByName(profileName);
 		if (newProfile != null) {
 			logger.warn("Profile already exists.");
 		} else {
@@ -299,8 +298,6 @@ public class ProfileManager {
 			profiles.add(newProfile);
 			if (getActive() == null) {
 				logger.error("The famous case, that should never occur, just did exactly this :D");
-			} else {
-				// loadDDLs();
 			}
 		}
 		serializeProfiles();
@@ -453,6 +450,7 @@ public class ProfileManager {
 			Profile cProfile = profiles.get(i);
 			if (cProfile.getPathToProfile() == null || cProfile.getPathToProfile().isEmpty())
 				continue;
+			logger.info("Serializing Porfile " + cProfile.getName() + " to " + cProfile.getPathToProfile());
 			try {
 				Serializer.serialize(cProfile, cProfile.getPathToProfile());
 			} catch (IOException io) {
