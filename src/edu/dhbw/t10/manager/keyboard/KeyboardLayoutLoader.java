@@ -12,6 +12,7 @@ package edu.dhbw.t10.manager.keyboard;
 import java.awt.Font;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -67,32 +68,25 @@ public class KeyboardLayoutLoader {
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
 	
+	
 	/**
-	 * Load a keyboardLayout
-	 * 1. read ModeButtons
-	 * 2. read Buttons
-	 * 3. read MuteButtons
-	 * 4. read default config for layout
-	 * 5. read DropDownLists
-	 * 6. add everything to keyboardlayout
+	 * Load KeyboardLayout file given InputStream
 	 * 
 	 * @param filePath to an keyboard layout XML file
 	 * @param keymap that was loaded from file
-	 * @return KeyboardLayout
+	 * @return
 	 * @author NicolaiO
 	 */
-	public static KeyboardLayout load(String filePath, HashMap<Integer, Key> _keymap) {
-		logger.debug("Loading KeyboardLayout from " + filePath + "...");
+	public static KeyboardLayout load(InputStream filePath, HashMap<Integer, Key> _keymap) {
+		logger.debug("Loading KeyboardLayout...");
+		KeyboardLayout kbdLayout = new KeyboardLayout(0, 0, 1, 1, 1);
 		DocumentBuilder dBuilder;
 		keymap = _keymap;
-		KeyboardLayout kbdLayout = new KeyboardLayout(0, 0, 1, 1, 1);
-		File layoutFile = new File(filePath);
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-		
 		// initialize document reader
 		try {
 			dBuilder = dbFactory.newDocumentBuilder();
-			doc = dBuilder.parse(layoutFile);
+			doc = dBuilder.parse(filePath);
 			doc.getDocumentElement().normalize();
 		} catch (ParserConfigurationException err) {
 			logger.error("Could not initialize dBuilder");
@@ -107,6 +101,59 @@ public class KeyboardLayoutLoader {
 			err.printStackTrace();
 			return kbdLayout;
 		}
+		return load(kbdLayout);
+	}
+	
+	
+	/**
+	 * Load KeyboardLayout with given File
+	 * 
+	 * @param filePath to an keyboard layout XML file
+	 * @param keymap that was loaded from file
+	 * @return
+	 * @author NicolaiO
+	 */
+	public static KeyboardLayout load(File filePath, HashMap<Integer, Key> _keymap) {
+		logger.debug("Loading KeyboardLayout...");
+		KeyboardLayout kbdLayout = new KeyboardLayout(0, 0, 1, 1, 1);
+		DocumentBuilder dBuilder;
+		keymap = _keymap;
+		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+		// initialize document reader
+		try {
+			dBuilder = dbFactory.newDocumentBuilder();
+			doc = dBuilder.parse(filePath);
+			doc.getDocumentElement().normalize();
+		} catch (ParserConfigurationException err) {
+			logger.error("Could not initialize dBuilder");
+			err.printStackTrace();
+			return kbdLayout;
+		} catch (SAXException err) {
+			logger.error("Could not parse document");
+			err.printStackTrace();
+			return kbdLayout;
+		} catch (IOException err) {
+			logger.error("Could not parse document");
+			err.printStackTrace();
+			return kbdLayout;
+		}
+		return load(kbdLayout);
+	}
+
+
+	/**
+	 * Load a keyboardLayout
+	 * 1. read ModeButtons
+	 * 2. read Buttons
+	 * 3. read MuteButtons
+	 * 4. read default config for layout
+	 * 5. read DropDownLists
+	 * 6. add everything to keyboardlayout
+	 * 
+	 * @return KeyboardLayout
+	 * @author NicolaiO
+	 */
+	private static KeyboardLayout load(KeyboardLayout kbdLayout) {
 		NodeList nList;
 		
 		// ########################## read ModeButtons ########################

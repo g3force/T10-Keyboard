@@ -86,7 +86,7 @@ public class ModeButton extends PhysicalButton {
 		if (!modeKey.getIcon().equals("")) {
 			URL iconUrl;
 			iconUrl = getClass().getResource(modeKey.getIcon());
-			setIcon(new ImageIcon(iconUrl.getPath()));
+			setIcon(new ImageIcon(iconUrl));
 		} else
 			setText(modeKey.getName());
 	}

@@ -38,6 +38,7 @@ import edu.dhbw.t10.type.keyboard.key.ModeButton;
 import edu.dhbw.t10.type.keyboard.key.ModeKey;
 import edu.dhbw.t10.type.keyboard.key.MuteButton;
 import edu.dhbw.t10.type.profile.Profile;
+import edu.dhbw.t10.type.tree.PriorityTree;
 import edu.dhbw.t10.view.Presenter;
 import edu.dhbw.t10.view.dialogs.InputDlg;
 import edu.dhbw.t10.view.dialogs.ProfileChooser;
@@ -94,6 +95,7 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 		if (!tf.exists()) {
 			tf.mkdirs();
 		}
+
 		logger.trace(datapath);
 		outputMan = new OutputManager();
 		mainPanel = new MainPanel();
@@ -317,7 +319,7 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 				ProfileCleanerDlg iCleanDlg = (ProfileCleanerDlg) o;
 				Integer freq = iCleanDlg.getFrequency();
 				Date date = iCleanDlg.getDate();
-				profileMan.getActive().getTree().autoCleaning(freq, date.getTime(), 2);
+				profileMan.getActive().getTree().autoCleaning(freq, date.getTime(), PriorityTree.BOTTOM_OR_OLDER);
 				statusPane.enqueueMessage("Dictionary cleaned.", StatusPane.LEFT);
 				break;
 		}
