@@ -30,6 +30,11 @@ public class PriorityTree implements Serializable {
 	/**  */
 	private static final long				serialVersionUID	= 662040913098286336L;
 	
+	public static int							ONLY_BOTTOM_BORDER	= 0;
+	public static int							ONLY_OLDER_THAN		= 1;
+	public static int							BOTTOM_OR_OLDER		= 2;
+	public static int							BOTTOM_AND_OLDER		= 3;
+
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
@@ -160,7 +165,7 @@ public class PriorityTree implements Serializable {
 			// logger.debug("Deleting Node... (Node exist)");
 			deleteEl.setFrequency(0); // frequency==0 -> same as delete
 			PriorityElement node = deleteEl;
-			while (node.getFollowers().isEmpty()) {
+			while (node.getFollowers().isEmpty() && node.getFather() != null) {
 				// delete the node and all fathers, if they have not got any other followers (not part of another word)
 				// logger.debug("Deleting Node... (Node deleted)");
 				node = node.getFather();
@@ -297,6 +302,7 @@ public class PriorityTree implements Serializable {
 	 * @return the amount of deleted items
 	 * @author DirkK
 	 */
+
 	public int autoCleaning(int bottomBorder, long olderThan, int flag) {
 		LinkedList<PriorityElement> toDelete = new LinkedList<PriorityElement>();
 		for (PriorityElement pe : root.getListOfFollowers()) {
