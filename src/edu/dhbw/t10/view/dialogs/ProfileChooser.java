@@ -52,7 +52,8 @@ public class ProfileChooser extends JFileChooser {
 	public ProfileChooser(EMenuItem menuType, final JFrame container) {
 		type = menuType;
 		switch (menuType) {
-			case iT2D: // Extend Dictionary By Text
+			// Extend Dictionary By Text
+			case iT2D:
 			
 				this.setFileFilter(new FileFilter() {
 					@Override
@@ -69,10 +70,13 @@ public class ProfileChooser extends JFileChooser {
 				setDialogType(JFileChooser.OPEN_DIALOG);
 				break;
 
-			case iImport: // import
+			// import
+			case iImport:
 				setDialogType(JFileChooser.OPEN_DIALOG);
 				break;
-			case iExport: // export
+			
+			// export
+			case iExport:
 			
 				this.setFileFilter(new FileFilter() {
 					@Override

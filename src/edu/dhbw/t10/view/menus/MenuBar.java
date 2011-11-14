@@ -20,6 +20,7 @@ import javax.swing.JMenuItem;
 import edu.dhbw.t10.manager.Controller;
 import edu.dhbw.t10.view.dialogs.DialogContainer;
 import edu.dhbw.t10.view.dialogs.InputDlg;
+import edu.dhbw.t10.view.dialogs.ProfileCleanerDlg;
 
 
 /**
@@ -152,7 +153,7 @@ public class MenuBar extends JMenuBar {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TOD O FelixP Menu autoLöschen (profilliste, Datum, Wortanzahl
+				new ProfileCleanerDlg();
 			}
 		});
 		
