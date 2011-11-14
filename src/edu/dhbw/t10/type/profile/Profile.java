@@ -11,8 +11,8 @@ package edu.dhbw.t10.type.profile;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
-import java.net.URL;
 
 import org.apache.log4j.Logger;
 
@@ -46,8 +46,8 @@ public class Profile implements Serializable {
 	private String							pathToAllowedChars;
 	private String							pathToLayoutFile;
 	// private String pathToKeymapFile;
-	private String							defaultLayoutFile;
-	private String							defaultKeymapFile;
+	private InputStream					defaultLayoutXML;
+	private InputStream					defaultKeymapXML;
 	private transient PriorityTree	tree;
 	private transient KeyboardLayout	kbdLayout;
 	
@@ -142,18 +142,10 @@ public class Profile implements Serializable {
 	
 	
 	private void loadDefaultPathes() {
-		URL url;
-		url = getClass().getResource("/res/default/layout_default.xml");
-		if (url != null) {
-			defaultLayoutFile = url.getPath();
-		} else {
+		defaultLayoutXML = getClass().getResourceAsStream("/res/default/layout_default.xml");
+		defaultKeymapXML = getClass().getResourceAsStream("/res/default/keymap_default.xml");
+		if (defaultLayoutXML == null || defaultKeymapXML == null) {
 			logger.error("Could not load default layout file. Program will not run well...");
-		}
-		url = getClass().getResource("/res/default/keymap_default.xml");
-		if (url != null) {
-			defaultKeymapFile = url.getPath();
-		} else {
-			logger.error("Could not load default keymap file. Program will not run well...");
 		}
 	}
 
@@ -166,10 +158,10 @@ public class Profile implements Serializable {
 	private void loadLayout() {
 		File file = new File(pathToLayoutFile);
 		if (file.exists()) {
-			kbdLayout = KeyboardLayoutLoader.load(pathToLayoutFile, KeymapLoader.load(defaultKeymapFile));
+			kbdLayout = KeyboardLayoutLoader.load(file, KeymapLoader.load(defaultKeymapXML));
 		} else {
 			logger.info("Default Layout loaded");
-			kbdLayout = KeyboardLayoutLoader.load(defaultLayoutFile, KeymapLoader.load(defaultKeymapFile));
+			kbdLayout = KeyboardLayoutLoader.load(defaultLayoutXML, KeymapLoader.load(defaultKeymapXML));
 		}
 		for (MuteButton mb : kbdLayout.getMuteButtons()) {
 			switch (mb.getType()) {
@@ -224,8 +216,6 @@ public class Profile implements Serializable {
 		logger.debug("save Chars to " + pathToAllowedChars);
 		tree.saveAllowedChars();
 	}
-	
-	
 	
 	
 	// --------------------------------------------------------------------------

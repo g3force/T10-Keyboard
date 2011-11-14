@@ -47,8 +47,9 @@ public class SuperFelix {
 		 * configuration is stored in a config file. If it does not exist, use basic config
 		 */
 		URL logUrl = getClass().getResource("/res/log4j.conf");
+
 		if (logUrl != null) {
-			PropertyConfigurator.configure(logUrl.getPath());
+			PropertyConfigurator.configure(logUrl);
 		} else {
 			// basic config with only a console appender
 			BasicConfigurator.configure();
