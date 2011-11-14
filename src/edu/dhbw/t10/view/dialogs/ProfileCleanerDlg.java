@@ -49,6 +49,7 @@ public class ProfileCleanerDlg extends JDialog {
 	// --------------------------------------------------------------------------
 	public ProfileCleanerDlg() {
 		calendar = Calendar.getInstance();
+		calendar.add(Calendar.YEAR, -1);
 		Date initDate = calendar.getTime();
 		calendar.add(Calendar.YEAR, -100);
 		Date earliestDate = calendar.getTime();
