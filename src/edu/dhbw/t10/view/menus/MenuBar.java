@@ -59,7 +59,7 @@ public class MenuBar extends JMenuBar {
 		JMenuItem iT2D = new JMenuItem("Extend Dictionary By Text");
 		JMenuItem iF2D = new JMenuItem("Extend Dictionary From File");
 		JMenuItem iD2F = new JMenuItem("Export Dictionary To File");
-		// JMenuItem iClean = new JMenuItem("Clean Dictionary");
+		JMenuItem iClean = new JMenuItem("Clean Dictionary");
 		JMenuItem iDelete = new JMenuItem("Delete");
 		
 		// add menus to GUI
@@ -73,7 +73,7 @@ public class MenuBar extends JMenuBar {
 		mProfile.add(iT2D);
 		mProfile.add(iF2D);
 		mProfile.add(iD2F);
-		// mProfile.add(iClean);
+		mProfile.add(iClean);
 		mProfile.add(iDelete);
 		
 		
@@ -148,13 +148,13 @@ public class MenuBar extends JMenuBar {
 			}
 		});
 
-		// iClean.addActionListener(new ActionListener() {
-		//			
-		// @Override
-		// public void actionPerformed(ActionEvent e) {
-		// // TOD O FelixP Menu autoLöschen (profilliste, Datum, Wortanzahl
-		// }
-		// });
+		iClean.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TOD O FelixP Menu autoLöschen (profilliste, Datum, Wortanzahl
+			}
+		});
 		
 		iDelete.addActionListener(new ActionListener() {
 			
