@@ -20,6 +20,7 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
 import edu.dhbw.t10.manager.Controller;
+import edu.dhbw.t10.type.profile.Profile;
 import edu.dhbw.t10.view.menus.EMenuItem;
 
 
@@ -89,4 +90,13 @@ public class ProfileCleanerDlg extends JDialog {
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
+	public Profile getProfile() {
+		return null;
+	}
+	
+
+	public Integer getFrequency() {
+		Integer i = (Integer) spinField.getValue();
+		return i;
+	}
 }

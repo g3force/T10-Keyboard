@@ -40,6 +40,7 @@ import edu.dhbw.t10.type.profile.Profile;
 import edu.dhbw.t10.view.Presenter;
 import edu.dhbw.t10.view.dialogs.InputDlg;
 import edu.dhbw.t10.view.dialogs.ProfileChooser;
+import edu.dhbw.t10.view.dialogs.ProfileCleanerDlg;
 import edu.dhbw.t10.view.menus.EMenuItem;
 import edu.dhbw.t10.view.menus.StatusPane;
 import edu.dhbw.t10.view.panels.MainPanel;
@@ -278,7 +279,7 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	
 	public void eIsDlg(EMenuItem menuItem, Object o) {
 		switch (menuItem) {
-		// new profile
+			// new profile
 			case iNewProfile:
 				InputDlg iDlg = (InputDlg) o;
 				String newProfile = iDlg.getProfileName();
@@ -288,6 +289,16 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 				} else {
 					iDlg.setLblText("Profile already exists :-(");
 				}
+				break;
+			
+			// Clean Dictionary
+			case iClean:
+				ProfileCleanerDlg iCleanDlg = (ProfileCleanerDlg) o;
+				// Profile profile = iCleanDlg.getProfile();
+				Integer freq = iCleanDlg.getFrequency();
+				
+				// TODO DirkK Clean Dictionary
+
 				break;
 		}
 	}
