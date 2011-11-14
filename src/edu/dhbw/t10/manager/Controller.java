@@ -225,6 +225,7 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	 */
 	private void eIsProfileChooser(ProfileChooser pc) {
 		File path = pc.getSelectedFile();
+		HashMap<String, Integer> words = new HashMap<String, Integer>();
 		
 		switch (pc.getMenuType()) {
 		// import profile
@@ -251,7 +252,6 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 			
 			// Extend Dictionary By Text
 			case iT2D:
-				HashMap<String, Integer> words = new HashMap<String, Integer>();
 				profileMan.getActive().save();
 				try {
 					words = ImportExportManager.importFromText(path.toString());
@@ -264,13 +264,26 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 			
 			// Extend Dictionary From File
 			case iF2D:
-				// TODO DirkK Extend Dictionary From File
-				// Filter ist auf .tree gesetzt.
+				try {
+					words = ImportExportManager.importFromFile(path.toString(), true);
+				} catch (IOException err) {
+					statusPane.enqueueMessage("Could not load the text file. Please choose another one.", StatusPane.LEFT);
+				}
+				profileMan.getActive().getTree().importFromHashMap(words);
+				statusPane.enqueueMessage("Dictionary file included.", StatusPane.LEFT);
+
 				break;
 			
 			// Export Dictionary To File
 			case iD2F:
-				// TODO DirkK Export Dictionary To File
+				words = profileMan.getActive().getTree().exportToHashMap();
+				try {
+					ImportExportManager.exportToFile(words, path.toString());
+				} catch (IOException err) {
+					statusPane.enqueueMessage("Could not create the dictionary file. Please choose another path.",
+							StatusPane.LEFT);
+				}
+				statusPane.enqueueMessage("Dictionary file exported.", StatusPane.LEFT);
 				break;
 		}
 	}

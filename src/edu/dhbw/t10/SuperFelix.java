@@ -24,6 +24,8 @@ import edu.dhbw.t10.manager.Controller;
  * 
  * TODO OPTIONAL ALL graphical buttons (keys) e.g. pause- and arrow keys, graphics are available in /res(icons/ekys/
  * TODO FelixP optional menu items
+ * TODO FelixP Profile extend/export file dialog vertauscht, save und open anders rum
+ * TODO FelixP export to file needs limitation on .tree
  * 
  * @author NicolaiO, DanielAl, FelixP, DirkK, SebastianN
  * 
