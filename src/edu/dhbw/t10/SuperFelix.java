@@ -25,6 +25,7 @@ import edu.dhbw.t10.manager.Controller;
  * TODO OPTIONAL ALL graphical buttons --> resize is not implemented...
  * TODO FelixP optional menu item "Modify"
  * TODO FelixP Export Profile nach Profile verschieben (gehört schließlich zum aktuellen profile)
+ * TODO DanielAl CAPS keycode?? for system LED? :P Another idea? delete caps? with what to be replaced??
  * 
  * @author NicolaiO, DanielAl, FelixP, DirkK, SebastianN
  * 

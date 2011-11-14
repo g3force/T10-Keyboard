@@ -74,8 +74,8 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	
 	private boolean					readyForActionEvents	= false;
 	private boolean					changeProfileBlocked	= false;
-
 	
+
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
@@ -95,7 +95,6 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 			tf.mkdirs();
 		}
 
-		logger.trace(datapath);
 		outputMan = new OutputManager();
 		mainPanel = new MainPanel();
 		statusPane = new StatusPane();
@@ -174,7 +173,10 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 			profileMan.setActive(profile);
 			mainPanel.setKbdLayout(profileMan.getActive().getKbdLayout());
 			resizeWindow(profileMan.getActive().getKbdLayout().getSize());
+			presenter.pack();
 			changeProfileBlocked = false;
+		} else {
+			logger.debug("changeProfile blocked");
 		}
 	}
 
@@ -246,7 +248,7 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 			case iExport:
 				String ending = "";
 				String pathToFile = path.toString();
-				if(path.toString().lastIndexOf(".")>0) {
+				if (path.toString().lastIndexOf(".") > 0) {
 					ending = path.toString().substring(path.toString().lastIndexOf("."), path.toString().length());
 				}
 				if (!ending.equals(".zip"))
@@ -301,7 +303,7 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	
 	public void eIsDlg(EMenuItem menuItem, Object o) {
 		switch (menuItem) {
-			// new profile
+		// new profile
 			case iNewProfile:
 				InputDlg iDlg = (InputDlg) o;
 				String newProfile = iDlg.getProfileName();
@@ -400,9 +402,13 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	 */
 	private void eIsDropDownList(DropDownList currentDdl) {
 		if (currentDdl.getType() == DropDownList.PROFILE) {
-			Profile selectedProfile = (Profile) currentDdl.getSelectedItem();
-			logger.debug("profile ddls: selected Profilename: " + selectedProfile.getName());
-			changeProfile(selectedProfile);
+			Profile selectedProfile = profileMan.getProfileByName(currentDdl.getSelectedItem().toString());
+			if (selectedProfile != null) {
+				logger.debug("selected Profilename: " + selectedProfile.getName());
+				changeProfile(selectedProfile);
+			} else {
+				logger.warn("Selected Item refers to a non valid profile: \"" + currentDdl.getSelectedItem() + "\"");
+			}
 		}
 	}
 	
@@ -626,7 +632,6 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		logger.debug("Mouse moved into a tooltip area");
 		if (e.getSource() instanceof MuteButton) {
 			MuteButton pb = (MuteButton) e.getSource();
 			statusPane.enqueueMessage(pb.getMode().getTooltip(), StatusPane.RIGHT);
@@ -636,7 +641,6 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	
 	@Override
 	public void mouseExited(MouseEvent e) {
-		logger.debug("Mouse left tooltip area");
 		statusPane.enqueueMessage("", StatusPane.RIGHT);
 	}
 	
