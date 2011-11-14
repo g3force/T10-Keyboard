@@ -9,6 +9,8 @@
  */
 package edu.dhbw.t10.type.keyboard.key;
 
+
+
 /**
  * A key represents a combination of a keycode and a name together with some meta information.
  * e.g. 'a' is a key, but the a-Button on the keyboard is a Button, because it also includes an 'A'
@@ -32,6 +34,7 @@ public class Key {
 	private String				name		= "";
 	private int					type		= 0;
 	private boolean			accept	= false;
+	private String				icon		= "";
 	
 	
 	// --------------------------------------------------------------------------
@@ -47,12 +50,14 @@ public class Key {
 	 * @param accept is this key an accept key? (save word after entering key)
 	 * @author NicolaiO
 	 */
-	public Key(int id, String name, String keycode, int type, boolean accept) {
+	public Key(int id, String name, String keycode, int type, boolean accept, String icon) {
 		this.id = id;
 		this.name = name;
 		this.keycode = keycode;
 		this.type = type;
 		this.accept = accept;
+		if (icon != "")
+			this.icon = icon;
 	}
 	
 	
@@ -62,13 +67,13 @@ public class Key {
 	
 	
 	public Key clone() {
-		Key nk = new Key(id, name, keycode, type, accept);
+		Key nk = new Key(id, name, keycode, type, accept, icon);
 		return nk;
 	}
 	
 	
 	public String toString() {
-		return "id:" + id + " n:" + name + " kc:" + keycode + " t:" + type + " a:" + accept;
+		return "id:" + id + " n:" + name + " kc:" + keycode + " t:" + type + " a:" + accept + " i:" + icon;
 	}
 	
 	
@@ -127,4 +132,14 @@ public class Key {
 	}
 	
 	
+	public void setIcon(String icon) {
+		this.icon = icon;
+	}
+	
+	
+	public String getIcon() {
+		return icon;
+	}
+	
+
 }

@@ -399,7 +399,7 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	 */
 	private void keyIsControl(Key key) {
 		if (suggest.length() > typedWord.length())
-			outputMan.printChar(new Key(0, "Delete", "\\DELETE\\", Key.CONTROL, false));
+			outputMan.printChar(new Key(0, "Delete", "\\DELETE\\", Key.CONTROL, false, ""));
 		outputMan.printChar(key);
 		typedWord = "";
 		suggest = "";
