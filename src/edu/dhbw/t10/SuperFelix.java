@@ -23,9 +23,7 @@ import edu.dhbw.t10.manager.Controller;
  * This is the main class of the t10 keyboard. It only initializes the first important classes.
  * 
  * TODO OPTIONAL ALL graphical buttons (keys) e.g. pause- and arrow keys, graphics are available in /res(icons/ekys/
- * TODO FelixP optional menu items
- * TODO FelixP Profile extend/export file dialog vertauscht, save und open anders rum
- * TODO FelixP export to file needs limitation on .tree
+ * TODO FelixP optional menu item "Modify"
  * 
  * @author NicolaiO, DanielAl, FelixP, DirkK, SebastianN
  * 
