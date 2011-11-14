@@ -54,59 +54,31 @@ public class ProfileChooser extends JFileChooser {
 		switch (menuType) {
 			// Extend Dictionary By Text
 			case iT2D:
-			
-				this.setFileFilter(new FileFilter() {
-					@Override
-					public boolean accept(File f) {
-						return f.isDirectory() || f.getName().toLowerCase().endsWith(".zip");
-					}
-					
-					@Override
-					public String getDescription() {
-						return "zip Files";
-					}
-				});
-				
+//				this.setFileFilter( buildFilter("") );
 				setDialogType(JFileChooser.OPEN_DIALOG);
 				break;
 
 			// import
 			case iImport:
+				this.setFileFilter(buildFilter(".zip"));
 				setDialogType(JFileChooser.OPEN_DIALOG);
 				break;
 			
 			// export
 			case iExport:
-			
-				this.setFileFilter(new FileFilter() {
-					@Override
-					public boolean accept(File f) {
-						return f.isDirectory() || f.getName().toLowerCase().endsWith(".zip");
-					}
-					
-
-					@Override
-					public String getDescription() {
-						return "zip Files";
-					}
-				});
+				this.setFileFilter(buildFilter(".zip"));
 				setDialogType(JFileChooser.SAVE_DIALOG);
 				break;
 
+			// Extend Dictionary From File
 			case iF2D:
-				this.setFileFilter(new FileFilter() {
-					@Override
-					public boolean accept(File f) {
-						return f.isDirectory() || f.getName().toLowerCase().endsWith(".tree");
-					}
-					
-
-					@Override
-					public String getDescription() {
-						return "tree Files";
-					}
-				});
-				
+				this.setFileFilter(this.buildFilter(".tree"));
+				setDialogType(JFileChooser.OPEN_DIALOG);
+				break;
+			
+			// Export Dictionary To File
+			case iD2F:
+				this.setFileFilter(this.buildFilter(".tree"));
 				setDialogType(JFileChooser.SAVE_DIALOG);
 				break;
 		}
@@ -131,7 +103,20 @@ public class ProfileChooser extends JFileChooser {
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
-	
+	private FileFilter buildFilter(final String type) {
+		return new FileFilter() {
+			@Override
+			public boolean accept(File f) {
+				return f.isDirectory() || f.getName().toLowerCase().endsWith(type);
+			}
+			
+
+			@Override
+			public String getDescription() {
+				return type.concat(" Files");
+			}
+		};
+	}
 	
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
