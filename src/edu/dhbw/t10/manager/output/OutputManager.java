@@ -112,12 +112,15 @@ public class OutputManager {
 	
 	
 	/**
-	 * Unmark all things via pressing the RIGHT Key
+	 * Unmark all things via pressing the RIGHT Key.
 	 * 
+	 * @deprecated not working with all application. The unmark of marked chars works differently in different
+	 *             applications.
 	 * @author DanielAl
 	 */
 	public void unMark() {
 		out.printString("\\RIGHT\\", Key.CONTROL);
+		logger.trace("Keys unmarked");
 	}
 	
 	
@@ -128,20 +131,41 @@ public class OutputManager {
 	 */
 	public void delMark() {
 		out.printString("\\DELETE\\", Key.CONTROL);
+		logger.trace("marked Keys are deleted");
 	}
-
+	
 	
 	/**
-	 * Prints a new Suggest for given chars and mark the suggested chars, which aren't yet typed.<br>
-	 * 
+	 * Overloaded method printSuggest to call the default function of printSoggest (wich marks the Suggested chars, func
+	 * = 0)
+	 * @param newSuggest
+	 * @param typed
 	 * @author DanielAl
-	 * @param String newSuggest, String typed
 	 */
 	public void printSuggest(String newSuggest, String typed) {
+		printSuggest(newSuggest, typed, 0);
+	}
+	
+	
+	/**
+	 * Prints a new Suggest for given chars and mark the suggested chars, which aren't yet typed, if func = 0. This is
+	 * the default function of printSuggest.<br>
+	 * If func !=0 this function will only prints the suggest without marking the suggested chars. This is used,
+	 * beacause, the unMark() method, which unmarks the suggest, doesn't work with all applications, and that is the
+	 * workaround.
+	 * 
+	 * @author DanielAl
+	 * @param newSuggest
+	 * @param typed
+	 * @param func
+	 */
+	public void printSuggest(String newSuggest, String typed, int func) {
 		// only used if there are really chars that aren't typed yet...
 		if (newSuggest.length() > typed.length()) {
 			out.printString(newSuggest.substring(typed.length()), Key.CHAR);
-			mark(newSuggest.length() - typed.length());
+			if (func == 0)
+				mark(newSuggest.length() - typed.length());
+			logger.debug("Suggest: " + newSuggest + " printed");
 		}
 	}
 	

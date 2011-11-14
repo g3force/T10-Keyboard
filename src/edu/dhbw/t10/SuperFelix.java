@@ -25,6 +25,9 @@ import edu.dhbw.t10.manager.Controller;
  * TODO OPTIONAL ALL graphical buttons --> resize is not implemented...
  * TODO FelixP optional menu item "Modify"
  * TODO FelixP Export Profile nach Profile verschieben (gehört schließlich zum aktuellen profile)
+ * TODO ALL Read: Ich habe die Symphony Kompatibilität hergestellt. allerdings geht das auf Kosten von Performance...
+ * Jetzt wird ein Vorschlag, wenn er accepted wird, nicht mehr demarkiert, sondern neu geschrieben.
+ * Wenn gelesen, löschen!
  * 
  * @author NicolaiO, DanielAl, FelixP, DirkK, SebastianN
  * 
