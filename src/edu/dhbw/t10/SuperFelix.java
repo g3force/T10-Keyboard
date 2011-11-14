@@ -24,6 +24,7 @@ import edu.dhbw.t10.manager.Controller;
  * 
  * TODO OPTIONAL ALL graphical buttons (keys) e.g. pause- and arrow keys, graphics are available in /res(icons/ekys/
  * TODO FelixP optional menu item "Modify"
+ * TODO FelixP Export Profile nach Profile verschieben (gehört schließlich zum aktuellen profile)
  * 
  * @author NicolaiO, DanielAl, FelixP, DirkK, SebastianN
  * 
