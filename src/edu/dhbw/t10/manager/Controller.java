@@ -37,6 +37,7 @@ import edu.dhbw.t10.type.keyboard.key.ModeButton;
 import edu.dhbw.t10.type.keyboard.key.ModeKey;
 import edu.dhbw.t10.type.keyboard.key.MuteButton;
 import edu.dhbw.t10.type.profile.Profile;
+import edu.dhbw.t10.type.tree.PriorityTree;
 import edu.dhbw.t10.view.Presenter;
 import edu.dhbw.t10.view.dialogs.InputDlg;
 import edu.dhbw.t10.view.dialogs.ProfileChooser;
@@ -307,11 +308,9 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 			// Clean Dictionary
 			case iClean:
 				ProfileCleanerDlg iCleanDlg = (ProfileCleanerDlg) o;
-				// Profile profile = iCleanDlg.getProfile();
 				Integer freq = iCleanDlg.getFrequency();
-				
-				// TODO DirkK Clean Dictionary
-
+				profileMan.getActive().getTree().autoCleaning(freq, 0, PriorityTree.ONLY_BOTTOM_BORDER);
+				statusPane.enqueueMessage("Dictionary cleaned.", StatusPane.LEFT);
 				break;
 		}
 	}
