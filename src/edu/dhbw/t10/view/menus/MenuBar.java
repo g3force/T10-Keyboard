@@ -51,12 +51,12 @@ public class MenuBar extends JMenuBar {
 		JMenu mFile = new JMenu("File");
 		JMenuItem iNewProfile = new JMenuItem("New Profile");
 		JMenuItem iImport = new JMenuItem("Import Profile");
-		JMenuItem iExport = new JMenuItem("Export Profile");
 		JMenuItem iClose = new JMenuItem("Close");
 		
 		// ProfileMenu
 		JMenu mProfile = new JMenu("Profile");
 		// JMenuItem iChange = new JMenuItem("Modify");
+		JMenuItem iExport = new JMenuItem("Export Profile");
 		JMenuItem iT2D = new JMenuItem("Extend Dictionary By Text");
 		JMenuItem iF2D = new JMenuItem("Extend Dictionary From File");
 		JMenuItem iD2F = new JMenuItem("Export Dictionary To File");
@@ -68,9 +68,9 @@ public class MenuBar extends JMenuBar {
 		add(mProfile);
 		mFile.add(iNewProfile);
 		mFile.add(iImport);
-		mFile.add(iExport);
 		mFile.add(iClose);
 		// mProfile.add(iChange);
+		mProfile.add(iExport);
 		mProfile.add(iT2D);
 		mProfile.add(iF2D);
 		mProfile.add(iD2F);
