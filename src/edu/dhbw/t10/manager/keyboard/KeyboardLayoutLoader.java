@@ -30,6 +30,7 @@ import org.xml.sax.SAXException;
 
 import edu.dhbw.t10.manager.Controller;
 import edu.dhbw.t10.type.keyboard.DropDownList;
+import edu.dhbw.t10.type.keyboard.Image;
 import edu.dhbw.t10.type.keyboard.KeyboardLayout;
 import edu.dhbw.t10.type.keyboard.key.Button;
 import edu.dhbw.t10.type.keyboard.key.Key;
@@ -171,8 +172,8 @@ public class KeyboardLayoutLoader {
 		ArrayList<DropDownList> ddls = getDdls();
 		logger.info("loaded " + ddls.size() + " DropDownLists.");
 		// ########################## read Images ###########################
-		// ArrayList<DropDownList> images = getImages();
-		// logger.info("loaded " + images.size() + " Images.");
+		ArrayList<Image> images = getImages();
+		logger.info("loaded " + images.size() + " Images.");
 		
 		
 		// read default sizes and scale of layout
@@ -218,6 +219,7 @@ public class KeyboardLayoutLoader {
 		kbdLayout.setButtons(buttons);
 		kbdLayout.setModeButtons(modeButtons);
 		kbdLayout.setMuteButtons(muteButtons);
+		kbdLayout.setImages(images);
 		kbdLayout.setDdls(ddls);
 		kbdLayout.setFont(new Font(fname, fstyle, fsize));
 		kbdLayout.rescale();
@@ -258,27 +260,33 @@ public class KeyboardLayoutLoader {
 	}
 	
 	
-	private static ArrayList<DropDownList> getImages() {
-		ArrayList<DropDownList> ddls = new ArrayList<DropDownList>();
+	/**
+	 * 
+	 * TODO NicolaiO, add comment!
+	 * 
+	 * @return
+	 * @author NicolaiO
+	 */
+	private static ArrayList<Image> getImages() {
+		ArrayList<Image> images = new ArrayList<Image>();
 		// read dropdown lists
-		NodeList nList = doc.getElementsByTagName("dropdown");
+		NodeList nList = doc.getElementsByTagName("image");
 		for (int temp = 0; temp < nList.getLength(); temp++) {
 			Node nNode = nList.item(temp);
 			try {
 				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
 					Element eElement = (Element) nNode;
 					NamedNodeMap attr = eElement.getAttributes();
-					DropDownList cb = new DropDownList(getAttribute(attr, "type"), getIntAttribute(attr, "size_x"),
+					Image cb = new Image(getAttribute(attr, "src"), getIntAttribute(attr, "size_x"),
 							getIntAttribute(attr, "size_y"), getIntAttribute(attr, "pos_x"), getIntAttribute(attr, "pos_y"));
-					ddls.add(cb);
-					cb.addActionListener(Controller.getInstance());
+					images.add(cb);
 				}
 			} catch (NullPointerException e) {
 				logger.warn("Dropdown-element found, but can not be read correctly! node nr " + temp + ": "
 						+ nNode.toString());
 			}
 		}
-		return ddls;
+		return images;
 	}
 
 
