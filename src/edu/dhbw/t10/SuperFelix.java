@@ -30,7 +30,7 @@ public class SuperFelix {
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
 	private static final Logger	logger	= Logger.getLogger(SuperFelix.class);
-	
+	public static final String		VERSION	= "V0.7";
 	
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------

@@ -59,14 +59,15 @@ public class AboutDlg extends JDialog {
 		icon = new ImageIcon(SuperFelix.class.getResource("../../../res/icons/logo_mittel.png"));
 		JLabel iconLbl = new JLabel(icon);
 
-		JLabel titleLbl = new JLabel("Bildschirmtastatur mit intelligenter Wortvervollständigung");
+		JLabel titleLbl = new JLabel("<html>Bildschirmtastatur mit intelligenter Wortvervollständigung<br>Version: "
+				+ SuperFelix.VERSION + "</html>");
 		titleLbl.setAlignmentX(CENTER_ALIGNMENT);
 		titleLbl.setAlignmentY(CENTER_ALIGNMENT);
 		JLabel descriptionLbl = new JLabel("<html>Ein Studentenprojekt im Rahmen <br>"
 				+ "der Vorlesung Software Engineering, <br>"
 				+ "3.Semester, DHBW Mannheim.</html>");
 		JLabel authorLbl = new JLabel(
-				"<html>Daniel Andes Lopez, Nicolai Ommer,<br>Dirk Klostermann, Sebastian Nickel,<br>Felix Pistorius<html>");
+				"<html>Daniel Andres Lopez, Nicolai Ommer,<br>Dirk Klostermann, Sebastian Nickel,<br>Felix Pistorius<html>");
 		
 		
 		JPanel centerPnl = new JPanel();
