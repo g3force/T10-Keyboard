@@ -107,6 +107,12 @@ public class KeyboardLayout {
 					(int) (ddl.getOrigSize().width * scale_x), (int) (ddl.getOrigSize().height * scale_y));
 			ddl.setBounds(rect);
 		}
+		for (Image img : images) {
+			Rectangle rect = img.getBounds();
+			rect.setBounds((int) (img.getPos_x() * scale_x), (int) (img.getPos_y() * scale_y),
+					(int) (img.getOrigSize().width * scale_x), (int) (img.getOrigSize().height * scale_y));
+			img.setBounds(rect);
+		}
 		logger.debug("Layout rescaled.");
 	}
 	
