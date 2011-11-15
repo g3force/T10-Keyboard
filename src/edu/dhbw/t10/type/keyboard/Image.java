@@ -25,9 +25,9 @@ import org.apache.log4j.Logger;
 
 
 /**
- * TODO NicolaiO, add comment!
- * - What should this type do (in one sentence)?
- * - If not intuitive: A simple example how to use this class
+ * The image class contains an arbitrary image that should be displayed within the keyboardLayout.
+ * It stores the size and position as well as the image to display.
+ * Furthermore, if this object will be resized with setBounds(Rectangle), it will resize the image too.
  * 
  * @author NicolaiO
  * 
@@ -60,6 +60,16 @@ public class Image extends JLabel {
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
 	
+	/**
+	 * Do all the initializing steps, like setting the attributes and receive the image from the given src.
+	 * 
+	 * @param src a resource URL as String (should start with "/res"!)
+	 * @param size_x
+	 * @param size_y
+	 * @param pos_x
+	 * @param pos_y
+	 * @author NicolaiO
+	 */
 	private void init(String src, int size_x, int size_y, int pos_x, int pos_y) {
 		this.origSize = new Dimension(size_x, size_y);
 		this.pos_x = pos_x;
@@ -80,31 +90,20 @@ public class Image extends JLabel {
 		}
 	}
 	
-	
-	/**
-	 * 
-	 * TODO NicolaiO, add comment!
-	 * 
-	 * @param scaledWidth
-	 * @param scaledHeight
-	 * @return
-	 * @author NicolaiO
-	 */
-	// public BufferedImage resize(int scaledWidth, int scaledHeight) {
-	// return createResizedCopy(img, scaledWidth, scaledHeight, true);
-	// }
-	
 
 	@Override
 	public void setBounds(Rectangle r) {
 		super.setBounds(r);
-		setImg(createResizedCopy(img, r.width, r.height, true));
+		/**
+		 * resize the image together with its parent label
+		 */
+		setIcon(new ImageIcon(createResizedCopy(img, r.width, r.height, true)));
 	}
 
 
 	/**
-	 * from: http://stackoverflow.com/questions/244164/resize-an-image-in-java-any-open-source-library
-	 * TODO NicolaiO, add comment!
+	 * Resizes the given image to the given size and returns it.
+	 * The code is taken from: http://stackoverflow.com/questions/244164/resize-an-image-in-java-any-open-source-library
 	 * 
 	 * @param originalImage
 	 * @param scaledWidth

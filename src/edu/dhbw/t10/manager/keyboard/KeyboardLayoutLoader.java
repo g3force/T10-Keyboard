@@ -261,15 +261,14 @@ public class KeyboardLayoutLoader {
 	
 	
 	/**
-	 * 
-	 * TODO NicolaiO, add comment!
+	 * Loads all images...
 	 * 
 	 * @return
 	 * @author NicolaiO
 	 */
 	private static ArrayList<Image> getImages() {
 		ArrayList<Image> images = new ArrayList<Image>();
-		// read dropdown lists
+		// read image lists
 		NodeList nList = doc.getElementsByTagName("image");
 		for (int temp = 0; temp < nList.getLength(); temp++) {
 			Node nNode = nList.item(temp);
