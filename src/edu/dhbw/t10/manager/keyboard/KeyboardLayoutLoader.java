@@ -30,6 +30,7 @@ import org.xml.sax.SAXException;
 
 import edu.dhbw.t10.manager.Controller;
 import edu.dhbw.t10.type.keyboard.DropDownList;
+import edu.dhbw.t10.type.keyboard.Image;
 import edu.dhbw.t10.type.keyboard.KeyboardLayout;
 import edu.dhbw.t10.type.keyboard.key.Button;
 import edu.dhbw.t10.type.keyboard.key.Key;
@@ -170,6 +171,9 @@ public class KeyboardLayoutLoader {
 		// ########################## read DDLs ###########################
 		ArrayList<DropDownList> ddls = getDdls();
 		logger.info("loaded " + ddls.size() + " DropDownLists.");
+		// ########################## read Images ###########################
+		ArrayList<Image> images = getImages();
+		logger.info("loaded " + images.size() + " Images.");
 		
 		
 		// read default sizes and scale of layout
@@ -215,6 +219,7 @@ public class KeyboardLayoutLoader {
 		kbdLayout.setButtons(buttons);
 		kbdLayout.setModeButtons(modeButtons);
 		kbdLayout.setMuteButtons(muteButtons);
+		kbdLayout.setImages(images);
 		kbdLayout.setDdls(ddls);
 		kbdLayout.setFont(new Font(fname, fstyle, fsize));
 		kbdLayout.rescale();
@@ -255,6 +260,36 @@ public class KeyboardLayoutLoader {
 	}
 	
 	
+	/**
+	 * 
+	 * TODO NicolaiO, add comment!
+	 * 
+	 * @return
+	 * @author NicolaiO
+	 */
+	private static ArrayList<Image> getImages() {
+		ArrayList<Image> images = new ArrayList<Image>();
+		// read dropdown lists
+		NodeList nList = doc.getElementsByTagName("image");
+		for (int temp = 0; temp < nList.getLength(); temp++) {
+			Node nNode = nList.item(temp);
+			try {
+				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+					Element eElement = (Element) nNode;
+					NamedNodeMap attr = eElement.getAttributes();
+					Image cb = new Image(getAttribute(attr, "src"), getIntAttribute(attr, "size_x"),
+							getIntAttribute(attr, "size_y"), getIntAttribute(attr, "pos_x"), getIntAttribute(attr, "pos_y"));
+					images.add(cb);
+				}
+			} catch (NullPointerException e) {
+				logger.warn("Dropdown-element found, but can not be read correctly! node nr " + temp + ": "
+						+ nNode.toString());
+			}
+		}
+		return images;
+	}
+
+
 	/**
 	 * Get all Buttons. This are those Buttons on the keyboard, that are neither ModeButtons nor MuteButtons.
 	 * All Buttons are saved in a list that will be returned.
