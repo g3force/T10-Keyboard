@@ -9,6 +9,8 @@
  */
 package edu.dhbw.t10.manager.profile;
 
+import java.awt.Rectangle;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -95,14 +97,54 @@ public class ProfileManager {
 		for (DropDownList ddl : DDLs) {
 			switch (ddl.getType()) {
 				case DropDownList.PROFILE:
-					ddl.removeAllItems();
-					for (Profile p : profiles) {
-						ddl.addItem(p);
+					// save all action listeners
+					ActionListener[] als = ddl.getActionListeners();
+					// delete all action listeners, so that they can't be called until we are done
+					// e.g. addItem will trigger an ActionEvent!
+					for (int i = 0; i < als.length; i++) {
+						ddl.removeActionListener(als[i]);
 					}
+
+					// remove all existing items (normally, there shouldn't be any...
+					ddl.removeAllItems();
+					
+					// add all profiles
+					for (Profile p : profiles) {
+						ddl.addItem(p.getName());
+					}
+					
+					// set active profile selected
+					ddl.setSelectedItem(getActive().getName());
+
 					logger.debug("loaded " + ddl.getItemCount() + " items in profile-ddl");
-					ddl.setSelectedItem(getActive());
-					logger.debug("Selected item is: " + getActive());
+					logger.debug("Selected item is: " + ddl.getSelectedItem() + " should be: " + getActive());
+
+					// now, where we are done, add all listeners back
+					for (int i = 0; i < als.length; i++) {
+						ddl.addActionListener(als[i]);
+					}
+
+					// do a revalidate to reload the ddl
 					ddl.revalidate();
+					
+					/*
+					 * heres some hacky trick:
+					 * After you removed some icon and set some other selected, the ddl is confused.
+					 * It does set the correct item selected, but it does not show this item in the ddl, until clicked on
+					 * it...
+					 * By resizing the ddl, this will be corrected, so we'll set it to zero and back :)
+					 * 
+					 * TODO NicolaiO or any other... This trick does not work as well as aspected...
+					 * 
+					 * @author NicolaiO
+					 */
+					Rectangle rect = ddl.getBounds();
+					ddl.setBounds(new Rectangle(0, 0));
+					ddl.setBounds(rect);
+					rect = ddl.getBounds();
+					ddl.setBounds(new Rectangle(0, 0));
+					ddl.setBounds(rect);
+
 					break;
 				default:
 					logger.warn("UNKOWN DDL found!");
