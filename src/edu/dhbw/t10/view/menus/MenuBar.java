@@ -18,6 +18,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
 import edu.dhbw.t10.manager.Controller;
+import edu.dhbw.t10.view.dialogs.AboutDlg;
 import edu.dhbw.t10.view.dialogs.DialogContainer;
 import edu.dhbw.t10.view.dialogs.InputDlg;
 import edu.dhbw.t10.view.dialogs.ProfileCleanerDlg;
@@ -63,9 +64,14 @@ public class MenuBar extends JMenuBar {
 		JMenuItem iClean = new JMenuItem("Clean Dictionary");
 		JMenuItem iDelete = new JMenuItem("Delete");
 		
+		// Help Menu
+		JMenu mHelp = new JMenu("Help");
+		JMenuItem iAbout = new JMenuItem("About");
+
 		// add menus to GUI
 		add(mFile);
 		add(mProfile);
+		add(mHelp);
 		mFile.add(iNewProfile);
 		mFile.add(iImport);
 		mFile.add(iClose);
@@ -76,6 +82,7 @@ public class MenuBar extends JMenuBar {
 		mProfile.add(iD2F);
 		mProfile.add(iClean);
 		mProfile.add(iDelete);
+		mHelp.add(iAbout);
 		
 		
 		// Action Listener for menu items
@@ -162,6 +169,14 @@ public class MenuBar extends JMenuBar {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Controller.getInstance().deleteActiveProfile();
+			}
+		});
+		
+		iAbout.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				new AboutDlg();
 			}
 		});
 	}
