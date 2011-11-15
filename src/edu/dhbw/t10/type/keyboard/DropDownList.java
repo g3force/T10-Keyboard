@@ -20,7 +20,7 @@ import javax.swing.JComboBox;
  * @author NicolaiO
  * 
  */
-public class DropDownList extends JComboBox {
+public class DropDownList extends JComboBox implements LayoutElement {
 	private static final long	serialVersionUID	= 5433669829791012176L;
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------

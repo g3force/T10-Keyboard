@@ -19,6 +19,7 @@ import org.apache.log4j.Logger;
 
 import edu.dhbw.t10.manager.Controller;
 import edu.dhbw.t10.type.keyboard.DropDownList;
+import edu.dhbw.t10.type.keyboard.Image;
 import edu.dhbw.t10.type.keyboard.KeyboardLayout;
 import edu.dhbw.t10.type.keyboard.key.PhysicalButton;
 
@@ -75,6 +76,9 @@ public class MainPanel extends JPanel implements ComponentListener {
 		}
 		for (DropDownList ddl : kbd.getDdls()) {
 			this.add(ddl);
+		}
+		for (Image img : kbd.getImages()) {
+			this.add(img);
 		}
 		logger.debug("Layout added.");
 	}
