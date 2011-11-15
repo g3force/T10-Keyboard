@@ -23,9 +23,8 @@ import edu.dhbw.t10.SuperFelix;
 
 
 /**
- * TODO felix, add comment!
- * - What should this type do (in one sentence)?
- * - If not intuitive: A simple example how to use this class
+ * 
+ * Dialog for About menu...
  * 
  * @author felix
  * 
@@ -51,6 +50,7 @@ public class AboutDlg extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
 				openBrowser("http://www.facebook.com/UseAcc");
+				openBrowser("https://plus.google.com/100091571390634776061/posts");
 			}
 		});
 
