@@ -51,6 +51,7 @@ public class AboutDlg extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
 				openBrowser("http://www.facebook.com/UseAcc");
+				openBrowser("https://plus.google.com/100091571390634776061/posts");
 			}
 		});
 
