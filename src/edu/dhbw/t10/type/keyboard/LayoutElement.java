@@ -3,7 +3,7 @@
  * Copyright (c) 2011 - 2011, DHBW Mannheim
  * Project: T10 On-Screen Keyboard
  * Date: Nov 15, 2011
- * Author(s): dirk
+ * Author(s): DirkK
  *
  * *********************************************************
  */
@@ -13,11 +13,10 @@ import java.awt.Dimension;
 
 
 /**
- * TODO dirk, add comment!
- * - What should this type do (in one sentence)?
- * - If not intuitive: A simple example how to use this class
+ * should be implemented by all graphical elements saved in the layout.xml
+ * contains the physical functions as size and position
  * 
- * @author dirk
+ * @author DirkK
  * 
  */
 public interface LayoutElement {
