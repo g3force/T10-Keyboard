@@ -23,9 +23,8 @@ import edu.dhbw.t10.SuperFelix;
 
 
 /**
- * TODO felix, add comment!
- * - What should this type do (in one sentence)?
- * - If not intuitive: A simple example how to use this class
+ * 
+ * Dialog for About menu...
  * 
  * @author felix
  * 
