@@ -134,8 +134,8 @@ public class KeyboardLayoutSaver {
 			for (Image image : kbdLayout.getImages()) {
 				Element imageEl = doc.createElement("image");
 				imageEl.setAttribute("src", image.getSrc());
-				imageEl.setAttribute("size_x", image.getOrigSize().getWidth() + "");
-				imageEl.setAttribute("size_y", image.getOrigSize().getHeight() + "");
+				imageEl.setAttribute("size_x", ((int) image.getOrigSize().getWidth()) + "");
+				imageEl.setAttribute("size_y", ((int) image.getOrigSize().getHeight()) + "");
 				imageEl.setAttribute("pos_x", image.getPos_x() + "");
 				imageEl.setAttribute("pos_y", image.getPos_y() + "");
 				layout.appendChild(imageEl);
