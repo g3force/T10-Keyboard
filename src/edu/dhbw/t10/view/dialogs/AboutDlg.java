@@ -36,7 +36,6 @@ public class AboutDlg extends JDialog {
 	// --------------------------------------------------------------------------
 	private JButton	likeBtn;
 	private ImageIcon	icon;
-	private String		path;
 	
 
 	// --------------------------------------------------------------------------
@@ -44,7 +43,6 @@ public class AboutDlg extends JDialog {
 	// --------------------------------------------------------------------------
 	public AboutDlg() {
 		this.setTitle("About");
-		path = "http://www.facebook.com/UseAcc";
 
 		likeBtn = new JButton("like");
 		likeBtn.addActionListener(new ActionListener() {
@@ -52,6 +50,7 @@ public class AboutDlg extends JDialog {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
+				openBrowser("http://www.facebook.com/UseAcc");
 			}
 		});
 
@@ -70,7 +69,7 @@ public class AboutDlg extends JDialog {
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
-	private void openBrowser() {
+	private void openBrowser(String path) {
 		final String os = System.getProperty("os.name").toLowerCase();
 		try {
 			if (os.indexOf("mac") >= 0) {
@@ -87,8 +86,10 @@ public class AboutDlg extends JDialog {
 				}
 			}
 			
-			// x-www-browser -newwindow -fullscreen "http://www.facebook.com/UseAcc"
-
+			if (os.indexOf("linux") >= 0) {
+				// x-www-browser -newwindow -fullscreen "http://www.facebook.com/UseAcc"
+				Runtime.getRuntime().exec("x-www-browser -newwindow -fullscreen " + path);
+			}
 
 		} catch (IOException e) {
 			e.printStackTrace();
