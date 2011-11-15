@@ -35,7 +35,7 @@ import org.w3c.dom.Text;
 import edu.dhbw.t10.type.keyboard.DropDownList;
 import edu.dhbw.t10.type.keyboard.Image;
 import edu.dhbw.t10.type.keyboard.KeyboardLayout;
-import edu.dhbw.t10.type.keyboard.LayoutElement;
+import edu.dhbw.t10.type.keyboard.ILayoutElement;
 import edu.dhbw.t10.type.keyboard.key.Button;
 import edu.dhbw.t10.type.keyboard.key.Key;
 import edu.dhbw.t10.type.keyboard.key.ModeButton;
@@ -309,7 +309,7 @@ public class KeyboardLayoutSaver {
 	 * @param button the origin physicalButton
 	 * @author DirkK
 	 */
-	private static <T> void setSizeOfElement(Element el, LayoutElement button) {
+	private static <T> void setSizeOfElement(Element el, ILayoutElement button) {
 		el.setAttribute("size_x", ((int) button.getOrigSize().getWidth()) + "");
 		el.setAttribute("size_y", ((int) button.getOrigSize().getHeight()) + "");
 		el.setAttribute("pos_x", button.getPos_x() + "");
