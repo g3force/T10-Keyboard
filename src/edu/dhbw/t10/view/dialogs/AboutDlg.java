@@ -18,6 +18,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 import edu.dhbw.t10.SuperFelix;
 
@@ -49,16 +50,38 @@ public class AboutDlg extends JDialog {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
-				openBrowser("http://www.facebook.com/UseAcc");
 				openBrowser("https://plus.google.com/100091571390634776061/posts");
+				openBrowser("http://www.facebook.com/UseAcc");
 			}
 		});
 
 		icon = new ImageIcon(SuperFelix.class.getResource("../../../res/icons/logo_mittel.png"));
 		JLabel iconLbl = new JLabel(icon);
 
-		this.add(iconLbl, BorderLayout.CENTER);
-		this.add(likeBtn, BorderLayout.SOUTH);
+		JLabel titleLbl = new JLabel("Bildschirmtastatur mit intelligenter Wortvervollständigung");
+		titleLbl.setAlignmentX(CENTER_ALIGNMENT);
+		titleLbl.setAlignmentY(CENTER_ALIGNMENT);
+		JLabel descriptionLbl = new JLabel("<html>Ein Studentenprojekt im Rahmen <br>"
+				+ "der Vorlesung Software Engineering, <br>"
+				+ "3.Semester, DHBW Mannheim.</html>");
+		JLabel authorLbl = new JLabel(
+				"<html>Daniel Andes Lopez, Nicolai Ommer,<br>Dirk Klostermann, Sebastian Nickel,<br>Felix Pistorius<html>");
+		
+		
+		JPanel centerPnl = new JPanel();
+		centerPnl.add(iconLbl, BorderLayout.WEST);
+		centerPnl.add(descriptionLbl, BorderLayout.EAST);
+		
+		JPanel southPnl = new JPanel();
+		southPnl.add(authorLbl, BorderLayout.NORTH);
+		southPnl.add(likeBtn, BorderLayout.SOUTH);
+
+		this.add(titleLbl, BorderLayout.NORTH);
+		this.add(centerPnl, BorderLayout.CENTER);
+		// this.add(iconLbl, BorderLayout.WEST);
+		// this.add(eastPnl, BorderLayout.EAST);
+		// this.add(likeBtn, BorderLayout.SOUTH);
+		this.add(southPnl, BorderLayout.SOUTH);
 
 		this.pack();
 		this.setResizable(false);
