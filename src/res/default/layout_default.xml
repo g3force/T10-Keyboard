@@ -11,8 +11,8 @@
 		<size>10</size>
 	</font>
 
-	<image src="/res/icons/useacc_logo.png" size_x="95" size_y="50"
-		pos_x="5" pos_y="170"></image>
+	<image src="/res/icons/logo.png" size_x="95" size_y="50" pos_x="5"
+		pos_y="170"></image>
 
 	<dropdown type="profile" size_x="120" size_y="30" pos_x="830"
 		pos_y="15"></dropdown>
