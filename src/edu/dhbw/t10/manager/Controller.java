@@ -319,8 +319,9 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 				ProfileCleanerDlg iCleanDlg = (ProfileCleanerDlg) o;
 				Integer freq = iCleanDlg.getFrequency();
 				Date date = iCleanDlg.getDate();
-				profileMan.getActive().getTree().autoCleaning(freq, date.getTime(), PriorityTree.BOTTOM_OR_OLDER);
-				statusPane.enqueueMessage("Dictionary cleaned.", StatusPane.LEFT);
+				int deleted = profileMan.getActive().getTree()
+						.autoCleaning(freq, date.getTime(), PriorityTree.BOTTOM_OR_OLDER);
+				statusPane.enqueueMessage("Dictionary cleaned (" + deleted + " deleted).", StatusPane.LEFT);
 				break;
 		}
 	}
