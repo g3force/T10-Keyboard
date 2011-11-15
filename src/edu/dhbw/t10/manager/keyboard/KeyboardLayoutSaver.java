@@ -33,6 +33,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Text;
 
 import edu.dhbw.t10.type.keyboard.DropDownList;
+import edu.dhbw.t10.type.keyboard.Image;
 import edu.dhbw.t10.type.keyboard.KeyboardLayout;
 import edu.dhbw.t10.type.keyboard.key.Button;
 import edu.dhbw.t10.type.keyboard.key.Key;
@@ -127,6 +128,18 @@ public class KeyboardLayoutSaver {
 			text = doc.createTextNode(kbdLayout.getFontSize() + "");
 			size.appendChild(text);
 			font.appendChild(size);
+			
+			// -----------------IMAGES------------------
+			
+			for (Image image : kbdLayout.getImages()) {
+				Element imageEl = doc.createElement("image");
+				imageEl.setAttribute("src", image.getSrc());
+				imageEl.setAttribute("size_x", image.getOrigSize().getWidth() + "");
+				imageEl.setAttribute("size_y", image.getOrigSize().getHeight() + "");
+				imageEl.setAttribute("pos_x", image.getPos_x() + "");
+				imageEl.setAttribute("pos_y", image.getPos_y() + "");
+				layout.appendChild(imageEl);
+			}
 			// ---------------DROPDOWN-----------------
 			for (DropDownList dd : kbdLayout.getDdls()) {
 				Element dropdown = doc.createElement("dropdown");
