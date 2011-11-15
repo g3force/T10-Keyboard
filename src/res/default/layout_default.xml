@@ -11,7 +11,7 @@
 		<size>10</size>
 	</font>
 
-	<image src="res/icons/???.png" size_x="120" size_y="30" pos_x="830"
+	<image src="res/icons/logo.png" size_x="120" size_y="30" pos_x="830"
 		pos_y="15"></image>
 
 	<dropdown type="profile" size_x="120" size_y="30" pos_x="830"
