@@ -28,6 +28,8 @@ import edu.dhbw.t10.view.dialogs.ProfileCleanerDlg;
  * As class name says: This class represents the MenuBar and all the included menus
  * The ActionListeners are also directly implemented here...
  * 
+ * T O D O FelixP optional menu item "Modify"
+ * 
  * @author NicolaiO
  */
 public class MenuBar extends JMenuBar {
