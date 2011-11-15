@@ -263,7 +263,7 @@ public class ImportExportManager {
 	 * @param zipFile
 	 * @throws ZipException
 	 * @throws IOException
-	 * @author dirk
+	 * @author DirkK
 	 */
 	public static void importProfiles(File zipFile) throws ZipException, IOException {
 		logger.debug("Extracting zip file " + zipFile.toString());
@@ -313,7 +313,7 @@ public class ImportExportManager {
 	// * unused
 	// * @param exportMap
 	// * @param fileName
-	// * @author dirk
+	// * @author DirkK
 	// */
 	// public static void exportToSortedFile(HashMap<String, Integer> exportMap, String fileName) {
 	// logger.error("saving to file");

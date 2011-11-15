@@ -32,7 +32,7 @@ import org.apache.log4j.Logger;
  * @author NicolaiO
  * 
  */
-public class Image extends JLabel {
+public class Image extends JLabel implements ILayoutElement {
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
