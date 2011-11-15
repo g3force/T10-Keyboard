@@ -36,6 +36,7 @@ public class AboutDlg extends JDialog {
 	// --------------------------------------------------------------------------
 	private JButton	likeBtn;
 	private ImageIcon	icon;
+	private static final long	serialVersionUID	= -3739014603528510969L;
 	
 
 	// --------------------------------------------------------------------------
