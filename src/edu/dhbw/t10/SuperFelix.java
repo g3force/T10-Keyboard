@@ -23,8 +23,6 @@ import edu.dhbw.t10.manager.Controller;
  * This is the main class of the t10 keyboard. It only initializes the first important classes.
  * 
  * TODO FelixP optional menu item "Modify"
- * TODO FelixP Export Profile nach Profile verschieben (gehört schließlich zum aktuellen profile)
- * TODO FelixP Clean Dialog -> Time -> 2010
  * TODO DanielAl CAPS keycode?? for system LED? :P Another idea? delete caps? with what to be replaced??
  * TODO ALL Read: Ich habe die Symphony Kompatibilität hergestellt. allerdings geht das auf Kosten von Performance...
  * Jetzt wird ein Vorschlag, wenn er accepted wird, nicht mehr demarkiert, sondern neu geschrieben.
