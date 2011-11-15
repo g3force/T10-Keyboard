@@ -25,6 +25,7 @@ import edu.dhbw.t10.manager.Controller;
  * TODO FelixP optional menu item "Modify"
  * TODO DanielAl CAPS keycode?? for system LED? :P Another idea? delete caps? with what to be replaced??
  * TODO ALL Read: Ich habe die Symphony Kompatibilität hergestellt. allerdings geht das auf Kosten von Performance...
+ * TODO FelixP neue Menüstruktur File-> Keyboard, Help mit About Dialog hinzufügen
  * Jetzt wird ein Vorschlag, wenn er accepted wird, nicht mehr demarkiert, sondern neu geschrieben.
  * Wenn gelesen, löschen! *
  * @author NicolaiO, DanielAl, FelixP, DirkK, SebastianN
