@@ -22,8 +22,6 @@ import edu.dhbw.t10.manager.Controller;
 /**
  * This is the main class of the t10 keyboard. It only initializes the first important classes.
  * 
- * TODO FelixP optional menu item "Modify"
- * 
  * @author NicolaiO, DanielAl, FelixP, DirkK, SebastianN
  * 
  */
