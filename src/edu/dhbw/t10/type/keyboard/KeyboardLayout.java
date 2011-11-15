@@ -40,6 +40,7 @@ public class KeyboardLayout {
 	private ArrayList<MuteButton>		muteButtons	= new ArrayList<MuteButton>();
 	private ArrayList<ModeKey>			modeKeys		= new ArrayList<ModeKey>();
 	private ArrayList<DropDownList>	ddls			= new ArrayList<DropDownList>();
+	private ArrayList<Image>			images		= new ArrayList<Image>();
 	private int								size_x		= 0;
 	private int								size_y		= 0;
 	private float							scale_x		= 1;
@@ -309,6 +310,16 @@ public class KeyboardLayout {
 	
 	public void setModeKeys(ArrayList<ModeKey> modekeys) {
 		this.modeKeys = modekeys;
+	}
+	
+	
+	public ArrayList<Image> getImages() {
+		return images;
+	}
+	
+	
+	public void setImages(ArrayList<Image> images) {
+		this.images = images;
 	}
 	
 	
