@@ -170,6 +170,9 @@ public class KeyboardLayoutLoader {
 		// ########################## read DDLs ###########################
 		ArrayList<DropDownList> ddls = getDdls();
 		logger.info("loaded " + ddls.size() + " DropDownLists.");
+		// ########################## read Images ###########################
+		// ArrayList<DropDownList> images = getImages();
+		// logger.info("loaded " + images.size() + " Images.");
 		
 		
 		// read default sizes and scale of layout
@@ -255,6 +258,30 @@ public class KeyboardLayoutLoader {
 	}
 	
 	
+	private static ArrayList<DropDownList> getImages() {
+		ArrayList<DropDownList> ddls = new ArrayList<DropDownList>();
+		// read dropdown lists
+		NodeList nList = doc.getElementsByTagName("dropdown");
+		for (int temp = 0; temp < nList.getLength(); temp++) {
+			Node nNode = nList.item(temp);
+			try {
+				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+					Element eElement = (Element) nNode;
+					NamedNodeMap attr = eElement.getAttributes();
+					DropDownList cb = new DropDownList(getAttribute(attr, "type"), getIntAttribute(attr, "size_x"),
+							getIntAttribute(attr, "size_y"), getIntAttribute(attr, "pos_x"), getIntAttribute(attr, "pos_y"));
+					ddls.add(cb);
+					cb.addActionListener(Controller.getInstance());
+				}
+			} catch (NullPointerException e) {
+				logger.warn("Dropdown-element found, but can not be read correctly! node nr " + temp + ": "
+						+ nNode.toString());
+			}
+		}
+		return ddls;
+	}
+
+
 	/**
 	 * Get all Buttons. This are those Buttons on the keyboard, that are neither ModeButtons nor MuteButtons.
 	 * All Buttons are saved in a list that will be returned.
