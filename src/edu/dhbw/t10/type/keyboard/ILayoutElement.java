@@ -19,7 +19,7 @@ import java.awt.Dimension;
  * @author DirkK
  * 
  */
-public interface LayoutElement {
+public interface ILayoutElement {
 	public Dimension getOrigSize();
 	
 	

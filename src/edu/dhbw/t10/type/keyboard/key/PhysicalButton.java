@@ -16,7 +16,7 @@ import javax.swing.JButton;
 
 import org.apache.log4j.Logger;
 
-import edu.dhbw.t10.type.keyboard.LayoutElement;
+import edu.dhbw.t10.type.keyboard.ILayoutElement;
 
 
 /**
@@ -27,7 +27,7 @@ import edu.dhbw.t10.type.keyboard.LayoutElement;
  * @author DirkK, NicolaiO
  * 
  */
-public abstract class PhysicalButton extends JButton implements LayoutElement {
+public abstract class PhysicalButton extends JButton implements ILayoutElement {
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
