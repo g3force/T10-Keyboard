@@ -359,12 +359,14 @@
 	<button size_x="160" size_y="50" pos_x="405" pos_y="280">
 		<key>130</key>
 	</button>
+	
+	<!-- CAPS LOCK -->
+	<button size_x="95" size_y="50" pos_x="5" pos_y="170">
+		<key>1000</key>
+	</button>
 
 
 	<!-- mode buttons -->
-	<modebutton size_x="95" size_y="50" pos_x="5" pos_y="170">
-		<key>1000</key>
-	</modebutton>
 	<modebutton size_x="70" size_y="50" pos_x="5" pos_y="225">
 		<key>1001</key>
 	</modebutton>
