@@ -35,12 +35,12 @@ import org.w3c.dom.Text;
 import edu.dhbw.t10.type.keyboard.DropDownList;
 import edu.dhbw.t10.type.keyboard.Image;
 import edu.dhbw.t10.type.keyboard.KeyboardLayout;
+import edu.dhbw.t10.type.keyboard.LayoutElement;
 import edu.dhbw.t10.type.keyboard.key.Button;
 import edu.dhbw.t10.type.keyboard.key.Key;
 import edu.dhbw.t10.type.keyboard.key.ModeButton;
 import edu.dhbw.t10.type.keyboard.key.ModeKey;
 import edu.dhbw.t10.type.keyboard.key.MuteButton;
-import edu.dhbw.t10.type.keyboard.key.PhysicalButton;
 
 
 /**
@@ -134,26 +134,28 @@ public class KeyboardLayoutSaver {
 			for (Image image : kbdLayout.getImages()) {
 				Element imageEl = doc.createElement("image");
 				imageEl.setAttribute("src", image.getSrc());
-				imageEl.setAttribute("size_x", ((int) image.getOrigSize().getWidth()) + "");
-				imageEl.setAttribute("size_y", ((int) image.getOrigSize().getHeight()) + "");
-				imageEl.setAttribute("pos_x", image.getPos_x() + "");
-				imageEl.setAttribute("pos_y", image.getPos_y() + "");
+				setSizeOfElement(imageEl, image);
+				// imageEl.setAttribute("size_x", ((int) image.getOrigSize().getWidth()) + "");
+				// imageEl.setAttribute("size_y", ((int) image.getOrigSize().getHeight()) + "");
+				// imageEl.setAttribute("pos_x", image.getPos_x() + "");
+				// imageEl.setAttribute("pos_y", image.getPos_y() + "");
 				layout.appendChild(imageEl);
 			}
 			// ---------------DROPDOWN-----------------
 			for (DropDownList dd : kbdLayout.getDdls()) {
 				Element dropdown = doc.createElement("dropdown");
 				dropdown.setAttribute("type", dd.getTypeAsString());
-				dropdown.setAttribute("size_x", ((int) dd.getOrigSize().getWidth()) + "");
-				dropdown.setAttribute("size_y", ((int) dd.getOrigSize().getHeight()) + "");
-				dropdown.setAttribute("pos_x", dd.getPos_x() + "");
-				dropdown.setAttribute("pos_y", dd.getPos_y() + "");
+				setSizeOfElement(dropdown, dd);
+				// dropdown.setAttribute("size_x", ((int) dd.getOrigSize().getWidth()) + "");
+				// dropdown.setAttribute("size_y", ((int) dd.getOrigSize().getHeight()) + "");
+				// dropdown.setAttribute("pos_x", dd.getPos_x() + "");
+				// dropdown.setAttribute("pos_y", dd.getPos_y() + "");
 				layout.appendChild(dropdown);
 			}
 			// ---------------MUTEBUTTONS-----------------
 			for (MuteButton muteButton : kbdLayout.getMuteButtons()) {
 				Element muteButtonEl = doc.createElement("mutebutton");
-				setSizeOfPhysicalButton(muteButtonEl, muteButton);
+				setSizeOfElement(muteButtonEl, muteButton);
 				switch (muteButton.getType()) {
 					case MuteButton.AUTO_COMPLETING:
 						muteButtonEl.setAttribute("type", "auto_completing");
@@ -188,7 +190,7 @@ public class KeyboardLayoutSaver {
 			// ---------------BUTTONS-----------------
 			for (Button button : kbdLayout.getButtons()) {
 				Element buttonEl = doc.createElement("button");
-				setSizeOfPhysicalButton(buttonEl, button);
+				setSizeOfElement(buttonEl, button);
 				
 				Element key = doc.createElement("key");
 				text = doc.createTextNode(button.getKey().getId() + "");
@@ -211,7 +213,7 @@ public class KeyboardLayoutSaver {
 			// ---------------MODEBUTTONS-----------------
 			for (ModeButton modeButton : kbdLayout.getModeButtons()) {
 				Element modeButtonEl = doc.createElement("modebutton");
-				setSizeOfPhysicalButton(modeButtonEl, modeButton);
+				setSizeOfElement(modeButtonEl, modeButton);
 				
 				Element key = doc.createElement("key");
 				text = doc.createTextNode(modeButton.getModeKey().getId() + "");
@@ -307,7 +309,7 @@ public class KeyboardLayoutSaver {
 	 * @param button the origin physicalButton
 	 * @author DirkK
 	 */
-	private static void setSizeOfPhysicalButton(Element el, PhysicalButton button) {
+	private static <T> void setSizeOfElement(Element el, LayoutElement button) {
 		el.setAttribute("size_x", ((int) button.getOrigSize().getWidth()) + "");
 		el.setAttribute("size_y", ((int) button.getOrigSize().getHeight()) + "");
 		el.setAttribute("pos_x", button.getPos_x() + "");
