@@ -110,6 +110,19 @@ public class StringHelper {
 		}
 		return (new String(ostr)); // Return the stringbuffer cast as a string.
 	}
+	
+	
+	public static String addEnding(String path, String ending) {
+		String existingEnding = "";
+		if (path.lastIndexOf(".") > 0) {// any ending
+			existingEnding = path.substring(path.lastIndexOf("."), path.length());
+			if (!ending.equals(existingEnding))// wrong ending
+				path += ending;
+		} else { // no ending
+			path += ending;
+		}
+		return path;
+	}
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
