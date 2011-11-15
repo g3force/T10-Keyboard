@@ -65,24 +65,16 @@ public class ModeKey extends Key {
 	 * @author NicolaiO
 	 */
 	public void push() {
-		if (state == HOLD) {
-			release();
-		} else if (state == PRESSED) {
-			// notify all ModeButtons
-			for (ModeButton mb : conModeButtons) {
-				state = HOLD;
-				mb.getModel().setPressed(true);
-				mb.setBorderPainted(false);
-			}
-		} else if (state == DEFAULT) {
-			for (ModeButton mb : conModeButtons) {
-				state = PRESSED;
-				mb.getModel().setPressed(true);
-				// notify all normal Buttons
-				for (Button b : observers) {
-					b.addCurrentMode(this);
-				}
-			}
+		switch (state) {
+			case DEFAULT:
+				setState(PRESSED);
+				break;
+			case PRESSED:
+				setState(HOLD);
+				break;
+			case HOLD:
+				setState(DEFAULT);
+				break;
 		}
 		logger.debug("ModeButton pressed. State is now " + state);
 	}
@@ -94,19 +86,52 @@ public class ModeKey extends Key {
 	 * @author NicolaiO
 	 */
 	public void release() {
-		state = DEFAULT;
-		// notify all normal Buttons
-		for (Button b : observers) {
-			b.rmCurrentMode(this);
-		}
-		// notify all ModeButtons
-		for (ModeButton mb : conModeButtons) {
-			mb.getModel().setPressed(false);
-			mb.setBorderPainted(true);
-		}
+		setState(DEFAULT);
 		logger.debug("ModeButton released");
 	}
 	
+	
+	public void setState(int state) {
+		switch (state) {
+			case DEFAULT:
+				this.state = state;
+				// notify all ModeButtons
+				for (ModeButton mb : conModeButtons) {
+					mb.getModel().setPressed(false);
+					mb.setBorderPainted(true);
+				}
+				// notify all normal Buttons
+				for (Button b : observers) {
+					b.rmCurrentMode(this);
+				}
+				break;
+			case PRESSED:
+				this.state = state;
+				for (ModeButton mb : conModeButtons) {
+					mb.getModel().setPressed(true);
+					mb.setBorderPainted(true);
+				}
+				// notify all normal Buttons
+				for (Button b : observers) {
+					b.addCurrentMode(this);
+				}
+				break;
+			case HOLD:
+				this.state = state;
+				// notify all ModeButtons
+				for (ModeButton mb : conModeButtons) {
+					mb.getModel().setPressed(true);
+					mb.setBorderPainted(false);
+				}
+				// notify all normal Buttons
+				for (Button b : observers) {
+					b.addCurrentMode(this);
+				}
+				break;
+		}
+		logger.debug("State set to " + state);
+	}
+
 	
 	/**
 	 * Register a Button as an observer, so that the Button can be informed of a status change

@@ -335,13 +335,16 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	 * @author DanielAl
 	 */
 	private void eIsButton(Button button) {
+		Key key = (Key) button.getPressedKey();
+
 		// get all currently pressed Modekeys
 		ArrayList<ModeKey> pressedModeKeys = profileMan.getActive().getKbdLayout().getPressedModeKeys();
 		
+		if (key.getKeycode().equals("\\CAPS_LOCK\\")) {
+			this.keyIsCapsLock();
+		} else
 		// Print the key iff zero or one ModeKeys is pressed
 		if (pressedModeKeys.size() - button.getActiveModes().size() < 1) {
-			Key key = (Key) button.getPressedKey();
-			
 			if (key.isAccept())
 				this.keyIsAccept(key);
 			else if (key.getType() == Key.CHAR)
@@ -360,11 +363,37 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 			logger.debug("Key pressed: " + key.toString());
 		} else {
 			// print the key combi else
+			logger.debug("Keycombi will be executed. Hint: " + pressedModeKeys.size() + "-"
+					+ button.getActiveModes().size() + "<1");
+			logger.trace(pressedModeKeys);
 			outputMan.printCombi(pressedModeKeys, button.getKey());
 		}
 
 		// unset all ModeButtons, that are in PRESSED state
 		profileMan.getActive().getKbdLayout().unsetPressedModes();
+	}
+	
+	
+	/**
+	 * Run this with a caps_lock key to trigger all shift buttons.
+	 * If Shift state is DEFAULT, it will be changed to HOLD, else to DEFAULT
+	 * 
+	 * @param key
+	 * @author NicolaiO
+	 */
+	private void keyIsCapsLock() {
+		logger.trace("CapsLock");
+		for (ModeKey mk : profileMan.getActive().getKbdLayout().getModeKeys()) {
+			if (mk.getKeycode().equals("\\SHIFT\\")) {
+				if (mk.getState() == ModeKey.DEFAULT) {
+					mk.setState(ModeKey.HOLD);
+				} else {
+					mk.setState(ModeKey.DEFAULT);
+				}
+				break;
+			}
+		}
+		presenter.pack();
 	}
 	
 	
