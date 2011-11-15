@@ -368,6 +368,10 @@
 	<button size_x="95" size_y="50" pos_x="5" pos_y="170">
 		<key>1000</key>
 	</button>
+	<!-- Menu -->
+	<button size_x="50" size_y="50" pos_x="625" pos_y="280">
+		<key>1008</key>
+	</button>
 
 
 	<!-- mode buttons -->
@@ -388,9 +392,6 @@
 	</modebutton>
 	<modebutton size_x="50" size_y="50" pos_x="570" pos_y="280">
 		<key>1007</key>
-	</modebutton>
-	<modebutton size_x="50" size_y="50" pos_x="625" pos_y="280">
-		<key>1008</key>
 	</modebutton>
 	<modebutton size_x="50" size_y="50" pos_x="680" pos_y="280">
 		<key>1009</key>
