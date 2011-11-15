@@ -11,22 +11,24 @@
 		<size>10</size>
 	</font>
 
-	<image src="res/icons/???.png" size_x="120" size_y="30" pos_x="830"
-		pos_y="15"></image>
+	<image src="/res/icons/useacc_logo.png" size_x="95" size_y="50"
+		pos_x="5" pos_y="170"></image>
 
 	<dropdown type="profile" size_x="120" size_y="30" pos_x="830"
 		pos_y="15"></dropdown>
 
 
-	<mutebutton type="auto_completing" size_x="50" size_y="50" pos_x="845" pos_y="60">
+	<mutebutton type="auto_completing" size_x="50" size_y="50"
+		pos_x="845" pos_y="60">
 		<on color="green" tooltip="Turn off T10 Auto Completing.">T10</on>
 		<off color="red" tooltip="Turn on T10 Auto Completing.">T10</off>
 	</mutebutton>
-	<!-- <mutebutton type="auto_profile_change" size_x="50" size_y="50" pos_x="845" pos_y="115">
-		<on color="green" tooltip="Turn off T10 Auto Profile Change.">Auto</on>
-		<off color="red" tooltip="Turn on T10 Auto Profile Change. NOT IMPLEMENTED">Auto</off>
-	</mutebutton> -->
-	<mutebutton type="tree_expanding" size_x="50" size_y="50" pos_x="845" pos_y="115">
+	<!-- <mutebutton type="auto_profile_change" size_x="50" size_y="50" pos_x="845" 
+		pos_y="115"> <on color="green" tooltip="Turn off T10 Auto Profile Change.">Auto</on> 
+		<off color="red" tooltip="Turn on T10 Auto Profile Change. NOT IMPLEMENTED">Auto</off> 
+		</mutebutton> -->
+	<mutebutton type="tree_expanding" size_x="50" size_y="50"
+		pos_x="845" pos_y="115">
 		<on color="green" tooltip="Turn off T10 Word saving.">Save</on>
 		<off color="red" tooltip="Turn on T10 Word saving.">Save</off>
 	</mutebutton>
@@ -362,11 +364,9 @@
 	<button size_x="160" size_y="50" pos_x="405" pos_y="280">
 		<key>130</key>
 	</button>
-	
-	<!-- CAPS LOCK -->
-	<button size_x="95" size_y="50" pos_x="5" pos_y="170">
-		<key>1000</key>
-	</button>
+
+	<!-- CAPS LOCK <button size_x="95" size_y="50" pos_x="5" pos_y="170"> <key>1000</key> 
+		</button> -->
 
 
 	<!-- mode buttons -->
