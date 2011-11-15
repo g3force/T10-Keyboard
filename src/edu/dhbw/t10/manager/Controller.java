@@ -27,6 +27,7 @@ import javax.swing.JFileChooser;
 
 import org.apache.log4j.Logger;
 
+import edu.dhbw.t10.helper.StringHelper;
 import edu.dhbw.t10.manager.output.OutputManager;
 import edu.dhbw.t10.manager.profile.ImportExportManager;
 import edu.dhbw.t10.manager.profile.ProfileManager;
@@ -250,13 +251,7 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 			
 			// export profile
 			case iExport:
-				String ending = "";
-				String pathToFile = path.toString();
-				if (path.toString().lastIndexOf(".") > 0) {
-					ending = path.toString().substring(path.toString().lastIndexOf("."), path.toString().length());
-				}
-				if (!ending.equals(".zip"))
-					pathToFile += ".zip";
+				String pathToFile = StringHelper.addEnding(path.toString(), ".zip");
 				try {
 					ImportExportManager.exportProfiles(profileMan.getActive(), new File(pathToFile));
 					logger.debug("Profile exported");
@@ -294,12 +289,13 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 			case iD2F:
 				words = profileMan.getActive().getTree().exportToHashMap();
 				try {
-					ImportExportManager.exportToFile(words, path.toString());
+					pathToFile = StringHelper.addEnding(path.toString(), ".tree");
+					ImportExportManager.exportToFile(words, pathToFile);
+					statusPane.enqueueMessage("Dictionary file exported to " + pathToFile + ".", StatusPane.LEFT);
 				} catch (IOException err) {
 					statusPane.enqueueMessage("Could not create the dictionary file. Please choose another path.",
 							StatusPane.LEFT);
 				}
-				statusPane.enqueueMessage("Dictionary file exported.", StatusPane.LEFT);
 				break;
 		}
 	}
@@ -324,8 +320,9 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 				ProfileCleanerDlg iCleanDlg = (ProfileCleanerDlg) o;
 				Integer freq = iCleanDlg.getFrequency();
 				Date date = iCleanDlg.getDate();
-				profileMan.getActive().getTree().autoCleaning(freq, date.getTime(), PriorityTree.BOTTOM_OR_OLDER);
-				statusPane.enqueueMessage("Dictionary cleaned.", StatusPane.LEFT);
+				int deleted = profileMan.getActive().getTree()
+						.autoCleaning(freq, date.getTime(), PriorityTree.BOTTOM_OR_OLDER);
+				statusPane.enqueueMessage("Dictionary cleaned (" + deleted + " deleted).", StatusPane.LEFT);
 				break;
 		}
 	}
