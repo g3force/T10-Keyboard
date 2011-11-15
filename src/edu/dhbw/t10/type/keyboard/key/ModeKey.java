@@ -9,6 +9,7 @@
  */
 package edu.dhbw.t10.type.keyboard.key;
 
+import java.awt.Font;
 import java.util.ArrayList;
 import java.util.HashSet;
 
@@ -99,6 +100,7 @@ public class ModeKey extends Key {
 				for (ModeButton mb : conModeButtons) {
 					mb.getModel().setPressed(false);
 					mb.setBorderPainted(true);
+					mb.setFont(new Font(mb.getFont().getName(), Font.PLAIN, mb.getFont().getSize()));
 				}
 				// notify all normal Buttons
 				for (Button b : observers) {
@@ -110,6 +112,7 @@ public class ModeKey extends Key {
 				for (ModeButton mb : conModeButtons) {
 					mb.getModel().setPressed(true);
 					mb.setBorderPainted(true);
+					mb.setFont(new Font(mb.getFont().getName(), Font.PLAIN, mb.getFont().getSize()));
 				}
 				// notify all normal Buttons
 				for (Button b : observers) {
@@ -121,7 +124,8 @@ public class ModeKey extends Key {
 				// notify all ModeButtons
 				for (ModeButton mb : conModeButtons) {
 					mb.getModel().setPressed(true);
-					mb.setBorderPainted(false);
+					mb.setBorderPainted(true);
+					mb.setFont(new Font(mb.getFont().getName(), Font.BOLD, mb.getFont().getSize()));
 				}
 				// notify all normal Buttons
 				for (Button b : observers) {
