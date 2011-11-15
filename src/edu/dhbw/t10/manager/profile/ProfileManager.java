@@ -9,7 +9,6 @@
  */
 package edu.dhbw.t10.manager.profile;
 
-import java.awt.Rectangle;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -127,24 +126,6 @@ public class ProfileManager {
 					// do a revalidate to reload the ddl
 					ddl.revalidate();
 					
-					/*
-					 * heres some hacky trick:
-					 * After you removed some icon and set some other selected, the ddl is confused.
-					 * It does set the correct item selected, but it does not show this item in the ddl, until clicked on
-					 * it...
-					 * By resizing the ddl, this will be corrected, so we'll set it to zero and back :)
-					 * 
-					 * TODO NicolaiO or any other... This trick does not work as well as aspected...
-					 * 
-					 * @author NicolaiO
-					 */
-					Rectangle rect = ddl.getBounds();
-					ddl.setBounds(new Rectangle(0, 0));
-					ddl.setBounds(rect);
-					rect = ddl.getBounds();
-					ddl.setBounds(new Rectangle(0, 0));
-					ddl.setBounds(rect);
-
 					break;
 				default:
 					logger.warn("UNKOWN DDL found!");

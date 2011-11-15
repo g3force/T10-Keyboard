@@ -173,8 +173,10 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 			changeProfileBlocked = true;
 			profileMan.setActive(profile);
 			mainPanel.setKbdLayout(profileMan.getActive().getKbdLayout());
-			resizeWindow(profileMan.getActive().getKbdLayout().getSize());
-			presenter.pack();
+			Dimension size = profileMan.getActive().getKbdLayout().getSize();
+			// small workaround: resizing window will update ddls correctly
+			resizeWindow(new Dimension(size.width - 1, size.height - 1));
+			resizeWindow(size);
 			changeProfileBlocked = false;
 		} else {
 			logger.debug("changeProfile blocked");
