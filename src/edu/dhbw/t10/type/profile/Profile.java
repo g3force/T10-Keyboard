@@ -89,10 +89,14 @@ public class Profile implements Serializable {
 		if (!file.isDirectory()) {
 			file.mkdir();
 		}
-		pathToLayoutFile = datapath + "/profiles/" + name + ".layout";
-		pathToProfile = datapath + "/profiles/" + name + ".profile";
-		pathToTree = datapath + "/profiles/" + name + ".tree";
-		pathToAllowedChars = datapath + "/profiles/" + name + ".chars";
+		File profileDir = new File(datapath + "/profiles/" + name);
+		if (!profileDir.isDirectory()) {
+			profileDir.mkdir();
+		}
+		pathToLayoutFile = datapath + "/profiles/" + name + "/" + name + ".layout";
+		pathToProfile = datapath + "/profiles/" + name + "/" + name + ".profile";
+		pathToTree = datapath + "/profiles/" + name + "/" + name + ".tree";
+		pathToAllowedChars = datapath + "/profiles/" + name + "/" + name + ".chars";
 		
 		logger.debug("Profile " + name + " created");
 		load();
@@ -191,7 +195,7 @@ public class Profile implements Serializable {
 		try {
 			tree.importFromHashMap(ImportExportManager.importFromFile(pathToTree, true));
 		} catch (IOException err) {
-			logger.debug("Could not fetch the dictionary for the proifle " + name + ", File: " + pathToTree);
+			logger.warn("Could not fetch the dictionary for the profile " + name + ", File: " + pathToTree);
 		}
 		logger.debug("Tree successfully loaded");
 	}
