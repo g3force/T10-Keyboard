@@ -67,8 +67,12 @@ public class AboutDlg extends JDialog {
 			}
 		});
 
-		icon = new ImageIcon(SuperFelix.class.getResource("../../../res/icons/logo_mittel.png"));
-		JLabel iconLbl = new JLabel(icon);
+		JLabel iconLbl = new JLabel();
+		icon = new ImageIcon(getClass().getResource("/res/icons/logo_mittel.png"));
+		if (icon != null) {
+			iconLbl = new JLabel(icon);
+		}
+
 
 		JLabel titleLbl = new JLabel("<html>Bildschirmtastatur mit intelligenter Wortvervollständigung<br>Version: "
 				+ SuperFelix.VERSION + "<br>Git Revision: " + SuperFelix.REV + "</html>");

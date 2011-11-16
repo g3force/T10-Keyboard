@@ -102,7 +102,7 @@ public class ModeKey extends Key {
 					mb.setBorderPainted(true);
 					mb.setFont(new Font(mb.getFont().getName(), Font.PLAIN, mb.getFont().getSize()));
 					mb.setIcon(mb.getModeKey().getIcon());
-					mb.setText("");
+					// mb.setText("");
 				}
 				// notify all normal Buttons
 				for (Button b : observers) {
@@ -116,7 +116,7 @@ public class ModeKey extends Key {
 					mb.setBorderPainted(true);
 					mb.setFont(new Font(mb.getFont().getName(), Font.PLAIN, mb.getFont().getSize()));
 					mb.setIcon(mb.getModeKey().getIcon());
-					mb.setText("");
+					// mb.setText("");
 				}
 				// notify all normal Buttons
 				for (Button b : observers) {
@@ -131,7 +131,7 @@ public class ModeKey extends Key {
 					mb.setBorderPainted(true);
 					mb.setFont(new Font(mb.getFont().getName(), Font.BOLD, mb.getFont().getSize()));
 					mb.setIcon(mb.getModeKey().getIcon());
-					mb.setText(mb.getModeKey().getName());
+					// mb.setText(mb.getModeKey().getName());
 				}
 				// notify all normal Buttons
 				for (Button b : observers) {
