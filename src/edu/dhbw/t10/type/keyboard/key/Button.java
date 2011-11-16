@@ -262,8 +262,8 @@ public class Button extends PhysicalButton implements MouseListener {
 	
 	public void setKey(Key key) {
 		this.key = key;
-		if (!key.getIconSrc().equals("")) {
-			setIcon(key.getIcon());
+		if (!key.getDefaultIconSrc().equals("")) {
+			setIcon(key.getDefaultIcon());
 		} else
 			setText(key.getName());
 	}

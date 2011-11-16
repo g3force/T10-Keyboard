@@ -319,9 +319,6 @@ public class ProfileManager {
 		} else {
 			newProfile = new Profile(profileName);
 			profiles.add(newProfile);
-			if (getActive() == null) {
-				logger.error("The famous case, that should never occur, just did exactly this :D");
-			}
 			serializeProfiles();
 		}
 		return newProfile;
@@ -343,7 +340,6 @@ public class ProfileManager {
 					return profiles.get(i);
 			}
 		}
-		logger.error("Profile \"" + name + "\" not found.");
 		return null;
 	}
 	
