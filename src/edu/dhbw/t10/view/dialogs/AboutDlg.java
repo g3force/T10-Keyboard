@@ -35,6 +35,7 @@ public class AboutDlg extends JDialog {
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
 	private JButton	likeBtn;
+	private JButton				codeBtn;
 	private ImageIcon	icon;
 	private static final long	serialVersionUID	= -3739014603528510969L;
 	
@@ -53,6 +54,16 @@ public class AboutDlg extends JDialog {
 				setVisible(false);
 				openBrowser("https://plus.google.com/100091571390634776061/posts");
 				openBrowser("http://www.facebook.com/UseAcc");
+			}
+		});
+		
+		codeBtn = new JButton("Code");
+		codeBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
+				openBrowser("http://code.google.com/p/t10-onscreen-keyboard/");
 			}
 		});
 
@@ -75,8 +86,9 @@ public class AboutDlg extends JDialog {
 		centerPnl.add(descriptionLbl, BorderLayout.EAST);
 		
 		JPanel southPnl = new JPanel();
-		southPnl.add(authorLbl, BorderLayout.NORTH);
-		southPnl.add(likeBtn, BorderLayout.SOUTH);
+		southPnl.add(authorLbl, BorderLayout.WEST);
+		southPnl.add(codeBtn, BorderLayout.CENTER);
+		southPnl.add(likeBtn, BorderLayout.EAST);
 
 		this.add(titleLbl, BorderLayout.NORTH);
 		this.add(centerPnl, BorderLayout.CENTER);
