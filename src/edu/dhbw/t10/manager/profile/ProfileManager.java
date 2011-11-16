@@ -353,23 +353,31 @@ public class ProfileManager {
 	 * @param id - int. ID of the profile you want to delete.
 	 */
 	public void deleteProfile(Profile profile) {
-		// Profile toDelete = getProfileByName(toDel);
 		if (profiles.size() <= 1) {
 			logger.debug("Only one or zero profiles left. Can't delete.");
 			return;
 		}
 		profiles.remove(profile);
-		// for (int i = 0; i < profiles.size(); i++) {
-		// curProfile = profiles.get(i);
-		// if (curProfile == toDelete) {
-		// logger.debug("Delete profile: " + toDelete.getName());
-		// profiles.remove(i);
-		// loadDDLs();
-		// break;
-		// }
-		// }
+		deleteFile(profile.getPathToAllowedChars());
+		deleteFile(profile.getPathToLayoutFile());
+		deleteFile(profile.getPathToProfile());
+		deleteFile(profile.getPathToTree());
 	}
 	
+	
+	/**
+	 * Delete the given file and log an error, if failed.
+	 * 
+	 * @param path to file
+	 * @author NicolaiO
+	 */
+	private void deleteFile(String path) {
+		File f;
+		f = new File(path);
+		if (!f.delete())
+			logger.error("File " + path + " could not be deleted.");
+	}
+
 	
 	/**
 	 * 

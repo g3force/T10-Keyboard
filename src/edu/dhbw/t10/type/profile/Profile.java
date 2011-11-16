@@ -142,8 +142,10 @@ public class Profile implements Serializable {
 	
 	
 	private void loadDefaultPathes() {
-		defaultLayoutXML = getClass().getResourceAsStream("/res/default/layout_default.xml");
-		defaultKeymapXML = getClass().getResourceAsStream("/res/default/keymap_default.xml");
+		if (defaultLayoutXML == null)
+			defaultLayoutXML = getClass().getResourceAsStream("/res/default/layout_default.xml");
+		if (defaultKeymapXML == null)
+			defaultKeymapXML = getClass().getResourceAsStream("/res/default/keymap_default.xml");
 		if (defaultLayoutXML == null || defaultKeymapXML == null) {
 			logger.error("Could not load default layout file. Program will not run well...");
 		}
@@ -156,26 +158,28 @@ public class Profile implements Serializable {
 	 * @author NicolaiO
 	 */
 	private void loadLayout() {
-		File file = new File(pathToLayoutFile);
-		if (file.exists()) {
-			kbdLayout = KeyboardLayoutLoader.load(file, KeymapLoader.load(defaultKeymapXML));
-		} else {
-			logger.info("Default Layout loaded");
-			kbdLayout = KeyboardLayoutLoader.load(defaultLayoutXML, KeymapLoader.load(defaultKeymapXML));
-		}
-		for (MuteButton mb : kbdLayout.getMuteButtons()) {
-			switch (mb.getType()) {
-				case MuteButton.AUTO_COMPLETING:
-					mb.setActivated(autoCompleting);
-					break;
-				case MuteButton.AUTO_PROFILE_CHANGE:
-					mb.setActivated(autoProfileChange);
-					break;
-				case MuteButton.TREE_EXPANDING:
-					mb.setActivated(treeExpanding);
-					break;
-				default:
-					break;
+		if (kbdLayout == null) {
+			File file = new File(pathToLayoutFile);
+			if (file.exists()) {
+				kbdLayout = KeyboardLayoutLoader.load(file, KeymapLoader.load(defaultKeymapXML));
+			} else {
+				logger.info("Default Layout loaded");
+				kbdLayout = KeyboardLayoutLoader.load(defaultLayoutXML, KeymapLoader.load(defaultKeymapXML));
+			}
+			for (MuteButton mb : kbdLayout.getMuteButtons()) {
+				switch (mb.getType()) {
+					case MuteButton.AUTO_COMPLETING:
+						mb.setActivated(autoCompleting);
+						break;
+					case MuteButton.AUTO_PROFILE_CHANGE:
+						mb.setActivated(autoProfileChange);
+						break;
+					case MuteButton.TREE_EXPANDING:
+						mb.setActivated(treeExpanding);
+						break;
+					default:
+						break;
+				}
 			}
 		}
 	}
@@ -187,13 +191,15 @@ public class Profile implements Serializable {
 	 * @author DirkK
 	 */
 	private void loadTree() {
-		tree = new PriorityTree(pathToAllowedChars);
-		try {
-			tree.importFromHashMap(ImportExportManager.importFromFile(pathToTree, true));
-		} catch (IOException err) {
-			logger.debug("Could not fetch the dictionary for the proifle " + name + ", File: " + pathToTree);
+		if (tree == null) {
+			tree = new PriorityTree(pathToAllowedChars);
+			try {
+				tree.importFromHashMap(ImportExportManager.importFromFile(pathToTree, true));
+			} catch (IOException err) {
+				logger.debug("Could not fetch the dictionary for the proifle " + name + ", File: " + pathToTree);
+			}
+			logger.debug("Tree successfully loaded");
 		}
-		logger.debug("Tree successfully loaded");
 	}
 	
 	
