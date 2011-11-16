@@ -202,7 +202,7 @@ public class KeyboardLayoutLoader {
 					try {
 						fstyle = Integer.parseInt(n.getTextContent());
 					} catch (NumberFormatException e) {
-						logger.warn("Could not read global style value");
+						logger.warn("Could not read global style value: " + n.getTextContent());
 					}
 				} else if (n.getNodeName() == "size") {
 					try {
