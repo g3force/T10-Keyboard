@@ -125,53 +125,11 @@ public class ProfileManager {
 
 					// do a revalidate to reload the ddl
 					ddl.revalidate();
+					ddl.repaint();
 					
 					break;
 				default:
 					logger.warn("UNKOWN DDL found!");
-			}
-		}
-	}
-	
-	
-	/**
-	 * Adds <b>ONE</b> profile to the dropdown list.
-	 * 
-	 * @param handle
-	 * @author SebastianN
-	 */
-	@Deprecated
-	public void addProfileToDDL(Profile handle) {
-		ArrayList<DropDownList> DDLs = getActive().getKbdLayout().getDdls();
-		for (int i = 0; i < DDLs.size(); i++) {
-			if (DDLs.get(i).getType() == DropDownList.PROFILE) {
-				DDLs.get(i).addItem(handle.getName());
-				DDLs.get(i).revalidate();
-			}
-		}
-	}
-	
-
-	/**
-	 * Removes a certain profile from the DropdownList
-	 * 
-	 * @param name of the to-be deleted profile.
-	 * @author SebastianN
-	 */
-	@Deprecated
-	public void removeProfileFromDDL(String name) {
-		ArrayList<DropDownList> DDLs = getActive().getKbdLayout().getDdls();
-		for (int i = 0; i < DDLs.size(); i++) {
-			if (DDLs.get(i).getType() == DropDownList.PROFILE) {
-				DDLs.get(i).removeAllItems();
-				DDLs.get(i).revalidate();
-				System.out.println(":D");
-				for (int j = 0; j < profiles.size(); j++) {
-					logger.debug("Profile re-added: " + profiles.get(j).getName());
-					DDLs.get(i).addItem(profiles.get(j).getName());
-					DDLs.get(i).revalidate();
-					DDLs.get(i).repaint();
-				}
 			}
 		}
 	}
@@ -378,26 +336,6 @@ public class ProfileManager {
 			logger.error("File " + path + " could not be deleted.");
 	}
 
-	
-	/**
-	 * 
-	 * Gets the Position of the wanted profile within the Profile-Arraylist
-	 * 
-	 * @param name of the profile whose position needs to be verified.
-	 * @return Position within array (int). If not found, it returns 0 (so the first position is chosen)
-	 * @author SebastianN
-	 */
-	@SuppressWarnings("unused")
-	@Deprecated
-	private int getPositionOfProfile(String name) {
-		for (int i = 0; i < profiles.size(); i++) {
-			if (profiles.get(i).equals(name))
-				return i;
-		}
-		// do not return -1, but 0, because otherwise errors might occur in calling method
-		return 0;
-	}
-	
 	
 	/**
 	 * Marks a profile as 'active'.
