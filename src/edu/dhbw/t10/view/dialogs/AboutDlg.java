@@ -60,7 +60,7 @@ public class AboutDlg extends JDialog {
 		JLabel iconLbl = new JLabel(icon);
 
 		JLabel titleLbl = new JLabel("<html>Bildschirmtastatur mit intelligenter Wortvervollständigung<br>Version: "
-				+ SuperFelix.VERSION + "</html>");
+				+ SuperFelix.VERSION + "<br>Git Revision: " + SuperFelix.REV + "</html>");
 		titleLbl.setAlignmentX(CENTER_ALIGNMENT);
 		titleLbl.setAlignmentY(CENTER_ALIGNMENT);
 		JLabel descriptionLbl = new JLabel("<html>Ein Studentenprojekt im Rahmen <br>"
