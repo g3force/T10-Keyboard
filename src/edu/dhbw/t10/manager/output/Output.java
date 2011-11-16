@@ -48,7 +48,6 @@ public class Output {
 	public static final int			COMBI		= 3;
 	public static final int			SHIFT		= 10;
 	
-	private static int				delay		= 0;
 	// 0 represents UNKNOWN OS, 1 Linux, 2 any Windows
 	private static int				os;
 	// Stack for Key combination. See Method: printCombi(Button b)
@@ -259,16 +258,16 @@ public class Output {
 					return KeyEvent.VK_UNDEFINED;
 			}
 		} catch (SecurityException err) {
-			logger.error("convertKeyCode: Security: " + code);
+			logger.warn("convertKeyCode: Security: " + code);
 			return KeyEvent.VK_UNDEFINED;
 		} catch (NoSuchFieldException err) {
-			logger.error("convertKeyCode: No Such Field: " + code);
+			logger.warn("convertKeyCode: No Such Field: " + code);
 			return KeyEvent.VK_UNDEFINED;
 		} catch (IllegalArgumentException err) {
-			logger.error("convertKeyCode: Illegal Argument: " + code);
+			logger.warn("convertKeyCode: Illegal Argument: " + code);
 			return KeyEvent.VK_UNDEFINED;
 		} catch (IllegalAccessException err) {
-			logger.error("convertKeyCode: Illegal Access: " + code);
+			logger.warn("convertKeyCode: Illegal Access: " + code);
 			return KeyEvent.VK_UNDEFINED;
 		}
 	}
@@ -286,18 +285,18 @@ public class Output {
 	 * @author DanielAl
 	 */
 	private boolean sendUnicode(String uni) {
-		logger.error("UNICODE length: " + uni.length() + " Uni:" + uni);
-		
 		// Chekcs for the correct Unicode length, begin and end
 		if (uni.length() != 8 || !uni.substring(0, 3).equals("\\U+") || !uni.substring(7, 8).equals("\\")) {
 			logger.error("UNICODE wrong format; length: " + uni.length());
 			return false;
 		}
-		// Extract the Unicode Hexadecimal digit from the surrounding meta symbols (\\u+FFFF\\)
+		// Extract the Unicode Hexadecimal digit from the surrounding meta symbols (\\u+XXXX\\)
 		char[] uniArr = uni.substring(3, 7).toLowerCase().toCharArray();
 		
 		switch (os) {
 			case LINUX:
+				// sends the Unicode. First prints the Unicode u with the combi, then the hexadecimal number and then press
+				// enter...
 				sendKey(KeyEvent.VK_CONTROL, HOLD);
 				sendKey(KeyEvent.VK_SHIFT, HOLD);
 				sendKey(KeyEvent.VK_U, PRESS);
@@ -323,24 +322,21 @@ public class Output {
 						sendKey(KeyEvent.VK_NUM_LOCK, PRESS);
 					}
 					
+					// converts the Hexa Decimal number to KeyCodes with digits as NUMPAD digits and chars as normal chars...
+					int[] keyCodes = { 0, 0, 0, 0 };
+					for(int i= 0; i<4; i++){
+						keyCodes[i] = Character.isDigit(uniArr[i]) ? convertKeyCode(uniArr[i] + "", 1) : convertKeyCode(
+								uniArr[i] + "", 0);
+					}
+
 					// Sending KeyCombination for Unicode input to Windows (Hold ALT and press ADD and the digits, then
 					// release ALT)
 					sendKey(KeyEvent.VK_ALT, HOLD);
 					sendKey(KeyEvent.VK_ADD, PRESS);
-					// send the Hexa Decimal number with digits as a numpad key and the chars from the normal keyboard...
-					sendKey(
-							Character.isDigit(uniArr[0]) ? convertKeyCode(uniArr[0] + "", 1) : convertKeyCode(uniArr[0] + "",
-									0), PRESS);
-					sendKey(
-							Character.isDigit(uniArr[1]) ? convertKeyCode(uniArr[1] + "", 1) : convertKeyCode(uniArr[1] + "",
-									0), PRESS);
-					sendKey(
-							Character.isDigit(uniArr[2]) ? convertKeyCode(uniArr[2] + "", 1) : convertKeyCode(uniArr[2] + "",
-									0), PRESS);
-					sendKey(
-							Character.isDigit(uniArr[3]) ? convertKeyCode(uniArr[3] + "", 1) : convertKeyCode(uniArr[3] + "",
-									0), PRESS);
-					
+					sendKey(keyCodes[0], PRESS);
+					sendKey(keyCodes[1], PRESS);
+					sendKey(keyCodes[2], PRESS);
+					sendKey(keyCodes[3], PRESS);
 					sendKey(KeyEvent.VK_ALT, RELEASE);
 					
 					// If Num_Lock was off, turn it off again, so that you have the same status as before...
@@ -359,7 +355,7 @@ public class Output {
 	
 	
 	/**
-	 * Calls sendKey(key, TYPE)
+	 * Calls sendKey(key, PRESS)
 	 * 
 	 * @param int key
 	 * @return boolean
@@ -389,17 +385,20 @@ public class Output {
 			logger.error("sendKey: UNKNOWN Key");
 			return false;
 		}
-		keyRobot.delay(delay);
+
 		switch (function) {
+		// Press a specific Key and release it
 			case PRESS:
 				keyRobot.keyPress(key);
 				keyRobot.keyRelease(key);
 				logger.trace("sendKey: Key sent: " + key);
 				break;
+			// Hold a specific Key
 			case HOLD:
 				keyRobot.keyPress(key);
 				logger.trace("sendKey: Key pressed: " + key);
 				break;
+			// Release a specific Key and release it
 			case RELEASE:
 				keyRobot.keyRelease(key);
 				logger.trace("sendKey: Key released: " + key);
@@ -411,11 +410,13 @@ public class Output {
 				// log is written in printCombi()
 				switch (key) {
 					case 0:
+						// Empty the Stack
 						while (!combi.isEmpty()) {
 							Integer i = combi.pop();
 							sendKey((int) i, RELEASE);
 						}
 						break;
+					// Fill the Stack
 					default:
 						sendKey((int) key, HOLD);
 						combi.push(key);
