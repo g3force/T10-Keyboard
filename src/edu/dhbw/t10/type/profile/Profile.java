@@ -191,7 +191,7 @@ public class Profile implements Serializable {
 		try {
 			tree.importFromHashMap(ImportExportManager.importFromFile(pathToTree, true));
 		} catch (IOException err) {
-			logger.error("Could not fetch the word list for the proifle " + name + ", Path to tree: " + pathToTree);
+			logger.debug("Could not fetch the dictionary for the proifle " + name + ", File: " + pathToTree);
 		}
 		logger.debug("Tree successfully loaded");
 	}
