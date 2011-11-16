@@ -204,8 +204,8 @@ public class Button extends PhysicalButton implements MouseListener {
 		if (e.getButton() == MouseEvent.BUTTON3) {
 			if (e.getSource() instanceof JButton) {
 				// if the mouse is still within button
-				if (e.getPoint().x >= 0 || e.getPoint().y >= 0 || e.getPoint().x < ((Button) e.getSource()).getWidth()
-						|| e.getPoint().y < ((Button) e.getSource()).getHeight()) {
+				if (e.getPoint().x >= 0 && e.getPoint().y >= 0 && e.getPoint().x < ((Button) e.getSource()).getWidth()
+						&& e.getPoint().y < ((Button) e.getSource()).getHeight()) {
 					// press key button (SHIFT_MASK not really used)
 					this.actionListener.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, this
 							.getActionCommand(), ActionEvent.SHIFT_MASK));
