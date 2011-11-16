@@ -322,8 +322,8 @@ public class ProfileManager {
 			if (getActive() == null) {
 				logger.error("The famous case, that should never occur, just did exactly this :D");
 			}
+			serializeProfiles();
 		}
-		serializeProfiles();
 		return newProfile;
 	}
 	
