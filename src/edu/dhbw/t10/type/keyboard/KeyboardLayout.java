@@ -259,11 +259,6 @@ public class KeyboardLayout {
 	}
 	
 	
-	public int getFontSize() {
-		return font.getSize();
-	}
-	
-	
 	public Font getFont() {
 		return font;
 	}
