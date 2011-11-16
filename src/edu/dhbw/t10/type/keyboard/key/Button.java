@@ -184,6 +184,13 @@ public class Button extends PhysicalButton implements MouseListener {
 			if (e.getSource() instanceof JButton) {
 				JButton b = (JButton) e.getSource();
 				b.getModel().setPressed(true);
+				// press shift
+				for (ModeKey mb : modes.keySet()) {
+					if (mb.getName().toLowerCase().equals("shift")) {
+						this.addCurrentMode(mb);
+						break;
+					}
+				}
 			}
 		}
 	}
@@ -196,16 +203,14 @@ public class Button extends PhysicalButton implements MouseListener {
 		 */
 		if (e.getButton() == MouseEvent.BUTTON3) {
 			if (e.getSource() instanceof JButton) {
-				// press shift
-				for (ModeKey mb : modes.keySet()) {
-					if (mb.getName().toLowerCase().equals("shift")) {
-						this.addCurrentMode(mb);
-						break;
-					}
+				// if the mouse is still within button
+				if (e.getPoint().x >= 0 || e.getPoint().y >= 0 || e.getPoint().x < ((Button) e.getSource()).getWidth()
+						|| e.getPoint().y < ((Button) e.getSource()).getHeight()) {
+					// press key button (SHIFT_MASK not really used)
+					this.actionListener.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, this
+							.getActionCommand(), ActionEvent.SHIFT_MASK));
 				}
-				// press key button (SHIFT_MASK not really used)
-				this.actionListener.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, this
-						.getActionCommand(), ActionEvent.SHIFT_MASK));
+
 				// release shift
 				for (ModeKey mb : modes.keySet()) {
 					if (mb.getName().toLowerCase().equals("shift")) {
