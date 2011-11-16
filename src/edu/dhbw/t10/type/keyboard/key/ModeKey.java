@@ -50,7 +50,7 @@ public class ModeKey extends Key {
 	 * @author NicolaiO
 	 */
 	public ModeKey(Key key) {
-		super(key.getId(), key.getName(), key.getKeycode(), key.getType(), key.isAccept(), key.getIcon());
+		super(key.getId(), key.getName(), key.getKeycode(), key.getType(), key.isAccept(), key.getIconSrc());
 	}
 	
 	
@@ -101,6 +101,8 @@ public class ModeKey extends Key {
 					mb.getModel().setPressed(false);
 					mb.setBorderPainted(true);
 					mb.setFont(new Font(mb.getFont().getName(), Font.PLAIN, mb.getFont().getSize()));
+					mb.setIcon(mb.getModeKey().getIcon());
+					mb.setText("");
 				}
 				// notify all normal Buttons
 				for (Button b : observers) {
@@ -113,6 +115,8 @@ public class ModeKey extends Key {
 					mb.getModel().setPressed(true);
 					mb.setBorderPainted(true);
 					mb.setFont(new Font(mb.getFont().getName(), Font.PLAIN, mb.getFont().getSize()));
+					mb.setIcon(mb.getModeKey().getIcon());
+					mb.setText("");
 				}
 				// notify all normal Buttons
 				for (Button b : observers) {
@@ -126,6 +130,8 @@ public class ModeKey extends Key {
 					mb.getModel().setPressed(true);
 					mb.setBorderPainted(true);
 					mb.setFont(new Font(mb.getFont().getName(), Font.BOLD, mb.getFont().getSize()));
+					mb.setIcon(mb.getModeKey().getIcon());
+					mb.setText(mb.getModeKey().getName());
 				}
 				// notify all normal Buttons
 				for (Button b : observers) {

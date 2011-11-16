@@ -9,6 +9,9 @@
  */
 package edu.dhbw.t10.type.keyboard.key;
 
+import java.net.URL;
+
+import javax.swing.ImageIcon;
 
 
 /**
@@ -34,9 +37,10 @@ public class Key {
 	private String				name		= "";
 	private int					type		= 0;
 	private boolean			accept	= false;
-	private String				icon		= "";
-	
-	
+	private ImageIcon			icon		= new ImageIcon();
+	private String				iconSrc	= "";
+
+
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
@@ -56,8 +60,7 @@ public class Key {
 		this.keycode = keycode;
 		this.type = type;
 		this.accept = accept;
-		if (icon != "")
-			this.icon = icon;
+		setIcon(icon);
 	}
 	
 	
@@ -67,7 +70,7 @@ public class Key {
 	
 	
 	public Key clone() {
-		Key nk = new Key(id, name, keycode, type, accept, icon);
+		Key nk = new Key(id, name, keycode, type, accept, iconSrc);
 		return nk;
 	}
 	
@@ -133,12 +136,28 @@ public class Key {
 	
 	
 	public void setIcon(String icon) {
-		this.icon = icon;
+		iconSrc = icon;
+		URL iconUrl = getClass().getResource(icon);
+		if (iconUrl != null) {
+			this.icon = new ImageIcon(iconUrl);
+		} else {
+			iconSrc = "";
+		}
 	}
 	
 	
-	public String getIcon() {
+	public ImageIcon getIcon() {
 		return icon;
+	}
+	
+	
+	public String getIconSrc() {
+		return iconSrc;
+	}
+	
+	
+	public void setIconSrc(String iconSrc) {
+		this.iconSrc = iconSrc;
 	}
 	
 

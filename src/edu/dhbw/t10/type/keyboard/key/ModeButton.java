@@ -9,10 +9,6 @@
  */
 package edu.dhbw.t10.type.keyboard.key;
 
-import java.net.URL;
-
-import javax.swing.ImageIcon;
-
 import org.apache.log4j.Logger;
 
 
@@ -83,10 +79,8 @@ public class ModeButton extends PhysicalButton {
 	
 	public void setModeKey(ModeKey modeKey) {
 		this.modeKey = modeKey;
-		if (!modeKey.getIcon().equals("")) {
-			URL iconUrl;
-			iconUrl = getClass().getResource(modeKey.getIcon());
-			setIcon(new ImageIcon(iconUrl));
+		if (!modeKey.getIconSrc().equals("")) {
+			setIcon(modeKey.getIcon());
 		} else
 			setText(modeKey.getName());
 	}
