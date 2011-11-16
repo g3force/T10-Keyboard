@@ -90,9 +90,11 @@ public class ImportExportManager {
 				allowedChars.add(newi);
 			}
 		} else {
-			logger.warn("No allowed chars file found at " + pathToAllowedChars);
 			int[] newi = { 0, 255 };
 			allowedChars.add(newi);
+			// saveChars to generate a new chars file
+			saveChars(pathToAllowedChars, allowedChars);
+			logger.debug("Chars-File was generated at: " + pathToAllowedChars);
 		}
 		return allowedChars;
 	}
