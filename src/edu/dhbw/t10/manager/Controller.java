@@ -157,8 +157,8 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 				return;
 			}
 		}
-		profileMan.deleteProfile(todelete);
 		changeProfile(newProfile);
+		profileMan.deleteProfile(todelete);
 	}
 	
 	
