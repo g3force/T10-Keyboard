@@ -33,9 +33,9 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Text;
 
 import edu.dhbw.t10.type.keyboard.DropDownList;
+import edu.dhbw.t10.type.keyboard.ILayoutElement;
 import edu.dhbw.t10.type.keyboard.Image;
 import edu.dhbw.t10.type.keyboard.KeyboardLayout;
-import edu.dhbw.t10.type.keyboard.ILayoutElement;
 import edu.dhbw.t10.type.keyboard.key.Button;
 import edu.dhbw.t10.type.keyboard.key.Key;
 import edu.dhbw.t10.type.keyboard.key.ModeButton;
@@ -119,13 +119,17 @@ public class KeyboardLayoutSaver {
 			layout.appendChild(font);
 			
 			Element name = doc.createElement("name");
+			text = doc.createTextNode(kbdLayout.getFont().getFontName() + "");
+			name.appendChild(text);
 			font.appendChild(name);
 			
 			Element style = doc.createElement("style");
+			text = doc.createTextNode(kbdLayout.getFont().getStyle() + "");
+			style.appendChild(text);
 			font.appendChild(style);
 			
 			Element size = doc.createElement("size");
-			text = doc.createTextNode(kbdLayout.getFontSize() + "");
+			text = doc.createTextNode(kbdLayout.getFont().getSize() + "");
 			size.appendChild(text);
 			font.appendChild(size);
 			
