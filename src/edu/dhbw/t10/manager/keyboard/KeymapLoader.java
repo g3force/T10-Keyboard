@@ -103,9 +103,18 @@ public class KeymapLoader {
 							String iconUrl = "";
 							if (key.getAttributes().getNamedItem("icon") != null)
 								iconUrl = key.getAttributes().getNamedItem("icon").getTextContent();
+							String holdiconUrl = "";
+							if (key.getAttributes().getNamedItem("holdicon") != null) {
+								holdiconUrl = key.getAttributes().getNamedItem("holdicon").getTextContent();
+							}
 							String name = key.getTextContent();
 							// save key in keymap
-							keymap.put(id, new Key(id, name, keycode, type, false, iconUrl));
+							Key newKey = new Key(id, name, keycode, type, false, iconUrl, holdiconUrl);
+							// if (!holdiconUrl.equals("")) {
+							// newKey.setHoldIcon(holdiconUrl);
+							// logger.warn("a" + holdiconUrl + "b");
+							// }
+							keymap.put(id, newKey);
 						}
 					} catch (NullPointerException e) {
 						logger.warn("A key in keymap could not be read. j=" + j + " i=" + i);

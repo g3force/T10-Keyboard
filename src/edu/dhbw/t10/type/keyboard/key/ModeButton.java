@@ -79,8 +79,8 @@ public class ModeButton extends PhysicalButton {
 	
 	public void setModeKey(ModeKey modeKey) {
 		this.modeKey = modeKey;
-		if (!modeKey.getIconSrc().equals("")) {
-			setIcon(modeKey.getIcon());
+		if (!modeKey.getDefaultIconSrc().equals("")) {
+			setIcon(modeKey.getDefaultIcon());
 		} else
 			setText(modeKey.getName());
 	}
