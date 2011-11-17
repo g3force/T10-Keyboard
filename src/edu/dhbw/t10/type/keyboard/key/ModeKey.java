@@ -50,7 +50,8 @@ public class ModeKey extends Key {
 	 * @author NicolaiO
 	 */
 	public ModeKey(Key key) {
-		super(key.getId(), key.getName(), key.getKeycode(), key.getType(), key.isAccept(), key.getIcon());
+		super(key.getId(), key.getName(), key.getKeycode(), key.getType(), key.isAccept(), key.getDefaultIconSrc(), key
+				.getHoldIconSrc());
 	}
 	
 	
@@ -101,6 +102,8 @@ public class ModeKey extends Key {
 					mb.getModel().setPressed(false);
 					mb.setBorderPainted(true);
 					mb.setFont(new Font(mb.getFont().getName(), Font.PLAIN, mb.getFont().getSize()));
+					mb.setIcon(mb.getModeKey().getDefaultIcon());
+					// mb.setText("");
 				}
 				// notify all normal Buttons
 				for (Button b : observers) {
@@ -113,6 +116,8 @@ public class ModeKey extends Key {
 					mb.getModel().setPressed(true);
 					mb.setBorderPainted(true);
 					mb.setFont(new Font(mb.getFont().getName(), Font.PLAIN, mb.getFont().getSize()));
+					mb.setIcon(mb.getModeKey().getDefaultIcon());
+					// mb.setText("");
 				}
 				// notify all normal Buttons
 				for (Button b : observers) {
@@ -126,6 +131,10 @@ public class ModeKey extends Key {
 					mb.getModel().setPressed(true);
 					mb.setBorderPainted(true);
 					mb.setFont(new Font(mb.getFont().getName(), Font.BOLD, mb.getFont().getSize()));
+					 mb.setIcon(mb.getModeKey().getHoldIcon());
+					// URL url = getClass().getResource("/res/icons/keys/shift_bold.png");
+					// mb.setIcon(new ImageIcon(url));
+					// mb.setText(mb.getModeKey().getName());
 				}
 				// notify all normal Buttons
 				for (Button b : observers) {

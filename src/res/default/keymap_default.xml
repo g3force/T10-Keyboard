@@ -18,7 +18,7 @@
 		<key id="28" keycode="\BACK_SPACE\" icon="/res/icons/keys/left.png">Backspace</key>
 		
 		<key id="1000" keycode="\CAPS_LOCK\" icon="/res/icons/keys/caps.png">Caps</key>
-		<key id="1001" keycode="\SHIFT\" icon="/res/icons/keys/shift.png">Shift</key>
+		<key id="1001" keycode="\SHIFT\" icon="/res/icons/keys/shift.png" holdicon="/res/icons/keys/shift_bold.png">Shift</key>
 		<key id="1002" keycode="\CONTROL\">Strg</key>
 		<key id="1003" keycode="\WINDOWS\">Super</key>
 		<key id="1004" keycode="\ALT\">Alt</key>

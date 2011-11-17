@@ -22,7 +22,6 @@ import edu.dhbw.t10.manager.Controller;
 /**
  * This is the main class of the t10 keyboard. It only initializes the first important classes.
  * 
- * TODO FelixP rename Menü entry File in Keyboard
  * @author NicolaiO, DanielAl, FelixP, DirkK, SebastianN
  * 
  */
@@ -32,6 +31,10 @@ public class SuperFelix {
 	// --------------------------------------------------------------------------
 	private static final Logger	logger	= Logger.getLogger(SuperFelix.class);
 	public static final String		VERSION	= "V0.7";
+	// Revision of Git Repository, after commit, you have to manually change it: Look in file .git/refs/heads/master
+	// idea: automatic, e.g. with git shortlog | grep -E '^[ ]+\w+' | wc -l
+	public static final String		REV		= "571";
+
 	
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------

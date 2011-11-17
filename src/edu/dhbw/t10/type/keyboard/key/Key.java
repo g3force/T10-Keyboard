@@ -9,6 +9,9 @@
  */
 package edu.dhbw.t10.type.keyboard.key;
 
+import java.net.URL;
+
+import javax.swing.ImageIcon;
 
 
 /**
@@ -24,18 +27,21 @@ public class Key {
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
-	public static final int	UNKNOWN	= 0;
-	public static final int	CONTROL	= 1;
-	public static final int	UNICODE	= 2;
-	public static final int	CHAR		= 3;
+	public static final int	UNKNOWN			= 0;
+	public static final int	CONTROL			= 1;
+	public static final int	UNICODE			= 2;
+	public static final int	CHAR				= 3;
 	
-	private int					id			= 0;
-	private String				keycode	= "";
-	private String				name		= "";
-	private int					type		= 0;
-	private boolean			accept	= false;
-	private String				icon		= "";
-	
+	private int					id					= 0;
+	private String				keycode			= "";
+	private String				name				= "";
+	private int					type				= 0;
+	private boolean			accept			= false;
+	private ImageIcon			defaultIcon		= new ImageIcon();
+	private String				defaultIconSrc	= "";
+	private ImageIcon			holdIcon			= new ImageIcon();
+	private String				holdIconSrc		= "";
+
 	
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
@@ -48,18 +54,20 @@ public class Key {
 	 * @param keycode code for internal usage (from keymap)
 	 * @param type one of UNKNOWN, CONTROL, UNICODE, CHAR
 	 * @param accept is this key an accept key? (save word after entering key)
+	 * @param icon
+	 * @param holdIcon
 	 * @author NicolaiO
 	 */
-	public Key(int id, String name, String keycode, int type, boolean accept, String icon) {
+	public Key(int id, String name, String keycode, int type, boolean accept, String icon, String holdIcon) {
 		this.id = id;
 		this.name = name;
 		this.keycode = keycode;
 		this.type = type;
 		this.accept = accept;
-		if (icon != "")
-			this.icon = icon;
+		setIcon(icon);
+		setHoldIcon(holdIcon);
 	}
-	
+
 	
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
@@ -67,13 +75,13 @@ public class Key {
 	
 	
 	public Key clone() {
-		Key nk = new Key(id, name, keycode, type, accept, icon);
+		Key nk = new Key(id, name, keycode, type, accept, defaultIconSrc, holdIconSrc);
 		return nk;
 	}
 	
 	
 	public String toString() {
-		return "id:" + id + " n:" + name + " kc:" + keycode + " t:" + type + " a:" + accept + " i:" + icon;
+		return "id:" + id + " n:" + name + " kc:" + keycode + " t:" + type + " a:" + accept + " i:" + defaultIcon;
 	}
 	
 	
@@ -132,14 +140,45 @@ public class Key {
 	}
 	
 	
+	public ImageIcon getDefaultIcon() {
+		return defaultIcon;
+	}
+	
+	
+	public String getDefaultIconSrc() {
+		return defaultIconSrc;
+	}
+	
+	
+	public ImageIcon getHoldIcon() {
+		return holdIcon;
+	}
+	
+	
+	public void setHoldIcon(String holdIcon) {
+		holdIconSrc = holdIcon;
+		URL iconUrl = getClass().getResource(holdIcon);
+		if (!holdIcon.equals("") && iconUrl != null) {
+			this.holdIcon = new ImageIcon(iconUrl);
+		} else {
+			holdIconSrc = "";
+		}
+	}
+	
+	
 	public void setIcon(String icon) {
-		this.icon = icon;
+		defaultIconSrc = icon;
+		URL iconUrl = getClass().getResource(icon);
+		if (iconUrl != null) {
+			this.defaultIcon = new ImageIcon(iconUrl);
+		} else {
+			defaultIconSrc = "";
+		}
 	}
+
 	
-	
-	public String getIcon() {
-		return icon;
+	public String getHoldIconSrc() {
+		return holdIconSrc;
 	}
-	
 
 }
