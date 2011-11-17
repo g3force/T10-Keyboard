@@ -28,6 +28,7 @@ import javax.swing.JFileChooser;
 import org.apache.log4j.Logger;
 
 import edu.dhbw.t10.helper.StringHelper;
+import edu.dhbw.t10.manager.output.Output;
 import edu.dhbw.t10.manager.output.OutputManager;
 import edu.dhbw.t10.manager.profile.ImportExportManager;
 import edu.dhbw.t10.manager.profile.ProfileManager;
@@ -90,6 +91,12 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	private Controller() {
 		instance = this;
 		logger.debug("initializing...");
+
+		// load GUI
+		mainPanel = new MainPanel();
+		statusPane = new StatusPane();
+		presenter = new Presenter(mainPanel, statusPane);
+
 		// works for Windows and Linux... so the data is stored in the systems userdata folder...
 		datapath = System.getProperty("user.home") + "/.t10keyboard";
 		File tf = new File(datapath);
@@ -98,11 +105,9 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 		}
 
 		outputMan = new OutputManager();
-		mainPanel = new MainPanel();
-		statusPane = new StatusPane();
-		presenter = new Presenter(mainPanel, statusPane);
 		typedWord = "";
 		suggest = "";
+
 		// This message is important! Otherwise, The StatusPane has a wrong height and the layout will be decreased
 		// meaning, it gets smaller with each start...
 		statusPane.enqueueMessage("Keyboard initializing...", StatusPane.LEFT);
@@ -157,8 +162,9 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 				return;
 			}
 		}
-		profileMan.deleteProfile(todelete);
 		changeProfile(newProfile);
+		profileMan.deleteProfile(todelete);
+		profileMan.loadDDLs();
 	}
 	
 	
@@ -175,8 +181,6 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 			profileMan.setActive(profile);
 			mainPanel.setKbdLayout(profileMan.getActive().getKbdLayout());
 			Dimension size = profileMan.getActive().getKbdLayout().getSize();
-			// small workaround: resizing window will update ddls correctly
-			resizeWindow(new Dimension(size.width - 1, size.height - 1));
 			resizeWindow(size);
 			changeProfileBlocked = false;
 		} else {
@@ -200,13 +204,27 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 
 		if (e.getSource() instanceof Button) {
 			logger.debug("Normal Button pressed.");
-			eIsButton((Button) e.getSource());
+			Button b = (Button) e.getSource();
+			// currently we do not support some buttons for linux...
+			if (Output.getOs() == Output.LINUX
+					&& (b.getKey().getKeycode().equals("\\WINDOWS\\") || b.getKey().getKeycode().equals("\\CONTEXT_MENU\\"))) {
+				statusPane.enqueueMessage("Button not supported by your OS", StatusPane.LEFT);
+			} else {
+				eIsButton(b);
+			}
 		}
 		
 		if (e.getSource() instanceof ModeButton) {
 			logger.debug("ModeButton pressed.");
 			ModeButton modeB = (ModeButton) e.getSource();
-			modeB.push();
+			// currently we do not support some buttons for linux...
+			if (Output.getOs() == Output.LINUX
+					&& (modeB.getModeKey().getKeycode().equals("\\WINDOWS\\") || modeB.getModeKey().getKeycode()
+							.equals("\\CONTEXT_MENU\\"))) {
+				statusPane.enqueueMessage("Button not supported by your OS", StatusPane.LEFT);
+			} else {
+				modeB.push();
+			}
 		}
 		
 		if (e.getSource() instanceof MuteButton) {
@@ -412,12 +430,20 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 		int type = muteB.getType();
 		switch (type) {
 			case MuteButton.AUTO_COMPLETING:
+				if (muteB.isActivated()) {
+					typedWord = "";
+					suggest = "";
+				}
 				profileMan.getActive().setAutoCompleting(muteB.isActivated());
 				break;
 			case MuteButton.AUTO_PROFILE_CHANGE:
 				profileMan.getActive().setAutoProfileChange(muteB.isActivated());
 				break;
 			case MuteButton.TREE_EXPANDING:
+				if (muteB.isActivated()) {
+					typedWord = "";
+					suggest = "";
+				}
 				profileMan.getActive().setTreeExpanding(muteB.isActivated());
 				break;
 		}
@@ -469,7 +495,7 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	 */
 	private void keyIsControl(Key key) {
 		if (suggest.length() > typedWord.length())
-			outputMan.printChar(new Key(0, "Delete", "\\DELETE\\", Key.CONTROL, false, ""));
+			outputMan.printChar(new Key(0, "Delete", "\\DELETE\\", Key.CONTROL, false, "", ""));
 		outputMan.printChar(key);
 		typedWord = "";
 		suggest = "";

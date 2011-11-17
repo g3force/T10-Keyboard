@@ -35,8 +35,6 @@ public class Presenter extends JFrame {
 	private static final Logger	logger				= Logger.getLogger(Presenter.class);
 	private static final long		serialVersionUID	= 6217926957357225677L;
 	private JPanel						contentPane;
-	private boolean					initilized			= false;
-	
 	
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
@@ -54,11 +52,6 @@ public class Presenter extends JFrame {
 		logger.debug("Initializing...");
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setLocationByPlatform(true);
-
-		URL iconUrl = getClass().getResource("/res/icons/useacc_logo.png");
-		if (iconUrl != null) {
-			this.setIconImage(Toolkit.getDefaultToolkit().getImage(iconUrl));
-		}
 		this.setTitle("T10 On-Screen Keyboard");
 		this.setAlwaysOnTop(true);
 		// Window can't be focussed, so you can type at your current position with the On-Screen Keyboard
@@ -66,16 +59,27 @@ public class Presenter extends JFrame {
 		this.setVisible(true);
 		this.addWindowListener(Controller.getInstance());
 		
+		// add new MenuBar
+		logger.debug("add new MenuBar now");
+		this.setJMenuBar(new MenuBar());
+
+		// load icon
+		logger.debug("load icon now");
+		URL iconUrl = getClass().getResource("/res/icons/useacc_logo.png");
+		if (iconUrl != null) {
+			this.setIconImage(Toolkit.getDefaultToolkit().getImage(iconUrl));
+		}
+
 		// get a reference to the content pane
+		logger.debug("add content now");
 		contentPane = (JPanel) getContentPane();
 		contentPane.add(mainPanel);
 		contentPane.add(statusPane, java.awt.BorderLayout.SOUTH);
-		this.setJMenuBar(new MenuBar());
 		
 		// build GUI
+		logger.debug("pack() now");
 		pack();
 		
-		initilized = true;
 		logger.debug("Initialized.");
 	}
 	
@@ -89,12 +93,4 @@ public class Presenter extends JFrame {
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
 	
-	public boolean isInitilized() {
-		return initilized;
-	}
-	
-	
-	public void setInitilized(boolean initilized) {
-		this.initilized = initilized;
-	}
 }

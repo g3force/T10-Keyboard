@@ -51,7 +51,7 @@ public class MenuBar extends JMenuBar {
 	 */
 	public MenuBar() {
 		// File Menu
-		JMenu mFile = new JMenu("File");
+		JMenu mFile = new JMenu("Keyboard");
 		JMenuItem iNewProfile = new JMenuItem("New Profile");
 		JMenuItem iImport = new JMenuItem("Import Profile");
 		JMenuItem iClose = new JMenuItem("Close");
