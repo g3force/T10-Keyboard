@@ -9,6 +9,7 @@
  */
 package edu.dhbw.t10.type.keyboard.key;
 
+import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -110,7 +111,17 @@ public class ModeButton extends PhysicalButton implements MouseListener {
 				if (e.getPoint().x >= 0 && e.getPoint().y >= 0 && e.getPoint().x < ((ModeButton) e.getSource()).getWidth()
 						&& e.getPoint().y < ((ModeButton) e.getSource()).getHeight()) {
 					// press key button
-					// TODO DanielAl do something to send out Modekey from this ModeButton...
+					// TODO NicolaiO do something that works...
+					// Idee: dem ActionEvent ein Button übergeben und kein ModeButton, sodass der COntroller dies auch so
+					// behandelt
+					// leider wird trotzdem ein ModeBUtton übergeben... bitte drüberschauen und korrigieren
+					Button helpB = new Button(1, 1, 1, 1);
+					Key helpKey = ((ModeButton) e.getSource()).getModeKey();
+					helpB.setKey(helpKey);
+					logger.warn("test1");
+					ActionEvent f = new ActionEvent(helpB, ActionEvent.ACTION_PERFORMED, helpB.getActionCommand());
+					this.actionListener.actionPerformed(f);
+					logger.warn("test2");
 					// this.actionListener.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, this
 					// .getActionCommand()));
 				}
