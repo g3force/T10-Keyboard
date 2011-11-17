@@ -112,11 +112,11 @@ public class ModeButton extends PhysicalButton implements MouseListener {
 						&& e.getPoint().y < ((ModeButton) e.getSource()).getHeight()) {
 					// press key button
 					// TODO NicolaiO do something that works...
-					// Idee: dem ActionEvent ein Button übergeben und kein ModeButton, sodass der COntroller dies auch so
+					// Idee: dem ActionEvent ein Button übergeben und kein ModeButton, sodass der Controller dies auch so
 					// behandelt
 					// leider wird trotzdem ein ModeBUtton übergeben... bitte drüberschauen und korrigieren
 					Button helpB = new Button(1, 1, 1, 1);
-					Key helpKey = ((ModeButton) e.getSource()).getModeKey();
+					Key helpKey = ((ModeButton) e.getSource()).getModeKey().clone();
 					helpB.setKey(helpKey);
 					logger.warn("test1");
 					ActionEvent f = new ActionEvent(helpB, ActionEvent.ACTION_PERFORMED, helpB.getActionCommand());
@@ -141,8 +141,10 @@ public class ModeButton extends PhysicalButton implements MouseListener {
 	}
 	
 	
+	// TODO NicolaiO explicit or implicit cast? with explicit a Key is returned, with implicit a ModeKey... I added a
+	// explicit cast
 	public Key getModeKey() {
-		return modeKey;
+		return (Key) modeKey;
 	}
 	
 	
