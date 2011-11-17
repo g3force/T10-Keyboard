@@ -71,6 +71,7 @@ public class Output {
 	 * @author DanielAl
 	 */
 	protected Output() throws UnknownOSException {
+		logger.debug("initializing...");
 		String osName = System.getProperty("os.name");
 		logger.info("OS: " + osName);
 		if (osName.equals("Linux"))
@@ -88,6 +89,7 @@ public class Output {
 			logger.error("sendKey: AWTException: " + err.getMessage());
 		}
 		combi = new Stack<Integer>();
+		logger.debug("initialized");
 	}
 	
 	

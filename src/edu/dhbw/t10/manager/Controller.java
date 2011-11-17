@@ -90,6 +90,12 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	private Controller() {
 		instance = this;
 		logger.debug("initializing...");
+
+		// load GUI
+		mainPanel = new MainPanel();
+		statusPane = new StatusPane();
+		presenter = new Presenter(mainPanel, statusPane);
+
 		// works for Windows and Linux... so the data is stored in the systems userdata folder...
 		datapath = System.getProperty("user.home") + "/.t10keyboard";
 		File tf = new File(datapath);
@@ -98,11 +104,9 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 		}
 
 		outputMan = new OutputManager();
-		mainPanel = new MainPanel();
-		statusPane = new StatusPane();
-		presenter = new Presenter(mainPanel, statusPane);
 		typedWord = "";
 		suggest = "";
+
 		// This message is important! Otherwise, The StatusPane has a wrong height and the layout will be decreased
 		// meaning, it gets smaller with each start...
 		statusPane.enqueueMessage("Keyboard initializing...", StatusPane.LEFT);

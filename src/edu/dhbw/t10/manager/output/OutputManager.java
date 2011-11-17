@@ -38,11 +38,12 @@ public class OutputManager {
 	// --------------------------------------------------------------------------
 	/**
 	 * Constructor for this class with no parameters<br>
-	 * Instanciate Output. If this fails with an UnknownOSException, the Keyboard is closed.
+	 * Instantiate Output. If this fails with an UnknownOSException, the Keyboard is closed.
 	 * 
 	 * @author DanielAl
 	 */
 	public OutputManager() {
+		logger.debug("initializing...");
 		try {
 			out = new Output();
 		} catch (UnknownOSException err) {
@@ -50,6 +51,7 @@ public class OutputManager {
 			// If no Output could be instanciated close the Application
 			System.exit(-1);
 		}
+		logger.debug("initialized");
 	}
 	
 	
