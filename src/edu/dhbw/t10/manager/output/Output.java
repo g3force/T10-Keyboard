@@ -41,6 +41,7 @@ public class Output {
 	public static final int			UNKNOWN	= 0;
 	public static final int			LINUX		= 1;
 	public static final int			WINDOWS	= 2;
+	public static final int			MAC		= 3;
 	// SendKey Function Constants
 	public static final int			PRESS		= 0;
 	public static final int			HOLD		= 1;
@@ -48,7 +49,7 @@ public class Output {
 	public static final int			COMBI		= 3;
 	public static final int			SHIFT		= 10;
 	
-	// 0 represents UNKNOWN OS, 1 Linux, 2 any Windows
+	// 0 represents UNKNOWN OS, 1 Linux, 2 any Windows, 3 MAC
 	private static int				os;
 	// Stack for Key combination. See Method: printCombi(Button b)
 	private Stack<Integer>			combi;
@@ -74,10 +75,12 @@ public class Output {
 		logger.debug("initializing...");
 		String osName = System.getProperty("os.name");
 		logger.info("OS: " + osName);
-		if (osName.equals("Linux"))
+		if (osName.startsWith("Linux"))
 			os = LINUX;
 		else if (osName.startsWith("Windows"))
 			os = WINDOWS;
+		else if (osName.startsWith("Mac"))
+			os = MAC;
 		else {
 			os = UNKNOWN;
 			throw new UnknownOSException("Unsupported Operating System: " + osName);
@@ -282,6 +285,8 @@ public class Output {
 	 * Windows and restart your System. <br>
 	 * Implemented directly with a sequence of sendKey() methods and not with the printCombi function
 	 * 
+	 * Mac support untested...
+	 * 
 	 * @param String uni
 	 * @return boolean
 	 * @author DanielAl
@@ -348,6 +353,17 @@ public class Output {
 				} catch (UnsupportedOperationException err) {
 					logger.error("Unsupported Operation: Check Num_Lock state; can't write Unicode" + uniArr.toString());
 				}
+				return true;
+				// Mac Unicode send: Hold OPTION key and type the Hexadecimal digits and release OPTION Key
+				// is OPTION key == ALT Key ??
+				// Untested
+			case MAC:
+				sendKey(KeyEvent.VK_ALT, HOLD);
+				sendKey(convertKeyCode(uniArr[0] + ""), PRESS);
+				sendKey(convertKeyCode(uniArr[1] + ""), PRESS);
+				sendKey(convertKeyCode(uniArr[2] + ""), PRESS);
+				sendKey(convertKeyCode(uniArr[3] + ""), PRESS);
+				sendKey(KeyEvent.VK_ALT, RELEASE);
 				return true;
 			default:
 				logger.error("OS not supported: Unicode");
