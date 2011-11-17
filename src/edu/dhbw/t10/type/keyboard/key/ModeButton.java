@@ -9,6 +9,11 @@
  */
 package edu.dhbw.t10.type.keyboard.key;
 
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
+import javax.swing.JButton;
+
 import org.apache.log4j.Logger;
 
 
@@ -18,7 +23,7 @@ import org.apache.log4j.Logger;
  * @author DirkK, NicolaiO
  * 
  */
-public class ModeButton extends PhysicalButton {
+public class ModeButton extends PhysicalButton implements MouseListener {
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
@@ -46,6 +51,7 @@ public class ModeButton extends PhysicalButton {
 		super(size_x, size_y, pos_x, pos_y);
 		setModeKey(modeKey);
 		modeKey.addModeButton(this);
+		addMouseListener(this);
 	}
 	
 	
@@ -61,6 +67,58 @@ public class ModeButton extends PhysicalButton {
 	 */
 	public void push() {
 		modeKey.push();
+	}
+	
+	
+	@Override
+	public void mouseClicked(MouseEvent e) {
+	}
+	
+	
+	@Override
+	public void mouseEntered(MouseEvent e) {
+	}
+	
+	
+	@Override
+	public void mouseExited(MouseEvent e) {
+	}
+	
+	
+	@Override
+	public void mousePressed(MouseEvent e) {
+		/**
+		 * visualize pressing button for right mouse click
+		 */
+		if (e.getButton() == MouseEvent.BUTTON3) {
+			if (e.getSource() instanceof JButton) {
+				JButton b = (JButton) e.getSource();
+				b.getModel().setPressed(true);
+			}
+		}
+	}
+	
+	
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		/**
+		 * visualize pressing button for right mouse click
+		 */
+		if (e.getButton() == MouseEvent.BUTTON3) {
+			if (e.getSource() instanceof ModeButton) {
+				// if the mouse is still within button
+				if (e.getPoint().x >= 0 && e.getPoint().y >= 0 && e.getPoint().x < ((ModeButton) e.getSource()).getWidth()
+						&& e.getPoint().y < ((ModeButton) e.getSource()).getHeight()) {
+					// press key button
+					// TODO DanielAl do something to send out Modekey from this ModeButton...
+					// this.actionListener.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, this
+					// .getActionCommand()));
+				}
+				
+				JButton b = (JButton) e.getSource();
+				b.getModel().setPressed(false);
+			}
+		}
 	}
 	
 	
