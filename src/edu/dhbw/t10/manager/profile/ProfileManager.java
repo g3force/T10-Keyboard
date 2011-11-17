@@ -320,7 +320,7 @@ public class ProfileManager {
 			newProfile = new Profile(profileName);
 			profiles.add(newProfile);
 			if (getActive() == null) {
-				logger.error("The famous case, that should never occur, just did exactly this :D");
+				logger.error("There was no active Profile for an amount of time.");
 			}
 			serializeProfiles();
 		}
