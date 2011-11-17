@@ -253,6 +253,7 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 			case iExport:
 				String pathToFile = StringHelper.addEnding(path.toString(), ".zip");
 				try {
+					profileMan.getActive().save();
 					ImportExportManager.exportProfiles(profileMan.getActive(), new File(pathToFile));
 					logger.debug("Profile exported");
 					statusPane.enqueueMessage("Profile exported", StatusPane.LEFT);
