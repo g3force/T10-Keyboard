@@ -32,7 +32,8 @@ public class SuperFelix {
 	private static final Logger	logger	= Logger.getLogger(SuperFelix.class);
 	public static final String		VERSION	= "V0.7";
 	// Revision of Git Repository, after commit, you have to manually change it: Look in file .git/refs/heads/master
-	public static final String		REV		= "a1a56b29eeea47b9788c9d3de74a3e82f39da092";
+	// idea: automatic, e.g. with git shortlog | grep -E '^[ ]+\w+' | wc -l
+	public static final String		REV		= "571";
 
 	
 	// --------------------------------------------------------------------------
