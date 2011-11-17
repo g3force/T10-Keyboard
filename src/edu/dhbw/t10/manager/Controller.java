@@ -414,12 +414,20 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 		int type = muteB.getType();
 		switch (type) {
 			case MuteButton.AUTO_COMPLETING:
+				if (muteB.isActivated()) {
+					typedWord = "";
+					suggest = "";
+				}
 				profileMan.getActive().setAutoCompleting(muteB.isActivated());
 				break;
 			case MuteButton.AUTO_PROFILE_CHANGE:
 				profileMan.getActive().setAutoProfileChange(muteB.isActivated());
 				break;
 			case MuteButton.TREE_EXPANDING:
+				if (muteB.isActivated()) {
+					typedWord = "";
+					suggest = "";
+				}
 				profileMan.getActive().setTreeExpanding(muteB.isActivated());
 				break;
 		}
