@@ -28,6 +28,7 @@ import javax.swing.JFileChooser;
 import org.apache.log4j.Logger;
 
 import edu.dhbw.t10.helper.StringHelper;
+import edu.dhbw.t10.manager.output.Output;
 import edu.dhbw.t10.manager.output.OutputManager;
 import edu.dhbw.t10.manager.profile.ImportExportManager;
 import edu.dhbw.t10.manager.profile.ProfileManager;
@@ -203,13 +204,27 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 
 		if (e.getSource() instanceof Button) {
 			logger.debug("Normal Button pressed.");
-			eIsButton((Button) e.getSource());
+			Button b = (Button) e.getSource();
+			// currently we do not support some buttons for linux...
+			if (Output.getOs() == Output.LINUX
+					&& (b.getKey().getKeycode().equals("\\WINDOWS\\") || b.getKey().getKeycode().equals("\\CONTEXT_MENU\\"))) {
+				statusPane.enqueueMessage("Button not supported by your OS", StatusPane.LEFT);
+			} else {
+				eIsButton(b);
+			}
 		}
 		
 		if (e.getSource() instanceof ModeButton) {
 			logger.debug("ModeButton pressed.");
 			ModeButton modeB = (ModeButton) e.getSource();
-			modeB.push();
+			// currently we do not support some buttons for linux...
+			if (Output.getOs() == Output.LINUX
+					&& (modeB.getModeKey().getKeycode().equals("\\WINDOWS\\") || modeB.getModeKey().getKeycode()
+							.equals("\\CONTEXT_MENU\\"))) {
+				statusPane.enqueueMessage("Button not supported by your OS", StatusPane.LEFT);
+			} else {
+				modeB.push();
+			}
 		}
 		
 		if (e.getSource() instanceof MuteButton) {
