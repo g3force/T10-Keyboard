@@ -33,7 +33,7 @@ public class SuperFelix {
 	public static final String		VERSION	= "V0.7";
 	// Revision of Git Repository, after commit, you have to manually change it: Look in file .git/refs/heads/master
 	// idea: automatic, e.g. with git shortlog | grep -E '^[ ]+\w+' | wc -l
-	public static final String		REV		= "571";
+	public static final String		REV		= "574";
 
 	
 	// --------------------------------------------------------------------------
