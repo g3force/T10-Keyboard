@@ -9,7 +9,6 @@
  */
 package edu.dhbw.t10.manager.profile;
 
-import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -20,9 +19,7 @@ import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
 
-import edu.dhbw.t10.helper.StringHelper;
 import edu.dhbw.t10.manager.Controller;
-import edu.dhbw.t10.type.keyboard.DropDownList;
 import edu.dhbw.t10.type.profile.Profile;
 
 
@@ -83,55 +80,6 @@ public class ProfileManager {
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
-
-	/**
-	 * Load the lists of all ddls. (currently only one exists)
-	 * Existing items will be removed!
-	 * 
-	 * @author NicolaiO
-	 */
-	public void loadDDLs() {
-		ArrayList<DropDownList> DDLs = getActive().getKbdLayout().getDdls();
-		for (DropDownList ddl : DDLs) {
-			switch (ddl.getType()) {
-				case DropDownList.PROFILE:
-					// save all action listeners
-					ActionListener[] als = ddl.getActionListeners();
-					// delete all action listeners, so that they can't be called until we are done
-					// e.g. addItem will trigger an ActionEvent!
-					for (int i = 0; i < als.length; i++) {
-						ddl.removeActionListener(als[i]);
-					}
-
-					// remove all existing items (normally, there shouldn't be any...
-					ddl.removeAllItems();
-					
-					// add all profiles
-					for (Profile p : profiles) {
-						ddl.addItem(p.getName());
-					}
-					
-					// set active profile selected
-					ddl.setSelectedItem(getActive().getName());
-
-					logger.debug("loaded " + ddl.getItemCount() + " items in profile-ddl");
-					logger.debug("Selected item is: " + ddl.getSelectedItem() + " should be: " + getActive());
-
-					// now, where we are done, add all listeners back
-					for (int i = 0; i < als.length; i++) {
-						ddl.addActionListener(als[i]);
-					}
-
-					// do a revalidate to reload the ddl
-					ddl.revalidate();
-					ddl.repaint();
-					
-					break;
-				default:
-					logger.warn("UNKOWN DDL found!");
-			}
-		}
-	}
 	
 	
 	/**
@@ -140,7 +88,7 @@ public class ProfileManager {
 	 * 
 	 * @author SebastianN
 	 */
-	public void readConfig() {
+	private void readConfig() {
 		try {
 			File confFile = new File(Controller.getInstance().getDatapath() + "/" + configFile);
 			if (confFile.exists()) {
@@ -318,6 +266,7 @@ public class ProfileManager {
 		deleteFile(profile.getPathToLayoutFile());
 		deleteFile(profile.getPathToProfile());
 		deleteFile(profile.getPathToTree());
+		getActive().loadDDLs(profiles);
 	}
 	
 	
@@ -339,7 +288,7 @@ public class ProfileManager {
 	 * Marks a profile as 'active'.
 	 * 
 	 * @param newActive - Handle of the to-be activated profile
-	 * @author SebastianN
+	 * @author SebastianN, NicolaiO
 	 */
 	public void setActive(Profile newActive) {
 		// do nothing, if profile is already active
@@ -356,38 +305,18 @@ public class ProfileManager {
 		// set and load new active profile
 		activeProfile = newActive;
 		activeProfile.load();
+		activeProfile.loadDDLs(profiles);
 		logger.info("Profile now active: " + getActive());
-		loadDDLs();
-	}
-	
-	
-	/**
-	 * Gives a word which have to be inserted or updated in the data.
-	 * 
-	 * @param word A complete word to be inserted into tree
-	 * @author SebastianN
-	 */
-	@Deprecated
-	public boolean acceptWord(String word) {
-		word = StringHelper.removePunctuation(word);
-		if (getActive() == null) {
-			logger.error("getActive()==NULL at acceptWord");
-			return false;
-		}
-		if (activeProfile.isTreeExpanding())
-			return getActive().getTree().insert(word);
-		return false;
 	}
 	
 	
 	/**
 	 * Serializing Profile-Arraylist
-	 * TODO do we really want to serialize all profiles?!
-	 * better: always only save current profile...
 	 * 
+	 * @deprecated do we really want to serialize all profiles?!
+	 *             better: always only save current profile...
 	 * @author SebastianN
 	 */
-	@Deprecated
 	public void serializeProfiles() {
 		for (int i = 0; i < profiles.size(); i++) {
 			Profile cProfile = profiles.get(i);

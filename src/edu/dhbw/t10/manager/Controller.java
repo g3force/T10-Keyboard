@@ -132,7 +132,7 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	 * @author DirkK
 	 */
 	private void acceptWord(String word) {
-		boolean success = profileMan.acceptWord(word);
+		boolean success = profileMan.getActive().acceptWord(word);
 		if (success) {
 			statusPane.enqueueMessage("Word inserted: " + word, StatusPane.LEFT);
 		}
@@ -225,7 +225,6 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 		}
 		changeProfile(newProfile);
 		profileMan.deleteProfile(todelete);
-		profileMan.loadDDLs();
 	}
 	
 	

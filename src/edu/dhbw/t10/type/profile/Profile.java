@@ -9,18 +9,22 @@
  */
 package edu.dhbw.t10.type.profile;
 
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
 
+import edu.dhbw.t10.helper.StringHelper;
 import edu.dhbw.t10.manager.Controller;
 import edu.dhbw.t10.manager.keyboard.KeyboardLayoutLoader;
 import edu.dhbw.t10.manager.keyboard.KeyboardLayoutSaver;
 import edu.dhbw.t10.manager.keyboard.KeymapLoader;
 import edu.dhbw.t10.manager.profile.ImportExportManager;
+import edu.dhbw.t10.type.keyboard.DropDownList;
 import edu.dhbw.t10.type.keyboard.KeyboardLayout;
 import edu.dhbw.t10.type.keyboard.key.MuteButton;
 import edu.dhbw.t10.type.tree.PriorityTree;
@@ -245,6 +249,70 @@ public class Profile implements Serializable {
 			return getTree().getSuggest(givenChars);
 		} else {
 			return givenChars;
+		}
+	}
+	
+	
+	/**
+	 * Gives a word which have to be inserted or updated in the data.
+	 * 
+	 * @param word A complete word to be inserted into tree
+	 * @author SebastianN
+	 */
+	public boolean acceptWord(String word) {
+		word = StringHelper.removePunctuation(word);
+		if (isTreeExpanding())
+			return getTree().insert(word);
+		return false;
+	}
+	
+	
+	/**
+	 * Load the lists of all ddls. (currently only one exists)
+	 * Existing items will be removed!
+	 * 
+	 * @author NicolaiO
+	 */
+	public void loadDDLs(ArrayList<Profile> profiles) {
+		ArrayList<DropDownList> DDLs = getKbdLayout().getDdls();
+		for (DropDownList ddl : DDLs) {
+			switch (ddl.getType()) {
+				case DropDownList.PROFILE:
+					// save all action listeners
+					ActionListener[] als = ddl.getActionListeners();
+					// delete all action listeners, so that they can't be called until we are done
+					// e.g. addItem will trigger an ActionEvent!
+					for (int i = 0; i < als.length; i++) {
+						ddl.removeActionListener(als[i]);
+					}
+					
+					// remove all existing items (normally, there shouldn't be any...
+					ddl.removeAllItems();
+					
+					// add all profiles
+					for (Profile p : profiles) {
+						ddl.addItem(p.getName());
+					}
+					
+					// set active profile selected
+					ddl.setSelectedItem(getName());
+					
+					logger.debug("loaded " + ddl.getItemCount() + " items in profile-ddl");
+					logger.debug("Selected item is: " + ddl.getSelectedItem() + " should be: " + this);
+					
+					// now, where we are done, add all listeners back
+					for (int i = 0; i < als.length; i++) {
+						ddl.addActionListener(als[i]);
+					}
+					
+					// do a revalidate to reload the ddl
+					ddl.revalidate();
+					ddl.repaint();
+					
+					break;
+				default:
+					logger.warn("UNKOWN DDL found!");
+			}
 		}
 	}
 
