@@ -143,7 +143,7 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	
 	
 	/**
-	 * Save the actual Profile and dictionary to be able to clse the application.
+	 * Save the actual Profile and dictionary to be able to close the application.
 	 * 
 	 * @author DirkK
 	 */
@@ -153,8 +153,6 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 			profileMan.getActive().save();
 			logger.debug("closing - saving the config");
 			profileMan.saveConfig();
-			logger.debug("closing - serializing the profiles");
-			profileMan.serializeProfiles();
 			logger.debug("closed - good BUY");
 			logger.info("(c) FIT 42");
 		} catch (Exception e) {
@@ -419,7 +417,7 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 			case iNewProfile:
 				InputDlg iDlg = (InputDlg) o;
 				String newProfile = iDlg.getProfileName();
-				if (!profileMan.existProfile(newProfile)) {
+				if (!existProfile(newProfile)) {
 					this.addNewProfile(newProfile);
 					iDlg.setVisible(false);
 				} else {
