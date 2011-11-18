@@ -15,6 +15,8 @@ import org.apache.log4j.Logger;
 
 import edu.dhbw.t10.type.keyboard.key.Key;
 import edu.dhbw.t10.type.keyboard.key.ModeKey;
+
+
 /**
  * The OutputManager provides the interface between the controller and Output. <br>
  * It gives different meta methods for a better handling in the Output. <br>
@@ -130,8 +132,9 @@ public class OutputManager {
 	 * 
 	 * @author DanielAl
 	 */
-	public void delMark() {
-		out.printString("\\DELETE\\", Key.CONTROL);
+	public void delMark(int num) {
+		if (num > 0)
+			out.printString("\\DELETE\\", Key.CONTROL);
 		logger.trace("marked Keys are deleted");
 	}
 	
@@ -190,8 +193,8 @@ public class OutputManager {
 		pressed.add(key);
 		out.printCombi(hold, pressed);
 	}
-
 	
+
 	// --------------------------------------------------------------------------
 	// --- keyIs Actions --------------------------------------------------------
 	// --------------------------------------------------------------------------
@@ -212,7 +215,7 @@ public class OutputManager {
 	
 	
 	/**
-	 * Prints the given key, added it to the typed String and get a new suggest and prtints it...
+	 * Prints the given key, added it to the typed String and get a new suggest and prints it...
 	 * @param key
 	 * @author DanielAl
 	 */
@@ -220,30 +223,38 @@ public class OutputManager {
 		printKey(key);
 		printSuggest(suggest, typedWord);
 	}
-
-
+	
+	
 	/**
-	 * If the input is a Unicode (it is a Symbol character, special chars are type char) and this will be printed. <br>
-	 * The typed Word and Suggest Word will be forgotten.<br>
+	 * Handles a typed BackSpace.<br>
+	 * If there is a typedWord delete the Mark if exists (delMark), delete the last typed char and print a new suggest.<br>
+	 * If there is no typedWord send a BackSpace.
 	 * 
-	 * @param key
+	 * FIXME DanielAl Bug mit letztten char löschen...
 	 * @author DanielAl
 	 */
-	public void keyIsUnicode(Key key) {
-		printKey(key);
+	public void keyIsBackspace(String typedWord, String suggest) {
+		if (typedWord.length() + 1 > 0) {
+			// Differencebetween suggest and typedWord plus 1, because typedWord was decreased before...
+			delMark(suggest.length() - typedWord.length() + 1);
+			deleteChar(1);
+			printSuggest(suggest, typedWord);
+		} else {
+			deleteChar(1);
+		}
 	}
 
-
+	
 	/**
-	 * Prints a Control Key, <br>
+	 * Prints a Control or Unicode Key, <br>
 	 * if no DELETE or BACK_SPACE, these are special Keys and handled with extra methods...
 	 * 
 	 * @param key
 	 * @author DanielAl
 	 */
-	public void keyIsControl(Key key, String typedWord, String suggest) {
-		if (typedWord.length() < suggest.length()){
-			printKey(new Key(0, "Delete", "\\DELETE\\", Key.CONTROL, false, "", ""));
+	public void keyIsControlOrUnicode(Key key, String typedWord, String suggest) {
+		if (typedWord.length() < suggest.length()) {
+			delMark(suggest.length() - typedWord.length());
 		}
 		printKey(key);
 	}
