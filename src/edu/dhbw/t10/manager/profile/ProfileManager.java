@@ -215,7 +215,7 @@ public class ProfileManager {
 	 * @param entry - String containing what you want to write.
 	 * @author SebastianN
 	 */
-	public void addEntry(BufferedWriter bw, String entry) {
+	private void addEntry(BufferedWriter bw, String entry) {
 		try {
 			bw.write(entry + "\n");
 		} catch (IOException io) {
@@ -276,7 +276,6 @@ public class ProfileManager {
 		} else {
 			newProfile = new Profile(profileName);
 			profiles.add(newProfile);
-			serializeProfiles();
 		}
 		return newProfile;
 	}
@@ -368,6 +367,7 @@ public class ProfileManager {
 	 * @param word A complete word to be inserted into tree
 	 * @author SebastianN
 	 */
+	@Deprecated
 	public boolean acceptWord(String word) {
 		word = StringHelper.removePunctuation(word);
 		if (getActive() == null) {
@@ -387,6 +387,7 @@ public class ProfileManager {
 	 * 
 	 * @author SebastianN
 	 */
+	@Deprecated
 	public void serializeProfiles() {
 		for (int i = 0; i < profiles.size(); i++) {
 			Profile cProfile = profiles.get(i);
@@ -407,7 +408,7 @@ public class ProfileManager {
 	 * 
 	 * @author SebastianN
 	 */
-	public void loadSerializedProfiles() {
+	private void loadSerializedProfiles() {
 		int counter = 0;
 		if (profiles == null) {
 			profiles = new ArrayList<Profile>();

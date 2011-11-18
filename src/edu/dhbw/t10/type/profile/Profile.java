@@ -74,6 +74,7 @@ public class Profile implements Serializable {
 	public Profile(String pName) {
 		name = pName;
 		init();
+		save();
 	}
 	
 	
