@@ -477,7 +477,6 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 			// print the key combi else
 			logger.debug("Keycombi will be executed. Hint: " + pressedModeKeys.size() + "-"
 					+ button.getActiveModes().size() + "<1");
-			logger.trace(pressedModeKeys);
 			outputMan.printCombi(pressedModeKeys, button.getKey());
 		}
 
@@ -603,7 +602,7 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	private void keyIsCHAR(Key key) {
 		outputMan.printKey(key);
 		typedWord = typedWord + key.getName();
-		suggest = profileMan.getWordSuggest(typedWord);
+		suggest = profileMan.getActive().getWordSuggest(typedWord);
 		outputMan.printSuggest(suggest, typedWord);
 	}
 	
@@ -637,13 +636,13 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 			typedWord = typedWord.substring(0, typedWord.length() - 1);
 			// Delete 1, because nothing is marked and you want to delete one char
 			outputMan.deleteChar(1);
-			suggest = profileMan.getWordSuggest(typedWord);
+			suggest = profileMan.getActive().getWordSuggest(typedWord);
 			outputMan.printSuggest(suggest, typedWord);
 		} else if (typedWord.length() > 0) {
 			typedWord = typedWord.substring(0, typedWord.length() - 1);
 			// Delete 1, because there are suggested chars marked and you want to delete them and one char
 			outputMan.deleteChar(2);
-			suggest = profileMan.getWordSuggest(typedWord);
+			suggest = profileMan.getActive().getWordSuggest(typedWord);
 			outputMan.printSuggest(suggest, typedWord);
 		} else {
 			outputMan.deleteChar(1);

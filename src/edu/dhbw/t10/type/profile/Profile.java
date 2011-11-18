@@ -101,8 +101,8 @@ public class Profile implements Serializable {
 		logger.debug("Profile " + name + " created");
 		load();
 	}
-	
-	
+
+
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
@@ -228,6 +228,26 @@ public class Profile implements Serializable {
 	}
 	
 	
+	/**
+	 * Controller requests a Word suggestion with an given Startstring.
+	 * 
+	 * @param givenChars
+	 * @return wordsuggest
+	 * @author DirkK
+	 */
+	public String getWordSuggest(String givenChars) {
+		if (isAutoCompleting()) {
+			if (getTree() == null) {
+				logger.error("PriorityTree of activeProfile==NULL at getWordSuggest");
+				return "";
+			}
+			return getTree().getSuggest(givenChars);
+		} else {
+			return givenChars;
+		}
+	}
+
+
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
