@@ -15,8 +15,6 @@ import org.apache.log4j.Logger;
 
 import edu.dhbw.t10.type.keyboard.key.Key;
 import edu.dhbw.t10.type.keyboard.key.ModeKey;
-
-
 /**
  * The OutputManager provides the interface between the controller and Output. <br>
  * It gives different meta methods for a better handling in the Output. <br>
@@ -193,6 +191,62 @@ public class OutputManager {
 		out.printCombi(hold, pressed);
 	}
 
+	
+	// --------------------------------------------------------------------------
+	// --- keyIs Actions --------------------------------------------------------
+	// --------------------------------------------------------------------------
+	
+	
+	/**
+	 * Accept a suggested word, unmarks it and prints the given key.
+	 * 
+	 * @param key
+	 * @author DanielAl
+	 */
+	public void keyIsAccept(Key key, String typedWord, String suggest) {
+		if (suggest.length() > typedWord.length())
+			// outputMan.unMark();
+			printSuggest(suggest, typedWord, 1);
+		printKey(key);
+	}
+	
+	
+	/**
+	 * Prints the given key, added it to the typed String and get a new suggest and prtints it...
+	 * @param key
+	 * @author DanielAl
+	 */
+	public void keyIsChar(Key key, String typedWord, String suggest) {
+		printKey(key);
+		printSuggest(suggest, typedWord);
+	}
+
+
+	/**
+	 * If the input is a Unicode (it is a Symbol character, special chars are type char) and this will be printed. <br>
+	 * The typed Word and Suggest Word will be forgotten.<br>
+	 * 
+	 * @param key
+	 * @author DanielAl
+	 */
+	public void keyIsUnicode(Key key) {
+		printKey(key);
+	}
+
+
+	/**
+	 * Prints a Control Key, <br>
+	 * if no DELETE or BACK_SPACE, these are special Keys and handled with extra methods...
+	 * 
+	 * @param key
+	 * @author DanielAl
+	 */
+	public void keyIsControl(Key key, String typedWord, String suggest) {
+		if (typedWord.length() < suggest.length()){
+			printKey(new Key(0, "Delete", "\\DELETE\\", Key.CONTROL, false, "", ""));
+		}
+		printKey(key);
+	}
 
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
