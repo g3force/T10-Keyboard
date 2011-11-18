@@ -30,10 +30,10 @@ public class SuperFelix {
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
 	private static final Logger	logger	= Logger.getLogger(SuperFelix.class);
-	public static final String		VERSION	= "V0.7";
+	public static final String		VERSION	= "V0.8";
 	// Revision of Git Repository, after commit, you have to manually change it: Look in file .git/refs/heads/master
 	// idea: automatic, e.g. with git shortlog | grep -E '^[ ]+\w+' | wc -l
-	public static final String		REV		= "574";
+	public static final String		REV		= "591";
 
 	
 	// --------------------------------------------------------------------------
