@@ -23,7 +23,6 @@ import org.apache.log4j.Logger;
 import edu.dhbw.t10.helper.StringHelper;
 import edu.dhbw.t10.manager.Controller;
 import edu.dhbw.t10.type.keyboard.DropDownList;
-import edu.dhbw.t10.type.keyboard.KeyboardLayout;
 import edu.dhbw.t10.type.profile.Profile;
 
 
@@ -364,30 +363,6 @@ public class ProfileManager {
 	
 	
 	/**
-	 * Controller requests a Word suggestion with an given Startstring.
-	 * 
-	 * @param givenChars
-	 * @return wordsuggest
-	 * @author DirkK
-	 */
-	public String getWordSuggest(String givenChars) {
-		if (activeProfile.isAutoCompleting()) {
-			if (getActive() == null) {
-				logger.error("getActive()==NULL at getWordSuggest");
-				return "";
-			} else if (getActive().getTree() == null) {
-				logger.error("PriorityTree of activeProfile==NULL at getWordSuggest");
-				return "";
-			}
-			return getActive().getTree().getSuggest(givenChars);
-		} else {
-			return givenChars;
-		}
-		
-	}
-	
-	
-	/**
 	 * Gives a word which have to be inserted or updated in the data.
 	 * 
 	 * @param word A complete word to be inserted into tree
@@ -407,6 +382,8 @@ public class ProfileManager {
 	
 	/**
 	 * Serializing Profile-Arraylist
+	 * TODO do we really want to serialize all profiles?!
+	 * better: always only save current profile...
 	 * 
 	 * @author SebastianN
 	 */
@@ -487,16 +464,5 @@ public class ProfileManager {
 	 */
 	public Profile getActive() {
 		return activeProfile;
-	}
-	
-	
-	/**
-	 * Return currently active keyboard layout
-	 * 
-	 * @return
-	 * @author NicolaiO
-	 */
-	public KeyboardLayout getKbdLayout() {
-		return activeProfile.getKbdLayout();
 	}
 }
