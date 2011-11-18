@@ -107,7 +107,7 @@ public class Output {
 	 * @return booelan
 	 * @author DanielAl
 	 */
-	protected boolean printChar(Key c) {
+	protected boolean printKey(Key c) {
 		return printString(c.getKeycode(), c.getType());
 	}
 	
@@ -204,7 +204,7 @@ public class Output {
 		if (!press.isEmpty() && state) {
 			for (Key key : press) {
 				try {
-					printChar(key);
+					printKey(key);
 				} catch (Exception err) {
 					logger.error("printCombi: " + err.getMessage());
 					state = false;

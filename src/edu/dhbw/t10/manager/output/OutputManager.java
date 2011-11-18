@@ -66,13 +66,14 @@ public class OutputManager {
 	 * 
 	 * @author DanielAl
 	 */
-	public boolean printChar(Key c) {
-		return out.printChar(c);
+	public boolean printKey(Key c) {
+		return out.printKey(c);
 	}
 	
 	
 	/**
 	 * Deletes 'num' chars via sending so many Back_Spaces...
+	 * Implemented directly and not with printCombi...
 	 * 
 	 * @param int num
 	 * @return boolean
