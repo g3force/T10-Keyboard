@@ -32,12 +32,23 @@ public class ModeButton extends PhysicalButton implements MouseListener {
 	private static final Logger	logger				= Logger.getLogger(ModeButton.class);
 	private static final long		serialVersionUID	= 5356736981172867044L;
 	private ModeKey					modeKey;
+	private boolean					modesDisabled		= false;
 	
 	
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
 	
+	public boolean isModesDisabled() {
+		return modesDisabled;
+	}
+	
+	
+	public void setModesDisabled(boolean modesDisabled) {
+		this.modesDisabled = modesDisabled;
+	}
+
+
 	/**
 	 * Create a new ModeButton with given ModeKey and bounds
 	 * 
@@ -111,19 +122,10 @@ public class ModeButton extends PhysicalButton implements MouseListener {
 				if (e.getPoint().x >= 0 && e.getPoint().y >= 0 && e.getPoint().x < ((ModeButton) e.getSource()).getWidth()
 						&& e.getPoint().y < ((ModeButton) e.getSource()).getHeight()) {
 					// press key button
-					// TODO NicolaiO do something that works...
-					// Idee: dem ActionEvent ein Button übergeben und kein ModeButton, sodass der Controller dies auch so
-					// behandelt
-					// leider wird trotzdem ein ModeBUtton übergeben... bitte drüberschauen und korrigieren
-					Button helpB = new Button(1, 1, 1, 1);
-					Key helpKey = ((ModeButton) e.getSource()).getModeKey().clone();
-					helpB.setKey(helpKey);
-					logger.warn("test1");
-					ActionEvent f = new ActionEvent(helpB, ActionEvent.ACTION_PERFORMED, helpB.getActionCommand());
-					this.actionListener.actionPerformed(f);
-					logger.warn("test2");
-					// this.actionListener.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, this
-					// .getActionCommand()));
+					setModesDisabled(true);
+					this.actionListener.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, this
+							.getActionCommand()));
+					setModesDisabled(false);
 				}
 				
 				JButton b = (JButton) e.getSource();
@@ -141,10 +143,8 @@ public class ModeButton extends PhysicalButton implements MouseListener {
 	}
 	
 	
-	// TODO NicolaiO explicit or implicit cast? with explicit a Key is returned, with implicit a ModeKey... I added a
-	// explicit cast
-	public Key getModeKey() {
-		return (Key) modeKey;
+	public ModeKey getModeKey() {
+		return modeKey;
 	}
 	
 	

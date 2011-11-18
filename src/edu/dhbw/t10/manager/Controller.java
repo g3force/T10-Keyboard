@@ -223,7 +223,14 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 							.equals("\\CONTEXT_MENU\\"))) {
 				statusPane.enqueueMessage("Button not supported by your OS", StatusPane.LEFT);
 			} else {
-				modeB.push();
+				if (modeB.isModesDisabled()) {
+					Button helpB = new Button(1, 1, 1, 1);
+					Key helpKey = ((ModeButton) e.getSource()).getModeKey().clone();
+					helpB.setKey(helpKey);
+					eIsButton(helpB);
+				} else {
+					modeB.push();
+				}
 			}
 		}
 		
