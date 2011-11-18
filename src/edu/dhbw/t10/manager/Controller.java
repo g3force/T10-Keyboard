@@ -124,8 +124,72 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
-	// Data ----------------------------
 	
+	
+	/**
+	 * is called whenever a word shall be accepted
+	 * 
+	 * @param word
+	 * @author DirkK
+	 */
+	private void acceptWord(String word) {
+		boolean success = profileMan.acceptWord(word);
+		if (success) {
+			statusPane.enqueueMessage("Word inserted: " + word, StatusPane.LEFT);
+		}
+		typedWord = "";
+		suggest = "";
+	}
+	
+	
+	/**
+	 * Save the actual Profile and dictionary to be able to clse the application.
+	 * 
+	 * @author DirkK
+	 */
+	private void closeSuperFelix() {
+		try {
+			logger.debug("closing - saving the tree");
+			profileMan.getActive().save();
+			logger.debug("closing - saving the config");
+			profileMan.saveConfig();
+			logger.debug("closing - serializing the profiles");
+			profileMan.serializeProfiles();
+			logger.debug("closed - good BUY");
+			logger.info("(c) FIT 42");
+		} catch (Exception e) {
+			logger.error("closing routine produced an error: " + e.toString());
+		}
+	}
+	
+	
+	/**
+	 * Resizes the Window and rescale the buttons to fit in there...
+	 * 
+	 * @param size
+	 * @author NicolaiO
+	 */
+	public void resizeWindow(Dimension size) {
+		KeyboardLayout kbdLayout = profileMan.getActive().getKbdLayout();
+		if (kbdLayout != null) {
+			float xscale = (float) size.width / (float) kbdLayout.getOrigSize_x();
+			float yscale = (float) size.height / (float) kbdLayout.getOrigSize_y();
+			float fontScale = xscale + yscale / 2;
+			kbdLayout.setScale_x(xscale);
+			kbdLayout.setScale_y(yscale);
+			kbdLayout.setScale_font(fontScale);
+			kbdLayout.rescale();
+			mainPanel.setPreferredSize(new Dimension(kbdLayout.getSize_x(), kbdLayout.getSize_y()));
+			presenter.pack();
+			logger.debug("Window rescaled");
+		}
+	}
+
+
+	// --------------------------------------------------------------------------
+	// --- Profile --------------------------------------------------------------
+	// --------------------------------------------------------------------------
+
 	/**
 	 * Creates a profile by name.
 	 * 
@@ -187,10 +251,27 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 			logger.debug("changeProfile blocked");
 		}
 	}
-
+	
+	
+	/**
+	 * Check, if a given profile already exists.
+	 * 
+	 * @param name of the profile to check
+	 * @return true if it exists, false else
+	 * @author NicolaiO
+	 */
+	public boolean existProfile(String name) {
+		return profileMan.existProfile(name);
+	}
+	
+	
+	// --------------------------------------------------------------------------
+	// --- Action handler -------------------------------------------------------
+	// --------------------------------------------------------------------------
 
 	/**
 	 * Starts the right activities for a specific event...
+	 * The events come from Buttons, ModeButtons, MuteButtons, DDLs and other elements
 	 * 
 	 * @param e
 	 * @author NicolaiO, DirkK, FelixP, SebastianN, DanielAl
@@ -251,6 +332,11 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	}
 	
 	
+	// --------------------------------------------------------------------------
+	// --- Output ---------------------------------------------------------------
+	// --------------------------------------------------------------------------
+
+
 	/**
 	 * Do something, if ProfileChooser was activated. o_O
 	 * 
@@ -581,45 +667,9 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	}
 	
 	
-	/**
-	 * is called whenever a word shall be accepted
-	 * 
-	 * @param word
-	 * @author DirkK
-	 */
-	private void acceptWord(String word) {
-		boolean success = profileMan.acceptWord(word);
-		if (success) {
-			statusPane.enqueueMessage("Word inserted: " + word, StatusPane.LEFT);
-		}
-		typedWord = "";
-		suggest = "";
-	}
-	
-	
-	// Window ----------------------------
-	
-	/**
-	 * Resizes the Window and rescale the buttons to fit in there...
-	 * 
-	 * @param size
-	 * @author NicolaiO
-	 */
-	public void resizeWindow(Dimension size) {
-		KeyboardLayout kbdLayout = profileMan.getActive().getKbdLayout();
-		if (kbdLayout != null) {
-			float xscale = (float) size.width / (float) kbdLayout.getOrigSize_x();
-			float yscale = (float) size.height / (float) kbdLayout.getOrigSize_y();
-			float fontScale = xscale + yscale / 2;
-			kbdLayout.setScale_x(xscale);
-			kbdLayout.setScale_y(yscale);
-			kbdLayout.setScale_font(fontScale);
-			kbdLayout.rescale();
-			mainPanel.setPreferredSize(new Dimension(kbdLayout.getSize_x(), kbdLayout.getSize_y()));
-			presenter.pack();
-			logger.debug("Window rescaled");
-		}
-	}
+	// --------------------------------------------------------------------------
+	// --- Window Events --------------------------------------------------------
+	// --------------------------------------------------------------------------
 	
 	
 	@Override
@@ -664,32 +714,11 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	}
 	
 	
-	/**
-	 * Save the actual Profile and dictionary to be able to clse the application.
-	 * 
-	 * @author DirkK
-	 */
-	private void closeSuperFelix() {
-		try {
-			logger.debug("closing - saving the tree");
-			profileMan.getActive().save();
-			logger.debug("closing - saving the config");
-			profileMan.saveConfig();
-			logger.debug("closing - serializing the profiles");
-			profileMan.serializeProfiles();
-			logger.debug("closed - good BUY");
-			logger.info("(c) FIT 42");
-		} catch (Exception e) {
-			logger.error("closing routine produced an error: " + e.toString());
-		}
-	}
+	// --------------------------------------------------------------------------
+	// --- Mouse Events ---------------------------------------------------------
+	// --------------------------------------------------------------------------
 	
-	
-	public boolean existProfile(String name) {
-		return profileMan.existProfile(name);
-	}
-	
-	
+
 	@Override
 	public void mouseClicked(MouseEvent e) {
 	}
@@ -698,6 +727,7 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		if (e.getSource() instanceof MuteButton) {
+			// show tooltip in statusbar
 			MuteButton pb = (MuteButton) e.getSource();
 			statusPane.enqueueMessage(pb.getMode().getTooltip(), StatusPane.RIGHT);
 		}
@@ -706,6 +736,7 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	
 	@Override
 	public void mouseExited(MouseEvent e) {
+		// delete tooltip in statusbar
 		statusPane.enqueueMessage("", StatusPane.RIGHT);
 	}
 	
@@ -717,11 +748,6 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	
 	@Override
 	public void mouseReleased(MouseEvent e) {
-	}
-	
-	
-	public boolean isReadyForActionEvents() {
-		return readyForActionEvents;
 	}
 	
 	
@@ -750,5 +776,10 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	
 	public void setDatapath(String datapath) {
 		this.datapath = datapath;
+	}
+	
+	
+	public boolean isReadyForActionEvents() {
+		return readyForActionEvents;
 	}
 }
