@@ -458,39 +458,41 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 		
 		if (key.getKeycode().equals("\\CAPS_LOCK\\")) {
 			this.keyIsCapsLock();
-		} else
-		// Print the key iff zero or one ModeKeys is pressed
-		if (pressedModeKeys.size() - button.getActiveModes().size() < 1) {
-			if (key.isAccept()) {
-				outputMan.keyIsAccept(key, typedWord, suggest);
-				acceptWord(suggest);
-			} else if (key.getType() == Key.CHAR) {
-				typedWord = typedWord + key.getName();
-				suggest = profileMan.getActive().getWordSuggest(typedWord);
-				outputMan.keyIsChar(key, typedWord, suggest);
-			} else if (key.getType() == Key.UNICODE) {
-				outputMan.keyIsUnicode(key);
-				acceptWord(typedWord);
-			} else if (key.getKeycode().equals("\\BACK_SPACE\\")) {
-				keyIsBackspace();
-			} else if (key.getKeycode().equals("\\DELETE\\")) {
-				outputMan.printKey(key);
-				suggest = typedWord;
-			} else if (key.getType() == Key.CONTROL) {
-				outputMan.keyIsControl(key, typedWord, suggest);
-				if((key.getKeycode().equals("\\SPACE\\") || key.getKeycode().equals("\\ENTER\\"))){
-					acceptWord(typedWord);
-				} else {
-					clearWord();
-				}
-			}
-			logger.debug("Key pressed: " + key.toString());
 		} else {
-			// print the key combi else
-			logger.debug("Keycombi will be executed. Hint: " + pressedModeKeys.size() + "-"
-					+ button.getActiveModes().size() + "<1");
-			logger.trace(pressedModeKeys);
-			outputMan.printCombi(pressedModeKeys, button.getKey());
+			// Print the key iff zero or one ModeKeys is pressed
+			if (pressedModeKeys.size() - button.getActiveModes().size() < 1) {
+				if (key.isAccept()) {
+					outputMan.keyIsAccept(key, typedWord, suggest);
+					acceptWord(suggest);
+				} else if (key.getType() == Key.CHAR) {
+					typedWord = typedWord + key.getName();
+					suggest = profileMan.getActive().getWordSuggest(typedWord);
+					outputMan.keyIsChar(key, typedWord, suggest);
+				} else if (key.getKeycode().equals("\\BACK_SPACE\\")) {
+					if (typedWord.length() > 0)
+						typedWord = typedWord.substring(0, typedWord.length() - 1);
+					suggest = profileMan.getActive().getWordSuggest(typedWord);
+					outputMan.keyIsBackspace(typedWord, suggest);
+				} else if (key.getKeycode().equals("\\DELETE\\")) {
+					outputMan.printKey(key);
+					suggest = typedWord;
+				} else if (key.getType() == Key.CONTROL || key.getType() == Key.UNICODE) {
+					outputMan.keyIsControlOrUnicode(key, typedWord, suggest);
+					if (key.getType() == Key.UNICODE
+							|| (key.getKeycode().equals("\\SPACE\\") || key.getKeycode().equals("\\ENTER\\"))) {
+						acceptWord(typedWord);
+					} else if (key.getType() == Key.CONTROL) {
+						clearWord();
+					}
+				}
+				logger.debug("Key pressed: " + key.toString());
+			} else {
+				// print the key combi else
+				logger.debug("Keycombi will be executed. Hint: " + pressedModeKeys.size() + "-"
+						+ button.getActiveModes().size() + "<1");
+				logger.trace(pressedModeKeys);
+				outputMan.printCombi(pressedModeKeys, button.getKey());
+			}
 		}
 
 		// unset all ModeButtons, that are in PRESSED state
@@ -555,35 +557,8 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	// --------------------------------------------------------------------------
 	// --- keyIs Actions --------------------------------------------------------
 	// --------------------------------------------------------------------------
-	/**
-	 * Handles a typed BackSpace.<br>
-	 * There are 3 options:<br>
-	 * - typedWord and suggest are equal, so no suggest is printed and one Backspace deletes the last typed char.<br>
-	 * - a suggest is printed to complete the typedWord. Then you need to delete the marked chars and the last typed
-	 * char, so yo need two Back_Spaces.<br>
-	 * - all other options, you'll only need to send one Back_Space<br>
-	 * A new suggest will also be generated.<br>
-	 * 
-	 * @author DanielAl
-	 */
-	public void keyIsBackspace() {
-		if (typedWord.length() > 0 && typedWord.equals(suggest)) {
-			typedWord = typedWord.substring(0, typedWord.length() - 1);
-			// Delete 1, because nothing is marked and you want to delete one char
-			outputMan.deleteChar(1);
-			suggest = profileMan.getActive().getWordSuggest(typedWord);
-			outputMan.printSuggest(suggest, typedWord);
-		} else if (typedWord.length() > 0) {
-			typedWord = typedWord.substring(0, typedWord.length() - 1);
-			// Delete 1, because there are suggested chars marked and you want to delete them and one char
-			outputMan.deleteChar(2);
-			suggest = profileMan.getActive().getWordSuggest(typedWord);
-			outputMan.printSuggest(suggest, typedWord);
-		} else {
-			outputMan.deleteChar(1);
-		}
-	}
 	
+
 	/**
 	 * Run this with a caps_lock key to trigger all shift buttons.
 	 * If Shift state is DEFAULT, it will be changed to HOLD, else to DEFAULT
