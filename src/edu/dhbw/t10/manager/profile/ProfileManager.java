@@ -415,7 +415,7 @@ public class ProfileManager {
 			Profile cProfile = profiles.get(i);
 			if (cProfile.getPathToProfile() == null || cProfile.getPathToProfile().isEmpty())
 				continue;
-			logger.info("Serializing Porfile " + cProfile.getName() + " to " + cProfile.getPathToProfile());
+			logger.info("Serializing Profile " + cProfile.getName() + " to " + cProfile.getPathToProfile());
 			try {
 				Serializer.serialize(cProfile, cProfile.getPathToProfile());
 			} catch (IOException io) {

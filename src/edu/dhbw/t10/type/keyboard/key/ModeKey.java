@@ -131,9 +131,7 @@ public class ModeKey extends Key {
 					mb.getModel().setPressed(true);
 					mb.setBorderPainted(true);
 					mb.setFont(new Font(mb.getFont().getName(), Font.BOLD, mb.getFont().getSize()));
-					 mb.setIcon(mb.getModeKey().getHoldIcon());
-					// URL url = getClass().getResource("/res/icons/keys/shift_bold.png");
-					// mb.setIcon(new ImageIcon(url));
+					mb.setIcon(mb.getModeKey().getHoldIcon());
 					// mb.setText(mb.getModeKey().getName());
 				}
 				// notify all normal Buttons
@@ -144,8 +142,8 @@ public class ModeKey extends Key {
 		}
 		logger.debug("State set to " + state);
 	}
-
 	
+
 	/**
 	 * Register a Button as an observer, so that the Button can be informed of a status change
 	 * 
