@@ -468,7 +468,7 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 			else if ((key.getKeycode().equals("\\SPACE\\") || key.getKeycode().equals("\\ENTER\\")))
 				this.keyIsSpaceOrEnter(key);
 			else if (key.getKeycode().equals("\\DELETE\\")) {
-				outputMan.printChar(key);
+				outputMan.printKey(key);
 				suggest = typedWord;
 			} else if (key.getType() == Key.CONTROL)
 				this.keyIsControl(key);
@@ -573,7 +573,7 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 		if (suggest.length() > typedWord.length())
 			// outputMan.unMark();
 			outputMan.printSuggest(suggest, typedWord, 1);
-		outputMan.printChar(key);
+		outputMan.printKey(key);
 		acceptWord(suggest);
 		logger.trace("Word accepted");
 	}
@@ -588,8 +588,8 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	 */
 	private void keyIsControl(Key key) {
 		if (suggest.length() > typedWord.length())
-			outputMan.printChar(new Key(0, "Delete", "\\DELETE\\", Key.CONTROL, false, "", ""));
-		outputMan.printChar(key);
+			outputMan.printKey(new Key(0, "Delete", "\\DELETE\\", Key.CONTROL, false, "", ""));
+		outputMan.printKey(key);
 		typedWord = "";
 		suggest = "";
 	}
@@ -601,7 +601,7 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	 * @author DanielAl
 	 */
 	private void keyIsCHAR(Key key) {
-		outputMan.printChar(key);
+		outputMan.printKey(key);
 		typedWord = typedWord + key.getName();
 		suggest = profileMan.getWordSuggest(typedWord);
 		outputMan.printSuggest(suggest, typedWord);
@@ -616,7 +616,7 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	 * @author DanielAl
 	 */
 	private void keyIsUnicode(Key key) {
-		outputMan.printChar(key);
+		outputMan.printKey(key);
 		acceptWord(typedWord);
 	}
 	
@@ -662,7 +662,7 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 		logger.debug("Keycode " + key.getKeycode() + " " + key.getType());
 		if (typedWord.length() < suggest.length())
 			outputMan.delMark();
-		outputMan.printChar(key);
+		outputMan.printKey(key);
 		acceptWord(typedWord);
 	}
 	
