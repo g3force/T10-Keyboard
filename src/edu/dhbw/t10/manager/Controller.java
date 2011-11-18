@@ -105,8 +105,7 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 		}
 
 		outputMan = new OutputManager();
-		typedWord = "";
-		suggest = "";
+		clearWord();
 
 		// This message is important! Otherwise, The StatusPane has a wrong height and the layout will be decreased
 		// meaning, it gets smaller with each start...
@@ -137,8 +136,8 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 		if (success) {
 			statusPane.enqueueMessage("Word inserted: " + word, StatusPane.LEFT);
 		}
-		typedWord = "";
-		suggest = "";
+		clearWord();
+		logger.trace("Word accepted");
 	}
 	
 	
@@ -331,7 +330,7 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	
 	
 	// --------------------------------------------------------------------------
-	// --- Output ---------------------------------------------------------------
+	// --- eIs Actions ----------------------------------------------------------
 	// --------------------------------------------------------------------------
 
 
@@ -411,6 +410,14 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	}
 	
 	
+	/**
+	 * 
+	 * TODO FelixP, add comment!
+	 * 
+	 * @param menuItem
+	 * @param o
+	 * @author FelixP
+	 */
 	public void eIsDlg(EMenuItem menuItem, Object o) {
 		switch (menuItem) {
 		// new profile
@@ -455,54 +462,40 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 		} else
 		// Print the key iff zero or one ModeKeys is pressed
 		if (pressedModeKeys.size() - button.getActiveModes().size() < 1) {
-			if (key.isAccept())
-				this.keyIsAccept(key);
-			else if (key.getType() == Key.CHAR)
-				this.keyIsCHAR(key);
-			else if (key.getType() == Key.UNICODE)
-				this.keyIsUnicode(key);
-			else if (key.getKeycode().equals("\\BACK_SPACE\\"))
-				this.keyIsBackspace();
-			else if ((key.getKeycode().equals("\\SPACE\\") || key.getKeycode().equals("\\ENTER\\")))
-				this.keyIsSpaceOrEnter(key);
-			else if (key.getKeycode().equals("\\DELETE\\")) {
+			if (key.isAccept()) {
+				outputMan.keyIsAccept(key, typedWord, suggest);
+				acceptWord(suggest);
+			} else if (key.getType() == Key.CHAR) {
+				typedWord = typedWord + key.getName();
+				suggest = profileMan.getActive().getWordSuggest(typedWord);
+				outputMan.keyIsChar(key, typedWord, suggest);
+			} else if (key.getType() == Key.UNICODE) {
+				outputMan.keyIsUnicode(key);
+				acceptWord(typedWord);
+			} else if (key.getKeycode().equals("\\BACK_SPACE\\")) {
+				keyIsBackspace();
+			} else if (key.getKeycode().equals("\\DELETE\\")) {
 				outputMan.printKey(key);
 				suggest = typedWord;
-			} else if (key.getType() == Key.CONTROL)
-				this.keyIsControl(key);
+			} else if (key.getType() == Key.CONTROL) {
+				outputMan.keyIsControl(key, typedWord, suggest);
+				if((key.getKeycode().equals("\\SPACE\\") || key.getKeycode().equals("\\ENTER\\"))){
+					acceptWord(typedWord);
+				} else {
+					clearWord();
+				}
+			}
 			logger.debug("Key pressed: " + key.toString());
 		} else {
 			// print the key combi else
 			logger.debug("Keycombi will be executed. Hint: " + pressedModeKeys.size() + "-"
 					+ button.getActiveModes().size() + "<1");
+			logger.trace(pressedModeKeys);
 			outputMan.printCombi(pressedModeKeys, button.getKey());
 		}
 
 		// unset all ModeButtons, that are in PRESSED state
 		profileMan.getActive().getKbdLayout().unsetPressedModes();
-	}
-	
-	
-	/**
-	 * Run this with a caps_lock key to trigger all shift buttons.
-	 * If Shift state is DEFAULT, it will be changed to HOLD, else to DEFAULT
-	 * 
-	 * @param key
-	 * @author NicolaiO
-	 */
-	private void keyIsCapsLock() {
-		logger.trace("CapsLock");
-		for (ModeKey mk : profileMan.getActive().getKbdLayout().getModeKeys()) {
-			if (mk.getKeycode().equals("\\SHIFT\\")) {
-				if (mk.getState() == ModeKey.DEFAULT) {
-					mk.setState(ModeKey.HOLD);
-				} else {
-					mk.setState(ModeKey.DEFAULT);
-				}
-				break;
-			}
-		}
-		presenter.pack();
 	}
 	
 	
@@ -560,64 +553,9 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	}
 	
 	
-	/**
-	 * Accept a suggested word, unmarks it and prints the given key.
-	 * 
-	 * @param key
-	 * @author DanielAl
-	 */
-	private void keyIsAccept(Key key) {
-		if (suggest.length() > typedWord.length())
-			// outputMan.unMark();
-			outputMan.printSuggest(suggest, typedWord, 1);
-		outputMan.printKey(key);
-		acceptWord(suggest);
-		logger.trace("Word accepted");
-	}
-	
-	
-	/**
-	 * Prints a Control Key, <br>
-	 * if no SPACE, ENTER, DELETE or BACK_SPACE, these are special Keys and handled with extra methods...
-	 * 
-	 * @param key
-	 * @author DanielAl
-	 */
-	private void keyIsControl(Key key) {
-		if (suggest.length() > typedWord.length())
-			outputMan.printKey(new Key(0, "Delete", "\\DELETE\\", Key.CONTROL, false, "", ""));
-		outputMan.printKey(key);
-		typedWord = "";
-		suggest = "";
-	}
-	
-	
-	/**
-	 * Prints the given key, added it to the typed String and get a new suggest and prtints it...
-	 * @param key
-	 * @author DanielAl
-	 */
-	private void keyIsCHAR(Key key) {
-		outputMan.printKey(key);
-		typedWord = typedWord + key.getName();
-		suggest = profileMan.getActive().getWordSuggest(typedWord);
-		outputMan.printSuggest(suggest, typedWord);
-	}
-	
-	
-	/**
-	 * If the input is a Unicode (it is a Symbol character, special chars are type char) and this will be printed. <br>
-	 * The typed Word and Suggest Word will be forgotten.<br>
-	 * 
-	 * @param key
-	 * @author DanielAl
-	 */
-	private void keyIsUnicode(Key key) {
-		outputMan.printKey(key);
-		acceptWord(typedWord);
-	}
-	
-	
+	// --------------------------------------------------------------------------
+	// --- keyIs Actions --------------------------------------------------------
+	// --------------------------------------------------------------------------
 	/**
 	 * Handles a typed BackSpace.<br>
 	 * There are 3 options:<br>
@@ -629,7 +567,7 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	 * 
 	 * @author DanielAl
 	 */
-	private void keyIsBackspace() {
+	public void keyIsBackspace() {
 		if (typedWord.length() > 0 && typedWord.equals(suggest)) {
 			typedWord = typedWord.substring(0, typedWord.length() - 1);
 			// Delete 1, because nothing is marked and you want to delete one char
@@ -647,27 +585,32 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 		}
 	}
 	
-	
 	/**
-	 * When Space or Enter is pressed accept the typed Word and print Space or Enter...<br>
-	 * The suggest will be declined and forgotten.<br>
+	 * Run this with a caps_lock key to trigger all shift buttons.
+	 * If Shift state is DEFAULT, it will be changed to HOLD, else to DEFAULT
 	 * 
 	 * @param key
-	 * @author DanielAl
+	 * @author NicolaiO
 	 */
-	private void keyIsSpaceOrEnter(Key key) {
-		logger.debug("Keycode " + key.getKeycode() + " " + key.getType());
-		if (typedWord.length() < suggest.length())
-			outputMan.delMark();
-		outputMan.printKey(key);
-		acceptWord(typedWord);
+	private void keyIsCapsLock() {
+		logger.trace("CapsLock");
+		for (ModeKey mk : profileMan.getActive().getKbdLayout().getModeKeys()) {
+			if (mk.getKeycode().equals("\\SHIFT\\")) {
+				if (mk.getState() == ModeKey.DEFAULT) {
+					mk.setState(ModeKey.HOLD);
+				} else {
+					mk.setState(ModeKey.DEFAULT);
+				}
+				break;
+			}
+		}
+		presenter.pack();
 	}
 	
-	
+
 	// --------------------------------------------------------------------------
 	// --- Window Events --------------------------------------------------------
 	// --------------------------------------------------------------------------
-	
 	
 	@Override
 	public void windowActivated(WindowEvent arg0) {
@@ -778,5 +721,31 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	
 	public boolean isReadyForActionEvents() {
 		return readyForActionEvents;
+	}
+	
+	
+	public String getSuggest() {
+		return suggest;
+	}
+	
+	
+	public void setSuggest(String newSuggest) {
+		suggest = newSuggest;
+	}
+	
+	
+	public String getTypedWord() {
+		return typedWord;
+	}
+	
+	
+	public void setTypedWord(String newTypedWord) {
+		typedWord = newTypedWord;
+	}
+	
+	
+	public void clearWord() {
+		typedWord = "";
+		suggest = "";
 	}
 }
