@@ -268,8 +268,7 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	
 	
 	/**
-	 * 
-	 * TODO NicolaiO, add comment!
+	 * Display a tooltip in the statusbar (It will be there, until another tooltip is set or it is manually hidden
 	 * 
 	 * @param message
 	 * @author NicolaiO
@@ -280,8 +279,7 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	
 	
 	/**
-	 * 
-	 * TODO NicolaiO, add comment!
+	 * Hide current tooltip
 	 * 
 	 * @author NicolaiO
 	 */
@@ -291,8 +289,8 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	
 
 	/**
-	 * 
-	 * TODO NicolaiO, add comment!
+	 * Show a status message in the statusbar. It will be enqueued and displayed, after all other message were displayed.
+	 * Each message has a fixed display time.
 	 * 
 	 * @param message
 	 * @author NicolaiO
@@ -590,7 +588,6 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 				break;
 			}
 		}
-		// presenter.pack();
 	}
 	
 
