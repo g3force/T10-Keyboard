@@ -13,8 +13,12 @@ import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
 
+import edu.dhbw.t10.manager.Controller;
+import edu.dhbw.t10.type.keyboard.key.Button;
 import edu.dhbw.t10.type.keyboard.key.Key;
 import edu.dhbw.t10.type.keyboard.key.ModeKey;
+import edu.dhbw.t10.type.keyboard.key.MuteButton;
+import edu.dhbw.t10.type.profile.Profile;
 
 
 /**
@@ -31,6 +35,8 @@ public class OutputManager {
 	
 	// Output instance
 	Output								out;
+	private String						typedWord;
+	private String						suggest;
 	
 	
 	// --------------------------------------------------------------------------
@@ -51,6 +57,7 @@ public class OutputManager {
 			// If no Output could be instanciated close the Application
 			System.exit(-1);
 		}
+		clearWord();
 		logger.debug("initialized");
 	}
 	
@@ -235,7 +242,7 @@ public class OutputManager {
 	 */
 	public void keyIsBackspace(String typedWord, String suggest) {
 		if (typedWord.length() + 1 > 0) {
-			// Differencebetween suggest and typedWord plus 1, because typedWord was decreased before...
+			// Difference between suggest and typedWord plus 1, because typedWord was decreased before...
 			delMark(suggest.length() - typedWord.length() + 1);
 			deleteChar(1);
 			printSuggest(suggest, typedWord);
@@ -257,6 +264,155 @@ public class OutputManager {
 			delMark(suggest.length() - typedWord.length());
 		}
 		printKey(key);
+	}
+	
+	
+	// --------------------------------------------------------------------------
+	// --- buttons pressed actions ----------------------------------------------
+	// --------------------------------------------------------------------------
+	
+	
+	/**
+	 * Switchs between the three different Mute modes...<br>
+	 * Modes are:<br>
+	 * - AUTO_COMPLETING - If activated, this prints a suggested Word behind the typed chars and mark them...
+	 * - AUTO_PROFILE_CHANGE - If activated, this changes the profiles based on the sourrounded context.
+	 * - TREE_EXPANDING - If activated, accepted words are saved in the dicitionary...
+	 * @param muteB
+	 * @author DanielAl
+	 */
+	public void muteButtonPressed(MuteButton muteB, Profile activeProfile) {
+		muteB.push();
+		int type = muteB.getType();
+		switch (type) {
+			case MuteButton.AUTO_COMPLETING:
+				if (muteB.isActivated()) {
+					typedWord = "";
+					suggest = "";
+				}
+				activeProfile.setAutoCompleting(muteB.isActivated());
+				break;
+			case MuteButton.AUTO_PROFILE_CHANGE:
+				activeProfile.setAutoProfileChange(muteB.isActivated());
+				break;
+			case MuteButton.TREE_EXPANDING:
+				if (muteB.isActivated()) {
+					typedWord = "";
+					suggest = "";
+				}
+				activeProfile.setTreeExpanding(muteB.isActivated());
+				break;
+		}
+		logger.debug("MuteButton pressed");
+	}
+	
+	
+	/**
+	 * Do the logic for a button event. Switch between different types, specific Keys and a Key Combination...
+	 * 
+	 * @param button
+	 * @author DanielAl
+	 */
+	public void buttonPressed(Button button, Profile activeProfile) {
+		Key key = (Key) button.getPressedKey();
+		
+		// currently we do not support some buttons for linux...
+		if (Output.getOs() == Output.LINUX
+				&& (button.getKey().getKeycode().equals("\\WINDOWS\\") || button.getKey().getKeycode()
+						.equals("\\CONTEXT_MENU\\"))) {
+			Controller.getInstance().showStatusMessage("Button not supported by your OS");
+			return;
+		}
+		
+		// get all currently pressed Modekeys
+		ArrayList<ModeKey> pressedModeKeys = activeProfile.getKbdLayout().getPressedModeKeys();
+		
+		if (key.getKeycode().equals("\\CAPS_LOCK\\")) {
+			keyIsCapsLock(activeProfile);
+		} else {
+			// Print the key iff zero or one ModeKeys is pressed
+			if (pressedModeKeys.size() - button.getActiveModes().size() < 1) {
+				if (key.isAccept()) {
+					keyIsAccept(key, typedWord, suggest);
+					acceptWord(suggest, activeProfile);
+				} else if (key.getType() == Key.CHAR) {
+					typedWord = typedWord + key.getName();
+					suggest = activeProfile.getWordSuggest(typedWord);
+					keyIsChar(key, typedWord, suggest);
+				} else if (key.getKeycode().equals("\\BACK_SPACE\\")) {
+					if (typedWord.length() > 0)
+						typedWord = typedWord.substring(0, typedWord.length() - 1);
+					suggest = activeProfile.getWordSuggest(typedWord);
+					keyIsBackspace(typedWord, suggest);
+				} else if (key.getKeycode().equals("\\DELETE\\")) {
+					printKey(key);
+					suggest = typedWord;
+				} else if (key.getType() == Key.CONTROL || key.getType() == Key.UNICODE) {
+					keyIsControlOrUnicode(key, typedWord, suggest);
+					if (key.getType() == Key.UNICODE
+							|| (key.getKeycode().equals("\\SPACE\\") || key.getKeycode().equals("\\ENTER\\"))) {
+						acceptWord(typedWord, activeProfile);
+					} else if (key.getType() == Key.CONTROL) {
+						clearWord();
+					}
+				}
+				logger.debug("Key pressed: " + key.toString());
+			} else {
+				// print the key combi else
+				logger.debug("Keycombi will be executed. Hint: " + pressedModeKeys.size() + "-"
+						+ button.getActiveModes().size() + "<1");
+				logger.trace(pressedModeKeys);
+				printCombi(pressedModeKeys, button.getKey());
+			}
+		}
+		
+		// unset all ModeButtons, that are in PRESSED state
+		activeProfile.getKbdLayout().unsetPressedModes();
+	}
+	
+	
+	public void clearWord() {
+		typedWord = "";
+		suggest = "";
+	}
+	
+	
+	/**
+	 * is called whenever a word shall be accepted
+	 * 
+	 * @param word
+	 * @author DirkK
+	 */
+	private void acceptWord(String word, Profile activeProfile) {
+		boolean success = activeProfile.acceptWord(word);
+		if (success) {
+			Controller.getInstance().showStatusMessage("Word inserted: " + word);
+		}
+		clearWord();
+		logger.trace("Word accepted");
+	}
+
+	
+	/**
+	 * Run this with a caps_lock key to trigger all shift buttons.
+	 * If Shift state is DEFAULT, it will be changed to HOLD, else to DEFAULT
+	 * 
+	 * @param key
+	 * @author NicolaiO
+	 */
+	private void keyIsCapsLock(Profile activeProfile) {
+		logger.trace("CapsLock");
+		for (ModeKey mk : activeProfile.getKbdLayout().getModeKeys()) {
+			if (mk.getKeycode().equals("\\SHIFT\\")) {
+				if (mk.getState() == ModeKey.DEFAULT) {
+					mk.setState(ModeKey.HOLD);
+				} else {
+					mk.setState(ModeKey.DEFAULT);
+				}
+				break;
+			}
+		}
+		// presenter.pack();
 	}
 
 	// --------------------------------------------------------------------------

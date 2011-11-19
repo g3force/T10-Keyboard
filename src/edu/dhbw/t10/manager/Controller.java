@@ -109,13 +109,13 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 
 		// This message is important! Otherwise, The StatusPane has a wrong height and the layout will be decreased
 		// meaning, it gets smaller with each start...
-		statusPane.enqueueMessage("Keyboard initializing...", StatusPane.LEFT);
+		showStatusMessage("Keyboard initializing...");
 		profileMan = new ProfileManager();
 		
 		changeProfile(profileMan.getActive());
 		
 		readyForActionEvents = true;
-		statusPane.enqueueMessage("Keyboard initialized.", StatusPane.LEFT);
+		showStatusMessage("Keyboard initialized.");
 		logger.debug("initialized.");
 	}
 	
@@ -131,10 +131,11 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	 * @param word
 	 * @author DirkK
 	 */
+	@Deprecated
 	private void acceptWord(String word) {
 		boolean success = profileMan.getActive().acceptWord(word);
 		if (success) {
-			statusPane.enqueueMessage("Word inserted: " + word, StatusPane.LEFT);
+			showStatusMessage("Word inserted: " + word);
 		}
 		clearWord();
 		logger.trace("Word accepted");
@@ -204,10 +205,9 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	
 	
 	/**
-	 * Deletes a profile by name.
+	 * Deletes the active profile
 	 * 
-	 * @param String name
-	 * @author SebastianN
+	 * @author NicolaiO
 	 */
 	public void deleteActiveProfile() {
 		// get active profile to be delete
@@ -215,9 +215,10 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 		// get potential new profile
 		Profile newProfile = profileMan.getProfiles().get(0);
 
+		// after deleting profile, first or second profile should be made active
 		if (todelete == newProfile) {
 			if (profileMan.getProfiles().size() > 1) {
-				newProfile = profileMan.getProfiles().get(0);
+				newProfile = profileMan.getProfiles().get(1);
 			} else {
 				logger.debug("Only one or zero profiles left. Can't delete.");
 				return;
@@ -262,6 +263,46 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	
 	
 	// --------------------------------------------------------------------------
+	// --- Statusbar interface --------------------------------------------------
+	// --------------------------------------------------------------------------
+	
+	
+	/**
+	 * 
+	 * TODO NicolaiO, add comment!
+	 * 
+	 * @param message
+	 * @author NicolaiO
+	 */
+	public void showTooltip(String message) {
+		statusPane.enqueueMessage(message, StatusPane.RIGHT);
+	}
+	
+	
+	/**
+	 * 
+	 * TODO NicolaiO, add comment!
+	 * 
+	 * @author NicolaiO
+	 */
+	public void hideTooltip() {
+		statusPane.enqueueMessage("", StatusPane.RIGHT);
+	}
+	
+
+	/**
+	 * 
+	 * TODO NicolaiO, add comment!
+	 * 
+	 * @param message
+	 * @author NicolaiO
+	 */
+	public void showStatusMessage(String message) {
+		statusPane.enqueueMessage(message, StatusPane.LEFT);
+	}
+
+
+	// --------------------------------------------------------------------------
 	// --- Action handler -------------------------------------------------------
 	// --------------------------------------------------------------------------
 
@@ -281,14 +322,8 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 
 		if (e.getSource() instanceof Button) {
 			logger.debug("Normal Button pressed.");
-			Button b = (Button) e.getSource();
-			// currently we do not support some buttons for linux...
-			if (Output.getOs() == Output.LINUX
-					&& (b.getKey().getKeycode().equals("\\WINDOWS\\") || b.getKey().getKeycode().equals("\\CONTEXT_MENU\\"))) {
-				statusPane.enqueueMessage("Button not supported by your OS", StatusPane.LEFT);
-			} else {
-				eIsButton(b);
-			}
+			outputMan.buttonPressed((Button) e.getSource(), profileMan.getActive());
+			// eIsButton((Button) e.getSource());
 		}
 		
 		if (e.getSource() instanceof ModeButton) {
@@ -298,13 +333,14 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 			if (Output.getOs() == Output.LINUX
 					&& (modeB.getModeKey().getKeycode().equals("\\WINDOWS\\") || modeB.getModeKey().getKeycode()
 							.equals("\\CONTEXT_MENU\\"))) {
-				statusPane.enqueueMessage("Button not supported by your OS", StatusPane.LEFT);
+				showStatusMessage("Button not supported by your OS");
 			} else {
 				if (modeB.isModesDisabled()) {
 					Button helpB = new Button(1, 1, 1, 1);
 					Key helpKey = ((ModeButton) e.getSource()).getModeKey().clone();
 					helpB.setKey(helpKey);
-					eIsButton(helpB);
+					outputMan.buttonPressed(helpB, profileMan.getActive());
+					// eIsButton(helpB);
 				} else {
 					modeB.push();
 				}
@@ -313,7 +349,9 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 		
 		if (e.getSource() instanceof MuteButton) {
 			logger.debug("MuteButton pressed.");
-			eIsMuteButton((MuteButton) e.getSource());
+			// TODO DanielAl review: I moved eIsMuteButton to output...
+			outputMan.muteButtonPressed((MuteButton) e.getSource(), profileMan.getActive());
+			// eIsMuteButton((MuteButton) e.getSource());
 		}
 		
 		if (e.getSource() instanceof DropDownList) {
@@ -363,7 +401,7 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 					profileMan.getActive().save();
 					ImportExportManager.exportProfiles(profileMan.getActive(), new File(pathToFile));
 					logger.debug("Profile exported");
-					statusPane.enqueueMessage("Profile exported", StatusPane.LEFT);
+					showStatusMessage("Profile exported");
 				} catch (IOException err1) {
 					logger.error("Unable to export profile " + pathToFile);
 				}
@@ -375,10 +413,10 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 				try {
 					words = ImportExportManager.importFromText(path.toString());
 				} catch (IOException err) {
-					statusPane.enqueueMessage("Could not load the text file. Please choose another one.", StatusPane.LEFT);
+					showStatusMessage("Could not load the text file. Please choose another one.");
 				}
 				profileMan.getActive().getTree().importFromHashMap(words);
-				statusPane.enqueueMessage("Text file included.", StatusPane.LEFT);
+				showStatusMessage("Text file included.");
 				break;
 			
 			// Extend Dictionary From File
@@ -386,10 +424,10 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 				try {
 					words = ImportExportManager.importFromFile(path.toString(), true);
 				} catch (IOException err) {
-					statusPane.enqueueMessage("Could not load the text file. Please choose another one.", StatusPane.LEFT);
+					showStatusMessage("Could not load the text file. Please choose another one.");
 				}
 				profileMan.getActive().getTree().importFromHashMap(words);
-				statusPane.enqueueMessage("Dictionary file included.", StatusPane.LEFT);
+				showStatusMessage("Dictionary file included.");
 
 				break;
 			
@@ -399,10 +437,9 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 				try {
 					pathToFile = StringHelper.addEnding(path.toString(), ".tree");
 					ImportExportManager.exportToFile(words, pathToFile);
-					statusPane.enqueueMessage("Dictionary file exported to " + pathToFile + ".", StatusPane.LEFT);
+					showStatusMessage("Dictionary file exported to " + pathToFile + ".");
 				} catch (IOException err) {
-					statusPane.enqueueMessage("Could not create the dictionary file. Please choose another path.",
-							StatusPane.LEFT);
+					showStatusMessage("Could not create the dictionary file. Please choose another path.");
 				}
 				break;
 		}
@@ -438,7 +475,7 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 				Date date = iCleanDlg.getDate();
 				int deleted = profileMan.getActive().getTree()
 						.autoCleaning(freq, date.getTime(), PriorityTree.BOTTOM_OR_OLDER);
-				statusPane.enqueueMessage("Dictionary cleaned (" + deleted + " deleted).", StatusPane.LEFT);
+				showStatusMessage("Dictionary cleaned (" + deleted + " deleted).");
 				break;
 		}
 	}
@@ -450,8 +487,17 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	 * @param button
 	 * @author DanielAl
 	 */
+	@Deprecated
 	private void eIsButton(Button button) {
 		Key key = (Key) button.getPressedKey();
+
+		// currently we do not support some buttons for linux...
+		if (Output.getOs() == Output.LINUX
+				&& (button.getKey().getKeycode().equals("\\WINDOWS\\") || button.getKey().getKeycode()
+						.equals("\\CONTEXT_MENU\\"))) {
+			showStatusMessage("Button not supported by your OS");
+			return;
+		}
 
 		// get all currently pressed Modekeys
 		ArrayList<ModeKey> pressedModeKeys = profileMan.getActive().getKbdLayout().getPressedModeKeys();
@@ -501,41 +547,6 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	
 	
 	/**
-	 * Switchs between the three different Mute modes...<br>
-	 * Modes are:<br>
-	 * - AUTO_COMPLETING - If activated, this prints a suggested Word behind the typed chars and mark them...
-	 * - AUTO_PROFILE_CHANGE - If activated, this changes the profiles based on the sourrounded context.
-	 * - TREE_EXPANDING - If activated, accepted words are saved in the dicitionary...
-	 * @param muteB
-	 * @author DanielAl
-	 */
-	private void eIsMuteButton(MuteButton muteB) {
-		muteB.push();
-		int type = muteB.getType();
-		switch (type) {
-			case MuteButton.AUTO_COMPLETING:
-				if (muteB.isActivated()) {
-					typedWord = "";
-					suggest = "";
-				}
-				profileMan.getActive().setAutoCompleting(muteB.isActivated());
-				break;
-			case MuteButton.AUTO_PROFILE_CHANGE:
-				profileMan.getActive().setAutoProfileChange(muteB.isActivated());
-				break;
-			case MuteButton.TREE_EXPANDING:
-				if (muteB.isActivated()) {
-					typedWord = "";
-					suggest = "";
-				}
-				profileMan.getActive().setTreeExpanding(muteB.isActivated());
-				break;
-		}
-		logger.debug("MuteButton pressed");
-	}
-	
-	
-	/**
 	 * Switches the profiles based on a Dropdownlist... <br>
 	 * 
 	 * @param currentDdl
@@ -566,6 +577,7 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	 * @param key
 	 * @author NicolaiO
 	 */
+	@Deprecated
 	private void keyIsCapsLock() {
 		logger.trace("CapsLock");
 		for (ModeKey mk : profileMan.getActive().getKbdLayout().getModeKeys()) {
@@ -578,7 +590,7 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 				break;
 			}
 		}
-		presenter.pack();
+		// presenter.pack();
 	}
 	
 
@@ -643,7 +655,7 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 		if (e.getSource() instanceof MuteButton) {
 			// show tooltip in statusbar
 			MuteButton pb = (MuteButton) e.getSource();
-			statusPane.enqueueMessage(pb.getMode().getTooltip(), StatusPane.RIGHT);
+			showTooltip(pb.getMode().getTooltip());
 		}
 	}
 	
@@ -651,7 +663,7 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	@Override
 	public void mouseExited(MouseEvent e) {
 		// delete tooltip in statusbar
-		statusPane.enqueueMessage("", StatusPane.RIGHT);
+		hideTooltip();
 	}
 	
 	
@@ -683,6 +695,14 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	}
 	
 	
+	/**
+	 * I would prefer to move the datapath to ProfileManager, so that ProfileManager is the only one that loads and saves
+	 * TODO ALL review
+	 * 
+	 * @return
+	 * @deprecated
+	 * @author NicolaiO
+	 */
 	public String getDatapath() {
 		return datapath;
 	}
@@ -698,26 +718,7 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	}
 	
 	
-	public String getSuggest() {
-		return suggest;
-	}
-	
-	
-	public void setSuggest(String newSuggest) {
-		suggest = newSuggest;
-	}
-	
-	
-	public String getTypedWord() {
-		return typedWord;
-	}
-	
-	
-	public void setTypedWord(String newTypedWord) {
-		typedWord = newTypedWord;
-	}
-	
-	
+	@Deprecated
 	public void clearWord() {
 		typedWord = "";
 		suggest = "";
