@@ -63,8 +63,6 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	private static final Logger	logger					= Logger.getLogger(Controller.class);
 	private static Controller		instance;
 	
-	private String						typedWord;
-	private String						suggest;
 	private String						datapath;
 	
 	private ProfileManager			profileMan;
@@ -103,7 +101,6 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 		}
 
 		outputMan = new OutputManager();
-		clearWord();
 
 		// This message is important! Otherwise, The StatusPane has a wrong height and the layout will be decreased
 		// meaning, it gets smaller with each start...
@@ -600,12 +597,5 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	
 	public boolean isReadyForActionEvents() {
 		return readyForActionEvents;
-	}
-	
-	
-	@Deprecated
-	public void clearWord() {
-		typedWord = "";
-		suggest = "";
 	}
 }
