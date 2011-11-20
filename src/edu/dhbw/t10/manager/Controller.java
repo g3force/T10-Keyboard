@@ -299,7 +299,6 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 		if (e.getSource() instanceof Button) {
 			logger.debug("Normal Button pressed.");
 			outputMan.buttonPressed((Button) e.getSource(), profileMan.getActive());
-			// eIsButton((Button) e.getSource());
 		}
 		
 		if (e.getSource() instanceof ModeButton) {
