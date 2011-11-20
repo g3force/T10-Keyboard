@@ -65,21 +65,41 @@
 		<key id="42" keycode="\U+00B9\">¹</key>
 		<key id="43" keycode="\U+00B2\">²</key>
 		<key id="44" keycode="\U+00B3\">³</key>
+		<key id="441" keycode="\U+00BC\">¼</key>
+		<key id="442" keycode="\U+00BD\">½</key>
+		<key id="443" keycode="\U+00AC\">¬</key>
 		<key id="45" keycode="\U+007B\">{</key>
 		<key id="46" keycode="\U+005B\">[</key>
 		<key id="47" keycode="\U+005D\">]</key>
 		<key id="48" keycode="\U+007D\">}</key>
 		<key id="49" keycode="\U+005C\">\</key>
+		<key id="491" keycode="\U+00B8\">¸</key>
 		
 		<key id="62" keycode="\U+002B\">+</key>
 		<key id="75" keycode="\U+002A\">*</key>
 		
 		<key id="76" keycode="\U+0040\">@</key>
+		<key id="761" keycode="\U+0142\">ł</key>
 		<key id="77" keycode="\U+20AC\">€</key>
+		<key id="771" keycode="\U+00B6\">¶</key>
+		<key id="772" keycode="\U+0167\">ŧ</key>
+		<key id="773" keycode="\U+2190\">←</key>
+		<key id="774" keycode="\U+2193\">↓</key>
+		<key id="775" keycode="\U+2192\">→</key>
+		<key id="776" keycode="\U+00F8\">ø</key>
+		<key id="777" keycode="\U+00FE\">þ</key>
 		<key id="78" keycode="\U+007E\">~</key>
 		
 		<key id="90" keycode="\U+0023\">#</key>
 		<key id="102" keycode="\U+0027\">'</key>
+		
+		<key id="1021" keycode="\U+00E6\">æ</key>
+		<key id="1022" keycode="\U+017F\">ſ</key>
+		<key id="1023" keycode="\U+00F0\">ð</key>
+		<key id="1024" keycode="\U+0111\">đ</key>
+		<key id="1025" keycode="\U+014B\">ŋ</key>
+		<key id="1026" keycode="\U+0127\">ħ</key>
+		<key id="1027" keycode="\U+2019\">’</key>
 		
 		<key id="103" keycode="\U+003C\">&lt;</key>
 		<key id="111" keycode="\U+002C\">,</key>
@@ -89,7 +109,18 @@
 		<key id="122" keycode="\U+003B\">;</key>
 		<key id="123" keycode="\U+003A\">:</key>
 		<key id="124" keycode="\U+005F\">_</key>
+		
 		<key id="125" keycode="\U+007C\">|</key>
+		<key id="1251" keycode="\U+00BB\">»</key>
+		<key id="1252" keycode="\U+00AB\">«</key>
+		<key id="1253" keycode="\U+00A2\">¢</key>
+		<key id="1254" keycode="\U+201E\">„</key>
+		<key id="1255" keycode="\U+201C\">“</key>
+		<key id="1256" keycode="\U+201D\">”</key>
+		<key id="1257" keycode="\U+00B5\">µ</key>
+		<key id="1258" keycode="\U+00B7\">·</key>
+		<key id="1259" keycode="\U+2026\">…</key>
+		<key id="1250" keycode="\U+2013\">–</key>
 	</keytype>
 	
 	<keytype name="char">
