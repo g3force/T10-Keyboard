@@ -79,8 +79,10 @@ public class Output {
 			os = LINUX;
 		else if (osName.startsWith("Windows"))
 			os = WINDOWS;
-		else if (osName.startsWith("Mac"))
+		else if (osName.startsWith("Mac")) {
 			os = MAC;
+			throw new UnknownOSException("Mac is not supported yet");
+		}
 		else {
 			os = UNKNOWN;
 			throw new UnknownOSException("Unsupported Operating System: " + osName);
@@ -238,7 +240,7 @@ public class Output {
 	/**
 	 * Converts a Stringcode into a Constant of the KeyEvent class via Reflection.<br>
 	 * These constants could be used for sending Keys.<br>
-	 * The type parameter is for diefferentiate a number to be a normal Keynumber oder a NUMPAD Number.<br>
+	 * The type parameter is for differentiate a number to be a normal Keynumber oder a NUMPAD Number.<br>
 	 * <br>
 	 * 
 	 * Exceptions SecurityException, NoSuchFieldException,IllegalArgumentException, IllegalAccessException which are
