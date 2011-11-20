@@ -311,13 +311,13 @@ public class ProfileManager {
 	
 	
 	/**
-	 * Serializing Profile-Arraylist
+	 * Serializing Profile-Arraylist.
+	 * Consider to only save current profile, which will automatically serialize the profile
 	 * 
-	 * @deprecated do we really want to serialize all profiles?!
-	 *             better: always only save current profile...
 	 * @author SebastianN
 	 */
-	public void serializeProfiles() {
+	@SuppressWarnings("unused")
+	private void serializeProfiles() {
 		for (int i = 0; i < profiles.size(); i++) {
 			Profile cProfile = profiles.get(i);
 			if (cProfile.getPathToProfile() == null || cProfile.getPathToProfile().isEmpty())
