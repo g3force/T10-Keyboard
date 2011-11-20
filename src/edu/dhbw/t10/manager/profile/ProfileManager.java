@@ -266,6 +266,10 @@ public class ProfileManager {
 		deleteFile(profile.getPathToLayoutFile());
 		deleteFile(profile.getPathToProfile());
 		deleteFile(profile.getPathToTree());
+		File profileDir = new File(profile.getPathToProfile());
+		if (profileDir.getParentFile().isDirectory()) {
+			deleteFile(profileDir.getParent());
+		}
 		getActive().loadDDLs(profiles);
 	}
 	
@@ -280,7 +284,7 @@ public class ProfileManager {
 		File f;
 		f = new File(path);
 		if (!f.delete())
-			logger.error("File " + path + " could not be deleted.");
+			logger.error(path + " could not be deleted.");
 	}
 
 	
