@@ -18,7 +18,6 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.zip.ZipException;
@@ -37,7 +36,6 @@ import edu.dhbw.t10.type.keyboard.KeyboardLayout;
 import edu.dhbw.t10.type.keyboard.key.Button;
 import edu.dhbw.t10.type.keyboard.key.Key;
 import edu.dhbw.t10.type.keyboard.key.ModeButton;
-import edu.dhbw.t10.type.keyboard.key.ModeKey;
 import edu.dhbw.t10.type.keyboard.key.MuteButton;
 import edu.dhbw.t10.type.profile.Profile;
 import edu.dhbw.t10.type.tree.PriorityTree;
@@ -123,23 +121,6 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
-	
-	
-	/**
-	 * is called whenever a word shall be accepted
-	 * 
-	 * @param word
-	 * @author DirkK
-	 */
-	@Deprecated
-	private void acceptWord(String word) {
-		boolean success = profileMan.getActive().acceptWord(word);
-		if (success) {
-			showStatusMessage("Word inserted: " + word);
-		}
-		clearWord();
-		logger.trace("Word accepted");
-	}
 	
 	
 	/**
@@ -334,6 +315,8 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 				showStatusMessage("Button not supported by your OS");
 			} else {
 				if (modeB.isModesDisabled()) {
+					// The helpB is created, because a Modebuttoon should with a right click treated as a normal button. So a
+					// new Button with the Key of the ModeButton is created.
 					Button helpB = new Button(1, 1, 1, 1);
 					Key helpKey = ((ModeButton) e.getSource()).getModeKey().clone();
 					helpB.setKey(helpKey);
@@ -347,9 +330,7 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 		
 		if (e.getSource() instanceof MuteButton) {
 			logger.debug("MuteButton pressed.");
-			// TODO DanielAl review: I moved eIsMuteButton to output...
 			outputMan.muteButtonPressed((MuteButton) e.getSource(), profileMan.getActive());
-			// eIsMuteButton((MuteButton) e.getSource());
 		}
 		
 		if (e.getSource() instanceof DropDownList) {
@@ -446,7 +427,7 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	
 	/**
 	 * 
-	 * TODO FelixP, add comment!
+	 * FIXME FelixP, add comment!
 	 * 
 	 * @param menuItem
 	 * @param o
@@ -480,71 +461,6 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	
 	
 	/**
-	 * Do the logic for a button event. Switch between different types, specific Keys and a Key Combination...
-	 * 
-	 * @param button
-	 * @author DanielAl
-	 */
-	@Deprecated
-	private void eIsButton(Button button) {
-		Key key = (Key) button.getPressedKey();
-
-		// currently we do not support some buttons for linux...
-		if (Output.getOs() == Output.LINUX
-				&& (button.getKey().getKeycode().equals("\\WINDOWS\\") || button.getKey().getKeycode()
-						.equals("\\CONTEXT_MENU\\"))) {
-			showStatusMessage("Button not supported by your OS");
-			return;
-		}
-
-		// get all currently pressed Modekeys
-		ArrayList<ModeKey> pressedModeKeys = profileMan.getActive().getKbdLayout().getPressedModeKeys();
-		
-		if (key.getKeycode().equals("\\CAPS_LOCK\\")) {
-			this.keyIsCapsLock();
-		} else {
-			// Print the key iff zero or one ModeKeys is pressed
-			if (pressedModeKeys.size() - button.getActiveModes().size() < 1) {
-				if (key.isAccept()) {
-					outputMan.keyIsAccept(key, typedWord, suggest);
-					acceptWord(suggest);
-				} else if (key.getType() == Key.CHAR) {
-					typedWord = typedWord + key.getName();
-					suggest = profileMan.getActive().getWordSuggest(typedWord);
-					outputMan.keyIsChar(key, typedWord, suggest);
-				} else if (key.getKeycode().equals("\\BACK_SPACE\\")) {
-					if (typedWord.length() > 0)
-						typedWord = typedWord.substring(0, typedWord.length() - 1);
-					suggest = profileMan.getActive().getWordSuggest(typedWord);
-					outputMan.keyIsBackspace(typedWord, suggest);
-				} else if (key.getKeycode().equals("\\DELETE\\")) {
-					outputMan.printKey(key);
-					suggest = typedWord;
-				} else if (key.getType() == Key.CONTROL || key.getType() == Key.UNICODE) {
-					outputMan.keyIsControlOrUnicode(key, typedWord, suggest);
-					if (key.getType() == Key.UNICODE
-							|| (key.getKeycode().equals("\\SPACE\\") || key.getKeycode().equals("\\ENTER\\"))) {
-						acceptWord(typedWord);
-					} else if (key.getType() == Key.CONTROL) {
-						clearWord();
-					}
-				}
-				logger.debug("Key pressed: " + key.toString());
-			} else {
-				// print the key combi else
-				logger.debug("Keycombi will be executed. Hint: " + pressedModeKeys.size() + "-"
-						+ button.getActiveModes().size() + "<1");
-				logger.trace(pressedModeKeys);
-				outputMan.printCombi(pressedModeKeys, button.getKey());
-			}
-		}
-
-		// unset all ModeButtons, that are in PRESSED state
-		profileMan.getActive().getKbdLayout().unsetPressedModes();
-	}
-	
-	
-	/**
 	 * Switches the profiles based on a Dropdownlist... <br>
 	 * 
 	 * @param currentDdl
@@ -563,34 +479,6 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	}
 	
 	
-	// --------------------------------------------------------------------------
-	// --- keyIs Actions --------------------------------------------------------
-	// --------------------------------------------------------------------------
-	
-
-	/**
-	 * Run this with a caps_lock key to trigger all shift buttons.
-	 * If Shift state is DEFAULT, it will be changed to HOLD, else to DEFAULT
-	 * 
-	 * @param key
-	 * @author NicolaiO
-	 */
-	@Deprecated
-	private void keyIsCapsLock() {
-		logger.trace("CapsLock");
-		for (ModeKey mk : profileMan.getActive().getKbdLayout().getModeKeys()) {
-			if (mk.getKeycode().equals("\\SHIFT\\")) {
-				if (mk.getState() == ModeKey.DEFAULT) {
-					mk.setState(ModeKey.HOLD);
-				} else {
-					mk.setState(ModeKey.DEFAULT);
-				}
-				break;
-			}
-		}
-	}
-	
-
 	// --------------------------------------------------------------------------
 	// --- Window Events --------------------------------------------------------
 	// --------------------------------------------------------------------------
