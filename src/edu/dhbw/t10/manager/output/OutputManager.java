@@ -226,7 +226,7 @@ public class OutputManager {
 	 * @param key
 	 * @author DanielAl
 	 */
-	public void keyIsChar(Key key, String typedWord, String suggest) {
+	public void keyIsChar(Key key) {
 		printKey(key);
 		printSuggest(suggest, typedWord);
 	}
@@ -237,21 +237,24 @@ public class OutputManager {
 	 * If there is a typedWord delete the Mark if exists (delMark), delete the last typed char and print a new suggest.<br>
 	 * If there is no typedWord send a BackSpace.
 	 * 
-	 * FIXME DanielAl Bug mit letztten char löschen...
 	 * @author DanielAl
 	 */
-	public void keyIsBackspace(String typedWord, String suggest) {
-		if (typedWord.length() + 1 > 0) {
-			// Difference between suggest and typedWord plus 1, because typedWord was decreased before...
-			delMark(suggest.length() - typedWord.length() + 1);
+	
+	public void keyIsBackspace(String oldTypedWord, String oldSuggest) {
+		if (oldTypedWord.length() > 0) {
+			// If oldSuggest not equal to oldTypedWord, it must be longer and so it is marked. Then this mark has to be
+			// deleted first.
+			if (!oldTypedWord.equals(oldSuggest))
+				delMark(oldSuggest.length() - oldTypedWord.length());
 			deleteChar(1);
 			printSuggest(suggest, typedWord);
 		} else {
+			// No OldTypedWord exists so only the left char of the cursor is deleted
 			deleteChar(1);
 		}
 	}
-
 	
+
 	/**
 	 * Prints a Control or Unicode Key, <br>
 	 * if no DELETE or BACK_SPACE, these are special Keys and handled with extra methods...
@@ -259,7 +262,7 @@ public class OutputManager {
 	 * @param key
 	 * @author DanielAl
 	 */
-	public void keyIsControlOrUnicode(Key key, String typedWord, String suggest) {
+	public void keyIsControlOrUnicode(Key key) {
 		if (typedWord.length() < suggest.length()) {
 			delMark(suggest.length() - typedWord.length());
 		}
@@ -276,8 +279,8 @@ public class OutputManager {
 	 * Switchs between the three different Mute modes...<br>
 	 * Modes are:<br>
 	 * - AUTO_COMPLETING - If activated, this prints a suggested Word behind the typed chars and mark them...
-	 * - AUTO_PROFILE_CHANGE - If activated, this changes the profiles based on the sourrounded context.
-	 * - TREE_EXPANDING - If activated, accepted words are saved in the dicitionary...
+	 * - AUTO_PROFILE_CHANGE - If activated, this changes the profiles based on the surrounded context.
+	 * - TREE_EXPANDING - If activated, accepted words are saved in the dictionary...
 	 * @param muteB
 	 * @author DanielAl
 	 */
@@ -287,8 +290,7 @@ public class OutputManager {
 		switch (type) {
 			case MuteButton.AUTO_COMPLETING:
 				if (muteB.isActivated()) {
-					typedWord = "";
-					suggest = "";
+					clearWord();
 				}
 				activeProfile.setAutoCompleting(muteB.isActivated());
 				break;
@@ -297,8 +299,7 @@ public class OutputManager {
 				break;
 			case MuteButton.TREE_EXPANDING:
 				if (muteB.isActivated()) {
-					typedWord = "";
-					suggest = "";
+					clearWord();
 				}
 				activeProfile.setTreeExpanding(muteB.isActivated());
 				break;
@@ -338,17 +339,22 @@ public class OutputManager {
 				} else if (key.getType() == Key.CHAR) {
 					typedWord = typedWord + key.getName();
 					suggest = activeProfile.getWordSuggest(typedWord);
-					keyIsChar(key, typedWord, suggest);
+					keyIsChar(key);
 				} else if (key.getKeycode().equals("\\BACK_SPACE\\")) {
-					if (typedWord.length() > 0)
+					if (typedWord.length() > 0) {
+						String oldTypedWord = typedWord;
+						String oldSuggest = suggest;
 						typedWord = typedWord.substring(0, typedWord.length() - 1);
-					suggest = activeProfile.getWordSuggest(typedWord);
-					keyIsBackspace(typedWord, suggest);
+						suggest = activeProfile.getWordSuggest(typedWord);
+						keyIsBackspace(oldTypedWord, oldSuggest);
+					} else {
+						keyIsBackspace(typedWord, suggest);
+					}
 				} else if (key.getKeycode().equals("\\DELETE\\")) {
 					printKey(key);
 					suggest = typedWord;
 				} else if (key.getType() == Key.CONTROL || key.getType() == Key.UNICODE) {
-					keyIsControlOrUnicode(key, typedWord, suggest);
+					keyIsControlOrUnicode(key);
 					if (key.getType() == Key.UNICODE
 							|| (key.getKeycode().equals("\\SPACE\\") || key.getKeycode().equals("\\ENTER\\"))) {
 						acceptWord(typedWord, activeProfile);
@@ -358,9 +364,9 @@ public class OutputManager {
 				}
 				logger.debug("Key pressed: " + key.toString());
 			} else {
-				// print the key combi else
+				// print the key combi else (-> pressedModeKeys.size() - button.getActiveModes().size() >= 1
 				logger.debug("Keycombi will be executed. Hint: " + pressedModeKeys.size() + "-"
-						+ button.getActiveModes().size() + "<1");
+						+ button.getActiveModes().size() + " >= 1");
 				logger.trace(pressedModeKeys);
 				printCombi(pressedModeKeys, button.getKey());
 			}
@@ -371,11 +377,15 @@ public class OutputManager {
 	}
 	
 	
+	/**
+	 * Sets the typedWord and the suggest to an empty String. So you can begin again with a new word.
+	 * 
+	 * @author DanielAl
+	 */
 	public void clearWord() {
 		typedWord = "";
 		suggest = "";
 	}
-	
 	
 	/**
 	 * is called whenever a word shall be accepted
