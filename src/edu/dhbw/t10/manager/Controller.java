@@ -361,7 +361,7 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 		// import profile
 			case iImport:
 				try {
-					ImportExportManager.importProfiles(path);
+					ImportExportManager.importProfiles(datapath, path);
 				} catch (ZipException err1) {
 					logger.error("unable to extract file " + path.toString());
 				} catch (IOException err1) {
