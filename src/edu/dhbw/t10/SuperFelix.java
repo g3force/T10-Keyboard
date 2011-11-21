@@ -30,12 +30,18 @@ public class SuperFelix {
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
 	private static final Logger	logger	= Logger.getLogger(SuperFelix.class);
-	public static final String		VERSION	= "V0.8";
-	// Revision of Git Repository, after commit, you have to manually change it: Look in file .git/refs/heads/master
-	// idea: automatic, e.g. with git shortlog | grep -E '^[ ]+\w+' | wc -l
-	public static final String		REV		= "602";
+	/**
+	 * VERSION and REV are used and manipulated by a script! Please be careful, when editing anything...
+	 * VERSION shouldn't start with a V... it can be added in the output.
+	 * REV will be filled by a script, when generating the deb package, so do not change this value!
+	 * 
+	 * For information:
+	 * Revision of Git Repository: Look in file .git/refs/heads/master
+	 * automatic: git shortlog | grep -E '^[ ]+\w+' | wc -l
+	 */
+	public static final String		VERSION	= "0.8";
+	public static final String		REV 		= "604";
 
-	
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
 	// --------------------------------------------------------------------------
