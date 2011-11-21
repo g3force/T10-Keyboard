@@ -273,8 +273,10 @@ public class ImportExportManager {
 	 * @throws IOException
 	 * @author DirkK
 	 */
-	public static void importProfiles(File zipFile) throws ZipException, IOException {
+	public static void importProfiles(String path, File zipFile) throws ZipException, IOException {
 		logger.debug("Extracting zip file " + zipFile.toString());
+
+		// Finding possilbe Profile Name
 		String profileName = zipFile.getName();
 		profileName = profileName.replace(".zip", "");
 		int counter = 0;
@@ -286,17 +288,24 @@ public class ImportExportManager {
 				profileName = profileName.substring(0, profileName.length() - 1) + counter;
 		}
 		logger.debug("Profile " + profileName + " created");
+		
+		// Reading the zip file
 		BufferedOutputStream dest = null;
 		BufferedInputStream is = null;
 		ZipEntry entry;
 		ZipFile zipfile = new ZipFile(zipFile);
 		Enumeration<? extends ZipEntry> e = zipfile.entries();
+		
+		// Reading one element after the other in the zip file
 		while (e.hasMoreElements()) {
 			entry = (ZipEntry) e.nextElement();
 			is = new BufferedInputStream(zipfile.getInputStream(entry));
 			int count;
 			byte data[] = new byte[BUFFER];
-			String file = Controller.getInstance().getDatapath() + "/profiles/" + profileName
+			
+			// ignoring the names of the files, renaming them to [profileName].(tree|char|profile)
+			// save this files to [datapath]/profiles/
+			String file = path + "/profiles/" + profileName
 					+ entry.getName().substring(entry.getName().lastIndexOf("."));
 			FileOutputStream fos = new FileOutputStream(file);
 			logger.debug(file + " extracted");
@@ -308,6 +317,9 @@ public class ImportExportManager {
 			dest.close();
 			is.close();
 		}
+		
+		// creating a profile with the name profileName
+		// all needed files for this profile exist already
 		Controller.getInstance().addNewProfile(profileName);
 	}
 	
