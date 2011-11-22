@@ -16,10 +16,11 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map.Entry;
+import java.util.zip.ZipException;
 
 import org.apache.log4j.Logger;
 
-import edu.dhbw.t10.manager.Controller;
 import edu.dhbw.t10.type.profile.Profile;
 
 
@@ -33,6 +34,7 @@ public class ProfileManager {
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
 	private static final Logger	logger					= Logger.getLogger(ProfileManager.class);
+	private String						datapath;
 	private String						configFile				= "t10keyboard.conf";
 	private ArrayList<Profile>		profiles					= new ArrayList<Profile>();
 	private ArrayList<String>		profilePathes			= new ArrayList<String>();
@@ -54,6 +56,12 @@ public class ProfileManager {
 	 */
 	public ProfileManager() {
 		Profile newActiveProfile;
+		datapath = System.getProperty("user.home") + "/.t10keyboard";
+		// works for Windows and Linux... so the data is stored in the systems userdata folder...
+		File tf = new File(datapath);
+		if (!tf.exists()) {
+			tf.mkdirs();
+		}
 		logger.debug("initializing...");
 		readConfig(); // fills activeProfileName and profilePathes with the data from the config file
 		logger.debug("configfile: activeProfileName=" + defaultActiveProfile + " profiles=" + profilePathes.size());
@@ -90,7 +98,7 @@ public class ProfileManager {
 	 */
 	private void readConfig() {
 		try {
-			File confFile = new File(Controller.getInstance().getDatapath() + "/" + configFile);
+			File confFile = new File(datapath + "/" + configFile);
 			if (confFile.exists()) {
 				FileReader fr = new FileReader(confFile);
 				BufferedReader br = new BufferedReader(fr);
@@ -179,7 +187,7 @@ public class ProfileManager {
 	 */
 	public void saveConfig() {
 		try {
-			File confFile = new File(Controller.getInstance().getDatapath() + "/" + configFile);
+			File confFile = new File(datapath + "/" + configFile);
 			FileWriter fw = new FileWriter(confFile);
 			BufferedWriter bw = new BufferedWriter(fw);
 			
@@ -190,11 +198,11 @@ public class ProfileManager {
 				addEntry(bw, "ActiveProfile=" + activeProfile.getName());
 			
 			for (int i = 0; i < profiles.size(); i++) {
-				if (profiles.get(i).getPathToProfile().isEmpty()) {
+				if (profiles.get(i).getPaths().get("profile").isEmpty()) {
 					logger.error("Profile " + profiles.get(i).getName() + " has no path to profile");
 					continue;
 				}
-				addEntry(bw, "ProfilePath=" + profiles.get(i).getPathToProfile());
+				addEntry(bw, "ProfilePath=" + profiles.get(i).getPaths().get("profile"));
 			}
 			logger.info("Config file saved");
 			bw.close();
@@ -222,7 +230,7 @@ public class ProfileManager {
 		if (newProfile != null) {
 			logger.warn("Profile already exists.");
 		} else {
-			newProfile = new Profile(profileName);
+			newProfile = new Profile(profileName, datapath);
 			profiles.add(newProfile);
 		}
 		return newProfile;
@@ -248,6 +256,31 @@ public class ProfileManager {
 	}
 	
 	
+	public void importProfiles(File zipFile) throws ZipException, IOException {
+		// Finding possible Profile Name
+		String profileName = zipFile.getName();
+		profileName = profileName.replace(".zip", "");
+		int counter = 0;
+		while (existProfile(profileName)) {
+			counter++;
+			if (counter == 1)
+				profileName += counter;
+			else
+				profileName = profileName.substring(0, profileName.length() - 1) + counter;
+		}
+		
+		// creating the profile
+		Profile prof = createProfile(profileName);
+		logger.debug("Profile " + profileName + " created");
+		
+		// exporting the files form the zip archive to the pathes given in the profile
+		ImportExportManager.importProfiles(zipFile, prof);
+		logger.debug("Files from the zip File " + zipFile + " extracted");
+		
+		setActive(prof);
+	}
+
+	
 	/**
 	 * 
 	 * Deletes a profile depending on the ID.<br/>
@@ -262,14 +295,17 @@ public class ProfileManager {
 			return;
 		}
 		profiles.remove(profile);
-		deleteFile(profile.getPathToAllowedChars());
-		deleteFile(profile.getPathToLayoutFile());
-		deleteFile(profile.getPathToProfile());
-		deleteFile(profile.getPathToTree());
-		File profileDir = new File(profile.getPathToProfile());
-		if (profileDir.getParentFile().isDirectory()) {
-			deleteFile(profileDir.getParent());
+		for (Entry<String, String> file : profile.getPaths().entrySet()) {
+			deleteFile(file.getValue());
 		}
+		// deleteFile(profile.getPathToAllowedChars());
+		// deleteFile(profile.getPathToLayoutFile());
+		// deleteFile(profile.getPathToProfile());
+		// deleteFile(profile.getPathToTree());
+		// File profileDir = new File(profile.getPathToProfile());
+		// if (profileDir.getParentFile().isDirectory()) {
+		// deleteFile(profileDir.getParent());
+		// }
 		getActive().loadDDLs(profiles);
 	}
 	
@@ -311,28 +347,6 @@ public class ProfileManager {
 		activeProfile.load();
 		activeProfile.loadDDLs(profiles);
 		logger.info("Profile now active: " + getActive());
-	}
-	
-	
-	/**
-	 * Serializing Profile-Arraylist.
-	 * Consider to only save current profile, which will automatically serialize the profile
-	 * 
-	 * @author SebastianN
-	 */
-	@SuppressWarnings("unused")
-	private void serializeProfiles() {
-		for (int i = 0; i < profiles.size(); i++) {
-			Profile cProfile = profiles.get(i);
-			if (cProfile.getPathToProfile() == null || cProfile.getPathToProfile().isEmpty())
-				continue;
-			logger.info("Serializing Profile " + cProfile.getName() + " to " + cProfile.getPathToProfile());
-			try {
-				Serializer.serialize(cProfile, cProfile.getPathToProfile());
-			} catch (IOException io) {
-				logger.error("Not able to serialize Profiles, IOException: " + io.toString());
-			}
-		}
 	}
 	
 	

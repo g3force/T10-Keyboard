@@ -31,7 +31,6 @@ import java.util.zip.ZipOutputStream;
 import org.apache.log4j.Logger;
 
 import edu.dhbw.t10.helper.StringHelper;
-import edu.dhbw.t10.manager.Controller;
 import edu.dhbw.t10.type.profile.Profile;
 
 
@@ -230,30 +229,30 @@ public class ImportExportManager {
 	 * @author DirkK
 	 */
 	public static void exportProfiles(Profile prof, File folder) throws IOException {
-		logger.debug("Exporting profile " + prof.getName());
+		logger.debug("Exporting profile " + folder.getName());
 		BufferedInputStream origin = null;
 		String zipFile = folder.toString();
 		logger.debug("Exporting to " + zipFile);
 		FileOutputStream dest = new FileOutputStream(zipFile);
 		ZipOutputStream out = new ZipOutputStream(new BufferedOutputStream(dest));
 		byte data[] = new byte[BUFFER];
-		// get a list of files from current directory
-		File[] files = new File[3];
-		files[0] = new File(prof.getPathToTree());
-		files[1] = new File(prof.getPathToAllowedChars());
-		files[2] = new File(prof.getPathToLayoutFile());
 		
-		for (int i = 0; i < files.length; i++) {
-			logger.debug("Writing to zip file: " + files[i]);
-			FileInputStream fi = new FileInputStream(files[i]);
-			origin = new BufferedInputStream(fi, BUFFER);
-			ZipEntry entry = new ZipEntry(files[i].getName().toString());
-			out.putNextEntry(entry);
-			int count;
-			while ((count = origin.read(data, 0, BUFFER)) != -1) {
-				out.write(data, 0, count);
+		for (Entry<String, String> fileS : prof.getPaths().entrySet()) {
+			File file = new File(fileS.getValue());
+			if (file.exists()) {
+				logger.debug("Writing to zip file: " + file);
+				FileInputStream fi = new FileInputStream(file);
+				origin = new BufferedInputStream(fi, BUFFER);
+				ZipEntry entry = new ZipEntry(file.getName().toString());
+				out.putNextEntry(entry);
+				int count;
+				while ((count = origin.read(data, 0, BUFFER)) != -1) {
+					out.write(data, 0, count);
+				}
+				origin.close();
+			} else {
+				logger.warn("Could not writ to zip file: " + file + ". Will be ignored");
 			}
-			origin.close();
 		}
 		out.close();
 	}
@@ -273,22 +272,9 @@ public class ImportExportManager {
 	 * @throws IOException
 	 * @author DirkK
 	 */
-	public static void importProfiles(String path, File zipFile) throws ZipException, IOException {
+	public static void importProfiles(File zipFile, Profile prof) throws ZipException, IOException {
 		logger.debug("Extracting zip file " + zipFile.toString());
 
-		// Finding possilbe Profile Name
-		String profileName = zipFile.getName();
-		profileName = profileName.replace(".zip", "");
-		int counter = 0;
-		while (Controller.getInstance().existProfile(profileName)) {
-			counter++;
-			if (counter == 1)
-				profileName += counter;
-			else
-				profileName = profileName.substring(0, profileName.length() - 1) + counter;
-		}
-		logger.debug("Profile " + profileName + " created");
-		
 		// Reading the zip file
 		BufferedOutputStream dest = null;
 		BufferedInputStream is = null;
@@ -305,10 +291,8 @@ public class ImportExportManager {
 			
 			// ignoring the names of the files, renaming them to [profileName].(tree|char|profile)
 			// save this files to [datapath]/profiles/
-			String file = path + "/profiles/" + profileName
-					+ entry.getName().substring(entry.getName().lastIndexOf("."));
+			String file = prof.getPaths().get(entry.getName().substring(entry.getName().lastIndexOf(".") + 1));
 			FileOutputStream fos = new FileOutputStream(file);
-			logger.debug(file + " extracted");
 			dest = new BufferedOutputStream(fos, BUFFER);
 			while ((count = is.read(data, 0, BUFFER)) != -1) {
 				dest.write(data, 0, count);
@@ -317,10 +301,6 @@ public class ImportExportManager {
 			dest.close();
 			is.close();
 		}
-		
-		// creating a profile with the name profileName
-		// all needed files for this profile exist already
-		Controller.getInstance().addNewProfile(profileName);
 	}
 	
 	
