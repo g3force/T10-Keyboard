@@ -63,7 +63,7 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	private static final Logger	logger					= Logger.getLogger(Controller.class);
 	private static Controller		instance;
 	
-	private String						datapath;
+
 	
 	private ProfileManager			profileMan;
 	private OutputManager			outputMan;
@@ -92,13 +92,6 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 		mainPanel = new MainPanel();
 		statusPane = new StatusPane();
 		presenter = new Presenter(mainPanel, statusPane);
-
-		// works for Windows and Linux... so the data is stored in the systems userdata folder...
-		datapath = System.getProperty("user.home") + "/.t10keyboard";
-		File tf = new File(datapath);
-		if (!tf.exists()) {
-			tf.mkdirs();
-		}
 
 		outputMan = new OutputManager();
 
@@ -210,6 +203,8 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	/**
 	 * Change profile. This does not only <b>set</b> the active profile, but also reloads the GUI!
 	 * Do not use setActive of ProfileManager alone...
+	 * 
+	 * TODO NicolaiO move the content of this method to Profile Manager (DirkK)
 	 * 
 	 * @param profile
 	 * @author NicolaiO
@@ -361,7 +356,7 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 		// import profile
 			case iImport:
 				try {
-					ImportExportManager.importProfiles(datapath, path);
+					profileMan.importProfiles(path);
 				} catch (ZipException err1) {
 					logger.error("unable to extract file " + path.toString());
 				} catch (IOException err1) {
@@ -573,24 +568,6 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 			instance = new Controller();
 		}
 		return instance;
-	}
-	
-	
-	/**
-	 * I would prefer to move the datapath to ProfileManager, so that ProfileManager is the only one that loads and saves
-	 * TODO ALL review
-	 * 
-	 * @return
-	 * @deprecated
-	 * @author NicolaiO
-	 */
-	public String getDatapath() {
-		return datapath;
-	}
-	
-	
-	public void setDatapath(String datapath) {
-		this.datapath = datapath;
 	}
 	
 	
