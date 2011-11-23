@@ -38,7 +38,7 @@ public class ProfileManager {
 	private ArrayList<String>		profilePathes			= new ArrayList<String>();
 	private Profile					activeProfile;
 	private String						defaultActiveProfile	= "default";
-	
+	private String						datapath;
 	
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
@@ -55,7 +55,9 @@ public class ProfileManager {
 	public ProfileManager() {
 		Profile newActiveProfile;
 		logger.debug("initializing...");
-		readConfig(); // fills activeProfileName and profilePathes with the data from the config file
+		readConfig(Controller.getInstance().getDatapath() + "/" + configFile); // fills activeProfileName and
+																										// profilePathes with the data from the
+																										// config file
 		logger.debug("configfile: activeProfileName=" + defaultActiveProfile + " profiles=" + profilePathes.size());
 		loadSerializedProfiles(); // deserializes all profiles, fills profiles
 		// if no profiles were loaded, create a new one
@@ -88,9 +90,9 @@ public class ProfileManager {
 	 * 
 	 * @author SebastianN
 	 */
-	private void readConfig() {
+	private void readConfig(String path) {
 		try {
-			File confFile = new File(Controller.getInstance().getDatapath() + "/" + configFile);
+			File confFile = new File(path);
 			if (confFile.exists()) {
 				FileReader fr = new FileReader(confFile);
 				BufferedReader br = new BufferedReader(fr);
@@ -399,4 +401,17 @@ public class ProfileManager {
 	public Profile getActive() {
 		return activeProfile;
 	}
+	
+	
+	/**
+	 * TODO ALL This method should be removed, because only ProfileManager should be able to save anything!
+	 * 
+	 * @return
+	 * @deprecated
+	 * @author NicolaiO
+	 */
+	public String getDatapath() {
+		return datapath;
+	}
+	
 }
