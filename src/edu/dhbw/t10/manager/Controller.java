@@ -63,8 +63,6 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	private static final Logger	logger					= Logger.getLogger(Controller.class);
 	private static Controller		instance;
 	
-	private String						datapath;
-	
 	private ProfileManager			profileMan;
 	private OutputManager			outputMan;
 	private MainPanel					mainPanel;
@@ -361,7 +359,7 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 		// import profile
 			case iImport:
 				try {
-					ImportExportManager.importProfiles(datapath, path);
+					ImportExportManager.importProfiles(profileMan., path);
 				} catch (ZipException err1) {
 					logger.error("unable to extract file " + path.toString());
 				} catch (IOException err1) {
@@ -573,24 +571,6 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 			instance = new Controller();
 		}
 		return instance;
-	}
-	
-	
-	/**
-	 * I would prefer to move the datapath to ProfileManager, so that ProfileManager is the only one that loads and saves
-	 * TODO ALL review
-	 * 
-	 * @return
-	 * @deprecated
-	 * @author NicolaiO
-	 */
-	public String getDatapath() {
-		return datapath;
-	}
-	
-	
-	public void setDatapath(String datapath) {
-		this.datapath = datapath;
 	}
 	
 	
