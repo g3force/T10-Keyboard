@@ -91,13 +91,6 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 		statusPane = new StatusPane();
 		presenter = new Presenter(mainPanel, statusPane);
 
-		// works for Windows and Linux... so the data is stored in the systems userdata folder...
-		datapath = System.getProperty("user.home") + "/.t10keyboard";
-		File tf = new File(datapath);
-		if (!tf.exists()) {
-			tf.mkdirs();
-		}
-
 		outputMan = new OutputManager();
 
 		// This message is important! Otherwise, The StatusPane has a wrong height and the layout will be decreased
@@ -208,6 +201,8 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	/**
 	 * Change profile. This does not only <b>set</b> the active profile, but also reloads the GUI!
 	 * Do not use setActive of ProfileManager alone...
+	 * 
+	 * TODO NicolaiO move the content of this method to Profile Manager (DirkK)
 	 * 
 	 * @param profile
 	 * @author NicolaiO
@@ -359,7 +354,7 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 		// import profile
 			case iImport:
 				try {
-					ImportExportManager.importProfiles(profileMan., path);
+					profileMan.importProfiles(path);
 				} catch (ZipException err1) {
 					logger.error("unable to extract file " + path.toString());
 				} catch (IOException err1) {
