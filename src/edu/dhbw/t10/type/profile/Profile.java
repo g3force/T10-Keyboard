@@ -15,11 +15,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.apache.log4j.Logger;
 
 import edu.dhbw.t10.helper.StringHelper;
-import edu.dhbw.t10.manager.Controller;
 import edu.dhbw.t10.manager.keyboard.KeyboardLayoutLoader;
 import edu.dhbw.t10.manager.keyboard.KeyboardLayoutSaver;
 import edu.dhbw.t10.manager.keyboard.KeymapLoader;
@@ -45,10 +45,11 @@ public class Profile implements Serializable {
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
 	private String							name;
-	private String							pathToTree;
-	private String							pathToProfile;
-	private String							pathToAllowedChars;
-	private String							pathToLayoutFile;
+	// private String pathToTree;
+	// private String pathToProfile;
+	// private String pathToAllowedChars;
+	// private String pathToLayoutFile;
+	private HashMap<String, String>	paths;
 	// private String pathToKeymapFile;
 	private transient InputStream		defaultLayoutXML;
 	private transient InputStream		defaultKeymapXML;
@@ -75,9 +76,9 @@ public class Profile implements Serializable {
 	 * @param pName - Name of the new profile
 	 * @author SebastianN
 	 */
-	public Profile(String pName) {
+	public Profile(String pName, String paths) {
 		name = pName;
-		init();
+		init(paths);
 		save();
 	}
 	
@@ -88,8 +89,7 @@ public class Profile implements Serializable {
 	 * 
 	 * @author SebastianN
 	 */
-	private void init() {
-		String datapath = Controller.getInstance().getDatapath();
+	private void init(String datapath) {
 		File file = new File(datapath + "/profiles");
 		if (!file.isDirectory()) {
 			file.mkdir();
@@ -98,10 +98,11 @@ public class Profile implements Serializable {
 		if (!profileDir.isDirectory()) {
 			profileDir.mkdir();
 		}
-		pathToLayoutFile = datapath + "/profiles/" + name + "/" + name + ".layout";
-		pathToProfile = datapath + "/profiles/" + name + "/" + name + ".profile";
-		pathToTree = datapath + "/profiles/" + name + "/" + name + ".tree";
-		pathToAllowedChars = datapath + "/profiles/" + name + "/" + name + ".chars";
+		paths = new HashMap<String, String>();
+		paths.put("layout", datapath + "/profiles/" + name + "/" + name + ".layout");
+		paths.put("profile", datapath + "/profiles/" + name + "/" + name + ".profile");
+		paths.put("tree", datapath + "/profiles/" + name + "/" + name + ".tree");
+		paths.put("chars", datapath + "/profiles/" + name + "/" + name + ".chars");
 		
 		logger.debug("Profile " + name + " created");
 		load();
@@ -146,7 +147,7 @@ public class Profile implements Serializable {
 	 * @author NicolaiO
 	 */
 	private void saveLayout() {
-		KeyboardLayoutSaver.save(kbdLayout, pathToLayoutFile);
+		KeyboardLayoutSaver.save(kbdLayout, paths.get("layout"));
 	}
 	
 	
@@ -168,7 +169,7 @@ public class Profile implements Serializable {
 	 */
 	private void loadLayout() {
 		if (kbdLayout == null) {
-			File file = new File(pathToLayoutFile);
+			File file = new File(paths.get("layout"));
 			if (file.exists()) {
 				kbdLayout = KeyboardLayoutLoader.load(file, KeymapLoader.load(defaultKeymapXML));
 			} else {
@@ -201,11 +202,11 @@ public class Profile implements Serializable {
 	 */
 	private void loadTree() {
 		if (tree == null) {
-			tree = new PriorityTree(pathToAllowedChars);
+			tree = new PriorityTree(paths.get("chars"));
 			try {
-				tree.importFromHashMap(ImportExportManager.importFromFile(pathToTree, true));
+				tree.importFromHashMap(ImportExportManager.importFromFile(paths.get("tree"), true));
 			} catch (IOException err) {
-				logger.warn("Could not fetch the dictionary for the proifle " + name + ", File: " + pathToTree);
+				logger.warn("Could not fetch the dictionary for the proifle " + name + ", File: " + paths.get("tree"));
 			}
 			logger.debug("Tree successfully loaded");
 		}
@@ -219,16 +220,16 @@ public class Profile implements Serializable {
 	 */
 	private void saveTree() {
 		if (tree != null) {
-			logger.debug("save tree to " + pathToTree);
+			logger.debug("save tree to " + paths.get("tree"));
 			try {
-				ImportExportManager.exportToFile(tree.exportToHashMap(), pathToTree);
+				ImportExportManager.exportToFile(tree.exportToHashMap(), paths.get("tree"));
 			} catch (IOException err) {
-				logger.error("Not able to save the tree for proifle " + name + " to " + pathToTree);
+				logger.error("Not able to save the tree for proifle " + name + " to " + paths.get("tree"));
 			}
 		} else {
 			logger.debug("Tree not saved, because not existend");
 		}
-		logger.debug("save Chars to " + pathToAllowedChars);
+		logger.debug("save Chars to " + paths.get("chars"));
 		tree.saveAllowedChars();
 	}
 	
@@ -333,23 +334,43 @@ public class Profile implements Serializable {
 	}
 	
 	
+	/**
+	 * @deprecated
+	 * @return
+	 * @author dirk
+	 */
 	public String getPathToAllowedChars() {
-		return pathToAllowedChars;
+		return paths.get("chars");
 	}
 	
 	
+	/**
+	 * @deprecated
+	 * @author dirk
+	 */
 	public void setPathToAllowedChars(String pathToAllowedChars) {
-		this.pathToAllowedChars = pathToAllowedChars;
+		paths.remove("chars");
+		paths.put("chars", pathToAllowedChars);
 	}
 	
 	
+	/**
+	 * @deprecated
+	 * @return
+	 * @author dirk
+	 */
 	public String getPathToLayoutFile() {
-		return pathToLayoutFile;
+		return paths.get("layout");
 	}
 	
 	
+	/**
+	 * @deprecated
+	 * @author dirk
+	 */
 	public void setPathToLayoutFile(String pathToLayoutFile) {
-		this.pathToLayoutFile = pathToLayoutFile;
+		paths.remove("layout");
+		paths.put("layout", pathToLayoutFile);
 	}
 	
 	
@@ -364,31 +385,58 @@ public class Profile implements Serializable {
 	}
 	
 	
+	/**
+	 * @deprecated
+	 * @return
+	 * @author dirk
+	 */
 	public String getPathToProfile() {
-		return pathToProfile;
+		return paths.get("profile");
 	}
 	
 	
+	/**
+	 * @deprecated
+	 * @author dirk
+	 */
 	public void setPathToProfile(String path) {
-		pathToProfile = path;
+		paths.remove("profile");
+		paths.put("profile", path);
 	}
 	
 	
+	/**
+	 * @deprecated
+	 * @return
+	 * @author dirk
+	 */
 	public String getPathToTree() {
-		return pathToTree;
+		return paths.get("tree");
 	}
 	
 	
+	/**
+	 * @deprecated
+	 * @author dirk
+	 */
 	public void setPathToTree(String pathToFile) {
-		this.pathToTree = pathToFile;
+		paths.remove("tree");
+		paths.put("tree", pathToFile);
 	}
 	
 	
+	/**
+	 * @return
+	 * @author dirk
+	 */
 	public PriorityTree getTree() {
 		return tree;
 	}
 	
 	
+	/**
+	 * @author dirk
+	 */
 	public void setTree(PriorityTree tree) {
 		this.tree = tree;
 	}
@@ -432,4 +480,16 @@ public class Profile implements Serializable {
 	public void setTreeExpanding(boolean treeExpanding) {
 		this.treeExpanding = treeExpanding;
 	}
+	
+	
+	public HashMap<String, String> getPaths() {
+		return paths;
+	}
+	
+	
+	public void setPaths(HashMap<String, String> paths) {
+		this.paths = paths;
+	}
+
+
 }
