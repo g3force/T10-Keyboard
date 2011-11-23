@@ -18,8 +18,6 @@ import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
 
-import edu.dhbw.t10.manager.Controller;
-
 
 /**
  * This class provides a JPanel with two StatusBars...
@@ -35,7 +33,7 @@ public class StatusPane extends JPanel {
 	/**  */
 	private static final long	serialVersionUID	= -189926188731044511L;
 	
-	private static final Logger	logger				= Logger.getLogger(Controller.class);
+	private static final Logger	logger				= Logger.getLogger(StatusPane.class);
 
 
 	public static final byte	LEFT					= 1;
