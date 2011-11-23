@@ -40,7 +40,7 @@ import edu.dhbw.t10.type.tree.PriorityTree;
  */
 public class Profile implements Serializable {
 	/**  */
-	private static final long			serialVersionUID	= 5085464540715301876L;
+	private static final long			serialVersionUID	= 5085464540715301877L;
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
