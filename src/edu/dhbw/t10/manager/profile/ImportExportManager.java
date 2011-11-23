@@ -262,11 +262,6 @@ public class ImportExportManager {
 	 * imports a profile from file
 	 * just puts the zip files to the correct folders
 	 * 
-	 * TODO DirkK idea: take the path, where to save profile, as argument and return the imported profile, so that
-	 * ProfileManager can handle adding it
-	 * Thus we can move the datapath to the ProfileManager (which is the only one to save and load then...)
-	 * and we have a better relationship, because this method does not have to call a method of controller
-	 * 
 	 * @param zipFile
 	 * @throws ZipException
 	 * @throws IOException

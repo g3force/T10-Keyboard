@@ -281,7 +281,7 @@ public class ProfileManager {
 		setActive(prof);
 	}
 	
-
+	
 	/**
 	 * 
 	 * Deletes a profile depending on the ID.<br/>
