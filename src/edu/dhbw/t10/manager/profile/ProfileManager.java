@@ -9,6 +9,7 @@
  */
 package edu.dhbw.t10.manager.profile;
 
+import java.awt.Dimension;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -21,7 +22,13 @@ import java.util.zip.ZipException;
 
 import org.apache.log4j.Logger;
 
+import edu.dhbw.t10.manager.Controller;
+import edu.dhbw.t10.type.keyboard.DropDownList;
+import edu.dhbw.t10.type.keyboard.Image;
+import edu.dhbw.t10.type.keyboard.KeyboardLayout;
+import edu.dhbw.t10.type.keyboard.key.PhysicalButton;
 import edu.dhbw.t10.type.profile.Profile;
+import edu.dhbw.t10.view.panels.MainPanel;
 
 
 /**
@@ -40,6 +47,15 @@ public class ProfileManager {
 	private ArrayList<String>		profilePathes			= new ArrayList<String>();
 	private Profile					activeProfile;
 	private String						defaultActiveProfile	= "default";
+	private MainPanel					mainPanel;
+	private boolean					changeProfileBlocked	= false;
+	
+	/**
+	 * This should always be a reference to the currently applied KeyboardLayout.
+	 * On profile change, this attribute should be overridden with the new layout.
+	 * Thus, we do not need a reference to the mainPanel! *
+	 */
+	private KeyboardLayout			realKeyboardLayout;
 	
 
 	// --------------------------------------------------------------------------
@@ -54,34 +70,36 @@ public class ProfileManager {
 	 * 
 	 * @author SebastianN, NicolaiO
 	 */
-	public ProfileManager() {
-		Profile newActiveProfile;
-		datapath = System.getProperty("user.home") + "/.t10keyboard";
+	public ProfileManager(MainPanel mainPanel) {
+		logger.debug("initializing...");
+		
+		this.mainPanel = mainPanel;
+
+		// load datapath
 		// works for Windows and Linux... so the data is stored in the systems userdata folder...
+		datapath = System.getProperty("user.home") + "/.t10keyboard";
 		File tf = new File(datapath);
 		if (!tf.exists()) {
 			tf.mkdirs();
 		}
-		logger.debug("initializing...");
+
 		// fill activeProfileName and profilePathes with the data from the config file
 		readConfig();
-		logger.debug("configfile: activeProfileName=" + defaultActiveProfile + " profiles=" + profilePathes.size());
 		loadSerializedProfiles(); // deserializes all profiles, fills profiles
 		// if no profiles were loaded, create a new one
 		if (profiles.size() == 0) {
 			logger.debug("No profiles loaded. New profile will be created.");
 			createProfile(defaultActiveProfile);
 		}
+
 		// set active profile by defauleActiveProfile which was either loaded from config file or is set to a default
 		// value
-		newActiveProfile = getProfileByName(defaultActiveProfile);
+		activeProfile = getProfileByName(defaultActiveProfile);
 		// if the defaultActiveProfile in the config file references a non existent profile, create a new profile with the
 		// given name
-		if (newActiveProfile == null) {
-			newActiveProfile = createProfile(defaultActiveProfile);
+		if (activeProfile == null) {
+			activeProfile = createProfile(defaultActiveProfile);
 		}
-		// now, active profile is hopefully set to any profile...
-		setActive(newActiveProfile);
 		logger.debug("initialized.");
 	}
 	
@@ -139,6 +157,8 @@ public class ProfileManager {
 					}
 				}
 				br.close();
+				logger.info("config loaded: activeProfileName=" + defaultActiveProfile + " profiles="
+						+ profilePathes.size());
 			} else {
 				logger.debug("Config file could not be found. Doesn't matter, though.");
 			}
@@ -272,13 +292,12 @@ public class ProfileManager {
 		
 		// creating the profile
 		Profile prof = createProfile(profileName);
-		logger.debug("Profile " + profileName + " created");
-		
+
 		// exporting the files form the zip archive to the pathes given in the profile
 		ImportExportManager.importProfiles(zipFile, prof);
 		logger.debug("Files from the zip File " + zipFile + " extracted");
 		
-		setActive(prof);
+		changeProfile(prof);
 	}
 	
 	
@@ -331,26 +350,62 @@ public class ProfileManager {
 	 * @param newActive - Handle of the to-be activated profile
 	 * @author SebastianN, NicolaiO
 	 */
-	public void setActive(Profile newActive) {
-		// do nothing, if profile is already active
-		if (newActive == activeProfile) {
-			return;
+	public void changeProfile(Profile newActive) {
+		if (!changeProfileBlocked) {
+			changeProfileBlocked = true;
+			
+			// do nothing, if profile is already active
+			// if (newActive == activeProfile) {
+			// return;
+			// }
+			
+			logger.info("Setting profile " + newActive + " active.");
+			
+			// save currently active profile
+			if (activeProfile != null) {
+				activeProfile.save();
+			}
+			
+			// set and load new active profile
+			activeProfile = newActive;
+			activeProfile.load();
+			activeProfile.loadDDLs(profiles);
+			
+			// update GUI
+			loadLayoutToGUI(activeProfile.getKbdLayout());
+			Controller.getInstance().resizeWindow(getActive().getKbdLayout().getSize());
+			
+			logger.info("Profile now active: " + getActive());
+			changeProfileBlocked = false;
+		} else {
+			logger.debug("changeProfile blocked");
 		}
-		
-		logger.info("Setting profile " + newActive + " active.");
-
-		// save currently active profile
-		if (activeProfile != null) {
-			activeProfile.save();
-		}
-		// set and load new active profile
-		activeProfile = newActive;
-		activeProfile.load();
-		activeProfile.loadDDLs(profiles);
-		logger.info("Profile now active: " + getActive());
 	}
 	
 	
+	/**
+	 * Load the given KeyboardLayout into the Mainpanel and remove all other Components.
+	 * This is neccessary, when you change the profile and thus the Layout!
+	 * 
+	 * @param kbd KeyboardLayout
+	 * @author NicolaiO
+	 */
+	private void loadLayoutToGUI(KeyboardLayout kbd) {
+		mainPanel.setPreferredSize(new Dimension(kbd.getSize_x(), kbd.getSize_y()));
+		mainPanel.removeAll();
+		for (PhysicalButton button : kbd.getAllPhysicalButtons()) {
+			mainPanel.add(button);
+		}
+		for (DropDownList ddl : kbd.getDdls()) {
+			mainPanel.add(ddl);
+		}
+		for (Image img : kbd.getImages()) {
+			mainPanel.add(img);
+		}
+		logger.debug("GUI contains " + mainPanel.getComponentCount() + " Compontents now.");
+	}
+
+
 	/**
 	 * Loads serialized profiles from file.
 	 * 
@@ -416,15 +471,8 @@ public class ProfileManager {
 	}
 	
 	
-	/**
-	 * TODO ALL This method should be removed, because only ProfileManager should be able to save anything!
-	 * 
-	 * @return
-	 * @deprecated
-	 * @author NicolaiO
-	 */
-	public String getDatapath() {
-		return datapath;
+	public KeyboardLayout getRealKeyboardLayout() {
+		return realKeyboardLayout;
 	}
 	
 }

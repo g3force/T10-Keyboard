@@ -67,6 +67,7 @@ public class MainPanel extends JPanel implements ComponentListener {
 	 * @param kbd
 	 * @author NicolaiO
 	 */
+	@Deprecated
 	public void setKbdLayout(KeyboardLayout kbd) {
 		logger.debug("adding Layout...");
 		this.setPreferredSize(new Dimension(kbd.getSize_x(), kbd.getSize_y()));

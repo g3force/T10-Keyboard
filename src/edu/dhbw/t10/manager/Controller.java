@@ -70,7 +70,6 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	private StatusPane				statusPane;
 	
 	private boolean					readyForActionEvents	= false;
-	private boolean					changeProfileBlocked	= false;
 	
 
 	// --------------------------------------------------------------------------
@@ -91,16 +90,20 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 		statusPane = new StatusPane();
 		presenter = new Presenter(mainPanel, statusPane);
 
-		outputMan = new OutputManager();
-
 		// This message is important! Otherwise, The StatusPane has a wrong height and the layout will be decreased
 		// meaning, it gets smaller with each start...
 		showStatusMessage("Keyboard initializing...");
-		profileMan = new ProfileManager();
 		
-		changeProfile(profileMan.getActive());
+		// load Managers
+		outputMan = new OutputManager();
+		profileMan = new ProfileManager(mainPanel);
 		
+		// now, the Controller should be ready!
+		// hereafter, you should call methods, that need the controllers ActionEvents!
 		readyForActionEvents = true;
+		profileMan.changeProfile(profileMan.getActive());
+		
+		// now we are done.
 		showStatusMessage("Keyboard initialized.");
 		logger.debug("initialized.");
 	}
@@ -118,7 +121,7 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	 */
 	private void closeSuperFelix() {
 		try {
-			logger.debug("closing - saving the tree");
+			logger.debug("closing - saving profile");
 			profileMan.getActive().save();
 			logger.debug("closing - saving the config");
 			profileMan.saveConfig();
@@ -137,18 +140,20 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	 * @author NicolaiO
 	 */
 	public void resizeWindow(Dimension size) {
-		KeyboardLayout kbdLayout = profileMan.getActive().getKbdLayout();
-		if (kbdLayout != null) {
-			float xscale = (float) size.width / (float) kbdLayout.getOrigSize_x();
-			float yscale = (float) size.height / (float) kbdLayout.getOrigSize_y();
-			float fontScale = xscale + yscale / 2;
-			kbdLayout.setScale_x(xscale);
-			kbdLayout.setScale_y(yscale);
-			kbdLayout.setScale_font(fontScale);
-			kbdLayout.rescale();
-			mainPanel.setPreferredSize(new Dimension(kbdLayout.getSize_x(), kbdLayout.getSize_y()));
-			presenter.pack();
-			logger.debug("Window rescaled");
+		if (readyForActionEvents) {
+			KeyboardLayout kbdLayout = profileMan.getActive().getKbdLayout();
+			if (kbdLayout != null) {
+				float xscale = (float) size.width / (float) kbdLayout.getOrigSize_x();
+				float yscale = (float) size.height / (float) kbdLayout.getOrigSize_y();
+				float fontScale = xscale + yscale / 2;
+				kbdLayout.setScale_x(xscale);
+				kbdLayout.setScale_y(yscale);
+				kbdLayout.setScale_font(fontScale);
+				kbdLayout.rescale();
+				mainPanel.setPreferredSize(new Dimension(kbdLayout.getSize_x(), kbdLayout.getSize_y()));
+				presenter.pack();
+				logger.debug("Window rescaled");
+			}
 		}
 	}
 
@@ -166,7 +171,7 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	public void addNewProfile(String name) {
 		Profile profile = profileMan.createProfile(name);
 		if (profile != null) {
-			changeProfile(profile);
+			profileMan.changeProfile(profile);
 		} else {
 			logger.error("can not add new profile, it could not be created!");
 		}
@@ -193,31 +198,8 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 				return;
 			}
 		}
-		changeProfile(newProfile);
+		profileMan.changeProfile(newProfile);
 		profileMan.deleteProfile(todelete);
-	}
-	
-	
-	/**
-	 * Change profile. This does not only <b>set</b> the active profile, but also reloads the GUI!
-	 * Do not use setActive of ProfileManager alone...
-	 * 
-	 * TODO NicolaiO move the content of this method to Profile Manager (DirkK)
-	 * 
-	 * @param profile
-	 * @author NicolaiO
-	 */
-	public void changeProfile(Profile profile) {
-		if (!changeProfileBlocked) {
-			changeProfileBlocked = true;
-			profileMan.setActive(profile);
-			mainPanel.setKbdLayout(profileMan.getActive().getKbdLayout());
-			Dimension size = profileMan.getActive().getKbdLayout().getSize();
-			resizeWindow(size);
-			changeProfileBlocked = false;
-		} else {
-			logger.debug("changeProfile blocked");
-		}
 	}
 	
 	
@@ -460,7 +442,7 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 			Profile selectedProfile = profileMan.getProfileByName(currentDdl.getSelectedItem().toString());
 			if (selectedProfile != null) {
 				logger.debug("selected Profilename: " + selectedProfile.getName());
-				changeProfile(selectedProfile);
+				profileMan.changeProfile(selectedProfile);
 			} else {
 				logger.warn("Selected Item refers to a non valid profile: \"" + currentDdl.getSelectedItem() + "\"");
 			}
