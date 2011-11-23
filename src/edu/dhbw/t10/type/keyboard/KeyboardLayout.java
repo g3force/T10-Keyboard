@@ -195,6 +195,11 @@ public class KeyboardLayout {
 	}
 	
 	
+	public void setSize_y(int size_y) {
+		this.size_y = size_y;
+	}
+
+
 	public int getOrigSize_y() {
 		return size_y;
 	}
@@ -205,11 +210,11 @@ public class KeyboardLayout {
 	}
 	
 	
-	public void setSize_y(int size_y) {
-		this.size_y = size_y;
+	public Dimension getOrigSize() {
+		return new Dimension(size_x, size_y);
 	}
-	
-	
+
+
 	/**
 	 * Set all scales (x,y,font) to given scale
 	 * 
