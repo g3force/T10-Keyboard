@@ -180,30 +180,27 @@ public class Profile implements Serializable {
 	 * @author NicolaiO
 	 */
 	private void loadLayout() {
-		if (kbdLayout == null) {
-			File file = new File(paths.get("layout"));
-			if (file.exists()) {
-				kbdLayout = KeyboardLayoutLoader.load(file, KeymapLoader.load(defaultKeymapXML));
-			} else {
-				logger.info("Default Layout loaded");
-				kbdLayout = KeyboardLayoutLoader.load(defaultLayoutXML, KeymapLoader.load(defaultKeymapXML));
+		File file = new File(paths.get("layout"));
+		if (file.exists()) {
+			kbdLayout = KeyboardLayoutLoader.load(file, KeymapLoader.load(defaultKeymapXML));
+		} else {
+			logger.info("Default Layout loaded");
+			kbdLayout = KeyboardLayoutLoader.load(defaultLayoutXML, KeymapLoader.load(defaultKeymapXML));
+		}
+		for (MuteButton mb : kbdLayout.getMuteButtons()) {
+			switch (mb.getType()) {
+				case MuteButton.AUTO_COMPLETING:
+					mb.setActivated(autoCompleting);
+					break;
+				case MuteButton.AUTO_PROFILE_CHANGE:
+					mb.setActivated(autoProfileChange);
+					break;
+				case MuteButton.TREE_EXPANDING:
+					mb.setActivated(treeExpanding);
+					break;
+				default:
+					break;
 			}
-			for (MuteButton mb : kbdLayout.getMuteButtons()) {
-				switch (mb.getType()) {
-					case MuteButton.AUTO_COMPLETING:
-						mb.setActivated(autoCompleting);
-						break;
-					case MuteButton.AUTO_PROFILE_CHANGE:
-						mb.setActivated(autoProfileChange);
-						break;
-					case MuteButton.TREE_EXPANDING:
-						mb.setActivated(treeExpanding);
-						break;
-					default:
-						break;
-				}
-			}
-
 		}
 	}
 	
@@ -214,15 +211,13 @@ public class Profile implements Serializable {
 	 * @author DirkK
 	 */
 	private void loadTree() {
-		if (tree == null) {
-			tree = new PriorityTree(paths.get("chars"));
-			try {
-				tree.importFromHashMap(ImportExportManager.importFromFile(paths.get("tree"), true));
-			} catch (IOException err) {
-				logger.warn("Could not fetch the dictionary for the proifle " + name + ", File: " + paths.get("tree"));
-			}
-			logger.debug("Tree successfully loaded");
+		tree = new PriorityTree(paths.get("chars"));
+		try {
+			tree.importFromHashMap(ImportExportManager.importFromFile(paths.get("tree"), true));
+		} catch (IOException err) {
+			logger.warn("Could not fetch the dictionary for the proifle " + name + ", File: " + paths.get("tree"));
 		}
+		logger.debug("Tree successfully loaded");
 	}
 	
 	
