@@ -24,6 +24,7 @@ import edu.dhbw.t10.manager.keyboard.KeyboardLayoutLoader;
 import edu.dhbw.t10.manager.keyboard.KeyboardLayoutSaver;
 import edu.dhbw.t10.manager.keyboard.KeymapLoader;
 import edu.dhbw.t10.manager.profile.ImportExportManager;
+import edu.dhbw.t10.manager.profile.Serializer;
 import edu.dhbw.t10.type.keyboard.DropDownList;
 import edu.dhbw.t10.type.keyboard.KeyboardLayout;
 import edu.dhbw.t10.type.keyboard.key.MuteButton;
@@ -138,6 +139,17 @@ public class Profile implements Serializable {
 	public void save() {
 		saveLayout();
 		saveTree();
+		saveProfile();
+	}
+	
+	
+	private void saveProfile() {
+		try {
+			Serializer.serialize(this, paths.get("profile"));
+			logger.debug("profile " + name + " saved to " + paths.get("profile"));
+		} catch (IOException err) {
+			logger.debug("could not save profile " + name + " to " + paths.get("profile"));
+		}
 	}
 	
 	
