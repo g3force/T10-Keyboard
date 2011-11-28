@@ -164,10 +164,8 @@ public class Profile implements Serializable {
 	
 	
 	private void loadDefaultPathes() {
-		if (defaultLayoutXML == null)
-			defaultLayoutXML = getClass().getResourceAsStream("/res/default/layout_default.xml");
-		if (defaultKeymapXML == null)
-			defaultKeymapXML = getClass().getResourceAsStream("/res/default/keymap_default.xml");
+		defaultLayoutXML = getClass().getResourceAsStream("/res/default/layout_default.xml");
+		defaultKeymapXML = getClass().getResourceAsStream("/res/default/keymap_default.xml");
 		if (defaultLayoutXML == null || defaultKeymapXML == null) {
 			logger.error("Could not load default layout file. Program will not run well...");
 		}
