@@ -134,8 +134,7 @@ public class KeymapLoader {
 			logger.error("Could not parse document");
 			err.printStackTrace();
 		} catch (IOException err) {
-			logger.error("Could not parse document");
-			err.printStackTrace();
+			logger.error("Could not parse document. IOException with path " + filePath.toString());
 		}
 		logger.warn("Loading Keymap not finished.");
 		return new HashMap<Integer, Key>();
