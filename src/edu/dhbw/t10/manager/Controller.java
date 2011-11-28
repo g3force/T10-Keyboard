@@ -394,10 +394,10 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 		}
 	}
 	
-	
+
 	/**
 	 * 
-	 * FIXME FelixP, add comment!
+	 * Do something, if dialog was opened.
 	 * 
 	 * @param menuItem
 	 * @param o
