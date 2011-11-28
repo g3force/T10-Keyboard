@@ -119,7 +119,7 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	 * 
 	 * @author DirkK
 	 */
-	private void closeSuperFelix() {
+	public void closeSuperFelix() {
 		try {
 			logger.debug("closing - saving profile");
 			profileMan.getActive().save();
@@ -348,8 +348,7 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 			case iExport:
 				String pathToFile = StringHelper.addEnding(path.toString(), ".zip");
 				try {
-					profileMan.getActive().save();
-					ImportExportManager.exportProfiles(profileMan.getActive(), new File(pathToFile));
+					profileMan.exportProfiles(pathToFile);
 					logger.debug("Profile exported");
 					showStatusMessage("Profile exported");
 				} catch (IOException err1) {

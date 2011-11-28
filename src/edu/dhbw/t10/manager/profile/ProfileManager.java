@@ -95,6 +95,7 @@ public class ProfileManager {
 		// set active profile by defauleActiveProfile which was either loaded from config file or is set to a default
 		// value
 		activeProfile = getProfileByName(defaultActiveProfile);
+		activeProfile.load();
 		// if the defaultActiveProfile in the config file references a non existent profile, create a new profile with the
 		// given name
 		if (activeProfile == null) {
@@ -301,6 +302,12 @@ public class ProfileManager {
 	}
 	
 	
+	public void exportProfiles(String zipFile) throws IOException {
+		getActive().save();
+		ImportExportManager.exportProfiles(getActive(), new File(zipFile));
+	}
+
+	
 	/**
 	 * 
 	 * Deletes a profile depending on the ID.<br/>
@@ -318,14 +325,6 @@ public class ProfileManager {
 		for (Entry<String, String> file : profile.getPaths().entrySet()) {
 			deleteFile(file.getValue());
 		}
-		// deleteFile(profile.getPathToAllowedChars());
-		// deleteFile(profile.getPathToLayoutFile());
-		// deleteFile(profile.getPathToProfile());
-		// deleteFile(profile.getPathToTree());
-		// File profileDir = new File(profile.getPathToProfile());
-		// if (profileDir.getParentFile().isDirectory()) {
-		// deleteFile(profileDir.getParent());
-		// }
 		getActive().loadDDLs(profiles);
 	}
 	
