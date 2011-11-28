@@ -122,7 +122,7 @@ public class MenuBar extends JMenuBar {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.exit(0);
+				Controller.getInstance().closeSuperFelix();
 			}
 		});
 		
