@@ -101,7 +101,7 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 		// now, the Controller should be ready!
 		// hereafter, you should call methods, that need the controllers ActionEvents!
 		readyForActionEvents = true;
-		profileMan.changeProfile(profileMan.getActive());
+		//profileMan.changeProfile(profileMan.getActive());
 		
 		// now we are done.
 		showStatusMessage("Keyboard initialized.");
