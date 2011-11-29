@@ -123,6 +123,7 @@ public class MenuBar extends JMenuBar {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Controller.getInstance().closeSuperFelix();
+				System.exit(0);
 			}
 		});
 		
@@ -130,7 +131,7 @@ public class MenuBar extends JMenuBar {
 		//			
 		// @Override
 		// public void actionPerformed(ActionEvent e) {
-		// // TOD O FelixP Menu bearbeiten(eingabe: Name und Pfad, vor ausgefüllt)
+		// // TODO FelixP Menu bearbeiten(eingabe: Name und Pfad, vor ausgefüllt)
 		// }
 		// });
 		
