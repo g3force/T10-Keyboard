@@ -95,7 +95,8 @@ public class ProfileManager {
 		// set active profile by defauleActiveProfile which was either loaded from config file or is set to a default
 		// value
 		activeProfile = getProfileByName(defaultActiveProfile);
-		activeProfile.load();
+		changeProfile(activeProfile);
+
 		// if the defaultActiveProfile in the config file references a non existent profile, create a new profile with the
 		// given name
 		if (activeProfile == null) {
@@ -352,11 +353,6 @@ public class ProfileManager {
 	public void changeProfile(Profile newActive) {
 		if (!changeProfileBlocked) {
 			changeProfileBlocked = true;
-			
-			// do nothing, if profile is already active
-			// if (newActive == activeProfile) {
-			// return;
-			// }
 			
 			logger.info("Setting profile " + newActive + " active.");
 			
