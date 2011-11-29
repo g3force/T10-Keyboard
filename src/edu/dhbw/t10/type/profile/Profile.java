@@ -159,7 +159,9 @@ public class Profile implements Serializable {
 	 * @author NicolaiO
 	 */
 	private void saveLayout() {
-		KeyboardLayoutSaver.save(kbdLayout, paths.get("layout"));
+		if (kbdLayout != null) {
+			KeyboardLayoutSaver.save(kbdLayout, paths.get("layout"));
+		}
 	}
 	
 	
@@ -232,11 +234,11 @@ public class Profile implements Serializable {
 			} catch (IOException err) {
 				logger.error("Not able to save the tree for proifle " + name + " to " + paths.get("tree"));
 			}
+			logger.debug("save Chars to " + paths.get("chars"));
+			tree.saveAllowedChars();
 		} else {
 			logger.debug("Tree not saved, because not existend");
 		}
-		logger.debug("save Chars to " + paths.get("chars"));
-		tree.saveAllowedChars();
 	}
 	
 	
