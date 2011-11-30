@@ -343,46 +343,6 @@ public class Profile implements Serializable {
 	
 	
 	/**
-	 * @deprecated
-	 * @return
-	 * @author dirk
-	 */
-	public String getPathToAllowedChars() {
-		return paths.get("chars");
-	}
-	
-	
-	/**
-	 * @deprecated
-	 * @author dirk
-	 */
-	public void setPathToAllowedChars(String pathToAllowedChars) {
-		paths.remove("chars");
-		paths.put("chars", pathToAllowedChars);
-	}
-	
-	
-	/**
-	 * @deprecated
-	 * @return
-	 * @author dirk
-	 */
-	public String getPathToLayoutFile() {
-		return paths.get("layout");
-	}
-	
-	
-	/**
-	 * @deprecated
-	 * @author dirk
-	 */
-	public void setPathToLayoutFile(String pathToLayoutFile) {
-		paths.remove("layout");
-		paths.put("layout", pathToLayoutFile);
-	}
-	
-	
-	/**
 	 * Sets a profile's name
 	 * 
 	 * @param newName - String
@@ -390,46 +350,6 @@ public class Profile implements Serializable {
 	 */
 	public void setName(String newName) {
 		name = newName;
-	}
-	
-	
-	/**
-	 * @deprecated
-	 * @return
-	 * @author dirk
-	 */
-	public String getPathToProfile() {
-		return paths.get("profile");
-	}
-	
-	
-	/**
-	 * @deprecated
-	 * @author dirk
-	 */
-	public void setPathToProfile(String path) {
-		paths.remove("profile");
-		paths.put("profile", path);
-	}
-	
-	
-	/**
-	 * @deprecated
-	 * @return
-	 * @author dirk
-	 */
-	public String getPathToTree() {
-		return paths.get("tree");
-	}
-	
-	
-	/**
-	 * @deprecated
-	 * @author dirk
-	 */
-	public void setPathToTree(String pathToFile) {
-		paths.remove("tree");
-		paths.put("tree", pathToFile);
 	}
 	
 	
