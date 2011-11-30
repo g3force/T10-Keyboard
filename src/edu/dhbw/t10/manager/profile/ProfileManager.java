@@ -95,13 +95,16 @@ public class ProfileManager {
 		// set active profile by defauleActiveProfile which was either loaded from config file or is set to a default
 		// value
 		activeProfile = getProfileByName(defaultActiveProfile);
-		changeProfile(activeProfile);
 
 		// if the defaultActiveProfile in the config file references a non existent profile, create a new profile with the
 		// given name
 		if (activeProfile == null) {
 			activeProfile = createProfile(defaultActiveProfile);
 		}
+		
+		// change to chosen profile
+		changeProfile(activeProfile);
+
 		logger.debug("initialized.");
 	}
 	
@@ -323,9 +326,12 @@ public class ProfileManager {
 			return;
 		}
 		profiles.remove(profile);
+		File dir = new File(profile.getPaths().get("profile"));
+		dir = dir.getParentFile();
 		for (Entry<String, String> file : profile.getPaths().entrySet()) {
 			deleteFile(file.getValue());
 		}
+		dir.delete();
 		getActive().loadDDLs(profiles);
 	}
 	
@@ -354,8 +360,13 @@ public class ProfileManager {
 		if (!changeProfileBlocked) {
 			changeProfileBlocked = true;
 			
-			logger.info("Setting profile " + newActive + " active.");
+			if (newActive == null) {
+				logger.error("changeProfile was called with null-Profile");
+				return;
+			}
 			
+			logger.info("Setting profile " + newActive + " active.");
+
 			// save currently active profile
 			if (activeProfile != null) {
 				activeProfile.save();
