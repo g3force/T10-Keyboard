@@ -39,8 +39,8 @@ public class SuperFelix {
 	 * Revision of Git Repository: Look in file .git/refs/heads/master
 	 * automatic: git shortlog | grep -E '^[ ]+\w+' | wc -l
 	 */
-	public static final String		VERSION	= "0.8";
-	public static final String		REV 		= "604";
+	public static final String		VERSION	= "1.0";
+	public static final String		REV		= "637";
 
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
