@@ -40,7 +40,7 @@ public class SuperFelix {
 	 * automatic: git shortlog | grep -E '^[ ]+\w+' | wc -l
 	 */
 	public static final String		VERSION	= "1.0";
-	public static final String		REV		= "637";
+	public static final String		REV 		= "639";
 
 	// --------------------------------------------------------------------------
 	// --- constructors ---------------------------------------------------------
