@@ -103,7 +103,10 @@ public class ProfileManager {
 				activeProfile = profiles.get(0);
 			}
 		}
+		
+		// change to chosen profile
 		changeProfile(activeProfile);
+
 		logger.debug("initialized.");
 	}
 	
@@ -225,9 +228,12 @@ public class ProfileManager {
 			return;
 		}
 		profiles.remove(profile);
+		File dir = new File(profile.getPaths().get("profile"));
+		dir = dir.getParentFile();
 		for (Entry<String, String> file : profile.getPaths().entrySet()) {
 			deleteFile(file.getValue());
 		}
+		dir.delete();
 		getActive().loadDDLs(profiles);
 	}
 	
@@ -256,8 +262,13 @@ public class ProfileManager {
 		if (!changeProfileBlocked) {
 			changeProfileBlocked = true;
 			
-			logger.info("Setting profile " + newActive + " active.");
+			if (newActive == null) {
+				logger.error("changeProfile was called with null-Profile");
+				return;
+			}
 			
+			logger.info("Setting profile " + newActive + " active.");
+
 			// save currently active profile
 			if (activeProfile != null) {
 				activeProfile.save();
