@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse.ant.import?>
+<project basedir="." default="compress" name="t10-onscreen-keyboard">
+	<!-- <target name="compress" description="Compression target"> -->
+	<!-- <jar jarfile="T10-Keyboard.jar" basedir="" includes="*.class" /> -->
+	<!-- </target> -->
+	<delete file="t10-onscreen-keyboard_ant.jar" />
+
+	<!-- copy the JARs that you need to "bin" directory  -->
+	<copy todir="bin">
+		<fileset dir="lib" includes="*.jar" />
+	</copy>
+
+	<target name="compress">
+		<jar destfile="t10-onscreen-keyboard_ant.jar" basedir="bin">
+			<manifest>
+				<attribute name="Built-By" value="${user.name}" />
+				<!-- Information about the program itself -->
+				<attribute name="Implementation-Vendor" value="UseAcc" />
+				<attribute name="Implementation-Title" value="T10-OnScreen-Keyboard" />
+				<attribute name="Implementation-Version" value="${git.branch}" />
+				<attribute name="Main-Class" value="edu.dhbw.t10.SuperFelix" />
+				<attribute name ="Class-Path" value="./ log4j-1.2.16.jar" />
+			</manifest>
+		</jar>
+	</target>
+	
+	<target name="version">
+		
+	</target>
+</project>

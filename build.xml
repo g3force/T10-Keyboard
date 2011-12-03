@@ -8,6 +8,7 @@
     <property name="debuglevel" value="source,lines,vars"/>
     <property name="target" value="1.6"/>
     <property name="source" value="1.6"/>
+    <import file="build-custom.xml"/>
     <path id="t10-onscreen-keyboard.classpath">
         <pathelement location="bin"/>
         <pathelement location="lib/log4j-1.2.16.jar"/>

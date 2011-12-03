@@ -397,11 +397,10 @@ public class OutputManager {
 		boolean success = activeProfile.acceptWord(word);
 		if (success) {
 			Controller.getInstance().showStatusMessage("Word inserted: " + word);
+			logger.trace("Word accepted");
 		}
 		clearWord();
-		logger.trace("Word accepted");
 	}
-
 	
 	/**
 	 * Run this with a caps_lock key to trigger all shift buttons.
