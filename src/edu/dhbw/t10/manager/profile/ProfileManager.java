@@ -115,6 +115,11 @@ public class ProfileManager {
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
 	
+	// ------------conf-----------
+	/**
+	 * loads the config file, fills the conf property attribute
+	 * @author dirk
+	 */
 	private void loadConfig() {
 		conf = new Properties();
 		FileInputStream fis;
@@ -122,7 +127,6 @@ public class ProfileManager {
 			// reading the config file
 			fis = new FileInputStream(datapath + "/" + configFile);
 			conf.load(fis);
-
 			logger.info("Config file read");
 		} catch (IOException err) {
 			logger.warn("Could not read the config file");
@@ -150,6 +154,8 @@ public class ProfileManager {
 		}
 	}
 	
+	
+	// -------------------------profile---------------
 	/**
 	 * Create a new profile
 	 * 
@@ -190,6 +196,38 @@ public class ProfileManager {
 	}
 	
 	
+	/**
+	 * 
+	 * Deletes a profile depending on the ID.<br/>
+	 * If the ID we deleted was currently active,
+	 * we either mark the first profile as active or mark that we need a new profile.
+	 * 
+	 * @param id - int. ID of the profile you want to delete.
+	 */
+	public void deleteProfile(Profile profile) {
+		if (profiles.size() <= 1) {
+			logger.debug("Only one or zero profiles left. Can't delete.");
+			return;
+		}
+		profiles.remove(profile);
+		File dir = new File(profile.getPaths().get("profile"));
+		dir = dir.getParentFile();
+		for (Entry<String, String> file : profile.getPaths().entrySet()) {
+			deleteFile(file.getValue());
+		}
+		dir.delete();
+		getActive().loadDDLs(profiles);
+	}
+
+	
+	// -----------------------IMPORT/EXPORT------------------
+	/**
+	 * imports a new profile
+	 * @param zipFile the zip file containing the data
+	 * @throws ZipException
+	 * @throws IOException
+	 * @author dirk
+	 */
 	public void importProfiles(File zipFile) throws ZipException, IOException {
 		// Finding possible Profile Name
 		String profileName = zipFile.getName();
@@ -214,36 +252,21 @@ public class ProfileManager {
 	}
 	
 	
+	/**
+	 * exports a profile to zip
+	 * @param zipFile
+	 * @throws IOException
+	 * @author dirk
+	 */
+	
 	public void exportProfiles(String zipFile) throws IOException {
 		getActive().save();
 		ImportExportManager.exportProfiles(getActive(), new File(zipFile));
 	}
 
 	
-	/**
-	 * 
-	 * Deletes a profile depending on the ID.<br/>
-	 * If the ID we deleted was currently active,
-	 * we either mark the first profile as active or mark that we need a new profile.
-	 * 
-	 * @param id - int. ID of the profile you want to delete.
-	 */
-	public void deleteProfile(Profile profile) {
-		if (profiles.size() <= 1) {
-			logger.debug("Only one or zero profiles left. Can't delete.");
-			return;
-		}
-		profiles.remove(profile);
-		File dir = new File(profile.getPaths().get("profile"));
-		dir = dir.getParentFile();
-		for (Entry<String, String> file : profile.getPaths().entrySet()) {
-			deleteFile(file.getValue());
-		}
-		dir.delete();
-		getActive().loadDDLs(profiles);
-	}
-	
-	
+	// ---------------files--------------
+
 	/**
 	 * Delete the given file and log an error, if failed.
 	 * 
@@ -257,7 +280,8 @@ public class ProfileManager {
 			logger.error(path + " could not be deleted.");
 	}
 	
-
+	
+	// ---------------------active profile--------------
 	/**
 	 * Marks a profile as 'active'.
 	 * 
@@ -297,6 +321,7 @@ public class ProfileManager {
 	}
 	
 	
+	// ---------------------------layout
 	/**
 	 * Load the given KeyboardLayout into the Mainpanel and remove all other Components.
 	 * This is neccessary, when you change the profile and thus the Layout!
@@ -330,7 +355,7 @@ public class ProfileManager {
 		if (profiles == null) {
 			profiles = new ArrayList<Profile>();
 		}
-		
+		// temp file containing all files
 		LinkedList<File> profileFiles = new LinkedList<File>();
 		
 		// getting all profile files from the default directory
@@ -345,14 +370,15 @@ public class ProfileManager {
 
 		//deserializing the profiles
 		for (File profileFile : profileFiles) {
-			logger.debug("Loading profile " + profileFile.toString());
+			Properties prop = new Properties();
 			try {
-				Profile dProf = (Profile) Serializer.deserialize(profileFile.toString());
-				profiles.add(dProf);
-				counter++;
-			} catch (IOException io) {
-				logger.error("Not able to deserialize Profile from file " + profileFile.toString());
+				FileInputStream fis = new FileInputStream(profileFile);
+				prop.load(fis);
+			} catch (IOException err) {
+				logger.warn("Could not deserialize profile file");
 			}
+			Profile prof = new Profile(prop);
+			profiles.add(prof);
 		}
 		logger.info("Deserialized " + counter + " profiles.");
 	}
