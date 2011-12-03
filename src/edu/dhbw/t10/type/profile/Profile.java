@@ -189,9 +189,6 @@ public class Profile implements Serializable {
 			logger.info("Default Layout loaded");
 			kbdLayout = KeyboardLayoutLoader.load(defaultLayoutXML, KeymapLoader.load(defaultKeymapXML));
 		}
-		System.out.println(properties.getProperty("autoCompleting"));
-		System.out.println(properties.getProperty("autoProfileChange"));
-		System.out.println(properties.getProperty("treeExpanding"));
 		for (MuteButton mb : kbdLayout.getMuteButtons()) {
 			switch (mb.getType()) {
 				case MuteButton.AUTO_COMPLETING:

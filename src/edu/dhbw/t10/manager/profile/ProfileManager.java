@@ -213,10 +213,28 @@ public class ProfileManager {
 		File dir = new File(profile.getPaths().get("profile"));
 		dir = dir.getParentFile();
 		for (Entry<String, String> file : profile.getPaths().entrySet()) {
-			deleteFile(file.getValue());
+			if (!existDependency(file.getValue()))
+				deleteFile(file.getValue());
 		}
 		dir.delete();
 		getActive().loadDDLs(profiles);
+	}
+	
+	
+	private boolean existDependency(String f) {
+		int counter = 0;
+		for (Profile profile : profiles) {
+			for (String file : profile.getPaths().values()) {
+				if (file.equals(f)) {
+					counter++;
+				}
+			}
+		}
+		if (counter < 1) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 
 	
