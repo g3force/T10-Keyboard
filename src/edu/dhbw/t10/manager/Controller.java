@@ -124,7 +124,7 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 			logger.debug("closing - saving profile");
 			profileMan.getActive().save();
 			logger.debug("closing - saving the config");
-			profileMan.saveConfig();
+			// profileMan.saveConfig();
 			logger.debug("closed - good BUY");
 			logger.info("(c) FIT 42");
 		} catch (Exception e) {
