@@ -11,11 +11,13 @@ package edu.dhbw.t10.type.profile;
 
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Properties;
 
 import org.apache.log4j.Logger;
 
@@ -24,7 +26,6 @@ import edu.dhbw.t10.manager.keyboard.KeyboardLayoutLoader;
 import edu.dhbw.t10.manager.keyboard.KeyboardLayoutSaver;
 import edu.dhbw.t10.manager.keyboard.KeymapLoader;
 import edu.dhbw.t10.manager.profile.ImportExportManager;
-import edu.dhbw.t10.manager.profile.Serializer;
 import edu.dhbw.t10.type.keyboard.DropDownList;
 import edu.dhbw.t10.type.keyboard.KeyboardLayout;
 import edu.dhbw.t10.type.keyboard.key.MuteButton;
@@ -45,23 +46,23 @@ public class Profile implements Serializable {
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
-	private String							name;
-	// private String pathToTree;
-	// private String pathToProfile;
-	// private String pathToAllowedChars;
-	// private String pathToLayoutFile;
-	private HashMap<String, String>	paths;
-	// private String pathToKeymapFile;
+	/**
+	 * name = profilename
+	 * profile = path to profile config file
+	 * layout = path to layout
+	 * chars = path to the chars file
+	 * tree = path to the tree file
+	 * autoCompleting = true/false
+	 * treeExpanding = true/false
+	 * autoProfileChange = true/false
+	 */
+
+	private Properties					properties			= new Properties();
 	private transient InputStream		defaultLayoutXML;
 	private transient InputStream		defaultKeymapXML;
 	private transient PriorityTree	tree;
 	private transient KeyboardLayout	kbdLayout;
 	
-	private boolean						autoProfileChange	= true;
-	private boolean						autoCompleting		= true;
-	private boolean						treeExpanding		= true;
-	
-	@SuppressWarnings("unused")
 	private static final Logger		logger				= Logger.getLogger(Profile.class);
 	
 	
@@ -77,20 +78,13 @@ public class Profile implements Serializable {
 	 * @param pName - Name of the new profile
 	 * @author SebastianN
 	 */
-	public Profile(String pName, String paths) {
-		name = pName;
-		init(paths);
-		save();
-	}
-	
-	
-	/**
-	 * 
-	 * Initializes the necessary information for the profile (such as paths)
-	 * 
-	 * @author SebastianN
-	 */
-	private void init(String datapath) {
+	public Profile(String pName, String datapath) {
+		properties.setProperty("name", pName);
+		properties.setProperty("autoCompleting", "true");
+		properties.setProperty("treeExpanding", "true");
+		properties.setProperty("autoProfileChange", "true");
+
+		String name = properties.getProperty("name");
 		File file = new File(datapath + "/profiles");
 		if (!file.isDirectory()) {
 			file.mkdir();
@@ -99,15 +93,22 @@ public class Profile implements Serializable {
 		if (!profileDir.isDirectory()) {
 			profileDir.mkdir();
 		}
-		paths = new HashMap<String, String>();
-		paths.put("layout", datapath + "/profiles/" + name + "/" + name + ".layout");
-		paths.put("profile", datapath + "/profiles/" + name + "/" + name + ".profile");
-		paths.put("tree", datapath + "/profiles/" + name + "/" + name + ".tree");
-		paths.put("chars", datapath + "/profiles/" + name + "/" + name + ".chars");
+		properties.setProperty("layout", datapath + "/profiles/" + name + "/" + name + ".layout");
+		properties.setProperty("profile", datapath + "/profiles/" + name + "/" + name + ".profile");
+		properties.setProperty("tree", datapath + "/profiles/" + name + "/" + name + ".tree");
+		properties.setProperty("chars", datapath + "/profiles/" + name + "/" + name + ".chars");
 		
 		logger.debug("Profile " + name + " created");
 		load();
+		save();
 	}
+	
+	
+	public Profile(Properties prop) {
+		properties = prop;
+		load();
+	}
+
 
 
 	// --------------------------------------------------------------------------
@@ -144,11 +145,12 @@ public class Profile implements Serializable {
 	
 	
 	private void saveProfile() {
+		FileOutputStream fis;
 		try {
-			Serializer.serialize(this, paths.get("profile"));
-			logger.debug("profile " + name + " saved to " + paths.get("profile"));
+			fis = new FileOutputStream(properties.getProperty("profile"));
+			properties.store(fis, "stored by saving the profile");
 		} catch (IOException err) {
-			logger.debug("could not save profile " + name + " to " + paths.get("profile"));
+			logger.info("Could not save the profile");
 		}
 	}
 	
@@ -160,7 +162,7 @@ public class Profile implements Serializable {
 	 */
 	private void saveLayout() {
 		if (kbdLayout != null) {
-			KeyboardLayoutSaver.save(kbdLayout, paths.get("layout"));
+			KeyboardLayoutSaver.save(kbdLayout, properties.getProperty("layout"));
 		}
 	}
 	
@@ -180,23 +182,26 @@ public class Profile implements Serializable {
 	 * @author NicolaiO
 	 */
 	private void loadLayout() {
-		File file = new File(paths.get("layout"));
+		File file = new File(properties.getProperty("layout"));
 		if (file.exists()) {
 			kbdLayout = KeyboardLayoutLoader.load(file, KeymapLoader.load(defaultKeymapXML));
 		} else {
 			logger.info("Default Layout loaded");
 			kbdLayout = KeyboardLayoutLoader.load(defaultLayoutXML, KeymapLoader.load(defaultKeymapXML));
 		}
+		System.out.println(properties.getProperty("autoCompleting"));
+		System.out.println(properties.getProperty("autoProfileChange"));
+		System.out.println(properties.getProperty("treeExpanding"));
 		for (MuteButton mb : kbdLayout.getMuteButtons()) {
 			switch (mb.getType()) {
 				case MuteButton.AUTO_COMPLETING:
-					mb.setActivated(autoCompleting);
+					mb.setActivated(properties.getProperty("autoCompleting").equals("true"));
 					break;
 				case MuteButton.AUTO_PROFILE_CHANGE:
-					mb.setActivated(autoProfileChange);
+					mb.setActivated(properties.getProperty("autoProfileChange").equals("true"));
 					break;
 				case MuteButton.TREE_EXPANDING:
-					mb.setActivated(treeExpanding);
+					mb.setActivated(properties.getProperty("treeExpanding").equals("true"));
 					break;
 				default:
 					break;
@@ -211,11 +216,12 @@ public class Profile implements Serializable {
 	 * @author DirkK
 	 */
 	private void loadTree() {
-		tree = new PriorityTree(paths.get("chars"));
+		tree = new PriorityTree(properties.getProperty("chars"));
 		try {
-			tree.importFromHashMap(ImportExportManager.importFromFile(paths.get("tree"), true));
+			tree.importFromHashMap(ImportExportManager.importFromFile(properties.getProperty("tree"), true));
 		} catch (IOException err) {
-			logger.warn("Could not fetch the dictionary for the proifle " + name + ", File: " + paths.get("tree"));
+			logger.warn("Could not fetch the dictionary for the proifle " + properties.getProperty("name") + ", File: "
+					+ properties.getProperty("tree"));
 		}
 		logger.debug("Tree successfully loaded");
 	}
@@ -228,13 +234,14 @@ public class Profile implements Serializable {
 	 */
 	private void saveTree() {
 		if (tree != null) {
-			logger.debug("save tree to " + paths.get("tree"));
+			logger.debug("save tree to " + properties.getProperty("tree"));
 			try {
-				ImportExportManager.exportToFile(tree.exportToHashMap(), paths.get("tree"));
+				ImportExportManager.exportToFile(tree.exportToHashMap(), properties.getProperty("tree"));
 			} catch (IOException err) {
-				logger.error("Not able to save the tree for proifle " + name + " to " + paths.get("tree"));
+				logger.error("Not able to save the tree for proifle " + properties.getProperty("name") + " to "
+						+ properties.getProperty("tree"));
 			}
-			logger.debug("save Chars to " + paths.get("chars"));
+			logger.debug("save Chars to " + properties.getProperty("chars"));
 			tree.saveAllowedChars();
 		} else {
 			logger.debug("Tree not saved, because not existend");
@@ -338,7 +345,7 @@ public class Profile implements Serializable {
 	 * @author SebastianN
 	 */
 	public String getName() {
-		return name;
+		return properties.getProperty("name");
 	}
 	
 	
@@ -349,7 +356,7 @@ public class Profile implements Serializable {
 	 * @author SebastianN
 	 */
 	public void setName(String newName) {
-		name = newName;
+		properties.setProperty("name", newName);
 	}
 	
 	
@@ -381,43 +388,52 @@ public class Profile implements Serializable {
 	
 	
 	public boolean isAutoProfileChange() {
-		return autoProfileChange;
+		return properties.getProperty("autoProfileChange").equals("true");
 	}
 	
 	
 	public void setAutoProfileChange(boolean autoProfileChange) {
-		this.autoProfileChange = autoProfileChange;
+		properties.setProperty("autoProfileChange", String.valueOf(autoProfileChange));
 	}
 	
 	
 	public boolean isAutoCompleting() {
-		return autoCompleting;
+		return properties.getProperty("autoCompleting").equals("true");
 	}
 	
 	
 	public void setAutoCompleting(boolean autoCompleting) {
-		this.autoCompleting = autoCompleting;
+		properties.setProperty("autoCompleting", String.valueOf(autoCompleting));
 	}
 	
 	
 	public boolean isTreeExpanding() {
-		return treeExpanding;
+		return properties.getProperty("treeExpanding").equals("true");
 	}
 	
 	
 	public void setTreeExpanding(boolean treeExpanding) {
-		this.treeExpanding = treeExpanding;
+		properties.setProperty("treeExpanding", String.valueOf(treeExpanding));
+	}
+	
+	
+	public Properties getProperties() {
+		return properties;
+	}
+	
+	
+	public void setProperties(Properties properties) {
+		this.properties = properties;
 	}
 	
 	
 	public HashMap<String, String> getPaths() {
-		return paths;
+		HashMap<String, String> hash = new HashMap<String, String>();
+		hash.put("profile", properties.getProperty("profile"));
+		hash.put("layout", properties.getProperty("layout"));
+		hash.put("tree", properties.getProperty("tree"));
+		hash.put("chars", properties.getProperty("chars"));
+		return hash;
 	}
-	
-	
-	public void setPaths(HashMap<String, String> paths) {
-		this.paths = paths;
-	}
-
 
 }
