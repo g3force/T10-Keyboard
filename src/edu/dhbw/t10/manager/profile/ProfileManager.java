@@ -122,22 +122,28 @@ public class ProfileManager {
 			// reading the config file
 			fis = new FileInputStream(datapath + "/" + configFile);
 			conf.load(fis);
+
 			logger.info("Config file read");
 		} catch (IOException err) {
 			logger.warn("Could not read the config file");
 			// config file not found, set the config values to default
 		}
-		if (!conf.contains("ActiveProfile"))
+		if (!conf.containsKey("ActiveProfile"))
+ {
+			logger.debug("ActiveProfile was not in the config file");
 			conf.setProperty("ActiveProfile", "default");
-		if (!conf.contains("PROFILE_PATH"))
+		}
+		if (!conf.containsKey("PROFILE_PATH"))
 			conf.setProperty("PROFILE_PATH", "");
 	}
 	
 	
 	public void saveConfig() {
 		try {
+			conf.setProperty("ActiveProfile", activeProfile.getName());
 			FileOutputStream fos = new FileOutputStream(datapath + "/" + configFile);
 			conf.store(fos, "Stored by closing the program");
+			logger.debug("config file saved to" + datapath + "/" + configFile);
 		} catch (IOException err) {
 			logger.error("Could not store the properties at " + datapath + " / " + configFile);
 			err.printStackTrace();
