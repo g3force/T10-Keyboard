@@ -42,7 +42,7 @@ import edu.dhbw.t10.type.tree.PriorityTree;
  */
 public class Profile implements Serializable {
 	/**  */
-	private static final long			serialVersionUID	= 5085464540715301877L;
+	private static final long			serialVersionUID	= 5085464540715301878L;
 	// --------------------------------------------------------------------------
 	// --- variables and constants ----------------------------------------------
 	// --------------------------------------------------------------------------
@@ -106,6 +106,10 @@ public class Profile implements Serializable {
 	
 	public Profile(Properties prop) {
 		properties = prop;
+		if (!properties.containsKey("name")) {
+			logger.error("Tried to load profile with invalid properties");
+			throw new ExceptionInInitializerError();
+		}
 		load();
 	}
 

@@ -11,10 +11,12 @@
 		<fileset dir="lib"/>
 	</copy>
 
-	<exec executable="git" output="src/res/version">
+	<exec executable="git" output="src/res/version" failifexecutionfails="false">
 		<arg line="describe" />
 		<arg line="--tags" />
 	</exec> 
+
+	<exec executable="./getREV.sh" output="src/res/rev" failifexecutionfails="false" /> 
 
 	<target name="compress">
 		<jar destfile="t10-keyboard.jar" basedir="bin">
