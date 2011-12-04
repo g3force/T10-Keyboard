@@ -395,7 +395,7 @@ public class Output {
 	 * - COMBI for Key COmbination functionallity; used in printCombi()<br>
 	 * - SHIFT for shift a Key to its Uppercase and type it...<br>
 	 * 
-	 * Hint: keyPress('ö') tested and it don't work<br>
+	 * Hint: keyPress('<oe>') tested and it doesn't work<br>
 	 * 
 	 * @param int key, int function
 	 * @return boolean

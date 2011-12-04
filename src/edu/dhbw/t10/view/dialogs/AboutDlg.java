@@ -74,13 +74,12 @@ public class AboutDlg extends JDialog {
 		}
 
 
-		JLabel titleLbl = new JLabel("<html>Bildschirmtastatur mit intelligenter Wortvervollständigung<br>Version: "
+		JLabel titleLbl = new JLabel("<html>On-Screen keyboard with intelligent word completition<br>Version: "
 				+ SuperFelix.VERSION + "<br>Git Revision: " + SuperFelix.REV + "</html>");
 		titleLbl.setAlignmentX(CENTER_ALIGNMENT);
 		titleLbl.setAlignmentY(CENTER_ALIGNMENT);
-		JLabel descriptionLbl = new JLabel("<html>Ein Studentenprojekt im Rahmen <br>"
-				+ "der Vorlesung Software Engineering, <br>"
-				+ "3.Semester, DHBW Mannheim.</html>");
+		JLabel descriptionLbl = new JLabel("<html>A student project in <br>" + "the lecture Software Engineering, <br>"
+				+ "3. semester, DHBW Mannheim.</html>");
 		JLabel authorLbl = new JLabel(
 				"<html>Daniel Andres Lopez, Nicolai Ommer,<br>Dirk Klostermann, Sebastian Nickel,<br>Felix Pistorius<html>");
 		

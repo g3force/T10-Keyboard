@@ -87,7 +87,7 @@ public class ProfileManager {
 		loadConfig();
 
 		// fill activeProfileName and profilePathes with the data from the config object
-		loadSerializedProfiles(); // deserializes all profiles, fills profiles
+		loadProfiles(); // deserializes all profiles, fills profiles
 
 		// if no profiles were loaded, create a new one
 		if (profiles.size() == 0) {
@@ -368,7 +368,7 @@ public class ProfileManager {
 	 * 
 	 * @author SebastianN
 	 */
-	private void loadSerializedProfiles() {
+	private void loadProfiles() {
 		int counter = 0;
 		if (profiles == null) {
 			profiles = new ArrayList<Profile>();
@@ -394,12 +394,14 @@ public class ProfileManager {
 				FileInputStream fis = new FileInputStream(profileFile);
 				prop.load(fis);
 				prof = new Profile(prop);
+				profiles.add(prof);
 			} catch (IOException err) {
-				prof = new Profile("toDelete, take the new profile format", datapath);
+				// prof = new Profile("toDelete, take the new profile format", datapath);
 				logger.warn("Could not read the profile file");
+			} catch (ExceptionInInitializerError e) {
+				// TODO DirkK or Anybody else: handle old profiles
 			}
 
-			profiles.add(prof);
 		}
 		logger.info("Deserialized " + counter + " profiles.");
 	}
