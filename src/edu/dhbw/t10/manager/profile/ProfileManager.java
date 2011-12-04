@@ -4,20 +4,21 @@
  * Project: T10 On-Screen Keyboard
  * Date: Oct 15, 2011
  * Author(s): NicolaiO
- * 
+ * z *
  * *********************************************************
  */
 package edu.dhbw.t10.manager.profile;
 
 import java.awt.Dimension;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Map.Entry;
+import java.util.Properties;
 import java.util.zip.ZipException;
 
 import org.apache.log4j.Logger;
@@ -43,10 +44,9 @@ public class ProfileManager {
 	private static final Logger	logger					= Logger.getLogger(ProfileManager.class);
 	private String						datapath;
 	private String						configFile				= "t10keyboard.conf";
+	Properties							conf;
 	private ArrayList<Profile>		profiles					= new ArrayList<Profile>();
-	private ArrayList<String>		profilePathes			= new ArrayList<String>();
 	private Profile					activeProfile;
-	private String						defaultActiveProfile	= "default";
 	private MainPanel					mainPanel;
 	private boolean					changeProfileBlocked	= false;
 	
@@ -82,24 +82,26 @@ public class ProfileManager {
 		if (!tf.exists()) {
 			tf.mkdirs();
 		}
+		
+		// reading the config file once, if properties not found, use default ones; updates itself
+		loadConfig();
 
-		// fill activeProfileName and profilePathes with the data from the config file
-		readConfig();
+		// fill activeProfileName and profilePathes with the data from the config object
 		loadSerializedProfiles(); // deserializes all profiles, fills profiles
+
 		// if no profiles were loaded, create a new one
 		if (profiles.size() == 0) {
 			logger.debug("No profiles loaded. New profile will be created.");
-			createProfile(defaultActiveProfile);
+			activeProfile = createProfile("default");
 		}
 
 		// set active profile by defauleActiveProfile which was either loaded from config file or is set to a default
 		// value
-		activeProfile = getProfileByName(defaultActiveProfile);
-
-		// if the defaultActiveProfile in the config file references a non existent profile, create a new profile with the
-		// given name
-		if (activeProfile == null) {
-			activeProfile = createProfile(defaultActiveProfile);
+		else {
+			activeProfile = getProfileByName(conf.getProperty("ActiveProfile"));
+			if (activeProfile == null) {
+				activeProfile = profiles.get(0);
+			}
 		}
 		
 		// change to chosen profile
@@ -113,135 +115,47 @@ public class ProfileManager {
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
 	
-	
+	// ------------conf-----------
 	/**
-	 * Reads the config-file with all entrys and assigns
-	 * the read values.
-	 * 
-	 * @author SebastianN
+	 * loads the config file, fills the conf property attribute
+	 * @author dirk
 	 */
-	private void readConfig() {
+	private void loadConfig() {
+		conf = new Properties();
+		FileInputStream fis;
 		try {
-			File confFile = new File(datapath + "/" + configFile);
-			if (confFile.exists()) {
-				FileReader fr = new FileReader(confFile);
-				BufferedReader br = new BufferedReader(fr);
-				
-				String entry = "";
-				while ((entry = br.readLine()) != null) {
-					// Commentary-Indicator: //
-					if (entry.indexOf("//") >= 0)
-						entry = entry.substring(0, entry.indexOf("//"));
-					
-					if (entry.isEmpty()) // In case an entry was just a comment.
-						continue;
-					
-					// Comment-Indicators deleted.
-					// Regular Format:
-					// ActiveProfile=NAMEOFPROFILE
-					// ProfilePath=config.cfg
-					// ProfilePath=C:\lol.cfg
-					int posOfEql = entry.indexOf("=");
-					
-					// Split and afterwards assign values.
-					try {
-						String valName = entry.substring(0, posOfEql);
-						String value = entry.substring(posOfEql + 1, entry.length());
-						if (valName.toLowerCase().equals("profilepath")) {
-							if (value.isEmpty())
-								continue;
-							profilePathes.add(value);
-						} else if (valName.toLowerCase().equals("activeprofile")) {
-							if (value.isEmpty())
-								continue;
-							defaultActiveProfile = value;
-						}
-					} catch (Exception ex) {
-						ex.printStackTrace();
-						logger.error("Exception in readConfig().assignValues: " + ex.toString());
-					}
-				}
-				br.close();
-				logger.info("config loaded: activeProfileName=" + defaultActiveProfile + " profiles="
-						+ profilePathes.size());
-			} else {
-				logger.debug("Config file could not be found. Doesn't matter, though.");
-			}
-		} catch (IOException io) {
-			logger.debug("IOException in readConfig()");
-			io.printStackTrace();
-		} catch (Exception ex) {
-			logger.debug("Exception in readConfig(): " + ex.toString());
-			ex.printStackTrace();
+			// reading the config file
+			fis = new FileInputStream(datapath + "/" + configFile);
+			conf.load(fis);
+			logger.info("Config file read");
+		} catch (IOException err) {
+			logger.warn("Could not read the config file");
+			// config file not found, set the config values to default
 		}
-	}
-	
-	
-	/**
-	 * Creates a comment for config-files.
-	 * 
-	 * @param comment - String. Comment you want to add.
-	 * @return Changed comment as String.
-	 * @author SebastianN
-	 */
-	private String createComment(String comment) {
-		comment = "//" + comment;
-		return comment;
-	}
-	
-	
-	/**
-	 * Add an entry to the config file.
-	 * 
-	 * @param bw - Handle/Reference to a BufferedWriter
-	 * @param entry - String containing what you want to write.
-	 * @author SebastianN
-	 */
-	private void addEntry(BufferedWriter bw, String entry) {
-		try {
-			bw.write(entry + "\n");
-		} catch (IOException io) {
-			io.printStackTrace();
+		if (!conf.containsKey("ActiveProfile"))
+ {
+			logger.debug("ActiveProfile was not in the config file");
+			conf.setProperty("ActiveProfile", "default");
 		}
+		if (!conf.containsKey("PROFILE_PATH"))
+			conf.setProperty("PROFILE_PATH", "");
 	}
 	
 	
-	/**
-	 * Saves the name of the active profile and the path to all profile-files.
-	 * 
-	 * @author SebastianN
-	 */
 	public void saveConfig() {
 		try {
-			File confFile = new File(datapath + "/" + configFile);
-			FileWriter fw = new FileWriter(confFile);
-			BufferedWriter bw = new BufferedWriter(fw);
-			
-			addEntry(bw, createComment("Configfile for T10"));
-			
-			
-			if (activeProfile != null)
-				addEntry(bw, "ActiveProfile=" + activeProfile.getName());
-			
-			for (int i = 0; i < profiles.size(); i++) {
-				if (profiles.get(i).getPaths().get("profile").isEmpty()) {
-					logger.error("Profile " + profiles.get(i).getName() + " has no path to profile");
-					continue;
-				}
-				addEntry(bw, "ProfilePath=" + profiles.get(i).getPaths().get("profile"));
-			}
-			logger.info("Config file saved");
-			bw.close();
-		} catch (IOException io) {
-			logger.debug("IOException in readConfig()");
-			io.printStackTrace();
-		} catch (Exception ex) {
-			logger.debug("Exception in readConfig(): " + ex.toString());
-			ex.printStackTrace();
+			conf.setProperty("ActiveProfile", activeProfile.getName());
+			FileOutputStream fos = new FileOutputStream(datapath + "/" + configFile);
+			conf.store(fos, "Stored by closing the program");
+			logger.debug("config file saved to" + datapath + "/" + configFile);
+		} catch (IOException err) {
+			logger.error("Could not store the properties at " + datapath + " / " + configFile);
+			err.printStackTrace();
 		}
 	}
 	
 	
+	// -------------------------profile---------------
 	/**
 	 * Create a new profile
 	 * 
@@ -282,6 +196,56 @@ public class ProfileManager {
 	}
 	
 	
+	/**
+	 * 
+	 * Deletes a profile depending on the ID.<br/>
+	 * If the ID we deleted was currently active,
+	 * we either mark the first profile as active or mark that we need a new profile.
+	 * 
+	 * @param id - int. ID of the profile you want to delete.
+	 */
+	public void deleteProfile(Profile profile) {
+		if (profiles.size() <= 1) {
+			logger.debug("Only one or zero profiles left. Can't delete.");
+			return;
+		}
+		profiles.remove(profile);
+		File dir = new File(profile.getPaths().get("profile"));
+		dir = dir.getParentFile();
+		for (Entry<String, String> file : profile.getPaths().entrySet()) {
+			if (!existDependency(file.getValue()))
+				deleteFile(file.getValue());
+		}
+		dir.delete();
+		getActive().loadDDLs(profiles);
+	}
+	
+	
+	private boolean existDependency(String f) {
+		int counter = 0;
+		for (Profile profile : profiles) {
+			for (String file : profile.getPaths().values()) {
+				if (file.equals(f)) {
+					counter++;
+				}
+			}
+		}
+		if (counter < 1) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	
+	// -----------------------IMPORT/EXPORT------------------
+	/**
+	 * imports a new profile
+	 * @param zipFile the zip file containing the data
+	 * @throws ZipException
+	 * @throws IOException
+	 * @author dirk
+	 */
 	public void importProfiles(File zipFile) throws ZipException, IOException {
 		// Finding possible Profile Name
 		String profileName = zipFile.getName();
@@ -306,36 +270,21 @@ public class ProfileManager {
 	}
 	
 	
+	/**
+	 * exports a profile to zip
+	 * @param zipFile
+	 * @throws IOException
+	 * @author dirk
+	 */
+	
 	public void exportProfiles(String zipFile) throws IOException {
 		getActive().save();
 		ImportExportManager.exportProfiles(getActive(), new File(zipFile));
 	}
 
 	
-	/**
-	 * 
-	 * Deletes a profile depending on the ID.<br/>
-	 * If the ID we deleted was currently active,
-	 * we either mark the first profile as active or mark that we need a new profile.
-	 * 
-	 * @param id - int. ID of the profile you want to delete.
-	 */
-	public void deleteProfile(Profile profile) {
-		if (profiles.size() <= 1) {
-			logger.debug("Only one or zero profiles left. Can't delete.");
-			return;
-		}
-		profiles.remove(profile);
-		File dir = new File(profile.getPaths().get("profile"));
-		dir = dir.getParentFile();
-		for (Entry<String, String> file : profile.getPaths().entrySet()) {
-			deleteFile(file.getValue());
-		}
-		dir.delete();
-		getActive().loadDDLs(profiles);
-	}
-	
-	
+	// ---------------files--------------
+
 	/**
 	 * Delete the given file and log an error, if failed.
 	 * 
@@ -349,7 +298,8 @@ public class ProfileManager {
 			logger.error(path + " could not be deleted.");
 	}
 	
-
+	
+	// ---------------------active profile--------------
 	/**
 	 * Marks a profile as 'active'.
 	 * 
@@ -389,6 +339,7 @@ public class ProfileManager {
 	}
 	
 	
+	// ---------------------------layout
 	/**
 	 * Load the given KeyboardLayout into the Mainpanel and remove all other Components.
 	 * This is neccessary, when you change the profile and thus the Layout!
@@ -422,19 +373,70 @@ public class ProfileManager {
 		if (profiles == null) {
 			profiles = new ArrayList<Profile>();
 		}
-		for (int i = 0; i < profilePathes.size(); i++) {
+		// temp file containing all files
+		LinkedList<File> profileFiles = new LinkedList<File>();
+		
+		// getting all profile files from the default directory
+		profileFiles.addAll(getProfileFiles(new File(datapath + "/profiles")));
+
+		// getting all profile files from the PROFILE_PATH directory
+		String[] profilePathes = conf.getProperty("PROFILE_PATH").split(":");
+		for (int i = 0; i < profilePathes.length; i++) {
+			File file = new File(profilePathes[i]);
+			profileFiles.addAll(getProfileFiles(file));
+		}
+
+		//deserializing the profiles
+		for (File profileFile : profileFiles) {
+			Properties prop = new Properties();
 			try {
-				Profile dProf = (Profile) Serializer.deserialize(profilePathes.get(i));
-				profiles.add(dProf);
-				counter++;
-			} catch (IOException io) {
-				logger.error("Not able to deserialize Profile from file " + profilePathes.get(i));
+				FileInputStream fis = new FileInputStream(profileFile);
+				prop.load(fis);
+			} catch (IOException err) {
+				logger.warn("Could not deserialize profile file");
 			}
+			Profile prof = new Profile(prop);
+			profiles.add(prof);
 		}
 		logger.info("Deserialized " + counter + " profiles.");
 	}
 	
 	
+	private LinkedList<File> getProfileFiles(File f) {
+		//define filter for all directories in a given dir
+		FilenameFilter isDir = new FilenameFilter() {
+		    public boolean accept(File dir, String name) {
+				return new File(dir.toString() + "/" + name).isDirectory();
+		    }
+		};
+		//define filter for all .proifle files in a given dir
+		FilenameFilter isProject = new FilenameFilter() {
+		    public boolean accept(File dir, String name) {
+				if (name.lastIndexOf(".") > 0)
+					return name.substring(name.lastIndexOf("."), name.length()).equals(".profile");
+				else
+					return false;
+		    }
+		};
+		// getting all profile files directly in the folder
+		LinkedList<File> retur = new LinkedList<File>();
+		File[] ret = f.listFiles(isProject);
+		if (ret != null) {
+			for (File profile : ret) {
+				retur.add(profile);
+			}
+		}
+		// adding all profile files recursively
+		File[] subdirs = f.listFiles(isDir);
+		if(subdirs!=null)
+			for (File subdir : subdirs) {
+			retur.addAll(getProfileFiles(subdir));
+		}
+		return retur;
+	}
+	
+
+
 	/**
 	 * Check if the given profile name exists
 	 * 
