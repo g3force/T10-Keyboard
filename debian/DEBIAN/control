@@ -1,6 +1,0 @@
-Package: t10-keyboard
-Maintainer: UseAcc - FIT 42
-Architecture: all
-Depends: default-jre
-Description: T10 On-Screen Keyboard
-Version: 1.0-639
