@@ -389,13 +389,16 @@ public class ProfileManager {
 		//deserializing the profiles
 		for (File profileFile : profileFiles) {
 			Properties prop = new Properties();
+			Profile prof;
 			try {
 				FileInputStream fis = new FileInputStream(profileFile);
 				prop.load(fis);
+				prof = new Profile(prop);
 			} catch (IOException err) {
-				logger.warn("Could not deserialize profile file");
+				prof = new Profile("toDelete, take the new profile format", datapath);
+				logger.warn("Could not read the profile file");
 			}
-			Profile prof = new Profile(prop);
+
 			profiles.add(prof);
 		}
 		logger.info("Deserialized " + counter + " profiles.");
