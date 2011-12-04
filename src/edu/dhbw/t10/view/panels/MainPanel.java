@@ -84,7 +84,7 @@ public class MainPanel extends JPanel implements ComponentListener {
 		logger.debug("Layout added.");
 	}
 	
-	
+
 	@Override
 	public void componentHidden(ComponentEvent e) {
 		

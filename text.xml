@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<?eclipse.ant.import?>
-<project basedir="." default="build" name="t10-onscreen-keyboard">
-
-</project>
