@@ -1,12 +1,20 @@
-<?xml version="1.0" encoding="UTF-8"?><launchConfiguration type="org.eclipse.ant.AntBuilderLaunchConfigurationType">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.eclipse.ant.AntBuilderLaunchConfigurationType">
 <booleanAttribute key="org.eclipse.ant.ui.ATTR_TARGETS_UPDATED" value="true"/>
 <booleanAttribute key="org.eclipse.ant.ui.DEFAULT_VM_INSTALL" value="false"/>
-<stringAttribute key="org.eclipse.debug.core.ATTR_REFRESH_SCOPE" value="${resource}"/>
 <booleanAttribute key="org.eclipse.debug.ui.ATTR_LAUNCH_IN_BACKGROUND" value="false"/>
 <stringAttribute key="org.eclipse.jdt.launching.CLASSPATH_PROVIDER" value="org.eclipse.ant.ui.AntClasspathProvider"/>
 <booleanAttribute key="org.eclipse.jdt.launching.DEFAULT_CLASSPATH" value="true"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="t10-onscreen-keyboard"/>
+<mapAttribute key="org.eclipse.ui.externaltools.ATTR_ANT_PROPERTIES">
+<mapEntry key="eclipse.home" value="/home/geforce/.eclipse"/>
+<mapEntry key="eclipse.pdebuild.home" value="/home/geforce/.eclipse/plugins/org.eclipse.pde.build_3.7.0.v20110512-1320/./"/>
+<mapEntry key="eclipse.pdebuild.scripts" value="/home/geforce/.eclipse/plugins/org.eclipse.pde.build_3.7.0.v20110512-1320/scripts/"/>
+<mapEntry key="eclipse.pdebuild.templates" value="/home/geforce/.eclipse/plugins/org.eclipse.pde.build_3.7.0.v20110512-1320/templates/"/>
+<mapEntry key="eclipse.running" value="true"/>
+<mapEntry key="git.rev" value="$(git rev-parse HEAD)"/>
+</mapAttribute>
 <stringAttribute key="org.eclipse.ui.externaltools.ATTR_LOCATION" value="${workspace_loc:/t10-onscreen-keyboard/build-custom.xml}"/>
-<stringAttribute key="org.eclipse.ui.externaltools.ATTR_RUN_BUILD_KINDS" value=""/>
+<stringAttribute key="org.eclipse.ui.externaltools.ATTR_RUN_BUILD_KINDS" value="full,incremental,auto,"/>
 <booleanAttribute key="org.eclipse.ui.externaltools.ATTR_TRIGGERS_CONFIGURED" value="true"/>
 </launchConfiguration>

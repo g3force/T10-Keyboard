@@ -79,6 +79,14 @@ public class SuperFelix {
 	 * @author NicolaiO
 	 */
 	public static void main(String[] args) {
+		
+		if (args.length == 1) {
+			if (args[0].equals("-v") || args[0].equals("--version")) {
+				System.out.println("Version: " + VERSION);
+				System.out.println("Revision: " + REV);
+				System.exit(0);
+			}
+		}
 
 		new SuperFelix();
 
