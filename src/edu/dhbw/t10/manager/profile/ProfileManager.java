@@ -12,7 +12,6 @@ package edu.dhbw.t10.manager.profile;
 import java.awt.Dimension;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -24,6 +23,7 @@ import java.util.zip.ZipException;
 import org.apache.log4j.Logger;
 
 import edu.dhbw.t10.manager.Controller;
+import edu.dhbw.t10.type.Config;
 import edu.dhbw.t10.type.keyboard.DropDownList;
 import edu.dhbw.t10.type.keyboard.Image;
 import edu.dhbw.t10.type.keyboard.KeyboardLayout;
@@ -43,8 +43,6 @@ public class ProfileManager {
 	// --------------------------------------------------------------------------
 	private static final Logger	logger					= Logger.getLogger(ProfileManager.class);
 	private String						datapath;
-	private String						configFile				= "t10keyboard.conf";
-	Properties							conf;
 	private ArrayList<Profile>		profiles					= new ArrayList<Profile>();
 	private Profile					activeProfile;
 	private MainPanel					mainPanel;
@@ -84,7 +82,7 @@ public class ProfileManager {
 		}
 		
 		// reading the config file once, if properties not found, use default ones; updates itself
-		loadConfig();
+		Config.loadConfig(datapath);
 
 		// fill activeProfileName and profilePathes with the data from the config object
 		loadProfiles(); // deserializes all profiles, fills profiles
@@ -98,7 +96,7 @@ public class ProfileManager {
 		// set active profile by defauleActiveProfile which was either loaded from config file or is set to a default
 		// value
 		else {
-			activeProfile = getProfileByName(conf.getProperty("ActiveProfile"));
+			activeProfile = getProfileByName(Config.getConf().getProperty("ActiveProfile"));
 			if (activeProfile == null) {
 				activeProfile = profiles.get(0);
 			}
@@ -115,44 +113,6 @@ public class ProfileManager {
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
 	
-	// ------------conf-----------
-	/**
-	 * loads the config file, fills the conf property attribute
-	 * @author dirk
-	 */
-	private void loadConfig() {
-		conf = new Properties();
-		FileInputStream fis;
-		try {
-			// reading the config file
-			fis = new FileInputStream(datapath + "/" + configFile);
-			conf.load(fis);
-			logger.info("Config file read");
-		} catch (IOException err) {
-			logger.warn("Could not read the config file");
-			// config file not found, set the config values to default
-		}
-		if (!conf.containsKey("ActiveProfile"))
- {
-			logger.debug("ActiveProfile was not in the config file");
-			conf.setProperty("ActiveProfile", "default");
-		}
-		if (!conf.containsKey("PROFILE_PATH"))
-			conf.setProperty("PROFILE_PATH", "");
-	}
-	
-	
-	public void saveConfig() {
-		try {
-			conf.setProperty("ActiveProfile", activeProfile.getName());
-			FileOutputStream fos = new FileOutputStream(datapath + "/" + configFile);
-			conf.store(fos, "Stored by closing the program");
-			logger.debug("config file saved to" + datapath + "/" + configFile);
-		} catch (IOException err) {
-			logger.error("Could not store the properties at " + datapath + " / " + configFile);
-			err.printStackTrace();
-		}
-	}
 	
 	
 	// -------------------------profile---------------
@@ -326,6 +286,7 @@ public class ProfileManager {
 			activeProfile = newActive;
 			activeProfile.load();
 			activeProfile.loadDDLs(profiles);
+			Config.getConf().setProperty("ActiveProfile", activeProfile.getName());
 			
 			// update GUI
 			loadLayoutToGUI(activeProfile.getKbdLayout());
@@ -339,7 +300,7 @@ public class ProfileManager {
 	}
 	
 	
-	// ---------------------------layout
+	// ---------------------------layout-----------------
 	/**
 	 * Load the given KeyboardLayout into the Mainpanel and remove all other Components.
 	 * This is neccessary, when you change the profile and thus the Layout!
@@ -380,7 +341,7 @@ public class ProfileManager {
 		profileFiles.addAll(getProfileFiles(new File(datapath + "/profiles")));
 
 		// getting all profile files from the PROFILE_PATH directory
-		String[] profilePathes = conf.getProperty("PROFILE_PATH").split(":");
+		String[] profilePathes = Config.getConf().getProperty("PROFILE_PATH").split(":");
 		for (int i = 0; i < profilePathes.length; i++) {
 			File file = new File(profilePathes[i]);
 			profileFiles.addAll(getProfileFiles(file));
@@ -456,6 +417,12 @@ public class ProfileManager {
 		return true;
 	}
 	
+	
+	// ---------------config-------------
+	public void saveConfig() {
+		Config.saveConfig(datapath);
+	}
+
 	
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
