@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import org.apache.log4j.Logger;
 
 import edu.dhbw.t10.manager.Controller;
+import edu.dhbw.t10.type.Config;
 import edu.dhbw.t10.type.keyboard.key.Button;
 import edu.dhbw.t10.type.keyboard.key.Key;
 import edu.dhbw.t10.type.keyboard.key.ModeKey;
@@ -37,6 +38,10 @@ public class OutputManager {
 	Output								out;
 	private String						typedWord;
 	private String						suggest;
+	// if unMark is true the method unMark() is used for unmarking suggested chars, otherwise all suggests are deleted a
+	// newly printed;
+	// also if this value is true marked strings could be overwritten without deleting them first...
+	private boolean					unMark;
 	
 	
 	// --------------------------------------------------------------------------
@@ -58,6 +63,8 @@ public class OutputManager {
 			System.exit(-1);
 		}
 		clearWord();
+		unMark = Config.getConf().getProperty("unMark", "false").equals("true");
+		Config.getConf().setProperty("unMark", String.valueOf(unMark));
 		logger.debug("initialized");
 	}
 	
@@ -123,9 +130,8 @@ public class OutputManager {
 	
 	/**
 	 * Unmark all things via pressing the RIGHT Key.
+	 * Is used when unMark property is set to true.
 	 * 
-	 * @deprecated not working with all application. The unmark of marked chars works differently in different
-	 *             applications.
 	 * @author DanielAl
 	 */
 	public void unMark() {
@@ -136,6 +142,7 @@ public class OutputManager {
 	
 	/**
 	 * Delete all marked things via pressing the DELETE Key
+	 * Is used when unMark property is set to false.
 	 * 
 	 * @author DanielAl
 	 */
@@ -214,9 +221,12 @@ public class OutputManager {
 	 * @author DanielAl
 	 */
 	public void keyIsAccept(Key key, String typedWord, String suggest) {
-		if (suggest.length() > typedWord.length())
-			// outputMan.unMark();
-			printSuggest(suggest, typedWord, 1);
+		if (suggest.length() > typedWord.length()) {
+			if (unMark)
+				unMark();
+			else
+				printSuggest(suggest, typedWord, 1);
+		}
 		printKey(key);
 	}
 	
@@ -245,7 +255,7 @@ public class OutputManager {
 			// If oldSuggest not equal to oldTypedWord, it must be longer and so it is marked. Then this mark has to be
 			// deleted first.
 			if (!oldTypedWord.equals(oldSuggest))
-				delMark(oldSuggest.length() - oldTypedWord.length());
+					delMark(oldSuggest.length() - oldTypedWord.length());
 			deleteChar(1);
 			printSuggest(suggest, typedWord);
 		} else {
@@ -263,7 +273,7 @@ public class OutputManager {
 	 * @author DanielAl
 	 */
 	public void keyIsControlOrUnicode(Key key) {
-		if (typedWord.length() < suggest.length()) {
+		if (typedWord.length() < suggest.length() && !unMark) {
 			delMark(suggest.length() - typedWord.length());
 		}
 		printKey(key);
