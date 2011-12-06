@@ -95,8 +95,8 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 		showStatusMessage("Keyboard initializing...");
 		
 		// load Managers
-		outputMan = new OutputManager();
 		profileMan = new ProfileManager(mainPanel);
+		outputMan = new OutputManager();
 		
 		// now, the Controller should be ready!
 		// hereafter, you should call methods, that need the controllers ActionEvents!
