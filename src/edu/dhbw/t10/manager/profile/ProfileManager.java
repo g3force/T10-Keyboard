@@ -336,6 +336,16 @@ public class ProfileManager {
 		if (profiles == null) {
 			profiles = new ArrayList<Profile_V2>();
 		}
+		//define filter for all .chars files in a given dir
+		FilenameFilter isChar = new FilenameFilter() {
+				    public boolean accept(File dir, String name) {
+						if (name.lastIndexOf(".") > 0)
+							return name.substring(name.lastIndexOf("."), name.length()).equals(".chars");
+						else
+							return false;
+				    }
+				};
+		
 		// temp file containing all files
 		LinkedList<File> profileFiles = new LinkedList<File>();
 		
@@ -369,17 +379,19 @@ public class ProfileManager {
 						prop.setProperty(c.getKey(), c.getValue());
 					}
 					prop.setProperty("chars", Config.getConf().getProperty("defaultAllowedChars"));
-					logger.debug("NICO: chars: " + prop.getProperty("chars"));
 					prop.setProperty("autoCompleting", String.valueOf(p.isAutoCompleting()));
 					prop.setProperty("treeExpanding", String.valueOf(p.isTreeExpanding()));
 					prop.setProperty("autoProfileChange", String.valueOf(p.isAutoProfileChange()));
 					prof = new Profile_V2(prop);
+					prof.save();
 					profiles.add(prof);
+					File oldCharFile = new File(p.getPaths().get("chars"));
+					if (oldCharFile.exists())
+						oldCharFile.delete();
 				} catch (IOException err) {
 					logger.error("Found profile is neither a new profile config file, nor a serialized profile");
 				}
 			}
-
 		}
 		logger.info("Deserialized " + counter + " profiles.");
 	}
