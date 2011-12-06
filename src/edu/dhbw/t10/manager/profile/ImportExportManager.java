@@ -31,7 +31,7 @@ import java.util.zip.ZipOutputStream;
 import org.apache.log4j.Logger;
 
 import edu.dhbw.t10.helper.StringHelper;
-import edu.dhbw.t10.type.profile.Profile;
+import edu.dhbw.t10.type.profile.Profile_V2;
 
 
 /**
@@ -228,7 +228,7 @@ public class ImportExportManager {
 	 * @throws IOException
 	 * @author DirkK
 	 */
-	public static void exportProfiles(Profile prof, File folder) throws IOException {
+	public static void exportProfiles(Profile_V2 prof, File folder) throws IOException {
 		logger.debug("Exporting profile " + folder.getName());
 		BufferedInputStream origin = null;
 		String zipFile = folder.toString();
@@ -267,7 +267,7 @@ public class ImportExportManager {
 	 * @throws IOException
 	 * @author DirkK
 	 */
-	public static void importProfiles(File zipFile, Profile prof) throws ZipException, IOException {
+	public static void importProfiles(File zipFile, Profile_V2 prof) throws ZipException, IOException {
 		logger.debug("Extracting zip file " + zipFile.toString());
 
 		// Reading the zip file
