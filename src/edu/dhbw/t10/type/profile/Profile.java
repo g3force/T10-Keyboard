@@ -26,6 +26,7 @@ import edu.dhbw.t10.manager.keyboard.KeyboardLayoutLoader;
 import edu.dhbw.t10.manager.keyboard.KeyboardLayoutSaver;
 import edu.dhbw.t10.manager.keyboard.KeymapLoader;
 import edu.dhbw.t10.manager.profile.ImportExportManager;
+import edu.dhbw.t10.type.Config;
 import edu.dhbw.t10.type.keyboard.DropDownList;
 import edu.dhbw.t10.type.keyboard.KeyboardLayout;
 import edu.dhbw.t10.type.keyboard.key.MuteButton;
@@ -50,7 +51,7 @@ public class Profile implements Serializable {
 	 * name = profilename
 	 * profile = path to profile config file
 	 * layout = path to layout
-	 * chars = path to the chars file
+	 * chars = String containing the allowed chars
 	 * tree = path to the tree file
 	 * autoCompleting = true/false
 	 * treeExpanding = true/false
@@ -83,6 +84,7 @@ public class Profile implements Serializable {
 		properties.setProperty("autoCompleting", "true");
 		properties.setProperty("treeExpanding", "true");
 		properties.setProperty("autoProfileChange", "true");
+		properties.setProperty("chars", Config.getConf().getProperty("defaultAllowedChars"));
 
 		String name = properties.getProperty("name");
 		File file = new File(datapath + "/profiles");
@@ -96,7 +98,6 @@ public class Profile implements Serializable {
 		properties.setProperty("layout", datapath + "/profiles/" + name + "/" + name + ".layout");
 		properties.setProperty("profile", datapath + "/profiles/" + name + "/" + name + ".profile");
 		properties.setProperty("tree", datapath + "/profiles/" + name + "/" + name + ".tree");
-		properties.setProperty("chars", datapath + "/profiles/" + name + "/" + name + ".chars");
 		
 		logger.debug("Profile " + name + " created");
 		load();
@@ -217,7 +218,12 @@ public class Profile implements Serializable {
 	 * @author DirkK
 	 */
 	private void loadTree() {
-		tree = new PriorityTree(properties.getProperty("chars"));
+		tree = new PriorityTree();
+		boolean successfullyCharsLoaded = tree.loadChars(properties.getProperty("chars"));
+		if (!successfullyCharsLoaded) {
+			properties.setProperty("chars", Config.getConf().getProperty("defaultAllowedChars"));
+			tree.loadChars(Config.getConf().getProperty("defaultAllowedChars"));
+		}
 		try {
 			tree.importFromHashMap(ImportExportManager.importFromFile(properties.getProperty("tree"), true));
 		} catch (IOException err) {
@@ -242,8 +248,7 @@ public class Profile implements Serializable {
 				logger.error("Not able to save the tree for proifle " + properties.getProperty("name") + " to "
 						+ properties.getProperty("tree"));
 			}
-			logger.debug("save Chars to " + properties.getProperty("chars"));
-			tree.saveAllowedChars();
+			logger.debug("save the allowed chars(" + properties.getProperty("chars") + ")");
 		} else {
 			logger.debug("Tree not saved, because not existend");
 		}
@@ -433,8 +438,12 @@ public class Profile implements Serializable {
 		hash.put("profile", properties.getProperty("profile"));
 		hash.put("layout", properties.getProperty("layout"));
 		hash.put("tree", properties.getProperty("tree"));
-		hash.put("chars", properties.getProperty("chars"));
 		return hash;
 	}
-
+	
+	
+	public void setAllowedChars(String allowedChars) {
+		tree.loadChars(allowedChars);
+		properties.setProperty("chars", allowedChars);
+	}
 }

@@ -123,6 +123,33 @@ public class StringHelper {
 		}
 		return path;
 	}
+	
+	
+	/**
+	 * String has to be of the format: (<number>(-<number>)*:)*
+	 * @param input
+	 * @return
+	 * @author dirk
+	 */
+	public static String transformNumbersToChars(String input) {
+		String output = "";
+		for (String range : input.split(":")) {
+			for (String number : range.split("-")) {
+				try {
+					int nr = Integer.parseInt(number);
+					char c = (char) nr;
+					output += String.valueOf(c) + "-";
+				} catch (NumberFormatException e) {
+					System.out.println("Exception: " + number);
+				}
+			}
+			if (output.length() > 0 && output.charAt(output.length() - 1) == '-')
+				output = output.substring(0, output.length() - 1) + ":";
+		}
+		if (output.length() > 0 && output.charAt(output.length() - 1) == ':')
+			output = output.substring(0, output.length() - 1);
+		return output;
+	}
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
