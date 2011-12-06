@@ -16,7 +16,6 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.zip.ZipException;
@@ -375,9 +374,9 @@ public class ProfileManager {
 				try {
 					Profile p = Serializer.deserialize(profileFile.toString());
 					prop.setProperty("name", p.getName());
-					for (Map.Entry<String, String> c : p.getPaths().entrySet()) {
-						prop.setProperty(c.getKey(), c.getValue());
-					}
+					prop.setProperty("profile", p.getPaths().get("profile"));
+					prop.setProperty("tree", p.getPaths().get("tree"));
+					prop.setProperty("layout", p.getPaths().get("layout"));
 					prop.setProperty("chars", Config.getConf().getProperty("defaultAllowedChars"));
 					prop.setProperty("autoCompleting", String.valueOf(p.isAutoCompleting()));
 					prop.setProperty("treeExpanding", String.valueOf(p.isTreeExpanding()));
