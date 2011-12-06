@@ -29,8 +29,8 @@ import edu.dhbw.t10.type.keyboard.DropDownList;
 import edu.dhbw.t10.type.keyboard.Image;
 import edu.dhbw.t10.type.keyboard.KeyboardLayout;
 import edu.dhbw.t10.type.keyboard.key.PhysicalButton;
+import edu.dhbw.t10.type.profile.Profile_V2;
 import edu.dhbw.t10.type.profile.Profile;
-import edu.dhbw.t10.type.profile.SerializedProfiles;
 import edu.dhbw.t10.view.panels.MainPanel;
 
 
@@ -45,8 +45,8 @@ public class ProfileManager {
 	// --------------------------------------------------------------------------
 	private static final Logger	logger					= Logger.getLogger(ProfileManager.class);
 	private String						datapath;
-	private ArrayList<Profile>		profiles					= new ArrayList<Profile>();
-	private Profile					activeProfile;
+	private ArrayList<Profile_V2>		profiles					= new ArrayList<Profile_V2>();
+	private Profile_V2					activeProfile;
 	private MainPanel					mainPanel;
 	private boolean					changeProfileBlocked	= false;
 	
@@ -126,13 +126,13 @@ public class ProfileManager {
 	 * @return Handle/Pointer to the new profile.
 	 * @author SebastianN, NicolaiO
 	 */
-	public Profile createProfile(String profileName) {
-		Profile newProfile = getProfileByName(profileName);
+	public Profile_V2 createProfile(String profileName) {
+		Profile_V2 newProfile = getProfileByName(profileName);
 		
 		if (newProfile != null) {
 			logger.warn("Profile already exists.");
 		} else {
-			newProfile = new Profile(profileName, datapath);
+			newProfile = new Profile_V2(profileName, datapath);
 			profiles.add(newProfile);
 		}
 		return newProfile;
@@ -147,7 +147,7 @@ public class ProfileManager {
 	 * @return If found, handle/reference to said profile. Otherwise NULL
 	 * @author SebastianN
 	 */
-	public Profile getProfileByName(String name) {
+	public Profile_V2 getProfileByName(String name) {
 		if (!profiles.isEmpty()) {
 			for (int i = 0; i < profiles.size(); i++) {
 				if (profiles.get(i).getName().equals(name))
@@ -166,7 +166,7 @@ public class ProfileManager {
 	 * 
 	 * @param id - int. ID of the profile you want to delete.
 	 */
-	public void deleteProfile(Profile profile) {
+	public void deleteProfile(Profile_V2 profile) {
 		if (profiles.size() <= 1) {
 			logger.debug("Only one or zero profiles left. Can't delete.");
 			return;
@@ -185,7 +185,7 @@ public class ProfileManager {
 	
 	private boolean existDependency(String f) {
 		int counter = 0;
-		for (Profile profile : profiles) {
+		for (Profile_V2 profile : profiles) {
 			for (String file : profile.getPaths().values()) {
 				if (file.equals(f)) {
 					counter++;
@@ -222,7 +222,7 @@ public class ProfileManager {
 		}
 		
 		// creating the profile
-		Profile prof = createProfile(profileName);
+		Profile_V2 prof = createProfile(profileName);
 
 		// exporting the files form the zip archive to the pathes given in the profile
 		ImportExportManager.importProfiles(zipFile, prof);
@@ -268,7 +268,7 @@ public class ProfileManager {
 	 * @param newActive - Handle of the to-be activated profile
 	 * @author SebastianN, NicolaiO
 	 */
-	public void changeProfile(Profile newActive) {
+	public void changeProfile(Profile_V2 newActive) {
 		if (!changeProfileBlocked) {
 			changeProfileBlocked = true;
 			
@@ -334,7 +334,7 @@ public class ProfileManager {
 	private void loadProfiles() {
 		int counter = 0;
 		if (profiles == null) {
-			profiles = new ArrayList<Profile>();
+			profiles = new ArrayList<Profile_V2>();
 		}
 		// temp file containing all files
 		LinkedList<File> profileFiles = new LinkedList<File>();
@@ -352,18 +352,18 @@ public class ProfileManager {
 		// create the profiles on basis of the .profile file
 		for (File profileFile : profileFiles) {
 			Properties prop = new Properties();
-			Profile prof;
+			Profile_V2 prof;
 			try {
 				FileInputStream fis = new FileInputStream(profileFile);
 				prop.load(fis);
-				prof = new Profile(prop);
+				prof = new Profile_V2(prop);
 				profiles.add(prof);
 			} catch (IOException err) {
 				// prof = new Profile("toDelete, take the new profile format", datapath);
 				logger.warn("Could not read the profile file");
 			} catch (ExceptionInInitializerError e) {
 				try {
-					SerializedProfiles p = Serializer.deserialize(profileFile.toString());
+					Profile p = Serializer.deserialize(profileFile.toString());
 					prop.setProperty("name", p.getName());
 					prop.setProperty("chars", Config.getConf().getProperty("defaultAllowedChars"));
 					for (Map.Entry<String, String> c : p.getPaths().entrySet()) {
@@ -372,7 +372,7 @@ public class ProfileManager {
 					prop.setProperty("autoCompleting", String.valueOf(p.isAutoCompleting()));
 					prop.setProperty("treeExpanding", String.valueOf(p.isTreeExpanding()));
 					prop.setProperty("autoProfileChange", String.valueOf(p.isAutoProfileChange()));
-					prof = new Profile(prop);
+					prof = new Profile_V2(prop);
 					profiles.add(prof);
 				} catch (IOException err) {
 					logger.error("Found profile is neither a new profile config file, nor a serialized profile");
@@ -427,7 +427,7 @@ public class ProfileManager {
 	 * @author FelixP
 	 */
 	public boolean existProfile(String profile) {
-		Profile p = getProfileByName(profile);
+		Profile_V2 p = getProfileByName(profile);
 		if (p == null)
 			return false;
 		return true;
@@ -451,7 +451,7 @@ public class ProfileManager {
 	 * @return list of all profiles
 	 * @author SebastianN
 	 */
-	public ArrayList<Profile> getProfiles() {
+	public ArrayList<Profile_V2> getProfiles() {
 		return profiles;
 	}
 	
@@ -462,7 +462,7 @@ public class ProfileManager {
 	 * @return active profile
 	 * @author SebastianN
 	 */
-	public Profile getActive() {
+	public Profile_V2 getActive() {
 		return activeProfile;
 	}
 	

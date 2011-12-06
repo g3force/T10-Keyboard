@@ -19,7 +19,7 @@ import edu.dhbw.t10.type.keyboard.key.Button;
 import edu.dhbw.t10.type.keyboard.key.Key;
 import edu.dhbw.t10.type.keyboard.key.ModeKey;
 import edu.dhbw.t10.type.keyboard.key.MuteButton;
-import edu.dhbw.t10.type.profile.Profile;
+import edu.dhbw.t10.type.profile.Profile_V2;
 
 
 /**
@@ -294,7 +294,7 @@ public class OutputManager {
 	 * @param muteB
 	 * @author DanielAl
 	 */
-	public void muteButtonPressed(MuteButton muteB, Profile activeProfile) {
+	public void muteButtonPressed(MuteButton muteB, Profile_V2 activeProfile) {
 		muteB.push();
 		int type = muteB.getType();
 		switch (type) {
@@ -324,7 +324,7 @@ public class OutputManager {
 	 * @param button
 	 * @author DanielAl
 	 */
-	public void buttonPressed(Button button, Profile activeProfile) {
+	public void buttonPressed(Button button, Profile_V2 activeProfile) {
 		Key key = (Key) button.getPressedKey();
 		
 		// currently we do not support some buttons for linux...
@@ -403,7 +403,7 @@ public class OutputManager {
 	 * @param word
 	 * @author DirkK
 	 */
-	private void acceptWord(String word, Profile activeProfile) {
+	private void acceptWord(String word, Profile_V2 activeProfile) {
 		boolean success = activeProfile.acceptWord(word);
 		if (success) {
 			Controller.getInstance().showStatusMessage("Word inserted: " + word);
@@ -419,7 +419,7 @@ public class OutputManager {
 	 * @param key
 	 * @author NicolaiO
 	 */
-	private void keyIsCapsLock(Profile activeProfile) {
+	private void keyIsCapsLock(Profile_V2 activeProfile) {
 		logger.trace("CapsLock");
 		for (ModeKey mk : activeProfile.getKbdLayout().getModeKeys()) {
 			if (mk.getKeycode().equals("\\SHIFT\\")) {
