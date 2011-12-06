@@ -365,10 +365,10 @@ public class ProfileManager {
 				try {
 					SerializedProfiles p = Serializer.deserialize(profileFile.toString());
 					prop.setProperty("name", p.getName());
+					prop.setProperty("chars", Config.getConf().getProperty("defaultAllowedChars"));
 					for (Map.Entry<String, String> c : p.getPaths().entrySet()) {
 						prop.setProperty(c.getKey(), c.getValue());
 					}
-					prop.putAll(p.getPaths());
 					prop.setProperty("autoCompleting", String.valueOf(p.isAutoCompleting()));
 					prop.setProperty("treeExpanding", String.valueOf(p.isTreeExpanding()));
 					prop.setProperty("autoProfileChange", String.valueOf(p.isAutoProfileChange()));

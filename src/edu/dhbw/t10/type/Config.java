@@ -18,12 +18,15 @@ import org.apache.log4j.Logger;
 
 
 /**
- * TODO dirk, add comment!
- * - What should this type do (in one sentence)?
- * - If not intuitive: A simple example how to use this class
+ * contains the conf object, containg all properties which have to be saved
+ * ActiveProfile = active profile
+ * PROFILE_PATH = pathes, where to search for profiles, divided by :
+ * defaultAllowedChars = "A-Za-z\u00E4\u00F6\u00FC\u00C4\u00D6\u00DC", something like this
+ * unMark = if unMark is true the method unMark() is used for unmarking suggested chars, otherwise all suggests are
+ * deleted and newly printed;
+ * also if this value is true marked strings could be overwritten without deleting them first...
  * 
  * @author dirk
- * 
  */
 public class Config {
 	// --------------------------------------------------------------------------
