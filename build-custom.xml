@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse.ant.import?>
 <project basedir="." default="compress" name="t10-onscreen-keyboard">
-	<echo message="${ant.project.name}: ${ant.file}"/>
 	<delete file="t10-keyboard.jar" />
 	
 	<!-- copy the JARs that you need to "bin" directory  -->
