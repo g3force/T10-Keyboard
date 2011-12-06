@@ -369,6 +369,7 @@ public class ProfileManager {
 						prop.setProperty(c.getKey(), c.getValue());
 					}
 					prop.setProperty("chars", Config.getConf().getProperty("defaultAllowedChars"));
+					logger.debug("NICO: chars: " + prop.getProperty("chars"));
 					prop.setProperty("autoCompleting", String.valueOf(p.isAutoCompleting()));
 					prop.setProperty("treeExpanding", String.valueOf(p.isTreeExpanding()));
 					prop.setProperty("autoProfileChange", String.valueOf(p.isAutoProfileChange()));

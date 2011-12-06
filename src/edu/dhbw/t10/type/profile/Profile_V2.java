@@ -219,7 +219,9 @@ public class Profile_V2 implements Serializable {
 	 */
 	private void loadTree() {
 		tree = new PriorityTree();
+		logger.debug("NICO: chars: " + properties.getProperty("chars"));
 		boolean successfullyCharsLoaded = tree.loadChars(properties.getProperty("chars"));
+		logger.debug("NICO: success" + String.valueOf(successfullyCharsLoaded));
 		if (!successfullyCharsLoaded) {
 			properties.setProperty("chars", Config.getConf().getProperty("defaultAllowedChars"));
 			tree.loadChars(Config.getConf().getProperty("defaultAllowedChars"));
