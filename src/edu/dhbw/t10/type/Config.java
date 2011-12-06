@@ -64,6 +64,8 @@ public class Config {
 		}
 		if (!conf.containsKey("PROFILE_PATH"))
 			conf.setProperty("PROFILE_PATH", "");
+		if (!conf.contains("defaultAllowedChars"))
+			conf.setProperty("defaultAllowedChars","A-Za-z\u00E4\u00F6\u00FC\u00C4\u00D6\u00DC");
 	}
 	
 	

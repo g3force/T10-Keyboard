@@ -16,6 +16,7 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.zip.ZipException;
@@ -29,6 +30,7 @@ import edu.dhbw.t10.type.keyboard.Image;
 import edu.dhbw.t10.type.keyboard.KeyboardLayout;
 import edu.dhbw.t10.type.keyboard.key.PhysicalButton;
 import edu.dhbw.t10.type.profile.Profile;
+import edu.dhbw.t10.type.profile.SerializedProfiles;
 import edu.dhbw.t10.view.panels.MainPanel;
 
 
@@ -347,7 +349,7 @@ public class ProfileManager {
 			profileFiles.addAll(getProfileFiles(file));
 		}
 
-		//deserializing the profiles
+		// create the profiles on basis of the .profile file
 		for (File profileFile : profileFiles) {
 			Properties prop = new Properties();
 			Profile prof;
@@ -360,7 +362,21 @@ public class ProfileManager {
 				// prof = new Profile("toDelete, take the new profile format", datapath);
 				logger.warn("Could not read the profile file");
 			} catch (ExceptionInInitializerError e) {
-				// TODO DirkK or Anybody else: handle old profiles
+				try {
+					SerializedProfiles p = Serializer.deserialize(profileFile.toString());
+					prop.setProperty("name", p.getName());
+					for (Map.Entry<String, String> c : p.getPaths().entrySet()) {
+						prop.setProperty(c.getKey(), c.getValue());
+					}
+					prop.putAll(p.getPaths());
+					prop.setProperty("autoCompleting", String.valueOf(p.isAutoCompleting()));
+					prop.setProperty("treeExpanding", String.valueOf(p.isTreeExpanding()));
+					prop.setProperty("autoProfileChange", String.valueOf(p.isAutoProfileChange()));
+					prof = new Profile(prop);
+					profiles.add(prof);
+				} catch (IOException err) {
+					logger.error("Found profile is neither a new profile config file, nor a serialized profile");
+				}
 			}
 
 		}

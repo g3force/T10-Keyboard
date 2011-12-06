@@ -9,15 +9,12 @@
  */
 package edu.dhbw.t10.type.tree;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
-
-import edu.dhbw.t10.manager.profile.ImportExportManager;
 
 
 /**
@@ -43,7 +40,14 @@ public class PriorityTree implements Serializable {
 	private HashMap<String, Integer>		words;
 	
 	private static final Logger			logger				= Logger.getLogger(PriorityTree.class);
-	private transient String				pathToAllowedChars;
+
+	/*
+	 * String containing the allowed chars
+	 * example:
+	 * stringToAllowedChars="1-5:50-100:240"
+	 * allowedChar={{1,5},{50,100}{240,240}}
+	 */
+	private transient String				stringToAllowedChars;
 	
 	
 	// --------------------------------------------------------------------------
@@ -53,14 +57,16 @@ public class PriorityTree implements Serializable {
 	/**
 	 * 
 	 * PriorityTree is a tree which contains all words which were typed and their frequency
+	 * call the loadChar function afterwards
 	 * 
 	 * @param chars the path to the allowed according ".chars" file
 	 * @author DirkK
 	 */
-	public PriorityTree(String chars) {
-		pathToAllowedChars = chars;
+	public PriorityTree() {
+		stringToAllowedChars = "0-255";
+		int[] t  = {0,255};
 		allowedChars = new LinkedList<int[]>();
-		loadAllowedChars();
+		allowedChars.add(t);
 		root = new PriorityElement('\u0000', null, null, 0);
 	}
 	
@@ -68,7 +74,51 @@ public class PriorityTree implements Serializable {
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
+	/**
+	 * takes the stringToAllowedChars, divides it at :, and puts each part into allowedChars
+	 * 
+	 * @author dirk
+	 */
+	public boolean loadChars(String allowedCharsString) {
+		stringToAllowedChars = allowedCharsString;
+		allowedChars = new LinkedList<int[]>();
+		int index = 0;
+		char buffer = '\u0000';
+		boolean flag = false;
+		char[] charAllowed = stringToAllowedChars.toCharArray();
+		while (index < charAllowed.length) {
+			if (buffer == '\u0000') {
+				buffer = charAllowed[index];
+			} else if (flag) {
+				int second = (int) charAllowed[index];
+				pushToAllowedChars(second, (int) buffer);
+			} else if (!flag) {
+				if (charAllowed[index] == '-')
+					flag = true;
+				else {
+					pushToAllowedChars((int) buffer, (int) buffer);
+					buffer = charAllowed[index];
+				}
+			}
+			index++;
+		}
+		if(allowedChars.size()==0) {
+			return false;
+		}
+		return true;
+	}
 	
+	
+	private void pushToAllowedChars(int a, int b) {
+		if (a < b) {
+			int[] t = { a, b };
+			allowedChars.push(t);
+		} else {
+			int[] t = { b, a };
+			allowedChars.push(t);
+		}
+
+	}
 	/**
 	 * inserts a word to the tree
 	 * if the word already exist, frequency is increased by one and suggests are adujsted
@@ -122,7 +172,7 @@ public class PriorityTree implements Serializable {
 			// logger.debug("Word Inserted");
 			return true;
 		} else {
-			// logger.warn("Word (" + word + ") Ignored - not valid");
+			logger.warn("Word (" + word + ") ignored - not valid (valid: " + stringToAllowedChars + ")");
 			return false;
 		}
 	}
@@ -357,44 +407,6 @@ public class PriorityTree implements Serializable {
 	}
 	
 	
-	/**
-	 * save the rules which chars are allowed
-	 * not used yet
-	 * @author DirkK
-	 */
-	
-	public void saveAllowedChars() {
-		try {
-			ImportExportManager.saveChars(pathToAllowedChars, allowedChars);
-		} catch (IOException io) {
-			logger.error("IOException in readConfig()");
-			io.printStackTrace();
-		} catch (Exception ex) {
-			logger.error("Exception in readConfig(): " + ex.toString());
-			ex.printStackTrace();
-		}
-	}
-	
-	
-	/**
-	 * reads form a config file which chars are allowed to be added to the tree
-	 * avoids to insert UNICODE into the tree
-	 * Not used yet
-	 * @author DirkK
-	 */
-	private void loadAllowedChars() {
-		try {
-			allowedChars = ImportExportManager.loadChars(pathToAllowedChars);
-		} catch (IOException io) {
-			logger.error("IOException in loadAllowedChars()");
-			io.printStackTrace();
-		} catch (Exception ex) {
-			logger.error("Exception in loadAllowedChars(): " + ex.toString());
-			ex.printStackTrace();
-		}
-	}
-	
-	
 	public HashMap<String, Integer> getWords() {
 		return words;
 	}
@@ -404,6 +416,8 @@ public class PriorityTree implements Serializable {
 		this.words = words;
 	}
 	
+
+
 	// --------------------------------------------------------------------------
 	// --- getter/setter --------------------------------------------------------
 	// --------------------------------------------------------------------------
