@@ -372,6 +372,7 @@ public class ProfileManager {
 				logger.warn("Could not read the profile file");
 			} catch (ExceptionInInitializerError e) {
 				try {
+					prop = new Properties();
 					Profile p = Serializer.deserialize(profileFile.toString());
 					prop.setProperty("name", p.getName());
 					prop.setProperty("profile", p.getPaths().get("profile"));
