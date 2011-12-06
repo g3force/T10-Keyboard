@@ -29,8 +29,8 @@ import edu.dhbw.t10.type.keyboard.DropDownList;
 import edu.dhbw.t10.type.keyboard.Image;
 import edu.dhbw.t10.type.keyboard.KeyboardLayout;
 import edu.dhbw.t10.type.keyboard.key.PhysicalButton;
-import edu.dhbw.t10.type.profile.Profile_V2;
 import edu.dhbw.t10.type.profile.Profile;
+import edu.dhbw.t10.type.profile.Profile_V2;
 import edu.dhbw.t10.view.panels.MainPanel;
 
 
@@ -365,10 +365,10 @@ public class ProfileManager {
 				try {
 					Profile p = Serializer.deserialize(profileFile.toString());
 					prop.setProperty("name", p.getName());
-					prop.setProperty("chars", Config.getConf().getProperty("defaultAllowedChars"));
 					for (Map.Entry<String, String> c : p.getPaths().entrySet()) {
 						prop.setProperty(c.getKey(), c.getValue());
 					}
+					prop.setProperty("chars", Config.getConf().getProperty("defaultAllowedChars"));
 					prop.setProperty("autoCompleting", String.valueOf(p.isAutoCompleting()));
 					prop.setProperty("treeExpanding", String.valueOf(p.isTreeExpanding()));
 					prop.setProperty("autoProfileChange", String.valueOf(p.isAutoProfileChange()));
