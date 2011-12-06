@@ -37,7 +37,7 @@ import edu.dhbw.t10.type.keyboard.key.Button;
 import edu.dhbw.t10.type.keyboard.key.Key;
 import edu.dhbw.t10.type.keyboard.key.ModeButton;
 import edu.dhbw.t10.type.keyboard.key.MuteButton;
-import edu.dhbw.t10.type.profile.Profile;
+import edu.dhbw.t10.type.profile.Profile_V2;
 import edu.dhbw.t10.type.tree.PriorityTree;
 import edu.dhbw.t10.view.Presenter;
 import edu.dhbw.t10.view.dialogs.InputDlg;
@@ -169,7 +169,7 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	 * @author SebastianN
 	 */
 	public void addNewProfile(String name) {
-		Profile profile = profileMan.createProfile(name);
+		Profile_V2 profile = profileMan.createProfile(name);
 		if (profile != null) {
 			profileMan.changeProfile(profile);
 		} else {
@@ -185,9 +185,9 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	 */
 	public void deleteActiveProfile() {
 		// get active profile to be delete
-		Profile todelete = profileMan.getActive();
+		Profile_V2 todelete = profileMan.getActive();
 		// get potential new profile
-		Profile newProfile = profileMan.getProfiles().get(0);
+		Profile_V2 newProfile = profileMan.getProfiles().get(0);
 
 		// after deleting profile, first or second profile should be made active
 		if (todelete == newProfile) {
@@ -438,7 +438,7 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	 */
 	private void eIsDropDownList(DropDownList currentDdl) {
 		if (currentDdl.getType() == DropDownList.PROFILE) {
-			Profile selectedProfile = profileMan.getProfileByName(currentDdl.getSelectedItem().toString());
+			Profile_V2 selectedProfile = profileMan.getProfileByName(currentDdl.getSelectedItem().toString());
 			if (selectedProfile != null) {
 				logger.debug("selected Profilename: " + selectedProfile.getName());
 				profileMan.changeProfile(selectedProfile);
