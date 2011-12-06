@@ -12,9 +12,9 @@
 <mapEntry key="eclipse.pdebuild.scripts" value="/home/geforce/.eclipse/plugins/org.eclipse.pde.build_3.7.0.v20110512-1320/scripts/"/>
 <mapEntry key="eclipse.pdebuild.templates" value="/home/geforce/.eclipse/plugins/org.eclipse.pde.build_3.7.0.v20110512-1320/templates/"/>
 <mapEntry key="eclipse.running" value="true"/>
-<mapEntry key="git.rev" value="$(git rev-parse HEAD)"/>
 </mapAttribute>
+<booleanAttribute key="org.eclipse.ui.externaltools.ATTR_BUILDER_ENABLED" value="true"/>
 <stringAttribute key="org.eclipse.ui.externaltools.ATTR_LOCATION" value="${workspace_loc:/t10-onscreen-keyboard/build-custom.xml}"/>
-<stringAttribute key="org.eclipse.ui.externaltools.ATTR_RUN_BUILD_KINDS" value="full,incremental,auto,"/>
+<stringAttribute key="org.eclipse.ui.externaltools.ATTR_RUN_BUILD_KINDS" value="full,incremental,"/>
 <booleanAttribute key="org.eclipse.ui.externaltools.ATTR_TRIGGERS_CONFIGURED" value="true"/>
 </launchConfiguration>

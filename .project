@@ -12,11 +12,11 @@
 		</buildCommand>
 		<buildCommand>
 			<name>org.eclipse.ui.externaltools.ExternalToolBuilder</name>
-			<triggers>auto,full,incremental,</triggers>
+			<triggers>full,incremental,</triggers>
 			<arguments>
 				<dictionary>
 					<key>LaunchConfigHandle</key>
-					<value>&lt;project&gt;/.externalToolBuilders/t10-onscreen-keyboard build.xml [Builder].launch</value>
+					<value>&lt;project&gt;/.externalToolBuilders/ant builder custom.launch</value>
 				</dictionary>
 			</arguments>
 		</buildCommand>
@@ -26,7 +26,7 @@
 			<arguments>
 				<dictionary>
 					<key>LaunchConfigHandle</key>
-					<value>&lt;project&gt;/.externalToolBuilders/Custom.launch</value>
+					<value>&lt;project&gt;/.externalToolBuilders/ant builder.launch</value>
 				</dictionary>
 			</arguments>
 		</buildCommand>
