@@ -17,11 +17,13 @@ import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map.Entry;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
 
 import edu.dhbw.t10.helper.StringHelper;
+import edu.dhbw.t10.manager.Controller;
 import edu.dhbw.t10.manager.keyboard.KeyboardLayoutLoader;
 import edu.dhbw.t10.manager.keyboard.KeyboardLayoutSaver;
 import edu.dhbw.t10.manager.keyboard.KeymapLoader;
@@ -64,6 +66,8 @@ public class Profile_V2 implements Serializable {
 	private transient PriorityTree	tree;
 	private transient KeyboardLayout	kbdLayout;
 	
+	private boolean						dictionaryLoaded	= false;
+
 	private static final Logger		logger				= Logger.getLogger(Profile_V2.class);
 	
 	
@@ -80,36 +84,21 @@ public class Profile_V2 implements Serializable {
 	 * @author SebastianN
 	 */
 	public Profile_V2(String pName, String datapath) {
-		properties.setProperty("name", pName);
-		properties.setProperty("autoCompleting", "true");
-		properties.setProperty("treeExpanding", "true");
-		properties.setProperty("autoProfileChange", "true");
-		properties.setProperty("chars", Config.getConf().getProperty("defaultAllowedChars"));
-
-		String name = properties.getProperty("name");
-		File file = new File(datapath + "/profiles");
-		if (!file.isDirectory()) {
-			file.mkdir();
-		}
-		File profileDir = new File(datapath + "/profiles/" + name);
-		if (!profileDir.isDirectory()) {
-			profileDir.mkdir();
-		}
-		properties.setProperty("layout", datapath + "/profiles/" + name + "/" + name + ".layout");
-		properties.setProperty("profile", datapath + "/profiles/" + name + "/" + name + ".profile");
-		properties.setProperty("tree", datapath + "/profiles/" + name + "/" + name + ".tree");
-		
-		logger.debug("Profile " + name + " created");
+		properties = createDefaultProperties(pName, datapath);
 		load();
 		save();
 	}
 	
-	
-	public Profile_V2(Properties prop) {
+	public Profile_V2(Properties prop, String datapath) {
 		properties = prop;
 		if (!properties.containsKey("name")) {
 			logger.error("Tried to load profile with invalid properties");
 			throw new ExceptionInInitializerError();
+		} else {
+			// to prevent not set attributes
+			properties = createDefaultProperties(properties.getProperty("name"), datapath);
+			for (Entry<Object, Object> p : prop.entrySet())
+				properties.setProperty(prop.getProperty((String) p.getKey()), (String) p.getValue());
 		}
 		load();
 	}
@@ -120,6 +109,33 @@ public class Profile_V2 implements Serializable {
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
 	
+	public Properties createDefaultProperties(String pName, String datapath) {
+		Properties p = new Properties();
+		p.setProperty("name", pName);
+		p.setProperty("autoCompleting", "true");
+		p.setProperty("treeExpanding", "true");
+		p.setProperty("autoProfileChange", "true");
+		p.setProperty("chars", Config.getConf().getProperty("defaultAllowedChars"));
+		
+		String name = p.getProperty("name");
+		File file = new File(datapath + "/profiles");
+		if (!file.isDirectory()) {
+			file.mkdir();
+		}
+		File profileDir = new File(datapath + "/profiles/" + name);
+		if (!profileDir.isDirectory()) {
+			profileDir.mkdir();
+		}
+		p.setProperty("layout", datapath + "/profiles/" + name + "/" + name + ".layout");
+		p.setProperty("profile", datapath + "/profiles/" + name + "/" + name + ".profile");
+		p.setProperty("tree", datapath + "/profiles/" + name + "/" + name + ".tree");
+		
+		logger.debug("Profile " + name + " created");
+		
+		return p;
+	}
+
+
 	public String toString() {
 		return getName();
 	}
@@ -131,9 +147,15 @@ public class Profile_V2 implements Serializable {
 	 * @author NicolaiO
 	 */
 	public void load() {
+		load(true);
+	}
+	
+	
+	public void load(boolean loadTree) {
 		loadDefaultPathes();
 		loadLayout();
-		loadTree();
+		if (loadTree)
+			loadTree();
 	}
 	
 	
@@ -224,13 +246,19 @@ public class Profile_V2 implements Serializable {
 			properties.setProperty("chars", Config.getConf().getProperty("defaultAllowedChars"));
 			tree.loadChars(Config.getConf().getProperty("defaultAllowedChars"));
 		}
-		try {
-			tree.importFromHashMap(ImportExportManager.importFromFile(properties.getProperty("tree"), true));
-		} catch (IOException err) {
-			logger.warn("Could not fetch the dictionary for the proifle " + properties.getProperty("name") + ", File: "
-					+ properties.getProperty("tree"));
-		}
-		logger.debug("Tree successfully loaded");
+		new Thread() {
+			public void run() {
+				try {
+					tree.importFromHashMap(ImportExportManager.importFromFile(properties.getProperty("tree"), true));
+				} catch (IOException err) {
+					logger.warn("Could not fetch the dictionary for the proifle " + properties.getProperty("name") + ", File: "
+							+ properties.getProperty("tree"));
+				}
+				logger.debug("Tree successfully loaded");
+				dictionaryLoaded = true;
+				Controller.getInstance().showStatusMessage("Dictionary loaded");
+			}
+		}.start();
 	}
 	
 	
@@ -240,14 +268,19 @@ public class Profile_V2 implements Serializable {
 	 * @author DirkK
 	 */
 	private void saveTree() {
-		if (tree != null) {
+		if (tree != null && dictionaryLoaded) {
 			logger.debug("save tree to " + properties.getProperty("tree"));
-			try {
-				ImportExportManager.exportToFile(tree.exportToHashMap(), properties.getProperty("tree"));
-			} catch (IOException err) {
-				logger.error("Not able to save the tree for proifle " + properties.getProperty("name") + " to "
-						+ properties.getProperty("tree"));
-			}
+			final PriorityTree tempTree = tree.clone();
+			new Thread() {
+				public void run() {
+					try {
+						ImportExportManager.exportToFile(tempTree.exportToHashMap(), properties.getProperty("tree"));
+						} catch (IOException err) {
+							logger.error("Not able to save the tree for proifle " + properties.getProperty("name") + " to "
+									+ properties.getProperty("tree"));
+						}
+				}
+			}.start();
 			logger.debug("save the allowed chars(" + properties.getProperty("chars") + ")");
 		} else {
 			logger.debug("Tree not saved, because not existend");
@@ -263,7 +296,7 @@ public class Profile_V2 implements Serializable {
 	 * @author DirkK
 	 */
 	public String getWordSuggest(String givenChars) {
-		if (isAutoCompleting()) {
+		if (isAutoCompleting() && dictionaryLoaded) {
 			if (getTree() == null) {
 				logger.error("PriorityTree of activeProfile==NULL at getWordSuggest");
 				return "";
@@ -283,7 +316,7 @@ public class Profile_V2 implements Serializable {
 	 */
 	public boolean acceptWord(String word) {
 		word = StringHelper.removePunctuation(word);
-		if (isTreeExpanding())
+		if (isTreeExpanding() && dictionaryLoaded)
 			return getTree().insert(word);
 		return false;
 	}
@@ -336,6 +369,14 @@ public class Profile_V2 implements Serializable {
 					logger.warn("UNKOWN DDL found!");
 			}
 		}
+	}
+	
+	
+	public void unload() {
+		tree = null;
+		kbdLayout = null;
+		dictionaryLoaded = false;
+		logger.debug("Tree and Layout \"deleted\" from main memory");
 	}
 
 

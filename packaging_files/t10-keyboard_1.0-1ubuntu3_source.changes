@@ -1,0 +1,40 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Format: 1.8
+Date: Sun, 04 Dec 2011 22:12:20 +0100
+Source: t10-keyboard
+Binary: t10-keyboard
+Architecture: source
+Version: 1.0-1ubuntu3
+Distribution: natty
+Urgency: low
+Maintainer: FIT 42 <fit-42@googlegroups.com>
+Changed-By: Nicolai Ommer <nicolai.ommer@gmail.com>
+Description: 
+ t10-keyboard - T10 On-Screen Keyboard
+Changes: 
+ t10-keyboard (1.0-1ubuntu3) natty; urgency=low
+ .
+   * removed all occurences of umlauts (occording to dict.cc a correct english word ;) )
+Checksums-Sha1: 
+ 5b8d3cd666b908668813ba1c6d0af43fd0b72c19 1664 t10-keyboard_1.0-1ubuntu3.dsc
+ 638cee640ee260da31f2562a0175b6c5c86d8e8c 10505 t10-keyboard_1.0-1ubuntu3.debian.tar.gz
+Checksums-Sha256: 
+ 30d31103dddac1069bb2902347332b7abd08073bcf64778218a51653313a51f2 1664 t10-keyboard_1.0-1ubuntu3.dsc
+ 6616af70648156e7839d5a371cc7d7f6c0afca0483d019432cd6de0f246f4110 10505 t10-keyboard_1.0-1ubuntu3.debian.tar.gz
+Files: 
+ 621878382d392cb8977e88168323fdcf 1664 misc extra t10-keyboard_1.0-1ubuntu3.dsc
+ f7cedc6a54df94bce5192b68c7692e67 10505 misc extra t10-keyboard_1.0-1ubuntu3.debian.tar.gz
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.11 (GNU/Linux)
+
+iQEcBAEBAgAGBQJO2+K/AAoJEMqg9F+ElQqxrk0IAKPhFTNc9oRNbyK/skbsp3rd
+YLPPniaPUsSg1QWpLSAA6c5upwEJZIylAfd7mZxEoGwcfUDqXExnFm1cSuaLEwug
+/6Wv4hj7CldVSosVFDMYt5weI1Rg82qQI1AsRkUWY0eQuhiOl7WOgflfCghxdM4t
+G6wNwQsqtxfSIlIwQOAW/sY+Dk9Y0txYqeLTfD+oj5SMzhfWzbBJAV5i6HEdulG5
+7WY4KBUGxlMlG2P5K3p+HrvYtyjqqNz/v7GeIvUGJI/3ym98KbACzzHdjrTg/jUf
+kTvbKFtDHYAxnmW7gXldwAA14BiG8KmDFmQelyD5TGNEsyjEjP6TQO/QKC9xUCU=
+=t7i+
+-----END PGP SIGNATURE-----

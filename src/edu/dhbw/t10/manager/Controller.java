@@ -328,7 +328,7 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 	 * @author FelixP
 	 */
 	private void eIsProfileChooser(ProfileChooser pc) {
-		File path = pc.getSelectedFile();
+		final File path = pc.getSelectedFile();
 		HashMap<String, Integer> words = new HashMap<String, Integer>();
 		pc.setVisible(false);
 		
@@ -358,26 +358,33 @@ public class Controller implements ActionListener, WindowListener, MouseListener
 			
 			// Extend Dictionary By Text
 			case iT2D:
-				profileMan.getActive().save();
-				try {
-					words = ImportExportManager.importFromText(path.toString());
-				} catch (IOException err) {
-					showStatusMessage("Could not load the text file. Please choose another one.");
-				}
-				profileMan.getActive().getTree().importFromHashMap(words);
-				showStatusMessage("Text file included.");
+				new Thread() {
+					public void run() {
+						profileMan.getActive().save();
+						try {
+							HashMap<String, Integer> words = ImportExportManager.importFromText(path.toString());
+							profileMan.getActive().getTree().importFromHashMap(words);
+						} catch (IOException err) {
+							showStatusMessage("Could not load the text file. Please choose another one.");
+						}
+						showStatusMessage("Text file included.");
+					}
+				}.start();
 				break;
 			
 			// Extend Dictionary From File
 			case iF2D:
-				try {
-					words = ImportExportManager.importFromFile(path.toString(), true);
-				} catch (IOException err) {
-					showStatusMessage("Could not load the text file. Please choose another one.");
-				}
-				profileMan.getActive().getTree().importFromHashMap(words);
-				showStatusMessage("Dictionary file included.");
-
+				new Thread() {
+					public void run() {
+						try {
+							HashMap<String, Integer> words = ImportExportManager.importFromFile(path.toString(), true);
+							profileMan.getActive().getTree().importFromHashMap(words);
+							showStatusMessage("Dictionary file included.");
+						} catch (IOException err) {
+							showStatusMessage("Could not load the text file. Please choose another one.");
+						}
+					}
+				}.start();
 				break;
 			
 			// Export Dictionary To File

@@ -1,0 +1,805 @@
+Description: Upstream changes introduced in version 1.0-1ubuntu3
+ This patch has been created by dpkg-source during the package build.
+ Here's the last changelog entry, hopefully it gives details on why
+ those changes were made:
+ .
+ t10-keyboard (1.0-1ubuntu3) natty; urgency=low
+ .
+   * removed all occurences of umlauts (occording to dict.cc a correct english word ;) )
+ .
+ The person named in the Author field signed this changelog entry.
+Author: Nicolai Ommer <nicolai.ommer@gmail.com>
+
+---
+The information above should follow the Patch Tagging Guidelines, please
+checkout http://dep.debian.net/deps/dep3/ to learn about the format. Here
+are templates for supplementary fields that you might want to add:
+
+Origin: <vendor|upstream|other>, <url of original patch>
+Bug: <url in upstream bugtracker>
+Bug-Debian: http://bugs.debian.org/<bugnumber>
+Bug-Ubuntu: https://launchpad.net/bugs/<bugnumber>
+Forwarded: <no|not-needed|url proving that it has been forwarded>
+Reviewed-By: <name and email of someone who approved the patch>
+Last-Update: <YYYY-MM-DD>
+
+--- t10-keyboard-1.0.orig/src/edu/dhbw/t10/manager/profile/ProfileManager.java
++++ t10-keyboard-1.0/src/edu/dhbw/t10/manager/profile/ProfileManager.java
+@@ -4,20 +4,21 @@
+  * Project: T10 On-Screen Keyboard
+  * Date: Oct 15, 2011
+  * Author(s): NicolaiO
+- * 
++ * z *
+  * *********************************************************
+  */
+ package edu.dhbw.t10.manager.profile;
+ 
+ import java.awt.Dimension;
+-import java.io.BufferedReader;
+-import java.io.BufferedWriter;
+ import java.io.File;
+-import java.io.FileReader;
+-import java.io.FileWriter;
++import java.io.FileInputStream;
++import java.io.FileOutputStream;
++import java.io.FilenameFilter;
+ import java.io.IOException;
+ import java.util.ArrayList;
++import java.util.LinkedList;
+ import java.util.Map.Entry;
++import java.util.Properties;
+ import java.util.zip.ZipException;
+ 
+ import org.apache.log4j.Logger;
+@@ -43,10 +44,9 @@ public class ProfileManager {
+ 	private static final Logger	logger					= Logger.getLogger(ProfileManager.class);
+ 	private String						datapath;
+ 	private String						configFile				= "t10keyboard.conf";
++	Properties							conf;
+ 	private ArrayList<Profile>		profiles					= new ArrayList<Profile>();
+-	private ArrayList<String>		profilePathes			= new ArrayList<String>();
+ 	private Profile					activeProfile;
+-	private String						defaultActiveProfile	= "default";
+ 	private MainPanel					mainPanel;
+ 	private boolean					changeProfileBlocked	= false;
+ 	
+@@ -82,24 +82,26 @@ public class ProfileManager {
+ 		if (!tf.exists()) {
+ 			tf.mkdirs();
+ 		}
++		
++		// reading the config file once, if properties not found, use default ones; updates itself
++		loadConfig();
+ 
+-		// fill activeProfileName and profilePathes with the data from the config file
+-		readConfig();
++		// fill activeProfileName and profilePathes with the data from the config object
+ 		loadSerializedProfiles(); // deserializes all profiles, fills profiles
++
+ 		// if no profiles were loaded, create a new one
+ 		if (profiles.size() == 0) {
+ 			logger.debug("No profiles loaded. New profile will be created.");
+-			createProfile(defaultActiveProfile);
++			activeProfile = createProfile("default");
+ 		}
+ 
+ 		// set active profile by defauleActiveProfile which was either loaded from config file or is set to a default
+ 		// value
+-		activeProfile = getProfileByName(defaultActiveProfile);
+-
+-		// if the defaultActiveProfile in the config file references a non existent profile, create a new profile with the
+-		// given name
+-		if (activeProfile == null) {
+-			activeProfile = createProfile(defaultActiveProfile);
++		else {
++			activeProfile = getProfileByName(conf.getProperty("ActiveProfile"));
++			if (activeProfile == null) {
++				activeProfile = profiles.get(0);
++			}
+ 		}
+ 		
+ 		// change to chosen profile
+@@ -113,135 +115,47 @@ public class ProfileManager {
+ 	// --- methods --------------------------------------------------------------
+ 	// --------------------------------------------------------------------------
+ 	
+-	
+-	/**
+-	 * Reads the config-file with all entrys and assigns
+-	 * the read values.
+-	 * 
+-	 * @author SebastianN
+-	 */
+-	private void readConfig() {
+-		try {
+-			File confFile = new File(datapath + "/" + configFile);
+-			if (confFile.exists()) {
+-				FileReader fr = new FileReader(confFile);
+-				BufferedReader br = new BufferedReader(fr);
+-				
+-				String entry = "";
+-				while ((entry = br.readLine()) != null) {
+-					// Commentary-Indicator: //
+-					if (entry.indexOf("//") >= 0)
+-						entry = entry.substring(0, entry.indexOf("//"));
+-					
+-					if (entry.isEmpty()) // In case an entry was just a comment.
+-						continue;
+-					
+-					// Comment-Indicators deleted.
+-					// Regular Format:
+-					// ActiveProfile=NAMEOFPROFILE
+-					// ProfilePath=config.cfg
+-					// ProfilePath=C:\lol.cfg
+-					int posOfEql = entry.indexOf("=");
+-					
+-					// Split and afterwards assign values.
+-					try {
+-						String valName = entry.substring(0, posOfEql);
+-						String value = entry.substring(posOfEql + 1, entry.length());
+-						if (valName.toLowerCase().equals("profilepath")) {
+-							if (value.isEmpty())
+-								continue;
+-							profilePathes.add(value);
+-						} else if (valName.toLowerCase().equals("activeprofile")) {
+-							if (value.isEmpty())
+-								continue;
+-							defaultActiveProfile = value;
+-						}
+-					} catch (Exception ex) {
+-						ex.printStackTrace();
+-						logger.error("Exception in readConfig().assignValues: " + ex.toString());
+-					}
+-				}
+-				br.close();
+-				logger.info("config loaded: activeProfileName=" + defaultActiveProfile + " profiles="
+-						+ profilePathes.size());
+-			} else {
+-				logger.debug("Config file could not be found. Doesn't matter, though.");
+-			}
+-		} catch (IOException io) {
+-			logger.debug("IOException in readConfig()");
+-			io.printStackTrace();
+-		} catch (Exception ex) {
+-			logger.debug("Exception in readConfig(): " + ex.toString());
+-			ex.printStackTrace();
+-		}
+-	}
+-	
+-	
+-	/**
+-	 * Creates a comment for config-files.
+-	 * 
+-	 * @param comment - String. Comment you want to add.
+-	 * @return Changed comment as String.
+-	 * @author SebastianN
+-	 */
+-	private String createComment(String comment) {
+-		comment = "//" + comment;
+-		return comment;
+-	}
+-	
+-	
++	// ------------conf-----------
+ 	/**
+-	 * Add an entry to the config file.
+-	 * 
+-	 * @param bw - Handle/Reference to a BufferedWriter
+-	 * @param entry - String containing what you want to write.
+-	 * @author SebastianN
++	 * loads the config file, fills the conf property attribute
++	 * @author dirk
+ 	 */
+-	private void addEntry(BufferedWriter bw, String entry) {
++	private void loadConfig() {
++		conf = new Properties();
++		FileInputStream fis;
+ 		try {
+-			bw.write(entry + "\n");
+-		} catch (IOException io) {
+-			io.printStackTrace();
++			// reading the config file
++			fis = new FileInputStream(datapath + "/" + configFile);
++			conf.load(fis);
++			logger.info("Config file read");
++		} catch (IOException err) {
++			logger.warn("Could not read the config file");
++			// config file not found, set the config values to default
++		}
++		if (!conf.containsKey("ActiveProfile"))
++ {
++			logger.debug("ActiveProfile was not in the config file");
++			conf.setProperty("ActiveProfile", "default");
+ 		}
++		if (!conf.containsKey("PROFILE_PATH"))
++			conf.setProperty("PROFILE_PATH", "");
+ 	}
+ 	
+ 	
+-	/**
+-	 * Saves the name of the active profile and the path to all profile-files.
+-	 * 
+-	 * @author SebastianN
+-	 */
+ 	public void saveConfig() {
+ 		try {
+-			File confFile = new File(datapath + "/" + configFile);
+-			FileWriter fw = new FileWriter(confFile);
+-			BufferedWriter bw = new BufferedWriter(fw);
+-			
+-			addEntry(bw, createComment("Configfile for T10"));
+-			
+-			
+-			if (activeProfile != null)
+-				addEntry(bw, "ActiveProfile=" + activeProfile.getName());
+-			
+-			for (int i = 0; i < profiles.size(); i++) {
+-				if (profiles.get(i).getPaths().get("profile").isEmpty()) {
+-					logger.error("Profile " + profiles.get(i).getName() + " has no path to profile");
+-					continue;
+-				}
+-				addEntry(bw, "ProfilePath=" + profiles.get(i).getPaths().get("profile"));
+-			}
+-			logger.info("Config file saved");
+-			bw.close();
+-		} catch (IOException io) {
+-			logger.debug("IOException in readConfig()");
+-			io.printStackTrace();
+-		} catch (Exception ex) {
+-			logger.debug("Exception in readConfig(): " + ex.toString());
+-			ex.printStackTrace();
++			conf.setProperty("ActiveProfile", activeProfile.getName());
++			FileOutputStream fos = new FileOutputStream(datapath + "/" + configFile);
++			conf.store(fos, "Stored by closing the program");
++			logger.debug("config file saved to" + datapath + "/" + configFile);
++		} catch (IOException err) {
++			logger.error("Could not store the properties at " + datapath + " / " + configFile);
++			err.printStackTrace();
+ 		}
+ 	}
+ 	
+ 	
++	// -------------------------profile---------------
+ 	/**
+ 	 * Create a new profile
+ 	 * 
+@@ -282,6 +196,56 @@ public class ProfileManager {
+ 	}
+ 	
+ 	
++	/**
++	 * 
++	 * Deletes a profile depending on the ID.<br/>
++	 * If the ID we deleted was currently active,
++	 * we either mark the first profile as active or mark that we need a new profile.
++	 * 
++	 * @param id - int. ID of the profile you want to delete.
++	 */
++	public void deleteProfile(Profile profile) {
++		if (profiles.size() <= 1) {
++			logger.debug("Only one or zero profiles left. Can't delete.");
++			return;
++		}
++		profiles.remove(profile);
++		File dir = new File(profile.getPaths().get("profile"));
++		dir = dir.getParentFile();
++		for (Entry<String, String> file : profile.getPaths().entrySet()) {
++			if (!existDependency(file.getValue()))
++				deleteFile(file.getValue());
++		}
++		dir.delete();
++		getActive().loadDDLs(profiles);
++	}
++	
++	
++	private boolean existDependency(String f) {
++		int counter = 0;
++		for (Profile profile : profiles) {
++			for (String file : profile.getPaths().values()) {
++				if (file.equals(f)) {
++					counter++;
++				}
++			}
++		}
++		if (counter < 1) {
++			return false;
++		} else {
++			return true;
++		}
++	}
++
++	
++	// -----------------------IMPORT/EXPORT------------------
++	/**
++	 * imports a new profile
++	 * @param zipFile the zip file containing the data
++	 * @throws ZipException
++	 * @throws IOException
++	 * @author dirk
++	 */
+ 	public void importProfiles(File zipFile) throws ZipException, IOException {
+ 		// Finding possible Profile Name
+ 		String profileName = zipFile.getName();
+@@ -306,36 +270,21 @@ public class ProfileManager {
+ 	}
+ 	
+ 	
++	/**
++	 * exports a profile to zip
++	 * @param zipFile
++	 * @throws IOException
++	 * @author dirk
++	 */
++	
+ 	public void exportProfiles(String zipFile) throws IOException {
+ 		getActive().save();
+ 		ImportExportManager.exportProfiles(getActive(), new File(zipFile));
+ 	}
+ 
+ 	
+-	/**
+-	 * 
+-	 * Deletes a profile depending on the ID.<br/>
+-	 * If the ID we deleted was currently active,
+-	 * we either mark the first profile as active or mark that we need a new profile.
+-	 * 
+-	 * @param id - int. ID of the profile you want to delete.
+-	 */
+-	public void deleteProfile(Profile profile) {
+-		if (profiles.size() <= 1) {
+-			logger.debug("Only one or zero profiles left. Can't delete.");
+-			return;
+-		}
+-		profiles.remove(profile);
+-		File dir = new File(profile.getPaths().get("profile"));
+-		dir = dir.getParentFile();
+-		for (Entry<String, String> file : profile.getPaths().entrySet()) {
+-			deleteFile(file.getValue());
+-		}
+-		dir.delete();
+-		getActive().loadDDLs(profiles);
+-	}
+-	
+-	
++	// ---------------files--------------
++
+ 	/**
+ 	 * Delete the given file and log an error, if failed.
+ 	 * 
+@@ -349,7 +298,8 @@ public class ProfileManager {
+ 			logger.error(path + " could not be deleted.");
+ 	}
+ 	
+-
++	
++	// ---------------------active profile--------------
+ 	/**
+ 	 * Marks a profile as 'active'.
+ 	 * 
+@@ -389,6 +339,7 @@ public class ProfileManager {
+ 	}
+ 	
+ 	
++	// ---------------------------layout
+ 	/**
+ 	 * Load the given KeyboardLayout into the Mainpanel and remove all other Components.
+ 	 * This is neccessary, when you change the profile and thus the Layout!
+@@ -422,19 +373,70 @@ public class ProfileManager {
+ 		if (profiles == null) {
+ 			profiles = new ArrayList<Profile>();
+ 		}
+-		for (int i = 0; i < profilePathes.size(); i++) {
++		// temp file containing all files
++		LinkedList<File> profileFiles = new LinkedList<File>();
++		
++		// getting all profile files from the default directory
++		profileFiles.addAll(getProfileFiles(new File(datapath + "/profiles")));
++
++		// getting all profile files from the PROFILE_PATH directory
++		String[] profilePathes = conf.getProperty("PROFILE_PATH").split(":");
++		for (int i = 0; i < profilePathes.length; i++) {
++			File file = new File(profilePathes[i]);
++			profileFiles.addAll(getProfileFiles(file));
++		}
++
++		//deserializing the profiles
++		for (File profileFile : profileFiles) {
++			Properties prop = new Properties();
+ 			try {
+-				Profile dProf = (Profile) Serializer.deserialize(profilePathes.get(i));
+-				profiles.add(dProf);
+-				counter++;
+-			} catch (IOException io) {
+-				logger.error("Not able to deserialize Profile from file " + profilePathes.get(i));
++				FileInputStream fis = new FileInputStream(profileFile);
++				prop.load(fis);
++			} catch (IOException err) {
++				logger.warn("Could not deserialize profile file");
+ 			}
++			Profile prof = new Profile(prop);
++			profiles.add(prof);
+ 		}
+ 		logger.info("Deserialized " + counter + " profiles.");
+ 	}
+ 	
+ 	
++	private LinkedList<File> getProfileFiles(File f) {
++		//define filter for all directories in a given dir
++		FilenameFilter isDir = new FilenameFilter() {
++		    public boolean accept(File dir, String name) {
++				return new File(dir.toString() + "/" + name).isDirectory();
++		    }
++		};
++		//define filter for all .proifle files in a given dir
++		FilenameFilter isProject = new FilenameFilter() {
++		    public boolean accept(File dir, String name) {
++				if (name.lastIndexOf(".") > 0)
++					return name.substring(name.lastIndexOf("."), name.length()).equals(".profile");
++				else
++					return false;
++		    }
++		};
++		// getting all profile files directly in the folder
++		LinkedList<File> retur = new LinkedList<File>();
++		File[] ret = f.listFiles(isProject);
++		if (ret != null) {
++			for (File profile : ret) {
++				retur.add(profile);
++			}
++		}
++		// adding all profile files recursively
++		File[] subdirs = f.listFiles(isDir);
++		if(subdirs!=null)
++			for (File subdir : subdirs) {
++			retur.addAll(getProfileFiles(subdir));
++		}
++		return retur;
++	}
++	
++
++
+ 	/**
+ 	 * Check if the given profile name exists
+ 	 * 
+--- t10-keyboard-1.0.orig/src/edu/dhbw/t10/manager/output/Output.java
++++ t10-keyboard-1.0/src/edu/dhbw/t10/manager/output/Output.java
+@@ -395,7 +395,7 @@ public class Output {
+ 	 * - COMBI for Key COmbination functionallity; used in printCombi()<br>
+ 	 * - SHIFT for shift a Key to its Uppercase and type it...<br>
+ 	 * 
+-	 * Hint: keyPress('ö') tested and it don't work<br>
++	 * Hint: keyPress('<oe>') tested and it doesn't work<br>
+ 	 * 
+ 	 * @param int key, int function
+ 	 * @return boolean
+--- t10-keyboard-1.0.orig/src/edu/dhbw/t10/type/profile/Profile.java
++++ t10-keyboard-1.0/src/edu/dhbw/t10/type/profile/Profile.java
+@@ -11,11 +11,13 @@ package edu.dhbw.t10.type.profile;
+ 
+ import java.awt.event.ActionListener;
+ import java.io.File;
++import java.io.FileOutputStream;
+ import java.io.IOException;
+ import java.io.InputStream;
+ import java.io.Serializable;
+ import java.util.ArrayList;
+ import java.util.HashMap;
++import java.util.Properties;
+ 
+ import org.apache.log4j.Logger;
+ 
+@@ -24,7 +26,6 @@ import edu.dhbw.t10.manager.keyboard.Key
+ import edu.dhbw.t10.manager.keyboard.KeyboardLayoutSaver;
+ import edu.dhbw.t10.manager.keyboard.KeymapLoader;
+ import edu.dhbw.t10.manager.profile.ImportExportManager;
+-import edu.dhbw.t10.manager.profile.Serializer;
+ import edu.dhbw.t10.type.keyboard.DropDownList;
+ import edu.dhbw.t10.type.keyboard.KeyboardLayout;
+ import edu.dhbw.t10.type.keyboard.key.MuteButton;
+@@ -45,23 +46,23 @@ public class Profile implements Serializ
+ 	// --------------------------------------------------------------------------
+ 	// --- variables and constants ----------------------------------------------
+ 	// --------------------------------------------------------------------------
+-	private String							name;
+-	// private String pathToTree;
+-	// private String pathToProfile;
+-	// private String pathToAllowedChars;
+-	// private String pathToLayoutFile;
+-	private HashMap<String, String>	paths;
+-	// private String pathToKeymapFile;
++	/**
++	 * name = profilename
++	 * profile = path to profile config file
++	 * layout = path to layout
++	 * chars = path to the chars file
++	 * tree = path to the tree file
++	 * autoCompleting = true/false
++	 * treeExpanding = true/false
++	 * autoProfileChange = true/false
++	 */
++
++	private Properties					properties			= new Properties();
+ 	private transient InputStream		defaultLayoutXML;
+ 	private transient InputStream		defaultKeymapXML;
+ 	private transient PriorityTree	tree;
+ 	private transient KeyboardLayout	kbdLayout;
+ 	
+-	private boolean						autoProfileChange	= true;
+-	private boolean						autoCompleting		= true;
+-	private boolean						treeExpanding		= true;
+-	
+-	@SuppressWarnings("unused")
+ 	private static final Logger		logger				= Logger.getLogger(Profile.class);
+ 	
+ 	
+@@ -77,20 +78,13 @@ public class Profile implements Serializ
+ 	 * @param pName - Name of the new profile
+ 	 * @author SebastianN
+ 	 */
+-	public Profile(String pName, String paths) {
+-		name = pName;
+-		init(paths);
+-		save();
+-	}
+-	
+-	
+-	/**
+-	 * 
+-	 * Initializes the necessary information for the profile (such as paths)
+-	 * 
+-	 * @author SebastianN
+-	 */
+-	private void init(String datapath) {
++	public Profile(String pName, String datapath) {
++		properties.setProperty("name", pName);
++		properties.setProperty("autoCompleting", "true");
++		properties.setProperty("treeExpanding", "true");
++		properties.setProperty("autoProfileChange", "true");
++
++		String name = properties.getProperty("name");
+ 		File file = new File(datapath + "/profiles");
+ 		if (!file.isDirectory()) {
+ 			file.mkdir();
+@@ -99,15 +93,22 @@ public class Profile implements Serializ
+ 		if (!profileDir.isDirectory()) {
+ 			profileDir.mkdir();
+ 		}
+-		paths = new HashMap<String, String>();
+-		paths.put("layout", datapath + "/profiles/" + name + "/" + name + ".layout");
+-		paths.put("profile", datapath + "/profiles/" + name + "/" + name + ".profile");
+-		paths.put("tree", datapath + "/profiles/" + name + "/" + name + ".tree");
+-		paths.put("chars", datapath + "/profiles/" + name + "/" + name + ".chars");
++		properties.setProperty("layout", datapath + "/profiles/" + name + "/" + name + ".layout");
++		properties.setProperty("profile", datapath + "/profiles/" + name + "/" + name + ".profile");
++		properties.setProperty("tree", datapath + "/profiles/" + name + "/" + name + ".tree");
++		properties.setProperty("chars", datapath + "/profiles/" + name + "/" + name + ".chars");
+ 		
+ 		logger.debug("Profile " + name + " created");
+ 		load();
++		save();
+ 	}
++	
++	
++	public Profile(Properties prop) {
++		properties = prop;
++		load();
++	}
++
+ 
+ 
+ 	// --------------------------------------------------------------------------
+@@ -144,11 +145,12 @@ public class Profile implements Serializ
+ 	
+ 	
+ 	private void saveProfile() {
++		FileOutputStream fis;
+ 		try {
+-			Serializer.serialize(this, paths.get("profile"));
+-			logger.debug("profile " + name + " saved to " + paths.get("profile"));
++			fis = new FileOutputStream(properties.getProperty("profile"));
++			properties.store(fis, "stored by saving the profile");
+ 		} catch (IOException err) {
+-			logger.debug("could not save profile " + name + " to " + paths.get("profile"));
++			logger.info("Could not save the profile");
+ 		}
+ 	}
+ 	
+@@ -160,7 +162,7 @@ public class Profile implements Serializ
+ 	 */
+ 	private void saveLayout() {
+ 		if (kbdLayout != null) {
+-			KeyboardLayoutSaver.save(kbdLayout, paths.get("layout"));
++			KeyboardLayoutSaver.save(kbdLayout, properties.getProperty("layout"));
+ 		}
+ 	}
+ 	
+@@ -180,7 +182,7 @@ public class Profile implements Serializ
+ 	 * @author NicolaiO
+ 	 */
+ 	private void loadLayout() {
+-		File file = new File(paths.get("layout"));
++		File file = new File(properties.getProperty("layout"));
+ 		if (file.exists()) {
+ 			kbdLayout = KeyboardLayoutLoader.load(file, KeymapLoader.load(defaultKeymapXML));
+ 		} else {
+@@ -190,13 +192,13 @@ public class Profile implements Serializ
+ 		for (MuteButton mb : kbdLayout.getMuteButtons()) {
+ 			switch (mb.getType()) {
+ 				case MuteButton.AUTO_COMPLETING:
+-					mb.setActivated(autoCompleting);
++					mb.setActivated(properties.getProperty("autoCompleting").equals("true"));
+ 					break;
+ 				case MuteButton.AUTO_PROFILE_CHANGE:
+-					mb.setActivated(autoProfileChange);
++					mb.setActivated(properties.getProperty("autoProfileChange").equals("true"));
+ 					break;
+ 				case MuteButton.TREE_EXPANDING:
+-					mb.setActivated(treeExpanding);
++					mb.setActivated(properties.getProperty("treeExpanding").equals("true"));
+ 					break;
+ 				default:
+ 					break;
+@@ -211,11 +213,12 @@ public class Profile implements Serializ
+ 	 * @author DirkK
+ 	 */
+ 	private void loadTree() {
+-		tree = new PriorityTree(paths.get("chars"));
++		tree = new PriorityTree(properties.getProperty("chars"));
+ 		try {
+-			tree.importFromHashMap(ImportExportManager.importFromFile(paths.get("tree"), true));
++			tree.importFromHashMap(ImportExportManager.importFromFile(properties.getProperty("tree"), true));
+ 		} catch (IOException err) {
+-			logger.warn("Could not fetch the dictionary for the proifle " + name + ", File: " + paths.get("tree"));
++			logger.warn("Could not fetch the dictionary for the proifle " + properties.getProperty("name") + ", File: "
++					+ properties.getProperty("tree"));
+ 		}
+ 		logger.debug("Tree successfully loaded");
+ 	}
+@@ -228,13 +231,14 @@ public class Profile implements Serializ
+ 	 */
+ 	private void saveTree() {
+ 		if (tree != null) {
+-			logger.debug("save tree to " + paths.get("tree"));
++			logger.debug("save tree to " + properties.getProperty("tree"));
+ 			try {
+-				ImportExportManager.exportToFile(tree.exportToHashMap(), paths.get("tree"));
++				ImportExportManager.exportToFile(tree.exportToHashMap(), properties.getProperty("tree"));
+ 			} catch (IOException err) {
+-				logger.error("Not able to save the tree for proifle " + name + " to " + paths.get("tree"));
++				logger.error("Not able to save the tree for proifle " + properties.getProperty("name") + " to "
++						+ properties.getProperty("tree"));
+ 			}
+-			logger.debug("save Chars to " + paths.get("chars"));
++			logger.debug("save Chars to " + properties.getProperty("chars"));
+ 			tree.saveAllowedChars();
+ 		} else {
+ 			logger.debug("Tree not saved, because not existend");
+@@ -338,7 +342,7 @@ public class Profile implements Serializ
+ 	 * @author SebastianN
+ 	 */
+ 	public String getName() {
+-		return name;
++		return properties.getProperty("name");
+ 	}
+ 	
+ 	
+@@ -349,7 +353,7 @@ public class Profile implements Serializ
+ 	 * @author SebastianN
+ 	 */
+ 	public void setName(String newName) {
+-		name = newName;
++		properties.setProperty("name", newName);
+ 	}
+ 	
+ 	
+@@ -381,43 +385,52 @@ public class Profile implements Serializ
+ 	
+ 	
+ 	public boolean isAutoProfileChange() {
+-		return autoProfileChange;
++		return properties.getProperty("autoProfileChange").equals("true");
+ 	}
+ 	
+ 	
+ 	public void setAutoProfileChange(boolean autoProfileChange) {
+-		this.autoProfileChange = autoProfileChange;
++		properties.setProperty("autoProfileChange", String.valueOf(autoProfileChange));
+ 	}
+ 	
+ 	
+ 	public boolean isAutoCompleting() {
+-		return autoCompleting;
++		return properties.getProperty("autoCompleting").equals("true");
+ 	}
+ 	
+ 	
+ 	public void setAutoCompleting(boolean autoCompleting) {
+-		this.autoCompleting = autoCompleting;
++		properties.setProperty("autoCompleting", String.valueOf(autoCompleting));
+ 	}
+ 	
+ 	
+ 	public boolean isTreeExpanding() {
+-		return treeExpanding;
++		return properties.getProperty("treeExpanding").equals("true");
+ 	}
+ 	
+ 	
+ 	public void setTreeExpanding(boolean treeExpanding) {
+-		this.treeExpanding = treeExpanding;
++		properties.setProperty("treeExpanding", String.valueOf(treeExpanding));
+ 	}
+ 	
+ 	
+-	public HashMap<String, String> getPaths() {
+-		return paths;
++	public Properties getProperties() {
++		return properties;
+ 	}
+ 	
+ 	
+-	public void setPaths(HashMap<String, String> paths) {
+-		this.paths = paths;
++	public void setProperties(Properties properties) {
++		this.properties = properties;
++	}
++	
++	
++	public HashMap<String, String> getPaths() {
++		HashMap<String, String> hash = new HashMap<String, String>();
++		hash.put("profile", properties.getProperty("profile"));
++		hash.put("layout", properties.getProperty("layout"));
++		hash.put("tree", properties.getProperty("tree"));
++		hash.put("chars", properties.getProperty("chars"));
++		return hash;
+ 	}
+-
+ 
+ }
+--- t10-keyboard-1.0.orig/src/edu/dhbw/t10/view/dialogs/AboutDlg.java
++++ t10-keyboard-1.0/src/edu/dhbw/t10/view/dialogs/AboutDlg.java
+@@ -74,13 +74,12 @@ public class AboutDlg extends JDialog {
+ 		}
+ 
+ 
+-		JLabel titleLbl = new JLabel("<html>Bildschirmtastatur mit intelligenter Wortvervollständigung<br>Version: "
++		JLabel titleLbl = new JLabel("<html>On-Screen keyboard with intelligent word completition<br>Version: "
+ 				+ SuperFelix.VERSION + "<br>Git Revision: " + SuperFelix.REV + "</html>");
+ 		titleLbl.setAlignmentX(CENTER_ALIGNMENT);
+ 		titleLbl.setAlignmentY(CENTER_ALIGNMENT);
+-		JLabel descriptionLbl = new JLabel("<html>Ein Studentenprojekt im Rahmen <br>"
+-				+ "der Vorlesung Software Engineering, <br>"
+-				+ "3.Semester, DHBW Mannheim.</html>");
++		JLabel descriptionLbl = new JLabel("<html>A student project in <br>" + "the lecture Software Engineering, <br>"
++				+ "3. semester, DHBW Mannheim.</html>");
+ 		JLabel authorLbl = new JLabel(
+ 				"<html>Daniel Andres Lopez, Nicolai Ommer,<br>Dirk Klostermann, Sebastian Nickel,<br>Felix Pistorius<html>");
+ 		
+--- t10-keyboard-1.0.orig/src/edu/dhbw/t10/view/menus/MenuBar.java
++++ t10-keyboard-1.0/src/edu/dhbw/t10/view/menus/MenuBar.java
+@@ -131,7 +131,7 @@ public class MenuBar extends JMenuBar {
+ 		//			
+ 		// @Override
+ 		// public void actionPerformed(ActionEvent e) {
+-		// // TODO FelixP Menu bearbeiten(eingabe: Name und Pfad, vor ausgefüllt)
++		// // TODO FelixP Menu bearbeiten(eingabe: Name und Pfad, vor ausgefuellt)
+ 		// }
+ 		// });
+ 		
+--- t10-keyboard-1.0.orig/src/res/log4j.conf
++++ t10-keyboard-1.0/src/res/log4j.conf
+@@ -4,7 +4,7 @@ log4j.rootLogger=all, stdout, R
+ log4j.appender.stdout=org.apache.log4j.ConsoleAppender
+ log4j.appender.stdout.layout=org.apache.log4j.PatternLayout
+ 
+-log4j.appender.stdout.Threshold=warn
++log4j.appender.stdout.Threshold=debug
+ log4j.appender.R.Threshold=debug
+ 
+ # Pattern to output the caller's file name and line number.
+--- /dev/null
++++ t10-keyboard-1.0/src/res/rev
+@@ -0,0 +1 @@
++0
+\ No newline at end of file

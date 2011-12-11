@@ -207,7 +207,7 @@ public class ProfileManager {
 	 * @throws IOException
 	 * @author dirk
 	 */
-	public void importProfiles(File zipFile) throws ZipException, IOException {
+	public void importProfiles(final File zipFile) throws ZipException, IOException {
 		// Finding possible Profile Name
 		String profileName = zipFile.getName();
 		profileName = profileName.replace(".zip", "");
@@ -221,13 +221,27 @@ public class ProfileManager {
 		}
 		
 		// creating the profile
-		Profile_V2 prof = createProfile(profileName);
+		final Profile_V2 prof = createProfile(profileName);
 
 		// exporting the files form the zip archive to the pathes given in the profile
-		ImportExportManager.importProfiles(zipFile, prof);
+		new Thread() {
+			public void run() {
+				try {
+					ImportExportManager.importProfiles(zipFile, prof);
+				} catch (ZipException err) {
+					Controller.getInstance().showStatusMessage("Could not import profile");
+					logger.error("Could not import profile from " + zipFile.toString());
+					err.printStackTrace();
+				} catch (IOException err) {
+					Controller.getInstance().showStatusMessage("Could not import profile");
+					logger.error("Could not import profile from " + zipFile.toString());
+					err.printStackTrace();
+				}
+			}
+		}.start();
 		logger.debug("Files from the zip File " + zipFile + " extracted");
 		
-		changeProfile(prof);
+		changeProfile(prof, false);
 	}
 	
 	
@@ -265,9 +279,14 @@ public class ProfileManager {
 	 * Marks a profile as 'active'.
 	 * 
 	 * @param newActive - Handle of the to-be activated profile
-	 * @author SebastianN, NicolaiO
+	 * @author SebastianN, NicolaiO, DirkK
 	 */
 	public void changeProfile(Profile_V2 newActive) {
+		changeProfile(newActive, true);
+	}
+	
+	
+	public void changeProfile(Profile_V2 newActive, boolean load) {
 		if (!changeProfileBlocked) {
 			changeProfileBlocked = true;
 			
@@ -281,11 +300,12 @@ public class ProfileManager {
 			// save currently active profile
 			if (activeProfile != null) {
 				activeProfile.save();
+				activeProfile.unload();
 			}
 			
 			// set and load new active profile
 			activeProfile = newActive;
-			activeProfile.load();
+			activeProfile.load(load);
 			activeProfile.loadDDLs(profiles);
 			Config.getConf().setProperty("ActiveProfile", activeProfile.getName());
 			
@@ -356,7 +376,7 @@ public class ProfileManager {
 			try {
 				FileInputStream fis = new FileInputStream(profileFile);
 				prop.load(fis);
-				prof = new Profile_V2(prop);
+				prof = new Profile_V2(prop, datapath);
 				profiles.add(prof);
 			} catch (IOException err) {
 				// prof = new Profile("toDelete, take the new profile format", datapath);
@@ -373,7 +393,7 @@ public class ProfileManager {
 					prop.setProperty("autoCompleting", String.valueOf(p.isAutoCompleting()));
 					prop.setProperty("treeExpanding", String.valueOf(p.isTreeExpanding()));
 					prop.setProperty("autoProfileChange", String.valueOf(p.isAutoProfileChange()));
-					prof = new Profile_V2(prop);
+					prof = new Profile_V2(prop, datapath);
 					prof.save();
 					profiles.add(prof);
 					File oldCharFile = new File(p.getPaths().get("chars"));
@@ -388,6 +408,12 @@ public class ProfileManager {
 	}
 	
 	
+	/**
+	 * get all files of type .profile in a given directory (recursive)
+	 * @param f the directory
+	 * @return
+	 * @author dirk
+	 */
 	private LinkedList<File> getProfileFiles(File f) {
 		//define filter for all directories in a given dir
 		FilenameFilter isDir = new FilenameFilter() {

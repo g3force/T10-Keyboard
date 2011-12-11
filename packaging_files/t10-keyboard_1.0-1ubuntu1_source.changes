@@ -1,0 +1,40 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Format: 1.8
+Date: Sun, 04 Dec 2011 18:38:39 +0100
+Source: t10-keyboard
+Binary: t10-keyboard
+Architecture: source
+Version: 1.0-1ubuntu1
+Distribution: natty
+Urgency: low
+Maintainer: FIT 42 <fit-42@googlegroups.com>
+Changed-By: Nicolai Ommer <nicolai.ommer@gmail.com>
+Description: 
+ t10-keyboard - T10 On-Screen Keyboard
+Changes: 
+ t10-keyboard (1.0-1ubuntu1) natty; urgency=low
+ .
+   * added missing dependency ant
+Checksums-Sha1: 
+ ccf53680ce6fca2800f707d1d7bce26c6e7856dc 1656 t10-keyboard_1.0-1ubuntu1.dsc
+ 0272871101d95f6591b9ce7a10e23340c972f5bc 3750 t10-keyboard_1.0-1ubuntu1.debian.tar.gz
+Checksums-Sha256: 
+ 06c8815e31bded937cdc10256616cf21541b3a318284e5964f644a9fa793050e 1656 t10-keyboard_1.0-1ubuntu1.dsc
+ ddae69b616c138474c2d50053e902d067b07d960db4170d66ea218944cadca5e 3750 t10-keyboard_1.0-1ubuntu1.debian.tar.gz
+Files: 
+ 821353dff7fe6ed8884a6d28e30187e6 1656 misc extra t10-keyboard_1.0-1ubuntu1.dsc
+ 680ceddcb0259bc8043ef8b90ae8c9ae 3750 misc extra t10-keyboard_1.0-1ubuntu1.debian.tar.gz
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.11 (GNU/Linux)
+
+iQEcBAEBAgAGBQJO27BWAAoJEMqg9F+ElQqxKSsH/3YbtkysZeOfbK8wlHIqRIql
+oRmJvZbQRjoziHGZmb9tw1OHXNLXIGy3qxk6vad5u9mkU/UHG/si8uP3DZQAGqYW
+huJbeWgDzuGYrxGdkmZROhJT5bNxrKJfEXoQJHuhjt+hqFGNENw/Z0grz0bazf97
+kmwFw+u1wwfOyeGZDzkU6L2zwo7c/W3prFePOmAc9HKspb39Y/ceuH63e+aCmgzb
+gFPMhFDaAvYJlsc0S/Ux6Qj+Cz1EdcLfjfuBRlW6Lk4xiF28SnSmI1vJOZ856pQ9
+x5Q98kjdToBk7w8qZYO/d4/M/Tyu5Wf17St3vUndjV2pboWqJaEX9jLWZb+JoK0=
+=Nvs8
+-----END PGP SIGNATURE-----

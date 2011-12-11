@@ -131,7 +131,6 @@ public class ImportExportManager {
 		logger.debug("reading form file");
 		FileReader fr = new FileReader(fileName);
 		BufferedReader x = new BufferedReader(fr);
-		
 		String res = x.readLine();
 		while (res != null) {
 			// System.out.println("Tmpbuf: " + res);
