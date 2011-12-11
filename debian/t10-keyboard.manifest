@@ -1,0 +1,3 @@
+usr/share/t10-keyboard/t10-keyboard.jar:
+ Main-Class: org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader
+ Debian-Java-Home: /usr/lib/jvm/default-java

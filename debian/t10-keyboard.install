@@ -1,0 +1,5 @@
+t10-keyboard.jar usr/share/t10-keyboard
+debian/t10-keyboard usr/share/t10-keyboard
+debian/t10-keyboard.desktop /usr/share/applications
+
+debian/t10-keyboard_icon.png usr/share/t10-keyboard
