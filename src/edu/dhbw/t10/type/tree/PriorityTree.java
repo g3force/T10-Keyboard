@@ -71,6 +71,11 @@ public class PriorityTree implements Serializable {
 	}
 	
 	
+	public PriorityTree(PriorityElement root) {
+		this.root = root;
+	}
+
+	
 	// --------------------------------------------------------------------------
 	// --- methods --------------------------------------------------------------
 	// --------------------------------------------------------------------------
@@ -317,7 +322,7 @@ public class PriorityTree implements Serializable {
 	public void importFromHashMap(HashMap<String, Integer> input) {
 		for (Entry<String, Integer> entry : input.entrySet()) {
 			insert(entry.getKey(), entry.getValue(), true);
-		}
+			}
 		logger.debug("imported from HashMap");
 	}
 	
@@ -416,6 +421,10 @@ public class PriorityTree implements Serializable {
 		this.words = words;
 	}
 	
+	
+	public PriorityTree clone() {
+		return new PriorityTree(root);
+	}
 
 
 	// --------------------------------------------------------------------------
