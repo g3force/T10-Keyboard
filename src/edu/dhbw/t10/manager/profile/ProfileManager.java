@@ -335,16 +335,7 @@ public class ProfileManager {
 		if (profiles == null) {
 			profiles = new ArrayList<Profile_V2>();
 		}
-		//define filter for all .chars files in a given dir
-		FilenameFilter isChar = new FilenameFilter() {
-				    public boolean accept(File dir, String name) {
-						if (name.lastIndexOf(".") > 0)
-							return name.substring(name.lastIndexOf("."), name.length()).equals(".chars");
-						else
-							return false;
-				    }
-				};
-		
+
 		// temp file containing all files
 		LinkedList<File> profileFiles = new LinkedList<File>();
 		
