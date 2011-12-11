@@ -1,0 +1,59 @@
+t10-keyboard (1.0-1ubuntu9) oneiric; urgency=low
+
+  * where is oneiric?
+
+ -- Nicolai Ommer <nicolai.ommer@gmail.com>  Sat, 10 Dec 2011 10:29:18 +0100
+
+t10-keyboard (1.0-1ubuntu8) maverick; urgency=low
+
+  * package for maverick
+
+ -- Nicolai Ommer <nicolai.ommer@gmail.com>  Thu, 08 Dec 2011 19:58:25 +0100
+
+t10-keyboard (1.0-1ubuntu7) oneiric; urgency=low
+
+  * package for oneiric
+
+ -- Nicolai Ommer <nicolai.ommer@gmail.com>  Wed, 07 Dec 2011 08:10:30 +0100
+
+t10-keyboard (1.0-1ubuntu6) lucid maverick natty oneiric; urgency=low
+
+  * added support for old profile-file versions
+
+ -- Nicolai Ommer <nicolai.ommer@gmail.com>  Tue, 06 Dec 2011 14:33:54 +0100
+
+t10-keyboard (1.0-1ubuntu5) lucid maverick natty oneiric; urgency=low
+
+  * added support for lucid, maverick and oneiric
+
+ -- Nicolai Ommer <nicolai.ommer@gmail.com>  Tue, 06 Dec 2011 14:13:40 +0100
+
+t10-keyboard (1.0-1ubuntu4) natty; urgency=low
+
+  * fixed a problem with old profile format 
+
+ -- Nicolai Ommer <nicolai.ommer@gmail.com>  Mon, 05 Dec 2011 00:29:36 +0100
+
+t10-keyboard (1.0-1ubuntu3) natty; urgency=low
+
+  * removed all occurences of umlauts (occording to dict.cc a correct english word ;) )
+
+ -- Nicolai Ommer <nicolai.ommer@gmail.com>  Sun, 04 Dec 2011 22:12:20 +0100
+
+t10-keyboard (1.0-1ubuntu2) natty; urgency=low
+
+  * added missing dep git (which actually wont do anything...) 
+
+ -- Nicolai Ommer <nicolai.ommer@gmail.com>  Sun, 04 Dec 2011 19:53:43 +0100
+
+t10-keyboard (1.0-1ubuntu1) natty; urgency=low
+
+  * added missing dependency ant 
+
+ -- Nicolai Ommer <nicolai.ommer@gmail.com>  Sun, 04 Dec 2011 18:38:39 +0100
+
+t10-keyboard (1.0-1) natty; urgency=low
+
+  * Initial release. 
+
+ -- Nicolai Ommer <nicolai.ommer@gmail.com>  Sat, 04 Dec 2011 16:22:11 +0100

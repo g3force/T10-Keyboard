@@ -1,0 +1,16 @@
+#!/usr/bin/make -f
+
+export JAVA_HOME=/usr/lib/jvm/default-java
+
+# Put depended upon jars in here
+# export CLASSPATH=
+
+clean:
+	rm -f t10-keyboard.jar
+	echo -n >debian/files
+	rm -f debian/t10-keyboard.debhelper.log debian/t10-keyboard.substvars
+	rm -rf debian/t10-keyboard/
+	make clean
+%:
+	dh --with javahelper $@
+
